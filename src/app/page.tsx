@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -31,6 +32,13 @@ export default function Home() {
           <div className="text-3xl mb-2">🎯</div>
           <p className="font-semibold">Custom targets</p>
         </div>
+      </div>
+      <div className="mt-12">
+        <Link href="/log">
+          <Button variant="outline" className="text-violet-500 border-violet-500 hover:bg-violet-500 hover:text-white">
+            Log your food
+          </Button>
+        </Link>
       </div>
     </main>
   );
