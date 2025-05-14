@@ -71,7 +71,7 @@ export default function LogPage() {
       </form>
 
       <div className="mt-8">
-        <h2 className="text-2xl font-semibold mb-4">Today's Log</h2>
+        <h2 className="text-2xl font-semibold mb-4">Today&apos;s Log</h2>
         <ul className="space-y-2">
           {entries.map((entry, i) => (
             <li key={i} className="border border-zinc-700 rounded-md p-4">
