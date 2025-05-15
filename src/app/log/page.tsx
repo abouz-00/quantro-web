@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import { v4 as uuidv4 } from "uuid";
+import { FaTrash } from "react-icons/fa"; // Import a trash icon from react-icons
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
 
@@ -75,6 +76,22 @@ export default function LogPage() {
     }
   };
 
+  const removeFoodEntry = (id: string) => {
+    const updatedFoodData = foodData.filter((item) => item.id !== id);
+    const removedEntry = foodData.find((item) => item.id === id);
+
+    if (removedEntry) {
+      setTotals({
+        calories: totals.calories - removedEntry.calories,
+        protein: totals.protein - removedEntry.protein,
+        carbs: totals.carbs - removedEntry.carbs,
+        fat: totals.fat - removedEntry.fat,
+      });
+    }
+
+    setFoodData(updatedFoodData);
+  };
+
   return (
     <main className="p-6 max-w-2xl mx-auto">
       <h1 className="text-3xl font-bold mb-2">Log Your Food</h1>
@@ -107,30 +124,21 @@ export default function LogPage() {
           <h2 className="text-lg font-medium mb-2">Entries</h2>
           <ul className="mb-4">
             {foodData.map((item) => (
-              <li key={item.id} className="mb-2">
-                {item.description} - {item.amount} ({item.calories} kcal, P: {item.protein}g, C: {item.carbs}g, F: {item.fat}g)
+              <li key={item.id} className="flex justify-between items-center mb-2">
+                <span>
+                  {item.description} - {item.amount} ({item.calories} kcal, P: {item.protein}g, C: {item.carbs}g, F: {item.fat}g)
+                </span>
+                <button
+                  onClick={() => removeFoodEntry(item.id)}
+                  className="text-red-500 hover:text-red-700"
+                  aria-label="Remove entry"
+                >
+                  <FaTrash />
+                </button>
               </li>
             ))}
           </ul>
-          <PieChart width={300} height={200}>
-            <Pie
-              dataKey="value"
-              data={[
-                { name: "Protein", value: totals.protein },
-                { name: "Carbs", value: totals.carbs },
-                { name: "Fat", value: totals.fat },
-              ]}
-              cx="50%"
-              cy="50%"
-              outerRadius={60}
-              label
-            >
-              {COLORS.map((color, index) => (
-                <Cell key={index} fill={color} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
+          {/* PieChart component temporarily removed */}
         </>
       )}
     </main>
