@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
@@ -26,6 +26,18 @@ export default function LogPage() {
   const [amount, setAmount] = useState("100g");
   const [foodData, setFoodData] = useState<FoodEntry[]>([]);
   const [totals, setTotals] = useState<Nutrients>({ calories: 0, protein: 0, carbs: 0, fat: 0 });
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
+  useEffect(() => {
+    const timeout = setTimeout(async () => {
+      if (!query) return;
+      const apiKey = process.env.NEXT_PUBLIC_USDA_API_KEY;
+      const res = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${query}&pageSize=10&api_key=${apiKey}`);
+      const data = await res.json();
+      setSuggestions(data.foods?.map((f: any) => f.description) || []);
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [query]);
 
   const fetchUSDAFood = async () => {
     if (!query) return;
@@ -64,7 +76,18 @@ export default function LogPage() {
       <h1 className="text-3xl font-bold mb-2">Log Your Food</h1>
       <p className="text-muted-foreground mb-4">Search from USDA, track your macros.</p>
       <div className="flex gap-2 mb-6">
-        <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search food..." />
+        <input
+          list="food-suggestions"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search food..."
+          className="border p-2 rounded w-full"
+        />
+        <datalist id="food-suggestions">
+          {suggestions.map((s, i) => (
+            <option key={i} value={s} />
+          ))}
+        </datalist>
         <Input value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="e.g. 100g" />
         <Button onClick={fetchUSDAFood}>Add</Button>
       </div>
