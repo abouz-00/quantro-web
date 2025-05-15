@@ -246,8 +246,8 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
 
 // Main LogPage component with gradient section cards and progress bars
 export default function LogPage() {
-  const [query, setQuery] = useState("");
-  const [amount, setAmount] = useState("100g");
+  //const [query, setQuery] = useState("");
+  //const [amount, setAmount] = useState("100g");
   const [foodData, setFoodData] = useState<FoodEntry[]>([]);
   const [totals, setTotals] = useState<Nutrients>({
     calories: 0,
