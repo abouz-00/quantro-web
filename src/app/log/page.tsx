@@ -34,7 +34,7 @@ export default function LogPage() {
     const data = await res.json();
     const first = data.foods?.[0];
     if (first) {
-      const nutrients = first.foodNutrients.reduce((acc: Nutrients, n: any) => {
+      const nutrients = first.foodNutrients.reduce((acc: Nutrients, n: { nutrientName: string; value: number }) => {
         if (n.nutrientName === "Energy") acc.calories = n.value;
         if (n.nutrientName === "Protein") acc.protein = n.value;
         if (n.nutrientName === "Carbohydrate, by difference") acc.carbs = n.value;
