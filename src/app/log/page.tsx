@@ -6,35 +6,26 @@ import { Button } from "@/components/ui/button";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import { v4 as uuidv4 } from "uuid";
 
-interface FoodEntry {
-  id: string;
-  description: string;
-  amount: string;
+const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
+
+interface Nutrients {
   calories: number;
   protein: number;
   carbs: number;
   fat: number;
 }
 
-interface Nutrient {
-  nutrientName: string;
-  value: number;
+interface FoodEntry extends Nutrients {
+  id: string;
+  description: string;
+  amount: string;
 }
-
-interface NutrientAccumulator {
-  calories?: number;
-  protein?: number;
-  carbs?: number;
-  fat?: number;
-}
-
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
 
 export default function LogPage() {
   const [query, setQuery] = useState("");
   const [amount, setAmount] = useState("100g");
   const [foodData, setFoodData] = useState<FoodEntry[]>([]);
-  const [totals, setTotals] = useState({ calories: 0, protein: 0, carbs: 0, fat: 0 });
+  const [totals, setTotals] = useState<Nutrients>({ calories: 0, protein: 0, carbs: 0, fat: 0 });
 
   const fetchUSDAFood = async () => {
     if (!query) return;
@@ -43,28 +34,27 @@ export default function LogPage() {
     const data = await res.json();
     const first = data.foods?.[0];
     if (first) {
-      const nutrients = first.foodNutrients.reduce((acc: NutrientAccumulator, n: Nutrient) => {
+      const nutrients = first.foodNutrients.reduce((acc: Nutrients, n: any) => {
         if (n.nutrientName === "Energy") acc.calories = n.value;
         if (n.nutrientName === "Protein") acc.protein = n.value;
         if (n.nutrientName === "Carbohydrate, by difference") acc.carbs = n.value;
         if (n.nutrientName === "Total lipid (fat)") acc.fat = n.value;
         return acc;
-      }, {});
-      const entry = {
+      }, { calories: 0, protein: 0, carbs: 0, fat: 0 });
+
+      const entry: FoodEntry = {
         id: uuidv4(),
         description: first.description,
         amount,
-        calories: nutrients.calories || 0,
-        protein: nutrients.protein || 0,
-        carbs: nutrients.carbs || 0,
-        fat: nutrients.fat || 0,
+        ...nutrients,
       };
+
       setFoodData([...foodData, entry]);
       setTotals({
-        calories: totals.calories + (nutrients.calories || 0),
-        protein: totals.protein + (nutrients.protein || 0),
-        carbs: totals.carbs + (nutrients.carbs || 0),
-        fat: totals.fat + (nutrients.fat || 0),
+        calories: totals.calories + nutrients.calories,
+        protein: totals.protein + nutrients.protein,
+        carbs: totals.carbs + nutrients.carbs,
+        fat: totals.fat + nutrients.fat,
       });
     }
   };
@@ -79,7 +69,7 @@ export default function LogPage() {
         <Button onClick={fetchUSDAFood}>Add</Button>
       </div>
       <div className="bg-violet-600 text-white p-4 rounded-md mb-4">
-        <h2 className="text-xl font-semibold">Today's Totals</h2>
+        <h2 className="text-xl font-semibold">Today&apos;s Totals</h2>
         <p>Calories: {totals.calories} kcal</p>
         <p>Protein: {totals.protein}g</p>
         <p>Carbs: {totals.carbs}g</p>
