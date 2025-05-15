@@ -55,13 +55,14 @@ export default function LogPage() {
   const [totals, setTotals] = useState<Nutrients>({ calories: 0, protein: 0, carbs: 0, fat: 0 });
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
-  // Define macronutrient goals
-  const goals: Nutrients = {
+  // State for custom macronutrient target inputs and saved targets.
+  const [targetInput, setTargetInput] = useState<Nutrients>({
     calories: 2740,
     protein: 150,
     carbs: 300,
     fat: 70,
-  };
+  });
+  const [customGoals, setCustomGoals] = useState<Nutrients>(targetInput);
 
   useEffect(() => {
     const timeout = setTimeout(async () => {
@@ -129,6 +130,14 @@ export default function LogPage() {
     setFoodData(updatedFoodData);
   };
 
+  const handleInputChange = (field: keyof Nutrients, value: number) => {
+    setTargetInput({ ...targetInput, [field]: value });
+  };
+
+  const handleSaveTargets = () => {
+    setCustomGoals(targetInput);
+  };
+
   return (
     <main className="p-6 max-w-2xl mx-auto">
       <h1 className="text-3xl font-bold mb-2">Log Your Food</h1>
@@ -146,9 +155,14 @@ export default function LogPage() {
             <option key={i} value={s} />
           ))}
         </datalist>
-        <Input value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="e.g. 100g" />
+        <Input
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          placeholder="e.g. 100g"
+        />
         <Button onClick={fetchUSDAFood}>Add</Button>
       </div>
+
       <div className="bg-violet-600 text-white p-4 rounded-md mb-4">
         <h2 className="text-xl font-semibold">Today&apos;s Totals</h2>
         <p>Calories: {totals.calories} kcal</p>
@@ -156,36 +170,84 @@ export default function LogPage() {
         <p>Carbs: {totals.carbs}g</p>
         <p>Fat: {totals.fat}g</p>
       </div>
+
+      {/* Custom Targets Section */}
+      <div className="bg-gray-100 p-4 rounded-md mb-4">
+        <h2 className="text-xl font-semibold mb-2">Set Custom Targets</h2>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium">Calories</label>
+            <input
+              type="number"
+              value={targetInput.calories}
+              onChange={(e) => handleInputChange("calories", Number(e.target.value))}
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Protein</label>
+            <input
+              type="number"
+              value={targetInput.protein}
+              onChange={(e) => handleInputChange("protein", Number(e.target.value))}
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Carbs</label>
+            <input
+              type="number"
+              value={targetInput.carbs}
+              onChange={(e) => handleInputChange("carbs", Number(e.target.value))}
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Fat</label>
+            <input
+              type="number"
+              value={targetInput.fat}
+              onChange={(e) => handleInputChange("fat", Number(e.target.value))}
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            />
+          </div>
+        </div>
+        <Button onClick={handleSaveTargets} className="mt-4">
+          Save Targets
+        </Button>
+      </div>
+
       <div className="mb-6">
         <ProgressBar
           label="Calories"
           current={totals.calories}
-          goal={goals.calories}
+          goal={customGoals.calories}
           unit="kcal"
           color="bg-gray-500"
         />
         <ProgressBar
           label="Protein"
           current={totals.protein}
-          goal={goals.protein}
+          goal={customGoals.protein}
           unit="g"
           color="bg-green-500"
         />
         <ProgressBar
           label="Carbs"
           current={totals.carbs}
-          goal={goals.carbs}
+          goal={customGoals.carbs}
           unit="g"
           color="bg-blue-500"
         />
         <ProgressBar
           label="Fat"
           current={totals.fat}
-          goal={goals.fat}
+          goal={customGoals.fat}
           unit="g"
           color="bg-red-500"
         />
       </div>
+
       {foodData.length > 0 && (
         <>
           <h2 className="text-lg font-medium mb-2">Entries</h2>
@@ -193,8 +255,8 @@ export default function LogPage() {
             {foodData.map((item) => (
               <li key={item.id} className="flex justify-between items-center mb-2">
                 <span>
-                  {item.description} - {item.amount} ({item.calories} kcal, P: {item.protein}g, C:{" "}
-                  {item.carbs}g, F: {item.fat}g)
+                  {item.description} - {item.amount} (
+                  {item.calories} kcal, P: {item.protein}g, C: {item.carbs}g, F: {item.fat}g)
                 </span>
                 <button
                   onClick={() => removeFoodEntry(item.id)}
