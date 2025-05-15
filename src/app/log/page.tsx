@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuidv4";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
 
