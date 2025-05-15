@@ -3,59 +3,32 @@
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Tooltip,
-} from "recharts";
+import { TrashIcon } from "@radix-ui/react-icons";
+import { format } from "date-fns";
 
 interface LogEntry {
   food: string;
   amount: string;
-  category: string;
   calories: number;
   protein: number;
   carbs: number;
   fat: number;
-  micros: string;
 }
 
-const COLORS = ["#BA4CF0", "#00C49F", "#FFBB28", "#FF8042"];
-
-export default function DashboardPage() {
+export default function LogPage() {
   const [entries, setEntries] = useState<LogEntry[]>([]);
   const [food, setFood] = useState("");
   const [amount, setAmount] = useState("");
+  const [date] = useState(new Date());
 
   useEffect(() => {
     const stored = localStorage.getItem("food-log");
-    if (stored) {
-      setEntries(JSON.parse(stored));
-    }
+    if (stored) setEntries(JSON.parse(stored));
   }, []);
 
   useEffect(() => {
     localStorage.setItem("food-log", JSON.stringify(entries));
   }, [entries]);
-
-  const totals = entries.reduce(
-    (acc, entry) => {
-      acc.calories += entry.calories;
-      acc.protein += entry.protein;
-      acc.carbs += entry.carbs;
-      acc.fat += entry.fat;
-      return acc;
-    },
-    { calories: 0, protein: 0, carbs: 0, fat: 0 }
-  );
-
-  const chartData = [
-    { name: "Protein", value: totals.protein },
-    { name: "Carbs", value: totals.carbs },
-    { name: "Fat", value: totals.fat },
-  ];
 
   const handleAdd = async () => {
     if (!food || !amount) return;
@@ -66,7 +39,6 @@ export default function DashboardPage() {
       );
       const data = await res.json();
       const item = data.foods?.[0];
-
       if (!item) {
         alert("Food not found.");
         return;
@@ -88,14 +60,12 @@ export default function DashboardPage() {
       );
 
       const newEntry: LogEntry = {
-        food,
+        food: item.description,
         amount,
-        category: "usda",
         calories: nutrients.calories,
         protein: nutrients.protein,
         carbs: nutrients.carbs,
         fat: nutrients.fat,
-        micros: "",
       };
 
       setEntries((prev) => [...prev, newEntry]);
@@ -103,15 +73,22 @@ export default function DashboardPage() {
       setAmount("");
     } catch (err) {
       console.error(err);
-      alert("Error retrieving food data.");
+      alert("Failed to fetch food data.");
     }
   };
 
-  return (
-    <main className="p-6 max-w-xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold">Log Your Food</h1>
+  const handleDelete = (index: number) => {
+    setEntries(entries.filter((_, i) => i !== index));
+  };
 
-      <div className="flex gap-4">
+  return (
+    <main className="p-6 max-w-2xl mx-auto space-y-6">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold">Log Your Food</h1>
+        <p className="text-sm text-gray-500 mt-1">{format(date, "MMMM d, yyyy")}</p>
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-4">
         <Input
           placeholder="Food"
           value={food}
@@ -122,39 +99,30 @@ export default function DashboardPage() {
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
-        <Button onClick={handleAdd}>Add</Button>
+        <Button onClick={handleAdd}>Add Food</Button>
       </div>
 
-      <div className="h-60">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={chartData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={80}
-              label
+      <div className="rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 p-4 shadow">
+        <h2 className="text-white text-xl font-semibold mb-3">Food Log</h2>
+        {entries.map((entry, i) => (
+          <div key={i} className="bg-white rounded-lg shadow p-4 mb-3 flex justify-between items-start">
+            <div>
+              <p className="font-medium text-indigo-800">{entry.food}</p>
+              <p className="text-sm text-gray-600">{entry.amount} • {entry.calories.toFixed(2)} kcal</p>
+              <p className="text-xs text-gray-500">
+                Carbs: {entry.carbs.toFixed(2)}g&nbsp;&nbsp;
+                Protein: {entry.protein.toFixed(2)}g&nbsp;&nbsp;
+                Fat: {entry.fat.toFixed(2)}g
+              </p>
+            </div>
+            <button
+              onClick={() => handleDelete(i)}
+              className="text-red-500 hover:text-red-700"
             >
-              {chartData.map((_, i) => (
-                <Cell key={i} fill={COLORS[i % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
-
-      <div>
-        <h2 className="text-xl font-semibold mb-2">Entries Logged</h2>
-        <ul className="space-y-1">
-          {entries.map((entry, i) => (
-            <li key={i} className="text-sm">
-              {entry.food} - {entry.amount} ({entry.calories} kcal, P: {entry.protein}g, C: {entry.carbs}g, F: {entry.fat}g)
-            </li>
-          ))}
-        </ul>
+              <TrashIcon />
+            </button>
+          </div>
+        ))}
       </div>
     </main>
   );
