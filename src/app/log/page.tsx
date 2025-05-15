@@ -21,6 +21,10 @@ interface FoodEntry extends Nutrients {
   amount: string;
 }
 
+interface USDAFood {
+  description: string;
+}
+
 export default function LogPage() {
   const [query, setQuery] = useState("");
   const [amount, setAmount] = useState("100g");
@@ -34,7 +38,7 @@ export default function LogPage() {
       const apiKey = process.env.NEXT_PUBLIC_USDA_API_KEY;
       const res = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${query}&pageSize=10&api_key=${apiKey}`);
       const data = await res.json();
-      setSuggestions(data.foods?.map((f: any) => f.description) || []);
+      setSuggestions(data.foods?.map((f: USDAFood) => f.description) || []);
     }, 300);
     return () => clearTimeout(timeout);
   }, [query]);
