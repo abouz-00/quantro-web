@@ -15,15 +15,21 @@ interface LogEntry {
   fat: number;
 }
 
+interface FoodItem {
+  fdcId: number;
+  description: string;
+  foodNutrients: { nutrientName: string; value: number }[];
+}
+
 export default function LogPage() {
   const [entries, setEntries] = useState<LogEntry[]>([]);
   const [food, setFood] = useState("");
   const [amount, setAmount] = useState("");
   const [date] = useState(new Date());
 
-  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [suggestions, setSuggestions] = useState<FoodItem[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [selectedFoodData, setSelectedFoodData] = useState<any | null>(null);
+  const [selectedFoodData, setSelectedFoodData] = useState<FoodItem | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem("food-log");
@@ -38,7 +44,7 @@ export default function LogPage() {
     if (!food || !amount) return;
 
     try {
-      const item = selectedFoodData ?? (await (async () => {
+      const item = selectedFoodData ?? (await (async (): Promise<FoodItem> => {
         const res = await fetch(
           `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(food)}&api_key=${process.env.NEXT_PUBLIC_USDA_API_KEY}`
         );
