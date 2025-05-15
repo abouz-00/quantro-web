@@ -73,7 +73,7 @@ export default function DashboardPage() {
       }
 
       const nutrients = item.foodNutrients.reduce(
-        (acc: any, n: any) => {
+        (acc: { calories: number; protein: number; carbs: number; fat: number }, n: { nutrientName: string; value: number }) => {
           const name = n.nutrientName.toLowerCase();
           const val = n.value;
 
