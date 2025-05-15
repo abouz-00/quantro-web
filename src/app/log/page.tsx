@@ -21,6 +21,10 @@ export default function LogPage() {
   const [amount, setAmount] = useState("");
   const [date] = useState(new Date());
 
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedFoodData, setSelectedFoodData] = useState<any | null>(null);
+
   useEffect(() => {
     const stored = localStorage.getItem("food-log");
     if (stored) setEntries(JSON.parse(stored));
@@ -34,11 +38,13 @@ export default function LogPage() {
     if (!food || !amount) return;
 
     try {
-      const res = await fetch(
-        `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(food)}&api_key=${process.env.NEXT_PUBLIC_USDA_API_KEY}`
-      );
-      const data = await res.json();
-      const item = data.foods?.[0];
+      const item = selectedFoodData ?? (await (async () => {
+        const res = await fetch(
+          `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(food)}&api_key=${process.env.NEXT_PUBLIC_USDA_API_KEY}`
+        );
+        const data = await res.json();
+        return data.foods?.[0];
+      })());
       if (!item) {
         alert("Food not found.");
         return;
@@ -71,6 +77,9 @@ export default function LogPage() {
       setEntries((prev) => [...prev, newEntry]);
       setFood("");
       setAmount("");
+      setSelectedFoodData(null);
+      setSuggestions([]);
+      setShowSuggestions(false);
     } catch (err) {
       console.error(err);
       alert("Failed to fetch food data.");
@@ -89,11 +98,48 @@ export default function LogPage() {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
-        <Input
-          placeholder="Food"
-          value={food}
-          onChange={(e) => setFood(e.target.value)}
-        />
+        <div className="relative flex-1">
+          <Input
+            placeholder="Food"
+            value={food}
+            onChange={async (e) => {
+              const q = e.target.value;
+              setFood(q);
+              setSelectedFoodData(null);
+              if (q.length > 2) {
+                try {
+                  const res = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(q)}&pageSize=5&api_key=${process.env.NEXT_PUBLIC_USDA_API_KEY}`);
+                  const data = await res.json();
+                  setSuggestions(data.foods || []);
+                  setShowSuggestions(true);
+                } catch {
+                  setSuggestions([]);
+                  setShowSuggestions(false);
+                }
+              } else {
+                setSuggestions([]);
+                setShowSuggestions(false);
+              }
+            }}
+          />
+          {showSuggestions && suggestions.length > 0 && (
+            <ul className="absolute z-20 bg-white border border-gray-200 w-full max-h-48 overflow-y-auto mt-1 rounded-md shadow-sm">
+              {suggestions.map((item) => (
+                <li
+                  key={item.fdcId}
+                  className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                  onClick={() => {
+                    setFood(item.description);
+                    setSelectedFoodData(item);
+                    setShowSuggestions(false);
+                  }}
+                >
+                  {item.description}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         <Input
           placeholder="Amount (e.g. 1 cup)"
           value={amount}
