@@ -57,24 +57,54 @@ export default function DashboardPage() {
     { name: "Fat", value: totals.fat },
   ];
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (!food || !amount) return;
 
-    // Dummy values for now; replace with USDA API results
-    const newEntry: LogEntry = {
-      food,
-      amount,
-      category: "manual",
-      calories: 100,
-      protein: 10,
-      carbs: 15,
-      fat: 5,
-      micros: "",
-    };
+    try {
+      const res = await fetch(
+        `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(food)}&api_key=${process.env.NEXT_PUBLIC_USDA_API_KEY}`
+      );
+      const data = await res.json();
+      const item = data.foods?.[0];
 
-    setEntries((prev) => [...prev, newEntry]);
-    setFood("");
-    setAmount("");
+      if (!item) {
+        alert("Food not found.");
+        return;
+      }
+
+      const nutrients = item.foodNutrients.reduce(
+        (acc: any, n: any) => {
+          const name = n.nutrientName.toLowerCase();
+          const val = n.value;
+
+          if (name.includes("energy") && name.includes("kcal")) acc.calories = val;
+          else if (name.includes("protein")) acc.protein = val;
+          else if (name.includes("carbohydrate")) acc.carbs = val;
+          else if (name.includes("total lipid") || name.includes("fat")) acc.fat = val;
+
+          return acc;
+        },
+        { calories: 0, protein: 0, carbs: 0, fat: 0 }
+      );
+
+      const newEntry: LogEntry = {
+        food,
+        amount,
+        category: "usda",
+        calories: nutrients.calories,
+        protein: nutrients.protein,
+        carbs: nutrients.carbs,
+        fat: nutrients.fat,
+        micros: "",
+      };
+
+      setEntries((prev) => [...prev, newEntry]);
+      setFood("");
+      setAmount("");
+    } catch (err) {
+      console.error(err);
+      alert("Error retrieving food data.");
+    }
   };
 
   return (
