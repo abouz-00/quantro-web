@@ -3,11 +3,8 @@
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import { v4 as uuidv4 } from "uuid";
 import { FaTrash } from "react-icons/fa"; // Import a trash icon from react-icons
-
-const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
 
 interface Nutrients {
   calories: number;
@@ -138,7 +135,6 @@ export default function LogPage() {
               </li>
             ))}
           </ul>
-          {/* PieChart component temporarily removed */}
         </>
       )}
     </main>
