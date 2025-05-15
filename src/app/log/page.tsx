@@ -38,11 +38,14 @@ function ProgressBar({ label, current, goal, unit, color }: ProgressBarProps) {
       <div className="flex justify-between mb-1">
         <span>{label}</span>
         <span>
-          {current} / {goal} {unit}
+          {current.toFixed(1)} / {goal.toFixed(1)} {unit}
         </span>
       </div>
       <div className="w-full bg-gray-200 rounded-full h-4">
-        <div className={`${color} h-4 rounded-full`} style={{ width: `${percentage}%` }}></div>
+        <div
+          className={`${color} h-4 rounded-full`}
+          style={{ width: `${percentage}%` }}
+        ></div>
       </div>
     </div>
   );
@@ -52,7 +55,12 @@ export default function LogPage() {
   const [query, setQuery] = useState("");
   const [amount, setAmount] = useState("100g");
   const [foodData, setFoodData] = useState<FoodEntry[]>([]);
-  const [totals, setTotals] = useState<Nutrients>({ calories: 0, protein: 0, carbs: 0, fat: 0 });
+  const [totals, setTotals] = useState<Nutrients>({
+    calories: 0,
+    protein: 0,
+    carbs: 0,
+    fat: 0,
+  });
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
   // State for custom macronutrient target inputs and saved targets.
@@ -141,7 +149,9 @@ export default function LogPage() {
   return (
     <main className="p-6 max-w-2xl mx-auto">
       <h1 className="text-3xl font-bold mb-2">Log Your Food</h1>
-      <p className="text-muted-foreground mb-4">Search from USDA, track your macros.</p>
+      <p className="text-muted-foreground mb-4">
+        Search from USDA, track your macros.
+      </p>
       <div className="flex gap-2 mb-6">
         <input
           list="food-suggestions"
@@ -163,60 +173,36 @@ export default function LogPage() {
         <Button onClick={fetchUSDAFood}>Add</Button>
       </div>
 
-      <div className="bg-violet-600 text-white p-4 rounded-md mb-4">
-        <h2 className="text-xl font-semibold">Today&apos;s Totals</h2>
-        <p>Calories: {totals.calories} kcal</p>
-        <p>Protein: {totals.protein}g</p>
-        <p>Carbs: {totals.carbs}g</p>
-        <p>Fat: {totals.fat}g</p>
-      </div>
+      {/* Entries Section moved directly below the search input */}
+      {foodData.length > 0 && (
+        <>
+          <h2 className="text-lg font-medium mb-2">Entries</h2>
+          <ul className="mb-4">
+            {foodData.map((item) => (
+              <li
+                key={item.id}
+                className="flex justify-between items-center mb-2"
+              >
+                <span>
+                  {item.description} - {item.amount} (
+                  {item.calories.toFixed(1)} kcal, P:{" "}
+                  {item.protein.toFixed(1)}g, C: {item.carbs.toFixed(1)}g, F:{" "}
+                  {item.fat.toFixed(1)}g)
+                </span>
+                <button
+                  onClick={() => removeFoodEntry(item.id)}
+                  className="text-red-500 hover:text-red-700"
+                  aria-label="Remove entry"
+                >
+                  <FaTrash />
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
 
-      {/* Custom Targets Section */}
-      <div className="bg-gray-100 p-4 rounded-md mb-4">
-        <h2 className="text-xl font-semibold mb-2">Set Custom Targets</h2>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium">Calories</label>
-            <input
-              type="number"
-              value={targetInput.calories}
-              onChange={(e) => handleInputChange("calories", Number(e.target.value))}
-              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Protein</label>
-            <input
-              type="number"
-              value={targetInput.protein}
-              onChange={(e) => handleInputChange("protein", Number(e.target.value))}
-              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Carbs</label>
-            <input
-              type="number"
-              value={targetInput.carbs}
-              onChange={(e) => handleInputChange("carbs", Number(e.target.value))}
-              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Fat</label>
-            <input
-              type="number"
-              value={targetInput.fat}
-              onChange={(e) => handleInputChange("fat", Number(e.target.value))}
-              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
-        </div>
-        <Button onClick={handleSaveTargets} className="mt-4">
-          Save Targets
-        </Button>
-      </div>
-
+      {/* Progress Bars Section */}
       <div className="mb-6">
         <ProgressBar
           label="Calories"
@@ -248,28 +234,59 @@ export default function LogPage() {
         />
       </div>
 
-      {foodData.length > 0 && (
-        <>
-          <h2 className="text-lg font-medium mb-2">Entries</h2>
-          <ul className="mb-4">
-            {foodData.map((item) => (
-              <li key={item.id} className="flex justify-between items-center mb-2">
-                <span>
-                  {item.description} - {item.amount} (
-                  {item.calories} kcal, P: {item.protein}g, C: {item.carbs}g, F: {item.fat}g)
-                </span>
-                <button
-                  onClick={() => removeFoodEntry(item.id)}
-                  className="text-red-500 hover:text-red-700"
-                  aria-label="Remove entry"
-                >
-                  <FaTrash />
-                </button>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+      {/* Custom Targets Section positioned at the bottom */}
+      <div className="bg-gray-100 p-4 rounded-md mb-4">
+        <h2 className="text-xl font-semibold mb-2">Set Custom Targets</h2>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium">Calories</label>
+            <input
+              type="number"
+              value={targetInput.calories}
+              onChange={(e) =>
+                handleInputChange("calories", Number(e.target.value))
+              }
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Protein</label>
+            <input
+              type="number"
+              value={targetInput.protein}
+              onChange={(e) =>
+                handleInputChange("protein", Number(e.target.value))
+              }
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Carbs</label>
+            <input
+              type="number"
+              value={targetInput.carbs}
+              onChange={(e) =>
+                handleInputChange("carbs", Number(e.target.value))
+              }
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium">Fat</label>
+            <input
+              type="number"
+              value={targetInput.fat}
+              onChange={(e) =>
+                handleInputChange("fat", Number(e.target.value))
+              }
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+            />
+          </div>
+        </div>
+        <Button onClick={handleSaveTargets} className="mt-4">
+          Save Targets
+        </Button>
+      </div>
     </main>
   );
 }
