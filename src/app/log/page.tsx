@@ -1,201 +1,97 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { TrashIcon } from "@radix-ui/react-icons";
+import { Label } from "@/components/ui/label";
+import { PieChart, Pie, Cell, Tooltip } from "recharts";
+import { v4 as uuidv4 } from "uuid";
 
-interface LogEntry {
-  id: string;
-  food: string;
-  amount: string;
-  calories: number;
-  protein: number;
-  carbs: number;
-  fat: number;
-}
-
-interface FoodItem {
-  fdcId: number;
-  description: string;
-  foodNutrients: { nutrientName: string; value: number }[];
-}
+const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
 
 export default function LogPage() {
-  const [entries, setEntries] = useState<LogEntry[]>([]);
-  const [food, setFood] = useState("");
-  const [amount, setAmount] = useState("");
-  const [suggestions, setSuggestions] = useState<FoodItem[]>([]);
-  const [selectedFoodData, setSelectedFoodData] = useState<FoodItem | null>(null);
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [query, setQuery] = useState("");
+  const [amount, setAmount] = useState("100g");
+  const [foodData, setFoodData] = useState<any[]>([]);
+  const [totals, setTotals] = useState({ calories: 0, protein: 0, carbs: 0, fat: 0 });
 
-  useEffect(() => {
-    const stored = localStorage.getItem("food-log");
-    if (stored) setEntries(JSON.parse(stored));
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("food-log", JSON.stringify(entries));
-  }, [entries]);
-
-  const handleAdd = async () => {
-    if (!food || !amount) return;
-
-    try {
-      const item = selectedFoodData ?? (await (async (): Promise<FoodItem> => {
-        const res = await fetch(
-          `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(food)}&pageSize=1&api_key=${process.env.NEXT_PUBLIC_USDA_API_KEY}`
-        );
-        const data = await res.json();
-        return data.foods?.[0];
-      })());
-
-      if (!item) {
-        alert("Food not found.");
-        return;
-      }
-
-      const nutrients = item.foodNutrients.reduce(
-        (acc: { calories: number; protein: number; carbs: number; fat: number }, n: { nutrientName: string; value: number }) => {
-          const name = n.nutrientName.toLowerCase();
-          const val = n.value;
-
-          if (name.includes("energy") && name.includes("kcal")) acc.calories = val;
-          else if (name.includes("protein")) acc.protein = val;
-          else if (name.includes("carbohydrate")) acc.carbs = val;
-          else if (name.includes("total lipid") || name.includes("fat")) acc.fat = val;
-
-          return acc;
-        },
-        { calories: 0, protein: 0, carbs: 0, fat: 0 }
-      );
-
-      const newEntry: LogEntry = {
-        id: crypto.randomUUID(),
-        food: item.description,
+  const fetchUSDAFood = async () => {
+    if (!query) return;
+    const apiKey = process.env.NEXT_PUBLIC_USDA_API_KEY;
+    const res = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${query}&api_key=${apiKey}`);
+    const data = await res.json();
+    const first = data.foods?.[0];
+    if (first) {
+      const nutrients = first.foodNutrients.reduce((acc: any, n: any) => {
+        if (n.nutrientName === "Energy") acc.calories = n.value;
+        if (n.nutrientName === "Protein") acc.protein = n.value;
+        if (n.nutrientName === "Carbohydrate, by difference") acc.carbs = n.value;
+        if (n.nutrientName === "Total lipid (fat)") acc.fat = n.value;
+        return acc;
+      }, {});
+      const entry = {
+        id: uuidv4(),
+        description: first.description,
         amount,
-        calories: nutrients.calories,
-        protein: nutrients.protein,
-        carbs: nutrients.carbs,
-        fat: nutrients.fat,
+        ...nutrients,
       };
-
-      setEntries((prev) => [...prev, newEntry]);
-      setFood("");
-      setAmount("");
-      setSelectedFoodData(null);
-      setSuggestions([]);
-      setShowSuggestions(false);
-    } catch (err) {
-      console.error(err);
-      alert("Failed to fetch food data.");
+      setFoodData([...foodData, entry]);
+      setTotals({
+        calories: totals.calories + (nutrients.calories || 0),
+        protein: totals.protein + (nutrients.protein || 0),
+        carbs: totals.carbs + (nutrients.carbs || 0),
+        fat: totals.fat + (nutrients.fat || 0),
+      });
     }
   };
 
-  const handleDelete = (id: string) => {
-    setEntries(entries.filter((e) => e.id !== id));
-  };
-
-  const totals = entries.reduce(
-    (acc, entry) => {
-      acc.calories += entry.calories;
-      acc.protein += entry.protein;
-      acc.carbs += entry.carbs;
-      acc.fat += entry.fat;
-      return acc;
-    },
-    { calories: 0, protein: 0, carbs: 0, fat: 0 }
-  );
-
   return (
-    <main className="p-6 max-w-2xl mx-auto space-y-6">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold">Log Your Food</h1>
-        <p className="text-gray-500">Search from USDA, track your macros.</p>
+    <main className="p-6 max-w-2xl mx-auto">
+      <h1 className="text-3xl font-bold mb-2">Log Your Food</h1>
+      <p className="text-muted-foreground mb-4">Search from USDA, track your macros.</p>
+      <div className="flex gap-2 mb-6">
+        <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search food..." />
+        <Input value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="e.g. 100g" />
+        <Button onClick={fetchUSDAFood}>Add</Button>
       </div>
-
-      <div className="flex flex-wrap gap-3 items-start">
-        <div className="relative flex-1">
-          <Input
-            placeholder="Search food"
-            value={food}
-            onChange={async (e) => {
-              const q = e.target.value;
-              setFood(q);
-              setSelectedFoodData(null);
-              if (q.length > 2) {
-                try {
-                  const res = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(q)}&pageSize=5&api_key=${process.env.NEXT_PUBLIC_USDA_API_KEY}`);
-                  const data = await res.json();
-                  setSuggestions(data.foods || []);
-                  setShowSuggestions(true);
-                } catch {
-                  setSuggestions([]);
-                  setShowSuggestions(false);
-                }
-              } else {
-                setSuggestions([]);
-                setShowSuggestions(false);
-              }
-            }}
-            className="w-full"
-          />
-          {showSuggestions && suggestions.length > 0 && (
-            <ul className="absolute z-50 bg-white border border-gray-200 w-full max-h-48 overflow-y-auto mt-1 rounded-md shadow text-sm">
-              {suggestions.map((item) => (
-                <li
-                  key={item.fdcId}
-                  className="px-3 py-2 hover:bg-indigo-100 cursor-pointer"
-                  onClick={() => {
-                    setFood(item.description);
-                    setSelectedFoodData(item);
-                    setShowSuggestions(false);
-                  }}
-                >
-                  {item.description}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <Input
-          placeholder="Amount (e.g. 1 cup)"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          className="w-36"
-        />
-
-        <Button onClick={handleAdd}>Add</Button>
+      <div className="bg-violet-600 text-white p-4 rounded-md mb-4">
+        <h2 className="text-xl font-semibold">Today's Totals</h2>
+        <p>Calories: {totals.calories} kcal</p>
+        <p>Protein: {totals.protein}g</p>
+        <p>Carbs: {totals.carbs}g</p>
+        <p>Fat: {totals.fat}g</p>
       </div>
-
-      <div className="space-y-4">
-        {entries.map((entry) => (
-          <div key={entry.id} className="bg-white rounded-lg shadow p-4 flex justify-between items-start">
-            <div>
-              <p className="font-medium text-indigo-800">{entry.food}</p>
-              <p className="text-sm text-gray-600">{entry.amount} • {entry.calories.toFixed(0)} kcal</p>
-              <p className="text-xs text-gray-500">
-                Carbs: {entry.carbs.toFixed(0)}g &nbsp; Protein: {entry.protein.toFixed(0)}g &nbsp; Fat: {entry.fat.toFixed(0)}g
-              </p>
-            </div>
-            <button
-              onClick={() => handleDelete(entry.id)}
-              className="text-red-500 hover:text-red-700"
+      {foodData.length > 0 && (
+        <>
+          <h2 className="text-lg font-medium mb-2">Entries</h2>
+          <ul className="mb-4">
+            {foodData.map((item) => (
+              <li key={item.id} className="mb-2">
+                {item.description} - {item.amount} ({item.calories} kcal, P: {item.protein}g, C: {item.carbs}g, F: {item.fat}g)
+              </li>
+            ))}
+          </ul>
+          <PieChart width={300} height={200}>
+            <Pie
+              dataKey="value"
+              data={[
+                { name: "Protein", value: totals.protein },
+                { name: "Carbs", value: totals.carbs },
+                { name: "Fat", value: totals.fat },
+              ]}
+              cx="50%"
+              cy="50%"
+              outerRadius={60}
+              label
             >
-              <TrashIcon />
-            </button>
-          </div>
-        ))}
-      </div>
-
-      <div className="bg-indigo-600 text-white p-4 rounded shadow">
-        <h2 className="font-bold text-lg mb-2">Today’s Totals</h2>
-        <p>Calories: {totals.calories.toFixed(0)} kcal</p>
-        <p>Protein: {totals.protein.toFixed(0)}g</p>
-        <p>Carbs: {totals.carbs.toFixed(0)}g</p>
-        <p>Fat: {totals.fat.toFixed(0)}g</p>
-      </div>
+              {COLORS.map((color, index) => (
+                <Cell key={index} fill={color} />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
+        </>
+      )}
     </main>
   );
 }
