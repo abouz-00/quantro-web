@@ -421,10 +421,18 @@ export default function LogPage() {
     navigator.clipboard.writeText(JSON.stringify(selectedData));
   };
 
+  // Update the groupedEntries reducer to filter by selected date
   const groupedEntries = foodData.reduce((acc, entry) => {
-    const date = new Date(entry.date).toLocaleDateString();
-    if (!acc[date]) acc[date] = [];
-    acc[date].push(entry);
+    const entryDate = new Date(entry.date);
+    const selectedDateStr = selectedDate.toDateString();
+    const entryDateStr = entryDate.toDateString();
+    
+    // Only include entries from the selected date
+    if (selectedDateStr === entryDateStr) {
+      const dateKey = entryDate.toLocaleDateString();
+      if (!acc[dateKey]) acc[dateKey] = [];
+      acc[dateKey].push(entry);
+    }
     return acc;
   }, {} as Record<string, FoodEntry[]>);
 
@@ -445,22 +453,6 @@ export default function LogPage() {
           Add Food
           <HiPlus className="w-5 h-5" />
         </Button>
-        <Button 
-          onClick={() => {
-            if (confirm('Are you sure you want to clear all entries?')) {
-              setFoodData([]);
-              setTotals({
-                calories: 0,
-                protein: 0,
-                carbs: 0,
-                fat: 0,
-              });
-            }
-          }}
-          className="bg-red-500 hover:bg-red-600 text-white ml-2"
-        >
-          Clear All
-        </Button>
       </div>
 
       {/* Food Log Table Section */}
@@ -468,7 +460,6 @@ export default function LogPage() {
         <section className="bg-white rounded-lg shadow-lg mb-6">
           <div className="p-4 flex justify-between items-center border-b">
             <div className="flex items-center gap-2">
-              <h2 className="text-lg font-medium">Food Log</h2>
               <button onClick={handlePreviousDay} className="p-1 hover:bg-gray-100 rounded">
                 <HiChevronLeft className="w-5 h-5" />
               </button>
@@ -543,37 +534,32 @@ export default function LogPage() {
                 </tr>
               </thead>
               <tbody>
-                {Object.entries(groupedEntries).map(([date, entries]) => (
-                  <Fragment key={date}>
-                    <tr>
-                      <td colSpan={7} className="py-2 font-bold">{date}</td>
+                {Object.entries(groupedEntries).map(([_, entries]) => (
+                  entries.map(item => (
+                    <tr 
+                      key={item.id} 
+                      className={`border-b border-gray-200 last:border-0 cursor-pointer ${
+                        selectedEntries.includes(item.id) ? 'bg-blue-50' : ''
+                      }`}
+                      onClick={(e) => handleEntrySelect(item.id, entries.indexOf(item), e)}
+                    >
+                      <td className="py-2">{item.description}</td>
+                      <td className="py-2">{item.amount} {item.unit}</td>
+                      <td className="py-2 text-right">{Number(item.calories.toFixed(1))}</td>
+                      <td className="py-2 text-right">{Number(item.protein.toFixed(1))}g</td>
+                      <td className="py-2 text-right">{Number(item.carbs.toFixed(1))}g</td>
+                      <td className="py-2 text-right">{Number(item.fat.toFixed(1))}g</td>
+                      <td className="py-2 pl-4">
+                        <button
+                          onClick={() => removeFoodEntry(item.id)}
+                          className="text-white hover:text-[#EF7A85]"
+                          aria-label="Remove entry"
+                        >
+                          <FaTrash />
+                        </button>
+                      </td>
                     </tr>
-                    {entries.map(item => (
-                      <tr 
-                        key={item.id} 
-                        className={`border-b border-gray-200 last:border-0 cursor-pointer ${
-                          selectedEntries.includes(item.id) ? 'bg-blue-50' : ''
-                        }`}
-                        onClick={(e) => handleEntrySelect(item.id, entries.indexOf(item), e)}
-                      >
-                        <td className="py-2">{item.description}</td>
-                        <td className="py-2">{item.amount} {item.unit}</td>
-                        <td className="py-2 text-right">{Number(item.calories.toFixed(1))}</td>
-                        <td className="py-2 text-right">{Number(item.protein.toFixed(1))}g</td>
-                        <td className="py-2 text-right">{Number(item.carbs.toFixed(1))}g</td>
-                        <td className="py-2 text-right">{Number(item.fat.toFixed(1))}g</td>
-                        <td className="py-2 pl-4">
-                          <button
-                            onClick={() => removeFoodEntry(item.id)}
-                            className="text-white hover:text-[#EF7A85]"
-                            aria-label="Remove entry"
-                          >
-                            <FaTrash />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </Fragment>
+                  ))
                 ))}
               </tbody>
             </table>
