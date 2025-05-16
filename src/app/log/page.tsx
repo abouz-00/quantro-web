@@ -97,8 +97,25 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
 
   const handleAddFood = () => {
     if (!selectedFood) return;
-    const base = selectedFood.servingSize || 100;
-    const nutrients = selectedFood.foodNutrients.reduce(
+    
+    // Convert quantity to grams based on unit selection
+    let amountInGrams = quantity;
+    if (unit === "Ounces") {
+      amountInGrams = quantity * 28.3495; // Convert oz to g
+    } else if (unit === "Cup") {
+      amountInGrams = quantity * 236.588; // Approximate cup to g
+    } else if (unit === "Tablespoon") {
+      amountInGrams = quantity * 14.7868; // Approximate tbsp to g
+    } else if (unit === "Teaspoon") {
+      amountInGrams = quantity * 4.92892; // Approximate tsp to g
+    } else if (unit === "Milliliter") {
+      amountInGrams = quantity; // Assume 1:1 ratio for simplicity
+    } else if (unit === "Serving" && selectedFood.servingSize) {
+      amountInGrams = quantity * selectedFood.servingSize;
+    }
+
+    // Get base values per 100g
+    const baseNutrients = selectedFood.foodNutrients.reduce(
       (acc: Nutrients, n: { nutrientName: string; value: number }) => {
         if (n.nutrientName === "Energy") acc.calories = n.value;
         if (n.nutrientName === "Protein") acc.protein = n.value;
@@ -109,17 +126,20 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
       },
       { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 }
     );
+
+    // Calculate adjusted values based on amount in grams
     const entry: FoodEntry = {
       id: uuidv4(),
       description: selectedFood.description,
       amount: quantity + "",
       unit,
-      calories: nutrients.calories * (quantity / base),
-      protein: nutrients.protein * (quantity / base),
-      carbs: nutrients.carbs * (quantity / base),
-      fat: nutrients.fat * (quantity / base),
-      fiber: nutrients.fiber,
+      calories: (baseNutrients.calories * amountInGrams) / 100,
+      protein: (baseNutrients.protein * amountInGrams) / 100,
+      carbs: (baseNutrients.carbs * amountInGrams) / 100,
+      fat: (baseNutrients.fat * amountInGrams) / 100,
+      fiber: baseNutrients.fiber ? (baseNutrients.fiber * amountInGrams) / 100 : undefined,
     };
+
     onAddFood(entry);
     onClose();
   };
