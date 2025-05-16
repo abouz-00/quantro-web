@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { v4 as uuidv4 } from "uuid";
 import { FaTrash } from "react-icons/fa";
 import { HiPlus } from "react-icons/hi";
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import { HiDotsHorizontal, HiChevronLeft, HiChevronRight } from 'react-icons/hi';
+import { Menu } from '@headlessui/react';
 
 // Types for nutrients, food entry, and USDA food suggestion (extended)
 interface Nutrients {
@@ -315,6 +319,9 @@ export default function LogPage() {
   });
   const [customGoals, setCustomGoals] = useState<Nutrients>(targetInput);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
+  const [lastSelectedIndex, setLastSelectedIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const savedFoodData = localStorage.getItem('foodData');
@@ -375,6 +382,43 @@ export default function LogPage() {
     setCustomGoals(targetInput);
   };
 
+  const handleDateChange = (date: Date) => {
+    setSelectedDate(date);
+  };
+
+  const handlePreviousDay = () => {
+    const newDate = new Date(selectedDate);
+    newDate.setDate(newDate.getDate() - 1);
+    setSelectedDate(newDate);
+  };
+
+  const handleNextDay = () => {
+    const newDate = new Date(selectedDate);
+    newDate.setDate(newDate.getDate() + 1);
+    setSelectedDate(newDate);
+  };
+
+  const handleEntrySelect = (id: string, index: number, event: React.MouseEvent) => {
+    if (event.shiftKey && lastSelectedIndex !== null) {
+      const start = Math.min(index, lastSelectedIndex);
+      const end = Math.max(index, lastSelectedIndex);
+      const entriesInRange = foodData.slice(start, end + 1).map(entry => entry.id);
+      setSelectedEntries(entriesInRange);
+    } else {
+      if (selectedEntries.includes(id)) {
+        setSelectedEntries(selectedEntries.filter(entryId => entryId !== id));
+      } else {
+        setSelectedEntries([...selectedEntries, id]);
+      }
+      setLastSelectedIndex(index);
+    }
+  };
+
+  const copySelectedEntries = () => {
+    const selectedData = foodData.filter(entry => selectedEntries.includes(entry.id));
+    navigator.clipboard.writeText(JSON.stringify(selectedData));
+  };
+
   const groupedEntries = foodData.reduce((acc, entry) => {
     const date = new Date(entry.date).toLocaleDateString();
     if (!acc[date]) acc[date] = [];
@@ -419,8 +463,70 @@ export default function LogPage() {
 
       {/* Food Log Table Section */}
       {foodData.length > 0 && (
-        <section className="bg-gradient-to-r from-[#6E44FF] to-[#F3439B] rounded-lg p-4 text-white shadow-lg mb-6">
-          <h2 className="text-lg font-medium mb-3">Food Log</h2>
+        <section className="bg-white rounded-lg shadow-lg mb-6">
+          <div className="p-4 flex justify-between items-center border-b">
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg font-medium">Food Log</h2>
+              <button onClick={handlePreviousDay} className="p-1 hover:bg-gray-100 rounded">
+                <HiChevronLeft className="w-5 h-5" />
+              </button>
+              <DatePicker
+                selected={selectedDate}
+                onChange={handleDateChange}
+                customInput={
+                  <button className="px-3 py-1 hover:bg-gray-100 rounded">
+                    {selectedDate.toLocaleDateString()}
+                  </button>
+                }
+              />
+              <button onClick={handleNextDay} className="p-1 hover:bg-gray-100 rounded">
+                <HiChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+
+            <Menu as="div" className="relative">
+              <Menu.Button className="p-2 hover:bg-gray-100 rounded">
+                <HiDotsHorizontal className="w-5 h-5" />
+              </Menu.Button>
+              <Menu.Items className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${
+                        active ? 'bg-gray-100' : ''
+                      } w-full text-left px-4 py-2`}
+                      onClick={copySelectedEntries}
+                    >
+                      Copy Selected
+                    </button>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${
+                        active ? 'bg-gray-100' : ''
+                      } w-full text-left px-4 py-2 text-red-600`}
+                      onClick={() => {
+                        if (confirm('Are you sure you want to clear all entries?')) {
+                          setFoodData([]);
+                          setTotals({
+                            calories: 0,
+                            protein: 0,
+                            carbs: 0,
+                            fat: 0,
+                          });
+                        }
+                      }}
+                    >
+                      Clear All
+                    </button>
+                  )}
+                </Menu.Item>
+              </Menu.Items>
+            </Menu>
+          </div>
+
           <div className="w-full overflow-x-auto">
             <table className="w-full min-w-full">
               <thead>
@@ -440,8 +546,14 @@ export default function LogPage() {
                     <tr>
                       <td colSpan={7} className="py-2 font-bold">{date}</td>
                     </tr>
-                    {entries.map(item => (
-                      <tr key={item.id} className="border-b border-white/10 last:border-0">
+                    {entries.map((item, index) => (
+                      <tr 
+                        key={item.id} 
+                        className={`border-b border-gray-200 last:border-0 cursor-pointer ${
+                          selectedEntries.includes(item.id) ? 'bg-blue-50' : ''
+                        }`}
+                        onClick={(e) => handleEntrySelect(item.id, entries.indexOf(item), e)}
+                      >
                         <td className="py-2">{item.description}</td>
                         <td className="py-2">{item.amount} {item.unit}</td>
                         <td className="py-2 text-right">{Number(item.calories.toFixed(1))}</td>
@@ -470,7 +582,7 @@ export default function LogPage() {
       {/* Grid container for Energy Summary and Custom Targets */}
       <div className="grid grid-cols-2 gap-6">
         {/* Energy Summary Section */}
-        <section className="bg-gradient-to-r from-[#6E44FF] to-[#F3439B] rounded-lg p-4 text-white shadow-lg">
+        <section className="bg-gray-100 rounded-lg p-4 shadow-lg">
           <h2 className="text-lg font-medium mb-2">Energy Summary</h2>
           <ProgressBar
             label="Calories"
