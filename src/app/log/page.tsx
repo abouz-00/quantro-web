@@ -162,13 +162,13 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
                     <span className="text-xs bg-[#6E44FF] text-white rounded-full px-2 py-1">
                       {Number((food.foodNutrients.find(n => n.nutrientName === "Energy")?.value || 0).toFixed(1))} cal
                     </span>
-                    <span className="text-xs bg-[#B892FF] text-white rounded-full px-2 py-1">
+                    <span className="text-xs bg-[#7EE081] text-white rounded-full px-2 py-1">
                       P: {Number((food.foodNutrients.find(n => n.nutrientName === "Protein")?.value || 0).toFixed(1))}g
                     </span>
-                    <span className="text-xs bg-[#FFC2E2] text-white rounded-full px-2 py-1">
+                    <span className="text-xs bg-[#F0E15B] text-black rounded-full px-2 py-1">
                       C: {Number((food.foodNutrients.find(n => n.nutrientName === "Carbohydrate, by difference")?.value || 0).toFixed(1))}g
                     </span>
-                    <span className="text-xs bg-[#FF90B3] text-white rounded-full px-2 py-1">
+                    <span className="text-xs bg-[#E55640] text-white rounded-full px-2 py-1">
                       F: {Number((food.foodNutrients.find(n => n.nutrientName === "Total lipid (fat)")?.value || 0).toFixed(1))}g
                     </span>
                   </div>
@@ -241,7 +241,7 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
                 ? `1 serving = ${selectedFood.servingSize}${selectedFood.servingSizeUnit.toLowerCase()}`
                 : `Base unit = 100`}
             </div>
-            <Button onClick={handleAddFood} className="bg-[#EF7A85] hover:bg-[#EF7A85] text-white">
+            <Button onClick={handleAddFood} className="bg-[#6E44FF] hover:bg-[#6E44FF]/90 text-white">
               Add to Log
             </Button>
           </>
@@ -308,16 +308,10 @@ export default function LogPage() {
         </p>
       </header>
 
-      <div className="flex gap-2 mb-6">
-        <input
-          placeholder="Search food..."
-          readOnly
-          onClick={() => setIsModalOpen(true)}
-          className="border p-2 rounded w-full cursor-pointer"
-        />
+      <div className="mb-6">
         <Button 
           onClick={() => setIsModalOpen(true)} 
-          className="bg-[#6E44FF] hover:bg-[#6E44FF]/90 text-white px-6 py-2 text-lg flex items-center gap-2"
+          className="bg-[#6E44FF] hover:bg-[#6E44FF]/90 text-white px-8 py-3 text-lg flex items-center gap-2 w-full justify-center rounded-lg"
         >
           Add Food
           <HiPlus className="w-5 h-5" />
@@ -326,7 +320,7 @@ export default function LogPage() {
 
       {/* Food Log Table Section */}
       {foodData.length > 0 && (
-        <section className="bg-gradient-to-r from-[#6E44FF] to-[#B892FF] rounded-lg p-4 text-white shadow-lg mb-6">
+        <section className="bg-gradient-to-r from-[#6E44FF] to-[#F3439B] rounded-lg p-4 text-white shadow-lg mb-6">
           <h2 className="text-lg font-medium mb-3">Food Log</h2>
           <div className="w-full overflow-x-auto">
             <table className="w-full min-w-full">
@@ -370,7 +364,7 @@ export default function LogPage() {
       {/* Grid container for Energy Summary and Custom Targets */}
       <div className="grid grid-cols-2 gap-6">
         {/* Energy Summary Section */}
-        <section className="bg-gradient-to-r from-[#FFC2E2] to-[#FF90B3] rounded-lg p-4 text-white shadow-lg">
+        <section className="bg-gradient-to-r from-[#6E44FF] to-[#F3439B] rounded-lg p-4 text-white shadow-lg">
           <h2 className="text-lg font-medium mb-2">Energy Summary</h2>
           <ProgressBar
             label="Calories"
@@ -384,21 +378,21 @@ export default function LogPage() {
             current={totals.protein}
             goal={customGoals.protein}
             unit="g"
-            color="bg-[#B892FF]"
+            color="bg-[#7EE081]"
           />
           <ProgressBar
             label="Carbs"
             current={totals.carbs}
             goal={customGoals.carbs}
             unit="g"
-            color="bg-[#FFC2E2]"
+            color="bg-[#F0E15B]"
           />
           <ProgressBar
             label="Fat"
             current={totals.fat}
             goal={customGoals.fat}
             unit="g"
-            color="bg-[#FF90B3]"
+            color="bg-[#E55640]"
           />
         </section>
 
