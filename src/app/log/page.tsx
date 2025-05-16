@@ -534,7 +534,7 @@ export default function LogPage() {
                 </tr>
               </thead>
               <tbody>
-                {Object.entries(groupedEntries).map(([_, entries]) => (
+                {Object.entries(groupedEntries).map(([date, entries]) => (
                   entries.map(item => (
                     <tr 
                       key={item.id} 
@@ -552,7 +552,7 @@ export default function LogPage() {
                       <td className="py-2 pl-4">
                         <button
                           onClick={() => removeFoodEntry(item.id)}
-                          className="text-white hover:text-[#EF7A85]"
+                          className="text-gray-500 hover:text-red-500"
                           aria-label="Remove entry"
                         >
                           <FaTrash />
