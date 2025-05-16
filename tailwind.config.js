@@ -5,7 +5,6 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Geist', 'system-ui', 'sans-serif'],
-        mono: ['Geist Mono', 'monospace'],
       },
       colors: {
         primary: '#6E44FF',
