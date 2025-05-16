@@ -382,8 +382,10 @@ export default function LogPage() {
     setCustomGoals(targetInput);
   };
 
-  const handleDateChange = (date: Date) => {
-    setSelectedDate(date);
+  const handleDateChange = (date: Date | null) => {
+    if (date) {
+      setSelectedDate(date);
+    }
   };
 
   const handlePreviousDay = () => {
