@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { v4 as uuidv4 } from "uuid";
 import { FaTrash } from "react-icons/fa";
+import { HiPlus } from "react-icons/hi";
 
 // Types for nutrients, food entry, and USDA food suggestion (extended)
 interface Nutrients {
@@ -69,7 +70,6 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
   const [localQuery, setLocalQuery] = useState("");
   const [suggestions, setSuggestions] = useState<USDAFood[]>([]);
   const [selectedFood, setSelectedFood] = useState<USDAFood | null>(null);
-  // Inputs for detail view
   const [quantity, setQuantity] = useState(100);
   const [unit, setUnit] = useState("Serving");
 
@@ -91,14 +91,12 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
 
   const handleSelectFood = (food: USDAFood) => {
     setSelectedFood(food);
-    // Reset quantity/unit; if servingSize is provided, default to it
     setQuantity(food.servingSize || 100);
     setUnit(food.servingSizeUnit || "Serving");
   };
 
   const handleAddFood = () => {
     if (!selectedFood) return;
-    // Use USDA servingSize as base if available. Otherwise, default to 100.
     const base = selectedFood.servingSize || 100;
     const nutrients = selectedFood.foodNutrients.reduce(
       (acc: Nutrients, n: { nutrientName: string; value: number }) => {
@@ -131,11 +129,9 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose}></div>
       <div
-        className="bg-white rounded-lg p-6 shadow-lg z-10 transform transition-all duration-300 ease-out
-                   scale-95 opacity-0 animate-modalIn"
+        className="bg-white rounded-lg p-6 shadow-lg z-10 transform transition-all duration-300 ease-out animate-modalIn"
       >
         {!selectedFood ? (
-          // Search view with suggestions
           <>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">Food Search</h2>
@@ -160,7 +156,6 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
                   {food.foodCategory && (
                     <div className="text-xs text-gray-500 mb-2">{food.foodCategory}</div>
                   )}
-                  {/* Macro badge row using palette */}
                   <div className="flex space-x-2 mt-2">
                     <span className="text-xs bg-[#6E44FF] text-white rounded-full px-2 py-1">
                       {Number((food.foodNutrients.find(n => n.nutrientName === "Energy")?.value || 0).toFixed(1))} cal
@@ -180,7 +175,6 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
             </div>
           </>
         ) : (
-          // Detail view for selected food
           <>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">Nutrition Facts</h2>
@@ -319,7 +313,13 @@ export default function LogPage() {
           onClick={() => setIsModalOpen(true)}
           className="border p-2 rounded w-full cursor-pointer"
         />
-        <Button onClick={() => setIsModalOpen(true)}>Add Food</Button>
+        <Button 
+          onClick={() => setIsModalOpen(true)} 
+          className="bg-[#6E44FF] hover:bg-[#6E44FF]/90 text-white px-6 py-2 text-lg flex items-center gap-2"
+        >
+          Add Food
+          <HiPlus className="w-5 h-5" />
+        </Button>
       </div>
 
       {/* Food Log Section */}
