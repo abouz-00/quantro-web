@@ -298,7 +298,7 @@ export default function LogPage() {
   };
 
   return (
-    <main className="p-6 max-w-2xl mx-auto space-y-6">
+    <main className="p-6 max-w-4xl mx-auto space-y-6"> {/* Increased max-width */}
       <header>
         <h1 className="text-3xl font-bold mb-2">Log Your Food</h1>
         <p className="text-muted-foreground mb-4">
@@ -322,115 +322,130 @@ export default function LogPage() {
         </Button>
       </div>
 
-      {/* Food Log Section */}
+      {/* Food Log Table Section */}
       {foodData.length > 0 && (
         <section className="bg-gradient-to-r from-[#6E44FF] to-[#B892FF] rounded-lg p-4 text-white shadow-lg mb-6">
-          <h2 className="text-lg font-medium mb-2">Food Log</h2>
-          <ul className="space-y-2">
-            {foodData.map(item => (
-              <li key={item.id} className="flex justify-between items-center">
-                <span>
-                  {item.description} - {item.amount} {item.unit} ( {Number(item.calories.toFixed(1))} kcal, P: {Number(item.protein.toFixed(1))}g, C: {Number(item.carbs.toFixed(1))}g, F: {Number(item.fat.toFixed(1))}g )
-                </span>
-                <button
-                  onClick={() => removeFoodEntry(item.id)}
-                  className="text-white hover:text-[#EF7A85]"
-                  aria-label="Remove entry"
-                >
-                  <FaTrash />
-                </button>
-              </li>
-            ))}
-          </ul>
+          <h2 className="text-lg font-medium mb-3">Food Log</h2>
+          <div className="w-full overflow-x-auto">
+            <table className="w-full min-w-full">
+              <thead>
+                <tr className="text-left border-b border-white/20">
+                  <th className="pb-2 font-medium">Food</th>
+                  <th className="pb-2 font-medium">Amount</th>
+                  <th className="pb-2 font-medium text-right">Calories</th>
+                  <th className="pb-2 font-medium text-right">Protein</th>
+                  <th className="pb-2 font-medium text-right">Carbs</th>
+                  <th className="pb-2 font-medium text-right">Fat</th>
+                  <th className="pb-2 w-10"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {foodData.map(item => (
+                  <tr key={item.id} className="border-b border-white/10 last:border-0">
+                    <td className="py-2">{item.description}</td>
+                    <td className="py-2">{item.amount} {item.unit}</td>
+                    <td className="py-2 text-right">{Number(item.calories.toFixed(1))}</td>
+                    <td className="py-2 text-right">{Number(item.protein.toFixed(1))}g</td>
+                    <td className="py-2 text-right">{Number(item.carbs.toFixed(1))}g</td>
+                    <td className="py-2 text-right">{Number(item.fat.toFixed(1))}g</td>
+                    <td className="py-2 pl-4">
+                      <button
+                        onClick={() => removeFoodEntry(item.id)}
+                        className="text-white hover:text-[#EF7A85]"
+                        aria-label="Remove entry"
+                      >
+                        <FaTrash />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
       )}
 
-      {/* Energy Summary Section */}
-      <section className="bg-gradient-to-r from-[#FFC2E2] to-[#FF90B3] rounded-lg p-4 text-white shadow-lg">
-        <h2 className="text-lg font-medium mb-2">Energy Summary</h2>
-        <ProgressBar
-          label="Calories"
-          current={totals.calories}
-          goal={customGoals.calories}
-          unit="kcal"
-          color="bg-[#6E44FF]"
-        />
-        <ProgressBar
-          label="Protein"
-          current={totals.protein}
-          goal={customGoals.protein}
-          unit="g"
-          color="bg-[#B892FF]"
-        />
-        <ProgressBar
-          label="Carbs"
-          current={totals.carbs}
-          goal={customGoals.carbs}
-          unit="g"
-          color="bg-[#FFC2E2]"
-        />
-        <ProgressBar
-          label="Fat"
-          current={totals.fat}
-          goal={customGoals.fat}
-          unit="g"
-          color="bg-[#FF90B3]"
-        />
-      </section>
+      {/* Grid container for Energy Summary and Custom Targets */}
+      <div className="grid grid-cols-2 gap-6">
+        {/* Energy Summary Section */}
+        <section className="bg-gradient-to-r from-[#FFC2E2] to-[#FF90B3] rounded-lg p-4 text-white shadow-lg">
+          <h2 className="text-lg font-medium mb-2">Energy Summary</h2>
+          <ProgressBar
+            label="Calories"
+            current={totals.calories}
+            goal={customGoals.calories}
+            unit="kcal"
+            color="bg-[#6E44FF]"
+          />
+          <ProgressBar
+            label="Protein"
+            current={totals.protein}
+            goal={customGoals.protein}
+            unit="g"
+            color="bg-[#B892FF]"
+          />
+          <ProgressBar
+            label="Carbs"
+            current={totals.carbs}
+            goal={customGoals.carbs}
+            unit="g"
+            color="bg-[#FFC2E2]"
+          />
+          <ProgressBar
+            label="Fat"
+            current={totals.fat}
+            goal={customGoals.fat}
+            unit="g"
+            color="bg-[#FF90B3]"
+          />
+        </section>
 
-      {/* Set Custom Targets Section */}
-      <section className="bg-gray-100 p-4 rounded-md">
-        <h2 className="text-xl font-semibold mb-2">Set Custom Targets</h2>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium">Calories</label>
-            <input
-              type="number"
-              value={targetInput.calories}
-              onChange={(e) =>
-                handleInputChange("calories", Number(e.target.value))
-              }
-              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-            />
+        {/* Set Custom Targets Section */}
+        <section className="bg-gray-100 p-4 rounded-lg shadow-lg"> {/* Added shadow-lg and rounded-lg for consistency */}
+          <h2 className="text-lg font-medium mb-2">Set Custom Targets</h2>
+          <div className="grid grid-cols-1 gap-4"> {/* Changed to single column */}
+            <div>
+              <label className="block text-sm font-medium">Calories</label>
+              <input
+                type="number"
+                value={targetInput.calories}
+                onChange={(e) => handleInputChange("calories", Number(e.target.value))}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Protein</label>
+              <input
+                type="number"
+                value={targetInput.protein}
+                onChange={(e) => handleInputChange("protein", Number(e.target.value))}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Carbs</label>
+              <input
+                type="number"
+                value={targetInput.carbs}
+                onChange={(e) => handleInputChange("carbs", Number(e.target.value))}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Fat</label>
+              <input
+                type="number"
+                value={targetInput.fat}
+                onChange={(e) => handleInputChange("fat", Number(e.target.value))}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+              />
+            </div>
+            <Button onClick={handleSaveTargets} className="w-full bg-[#6E44FF] hover:bg-[#6E44FF]/90 text-white">
+              Save Targets
+            </Button>
           </div>
-          <div>
-            <label className="block text-sm font-medium">Protein</label>
-            <input
-              type="number"
-              value={targetInput.protein}
-              onChange={(e) =>
-                handleInputChange("protein", Number(e.target.value))
-              }
-              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Carbs</label>
-            <input
-              type="number"
-              value={targetInput.carbs}
-              onChange={(e) =>
-                handleInputChange("carbs", Number(e.target.value))
-              }
-              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">Fat</label>
-            <input
-              type="number"
-              value={targetInput.fat}
-              onChange={(e) =>
-                handleInputChange("fat", Number(e.target.value))
-              }
-              className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-            />
-          </div>
-        </div>
-        <Button onClick={handleSaveTargets} className="mt-4">
-          Save Targets
-        </Button>
-      </section>
+        </section>
+      </div>
 
       {isModalOpen && (
         <FoodSearchModal
