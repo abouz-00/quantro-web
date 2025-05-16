@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { v4 as uuidv4 } from "uuid";
@@ -436,7 +436,7 @@ export default function LogPage() {
               </thead>
               <tbody>
                 {Object.entries(groupedEntries).map(([date, entries]) => (
-                  <React.Fragment key={date}>
+                  <Fragment key={date}>
                     <tr>
                       <td colSpan={7} className="py-2 font-bold">{date}</td>
                     </tr>
@@ -459,7 +459,7 @@ export default function LogPage() {
                         </td>
                       </tr>
                     ))}
-                  </React.Fragment>
+                  </Fragment>
                 ))}
               </tbody>
             </table>
