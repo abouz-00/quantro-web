@@ -26,6 +26,8 @@ interface USDAFood {
   description: string;
   foodCategory?: string;
   foodNutrients: { nutrientName: string; value: number }[];
+  servingSize?: number;
+  servingSizeUnit?: string;
 }
 
 // ProgressBar component displays a horizontal bar with formatted values
@@ -44,7 +46,7 @@ function ProgressBar({ label, current, goal, unit, color }: ProgressBarProps) {
       <div className="flex justify-between text-sm mb-1">
         <span>{label}</span>
         <span>
-          {current.toFixed(1)} / {goal.toFixed(1)} {unit}
+          {Number(current.toFixed(1))} / {Number(goal.toFixed(1))} {unit}
         </span>
       </div>
       <div className="w-full bg-gray-200 rounded-full h-3">
@@ -57,7 +59,7 @@ function ProgressBar({ label, current, goal, unit, color }: ProgressBarProps) {
   );
 }
 
-// FoodSearchModal: a popout modal for searching and selecting food.
+// FoodSearchModal: a centered modal for searching/selecting food.
 interface FoodSearchModalProps {
   onClose: () => void;
   onAddFood: (entry: FoodEntry) => void;
@@ -66,7 +68,6 @@ interface FoodSearchModalProps {
 function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
   const [localQuery, setLocalQuery] = useState("");
   const [suggestions, setSuggestions] = useState<USDAFood[]>([]);
-  // When a food card is clicked, we switch to detail view.
   const [selectedFood, setSelectedFood] = useState<USDAFood | null>(null);
   // Inputs for detail view
   const [quantity, setQuantity] = useState(100);
@@ -88,40 +89,37 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
     return () => clearTimeout(timeout);
   }, [localQuery]);
 
-  // When a food is clicked in the search list, update selectedFood.
   const handleSelectFood = (food: USDAFood) => {
     setSelectedFood(food);
-    // Reset quantity/unit if needed
-    setQuantity(100);
-    setUnit("Serving");
+    // Reset quantity/unit; if servingSize is provided, default to it
+    setQuantity(food.servingSize || 100);
+    setUnit(food.servingSizeUnit || "Serving");
   };
 
-  // When adding food, transform USDAFood into a FoodEntry.
   const handleAddFood = () => {
     if (!selectedFood) return;
-    // Extract macro values from foodNutrients
+    // Use USDA servingSize as base if available. Otherwise, default to 100.
+    const base = selectedFood.servingSize || 100;
     const nutrients = selectedFood.foodNutrients.reduce(
       (acc: Nutrients, n: { nutrientName: string; value: number }) => {
         if (n.nutrientName === "Energy") acc.calories = n.value;
         if (n.nutrientName === "Protein") acc.protein = n.value;
-        if (n.nutrientName === "Carbohydrate, by difference")
-          acc.carbs = n.value;
+        if (n.nutrientName === "Carbohydrate, by difference") acc.carbs = n.value;
         if (n.nutrientName === "Total lipid (fat)") acc.fat = n.value;
         if (n.nutrientName === "Fiber, total dietary") acc.fiber = n.value;
         return acc;
       },
       { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 }
     );
-    // For simplicity, assume the displayed macros scale with quantity in a 1:1 ratio.
     const entry: FoodEntry = {
       id: uuidv4(),
       description: selectedFood.description,
       amount: quantity + "",
-      unit: unit,
-      calories: nutrients.calories * (quantity / 100),
-      protein: nutrients.protein * (quantity / 100),
-      carbs: nutrients.carbs * (quantity / 100),
-      fat: nutrients.fat * (quantity / 100),
+      unit,
+      calories: nutrients.calories * (quantity / base),
+      protein: nutrients.protein * (quantity / base),
+      carbs: nutrients.carbs * (quantity / base),
+      fat: nutrients.fat * (quantity / base),
       fiber: nutrients.fiber,
     };
     onAddFood(entry);
@@ -129,16 +127,19 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
   };
 
   return (
-    // Slide-in modal from the bottom
-    <div className="fixed inset-0 z-50">
-      <div className="absolute inset-0 bg-black opacity-50" onClick={onClose}></div>
-      <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl p-6 transform transition-transform duration-300 animate-slideInUp">
+    // Centered modal with dark backdrop and scale/opacity animation
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose}></div>
+      <div
+        className="bg-white rounded-lg p-6 shadow-lg z-10 transform transition-all duration-300 ease-out
+                   scale-95 opacity-0 animate-modalIn"
+      >
         {!selectedFood ? (
           // Search view with suggestions
           <>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">Food Search</h2>
-              <button onClick={onClose} className="text-gray-500">
+              <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
                 Close
               </button>
             </div>
@@ -149,9 +150,9 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
               className="mb-4"
             />
             <div className="space-y-3 max-h-64 overflow-y-auto">
-              {suggestions.map((food, index) => (
+              {suggestions.map((food, idx) => (
                 <div
-                  key={index}
+                  key={idx}
                   onClick={() => handleSelectFood(food)}
                   className="p-3 border rounded-lg shadow-sm cursor-pointer hover:bg-gray-50"
                 >
@@ -159,19 +160,19 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
                   {food.foodCategory && (
                     <div className="text-xs text-gray-500 mb-2">{food.foodCategory}</div>
                   )}
-                  {/* Macro badge row */}
-                  <div className="flex space-x-2">
-                    <span className="text-xs bg-gray-200 text-gray-800 rounded-full px-2 py-1">
-                      {food.foodNutrients.find((n) => n.nutrientName === "Energy")?.value || 0} kcal
+                  {/* Macro badge row using palette */}
+                  <div className="flex space-x-2 mt-2">
+                    <span className="text-xs bg-[#6E44FF] text-white rounded-full px-2 py-1">
+                      {Number((food.foodNutrients.find(n => n.nutrientName === "Energy")?.value || 0).toFixed(1))} cal
                     </span>
-                    <span className="text-xs bg-green-200 text-green-800 rounded-full px-2 py-1">
-                      {food.foodNutrients.find((n) => n.nutrientName === "Protein")?.value || 0} P
+                    <span className="text-xs bg-[#B892FF] text-white rounded-full px-2 py-1">
+                      P: {Number((food.foodNutrients.find(n => n.nutrientName === "Protein")?.value || 0).toFixed(1))}g
                     </span>
-                    <span className="text-xs bg-blue-200 text-blue-800 rounded-full px-2 py-1">
-                      {food.foodNutrients.find((n) => n.nutrientName === "Carbohydrate, by difference")?.value || 0} C
+                    <span className="text-xs bg-[#FFC2E2] text-white rounded-full px-2 py-1">
+                      C: {Number((food.foodNutrients.find(n => n.nutrientName === "Carbohydrate, by difference")?.value || 0).toFixed(1))}g
                     </span>
-                    <span className="text-xs bg-red-200 text-red-800 rounded-full px-2 py-1">
-                      {food.foodNutrients.find((n) => n.nutrientName === "Total lipid (fat)")?.value || 0} F
+                    <span className="text-xs bg-[#FF90B3] text-white rounded-full px-2 py-1">
+                      F: {Number((food.foodNutrients.find(n => n.nutrientName === "Total lipid (fat)")?.value || 0).toFixed(1))}g
                     </span>
                   </div>
                 </div>
@@ -179,7 +180,7 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
             </div>
           </>
         ) : (
-          // Nutrition Facts / Detail view
+          // Detail view for selected food
           <>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">Nutrition Facts</h2>
@@ -194,11 +195,21 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
               )}
             </div>
             <div className="space-y-1 mb-4 text-sm">
-              <div>Calories: {selectedFood.foodNutrients.find((n) => n.nutrientName === "Energy")?.value || 0}</div>
-              <div>Protein: {selectedFood.foodNutrients.find((n) => n.nutrientName === "Protein")?.value || 0} g</div>
-              <div>Carbs: {selectedFood.foodNutrients.find((n) => n.nutrientName === "Carbohydrate, by difference")?.value || 0} g</div>
-              <div>Fat: {selectedFood.foodNutrients.find((n) => n.nutrientName === "Total lipid (fat)")?.value || 0} g</div>
-              <div>Fiber: {selectedFood.foodNutrients.find((n) => n.nutrientName === "Fiber, total dietary")?.value || 0} g</div>
+              <div>
+                Calories: {Number((selectedFood.foodNutrients.find(n => n.nutrientName === "Energy")?.value || 0).toFixed(1))}
+              </div>
+              <div>
+                Protein: {Number((selectedFood.foodNutrients.find(n => n.nutrientName === "Protein")?.value || 0).toFixed(1))} g
+              </div>
+              <div>
+                Carbs: {Number((selectedFood.foodNutrients.find(n => n.nutrientName === "Carbohydrate, by difference")?.value || 0).toFixed(1))} g
+              </div>
+              <div>
+                Fat: {Number((selectedFood.foodNutrients.find(n => n.nutrientName === "Total lipid (fat)")?.value || 0).toFixed(1))} g
+              </div>
+              <div>
+                Fiber: {Number((selectedFood.foodNutrients.find(n => n.nutrientName === "Fiber, total dietary")?.value || 0).toFixed(1))} g
+              </div>
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium">Quantity</label>
@@ -224,17 +235,17 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
                   "Tablespoon",
                   "Teaspoon",
                   "Milliliter",
-                ].map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
+                ].map(opt => (
+                  <option key={opt} value={opt}>{opt}</option>
                 ))}
               </select>
             </div>
             <div className="text-sm text-gray-600 mb-4">
-              1 {unit.toLowerCase()} = {quantity} {unit === "Serving" ? "g" : unit.toLowerCase()}
+              {selectedFood.servingSize && selectedFood.servingSizeUnit
+                ? `1 serving = ${selectedFood.servingSize}${selectedFood.servingSizeUnit.toLowerCase()}`
+                : `Base unit = 100`}
             </div>
-            <Button onClick={handleAddFood} className="bg-green-500 hover:bg-green-600 text-white">
+            <Button onClick={handleAddFood} className="bg-[#EF7A85] hover:bg-[#EF7A85] text-white">
               Add to Log
             </Button>
           </>
@@ -244,10 +255,7 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
   );
 }
 
-// Main LogPage component with gradient section cards and progress bars
 export default function LogPage() {
-  //const [query, setQuery] = useState("");
-  //const [amount, setAmount] = useState("100g");
   const [foodData, setFoodData] = useState<FoodEntry[]>([]);
   const [totals, setTotals] = useState<Nutrients>({
     calories: 0,
@@ -255,7 +263,6 @@ export default function LogPage() {
     carbs: 0,
     fat: 0,
   });
-  // Custom targets states (for demonstration, full precision is stored but only 1 decimal is displayed)
   const [targetInput, setTargetInput] = useState<Nutrients>({
     calories: 2740,
     protein: 150,
@@ -263,12 +270,11 @@ export default function LogPage() {
     fat: 70,
   });
   const [customGoals, setCustomGoals] = useState<Nutrients>(targetInput);
-  // Manage modal open state
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const addFoodEntry = (entry: FoodEntry) => {
-    setFoodData((prev) => [...prev, entry]);
-    setTotals((prev) => ({
+    setFoodData(prev => [...prev, entry]);
+    setTotals(prev => ({
       calories: prev.calories + entry.calories,
       protein: prev.protein + entry.protein,
       carbs: prev.carbs + entry.carbs,
@@ -277,16 +283,16 @@ export default function LogPage() {
   };
 
   const removeFoodEntry = (id: string) => {
-    const removedEntry = foodData.find((item) => item.id === id);
+    const removedEntry = foodData.find(item => item.id === id);
     if (removedEntry) {
-      setTotals((prev) => ({
+      setTotals(prev => ({
         calories: prev.calories - removedEntry.calories,
         protein: prev.protein - removedEntry.protein,
         carbs: prev.carbs - removedEntry.carbs,
         fat: prev.fat - removedEntry.fat,
       }));
     }
-    setFoodData((prev) => prev.filter((item) => item.id !== id));
+    setFoodData(prev => prev.filter(item => item.id !== id));
   };
 
   const handleInputChange = (field: keyof Nutrients, value: number) => {
@@ -316,21 +322,19 @@ export default function LogPage() {
         <Button onClick={() => setIsModalOpen(true)}>Add Food</Button>
       </div>
 
-      {/* Entries Section moved directly below search input */}
+      {/* Food Log Section */}
       {foodData.length > 0 && (
-        <section className="bg-gradient-to-r from-blue-400 to-pink-400 rounded-lg p-4 text-white shadow-lg mb-6">
+        <section className="bg-gradient-to-r from-[#6E44FF] to-[#B892FF] rounded-lg p-4 text-white shadow-lg mb-6">
           <h2 className="text-lg font-medium mb-2">Food Log</h2>
           <ul className="space-y-2">
-            {foodData.map((item) => (
+            {foodData.map(item => (
               <li key={item.id} className="flex justify-between items-center">
                 <span>
-                  {item.description} - {item.amount} {item.unit} ({" "}
-                  {item.calories.toFixed(1)} kcal, P: {item.protein.toFixed(1)}g, C:{" "}
-                  {item.carbs.toFixed(1)}g, F: {item.fat.toFixed(1)}g )
+                  {item.description} - {item.amount} {item.unit} ( {Number(item.calories.toFixed(1))} kcal, P: {Number(item.protein.toFixed(1))}g, C: {Number(item.carbs.toFixed(1))}g, F: {Number(item.fat.toFixed(1))}g )
                 </span>
                 <button
                   onClick={() => removeFoodEntry(item.id)}
-                  className="text-red-200 hover:text-red-400"
+                  className="text-white hover:text-[#EF7A85]"
                   aria-label="Remove entry"
                 >
                   <FaTrash />
@@ -341,41 +345,41 @@ export default function LogPage() {
         </section>
       )}
 
-      {/* Energy Summary Section with progress bars */}
-      <section className="bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg p-4 text-white shadow-lg">
+      {/* Energy Summary Section */}
+      <section className="bg-gradient-to-r from-[#FFC2E2] to-[#FF90B3] rounded-lg p-4 text-white shadow-lg">
         <h2 className="text-lg font-medium mb-2">Energy Summary</h2>
         <ProgressBar
           label="Calories"
           current={totals.calories}
           goal={customGoals.calories}
           unit="kcal"
-          color="bg-blue-500"
+          color="bg-[#6E44FF]"
         />
         <ProgressBar
           label="Protein"
           current={totals.protein}
           goal={customGoals.protein}
           unit="g"
-          color="bg-green-500"
+          color="bg-[#B892FF]"
         />
         <ProgressBar
           label="Carbs"
           current={totals.carbs}
           goal={customGoals.carbs}
           unit="g"
-          color="bg-yellow-500"
+          color="bg-[#FFC2E2]"
         />
         <ProgressBar
           label="Fat"
           current={totals.fat}
           goal={customGoals.fat}
           unit="g"
-          color="bg-red-500"
+          color="bg-[#FF90B3]"
         />
       </section>
 
-      {/* Set Custom Targets Section placed at the bottom */}
-      <section className="bg-gray-100 p-4 rounded-md mb-4">
+      {/* Set Custom Targets Section */}
+      <section className="bg-gray-100 p-4 rounded-md">
         <h2 className="text-xl font-semibold mb-2">Set Custom Targets</h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
