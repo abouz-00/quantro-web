@@ -546,7 +546,7 @@ export default function LogPage() {
                     <tr>
                       <td colSpan={7} className="py-2 font-bold">{date}</td>
                     </tr>
-                    {entries.map((item, index) => (
+                    {entries.map(item => (
                       <tr 
                         key={item.id} 
                         className={`border-b border-gray-200 last:border-0 cursor-pointer ${
