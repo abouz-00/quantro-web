@@ -21,6 +21,7 @@ interface FoodEntry extends Nutrients {
   description: string;
   amount: string;
   unit: string;
+  date: string; // Add this
 }
 
 interface USDAFood {
@@ -72,6 +73,8 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
   const [selectedFood, setSelectedFood] = useState<USDAFood | null>(null);
   const [quantity, setQuantity] = useState(100);
   const [unit, setUnit] = useState("Serving");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const timeout = setTimeout(async () => {
@@ -79,12 +82,20 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
         setSuggestions([]);
         return;
       }
-      const apiKey = process.env.NEXT_PUBLIC_USDA_API_KEY;
-      const res = await fetch(
-        `https://api.nal.usda.gov/fdc/v1/foods/search?query=${localQuery}&pageSize=10&api_key=${apiKey}`
-      );
-      const data = await res.json();
-      setSuggestions(data.foods || []);
+      setIsLoading(true);
+      try {
+        const apiKey = process.env.NEXT_PUBLIC_USDA_API_KEY;
+        const res = await fetch(
+          `https://api.nal.usda.gov/fdc/v1/foods/search?query=${localQuery}&pageSize=10&api_key=${apiKey}`
+        );
+        const data = await res.json();
+        setSuggestions(data.foods || []);
+      } catch (error) {
+        console.error('Failed to fetch foods:', error);
+        setError('Failed to fetch foods. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
     }, 300);
     return () => clearTimeout(timeout);
   }, [localQuery]);
@@ -98,18 +109,19 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
   const handleAddFood = () => {
     if (!selectedFood) return;
     
+    const UNIT_CONVERSIONS = {
+      Ounces: 28.3495,
+      Cup: 236.588,
+      Tablespoon: 14.7868,
+      Teaspoon: 4.92892,
+      Milliliter: 1,
+      Grams: 1,
+    } as const;
+
     // Convert quantity to grams based on unit selection
     let amountInGrams = quantity;
-    if (unit === "Ounces") {
-      amountInGrams = quantity * 28.3495; // Convert oz to g
-    } else if (unit === "Cup") {
-      amountInGrams = quantity * 236.588; // Approximate cup to g
-    } else if (unit === "Tablespoon") {
-      amountInGrams = quantity * 14.7868; // Approximate tbsp to g
-    } else if (unit === "Teaspoon") {
-      amountInGrams = quantity * 4.92892; // Approximate tsp to g
-    } else if (unit === "Milliliter") {
-      amountInGrams = quantity; // Assume 1:1 ratio for simplicity
+    if (unit in UNIT_CONVERSIONS) {
+      amountInGrams = quantity * UNIT_CONVERSIONS[unit as keyof typeof UNIT_CONVERSIONS];
     } else if (unit === "Serving" && selectedFood.servingSize) {
       amountInGrams = quantity * selectedFood.servingSize;
     }
@@ -138,6 +150,7 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
       carbs: (baseNutrients.carbs * amountInGrams) / 100,
       fat: (baseNutrients.fat * amountInGrams) / 100,
       fiber: baseNutrients.fiber ? (baseNutrients.fiber * amountInGrams) / 100 : undefined,
+      date: new Date().toISOString(),
     };
 
     onAddFood(entry);
@@ -166,6 +179,10 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
               onChange={(e) => setLocalQuery(e.target.value)}
               placeholder="Search food..."
               className="mb-4"
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') onClose();
+              }}
             />
             <div className="space-y-3 max-h-64 overflow-y-auto">
               {suggestions.map((food, idx) => (
@@ -194,6 +211,17 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
                   </div>
                 </div>
               ))}
+              {suggestions.length === 0 && !isLoading && !error && (
+                <div className="text-center py-8 text-gray-500">
+                  No foods found. Try a different search term.
+                </div>
+              )}
+
+              {error && (
+                <div className="text-center py-8 text-red-500">
+                  {error}
+                </div>
+              )}
             </div>
           </>
         ) : (
@@ -288,6 +316,34 @@ export default function LogPage() {
   const [customGoals, setCustomGoals] = useState<Nutrients>(targetInput);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  useEffect(() => {
+    const savedFoodData = localStorage.getItem('foodData');
+    const savedTotals = localStorage.getItem('totals');
+    const savedGoals = localStorage.getItem('customGoals');
+    
+    if (savedFoodData) setFoodData(JSON.parse(savedFoodData));
+    if (savedTotals) setTotals(JSON.parse(savedTotals));
+    if (savedGoals) setCustomGoals(JSON.parse(savedGoals));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('foodData', JSON.stringify(foodData));
+    localStorage.setItem('totals', JSON.stringify(totals));
+    localStorage.setItem('customGoals', JSON.stringify(customGoals));
+  }, [foodData, totals, customGoals]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'a' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setIsModalOpen(true);
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const addFoodEntry = (entry: FoodEntry) => {
     setFoodData(prev => [...prev, entry]);
     setTotals(prev => ({
@@ -319,6 +375,13 @@ export default function LogPage() {
     setCustomGoals(targetInput);
   };
 
+  const groupedEntries = foodData.reduce((acc, entry) => {
+    const date = new Date(entry.date).toLocaleDateString();
+    if (!acc[date]) acc[date] = [];
+    acc[date].push(entry);
+    return acc;
+  }, {} as Record<string, FoodEntry[]>);
+
   return (
     <main className="p-6 max-w-4xl mx-auto space-y-6"> {/* Increased max-width */}
       <header>
@@ -335,6 +398,22 @@ export default function LogPage() {
         >
           Add Food
           <HiPlus className="w-5 h-5" />
+        </Button>
+        <Button 
+          onClick={() => {
+            if (confirm('Are you sure you want to clear all entries?')) {
+              setFoodData([]);
+              setTotals({
+                calories: 0,
+                protein: 0,
+                carbs: 0,
+                fat: 0,
+              });
+            }
+          }}
+          className="bg-red-500 hover:bg-red-600 text-white ml-2"
+        >
+          Clear All
         </Button>
       </div>
 
@@ -356,24 +435,31 @@ export default function LogPage() {
                 </tr>
               </thead>
               <tbody>
-                {foodData.map(item => (
-                  <tr key={item.id} className="border-b border-white/10 last:border-0">
-                    <td className="py-2">{item.description}</td>
-                    <td className="py-2">{item.amount} {item.unit}</td>
-                    <td className="py-2 text-right">{Number(item.calories.toFixed(1))}</td>
-                    <td className="py-2 text-right">{Number(item.protein.toFixed(1))}g</td>
-                    <td className="py-2 text-right">{Number(item.carbs.toFixed(1))}g</td>
-                    <td className="py-2 text-right">{Number(item.fat.toFixed(1))}g</td>
-                    <td className="py-2 pl-4">
-                      <button
-                        onClick={() => removeFoodEntry(item.id)}
-                        className="text-white hover:text-[#EF7A85]"
-                        aria-label="Remove entry"
-                      >
-                        <FaTrash />
-                      </button>
-                    </td>
-                  </tr>
+                {Object.entries(groupedEntries).map(([date, entries]) => (
+                  <React.Fragment key={date}>
+                    <tr>
+                      <td colSpan={7} className="py-2 font-bold">{date}</td>
+                    </tr>
+                    {entries.map(item => (
+                      <tr key={item.id} className="border-b border-white/10 last:border-0">
+                        <td className="py-2">{item.description}</td>
+                        <td className="py-2">{item.amount} {item.unit}</td>
+                        <td className="py-2 text-right">{Number(item.calories.toFixed(1))}</td>
+                        <td className="py-2 text-right">{Number(item.protein.toFixed(1))}g</td>
+                        <td className="py-2 text-right">{Number(item.carbs.toFixed(1))}g</td>
+                        <td className="py-2 text-right">{Number(item.fat.toFixed(1))}g</td>
+                        <td className="py-2 pl-4">
+                          <button
+                            onClick={() => removeFoodEntry(item.id)}
+                            className="text-white hover:text-[#EF7A85]"
+                            aria-label="Remove entry"
+                          >
+                            <FaTrash />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </React.Fragment>
                 ))}
               </tbody>
             </table>
