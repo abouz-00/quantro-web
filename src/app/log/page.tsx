@@ -534,35 +534,34 @@ export default function LogPage() {
                 </tr>
               </thead>
               <tbody>
-                {Object.entries(groupedEntries).map(([_, entries]) => (
-                  entries.map(item => (
-                    <tr 
-                      key={item.id} 
-                      className={`border-b border-gray-200 last:border-0 cursor-pointer ${
-                        selectedEntries.includes(item.id) ? 'bg-blue-50' : ''
-                      }`}
-                      onClick={(e) => handleEntrySelect(item.id, entries.indexOf(item), e)}
-                    >
-                      <td className="py-2">{item.description}</td>
-                      <td className="py-2">{item.amount} {item.unit}</td>
-                      <td className="py-2 text-right">{Number(item.calories.toFixed(1))}</td>
-                      <td className="py-2 text-right">{Number(item.protein.toFixed(1))}g</td>
-                      <td className="py-2 text-right">{Number(item.carbs.toFixed(1))}g</td>
-                      <td className="py-2 text-right">{Number(item.fat.toFixed(1))}g</td>
-                      <td className="py-2 pl-4">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            removeFoodEntry(item.id);
-                          }}
-                          className="text-gray-500 hover:text-red-500"
-                          aria-label="Remove entry"
-                        >
-                          <FaTrash />
-                        </button>
-                      </td>
-                    </tr>
-                  ))
+                {/* Flattened mapping structure to avoid unused variables */}
+                {Object.values(groupedEntries).flat().map(item => (
+                  <tr 
+                    key={item.id} 
+                    className={`border-b border-gray-200 last:border-0 cursor-pointer ${
+                      selectedEntries.includes(item.id) ? 'bg-blue-50' : ''
+                    }`}
+                    onClick={(e) => handleEntrySelect(item.id, foodData.indexOf(item), e)}
+                  >
+                    <td className="py-2">{item.description}</td>
+                    <td className="py-2">{item.amount} {item.unit}</td>
+                    <td className="py-2 text-right">{Number(item.calories.toFixed(1))}</td>
+                    <td className="py-2 text-right">{Number(item.protein.toFixed(1))}g</td>
+                    <td className="py-2 text-right">{Number(item.carbs.toFixed(1))}g</td>
+                    <td className="py-2 text-right">{Number(item.fat.toFixed(1))}g</td>
+                    <td className="py-2 pl-4">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeFoodEntry(item.id);
+                        }}
+                        className="text-gray-500 hover:text-red-500"
+                        aria-label="Remove entry"
+                      >
+                        <FaTrash />
+                      </button>
+                    </td>
+                  </tr>
                 ))}
               </tbody>
             </table>
