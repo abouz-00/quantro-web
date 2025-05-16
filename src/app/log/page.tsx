@@ -125,11 +125,13 @@ function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
   };
 
   return (
-    // Centered modal with dark backdrop and scale/opacity animation
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black bg-opacity-50" onClick={onClose}></div>
+      {/* Dimmed gray backdrop instead of black */}
+      <div className="absolute inset-0 bg-gray-500/70" onClick={onClose}></div>
+      {/* Larger modal with max-width and height */}
       <div
-        className="bg-white rounded-lg p-6 shadow-lg z-10 transform transition-all duration-300 ease-out animate-modalIn"
+        className="bg-white rounded-lg p-8 shadow-xl z-10 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto
+                   transform transition-all duration-300 ease-out animate-modalIn"
       >
         {!selectedFood ? (
           <>
