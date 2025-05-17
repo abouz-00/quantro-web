@@ -58,7 +58,7 @@ export default function LogPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
   const [lastSelectedIndex, setLastSelectedIndex] = useState<number | null>(null);
-  const [recentFoods, setRecentFoods] = useState<USDAFood[]>([]);
+  const recentFoods: USDAFood[] = [];
 
   const handleDateChange = useCallback((date: Date | null) => {
     if (date) {
