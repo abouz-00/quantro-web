@@ -127,7 +127,6 @@ export default function LogPage() {
       carbs: prev.carbs + entry.carbs,
       fat: prev.fat + entry.fat,
     }));
-    updateRecents(entry);
   };
 
   const updateRecents = (selectedFood: USDAFood) => {
