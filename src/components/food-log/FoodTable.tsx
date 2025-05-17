@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { FaTrash } from "react-icons/fa";
 
 interface Nutrients {
@@ -26,6 +27,15 @@ interface FoodTableProps {
   handleEntrySelect: (id: string, index: number, event: React.MouseEvent) => void;
   removeFoodEntry: (id: string) => void;
 }
+
+// Helper function to capitalize first letter of each word
+const capitalizeWords = (str: string): string => {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
 
 export default function FoodTable({ 
   foodData, 
@@ -56,8 +66,8 @@ export default function FoodTable({
             }`}
             onClick={(e) => handleEntrySelect(item.id, foodData.indexOf(item), e)}
           >
-            <td className="py-2">{item.description}</td>
-            <td className="py-2">{item.amount} {item.unit}</td>
+            <td className="py-2">{capitalizeWords(item.description)}</td>
+            <td className="py-2">{item.amount} {capitalizeWords(item.unit)}</td>
             <td className="py-2 text-right">{Number(item.calories.toFixed(1))}</td>
             <td className="py-2 text-right">{Number(item.protein.toFixed(1))}g</td>
             <td className="py-2 text-right">{Number(item.carbs.toFixed(1))}g</td>
