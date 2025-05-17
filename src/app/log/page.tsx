@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react"; // Remove Fragment from import
+import React, { useState, useEffect, useCallback } from "react"; // Remove Fragment from import
 // Remove the unused imports (Input, uuidv4, FaTrash, ProgressBar)
 import FoodSearchModal from "../../components/food-log/FoodSearchModal";
 import FoodTable from "../../components/food-log/FoodTable";
@@ -144,23 +144,23 @@ export default function LogPage() {
     setCustomGoals(targetInput);
   };
 
-  const handleDateChange = (date: Date | null) => {
+  const handleDateChange = useCallback((date: Date | null) => {
     if (date) {
       setSelectedDate(date);
     }
-  };
+  }, []);
 
-  const handlePreviousDay = () => {
+  const handlePreviousDay = useCallback(() => {
     const newDate = new Date(selectedDate);
     newDate.setDate(newDate.getDate() - 1);
     setSelectedDate(newDate);
-  };
+  }, [selectedDate]);
 
-  const handleNextDay = () => {
+  const handleNextDay = useCallback(() => {
     const newDate = new Date(selectedDate);
     newDate.setDate(newDate.getDate() + 1);
     setSelectedDate(newDate);
-  };
+  }, [selectedDate]);
 
   const handleEntrySelect = (id: string, index: number, event: React.MouseEvent) => {
     if (event.shiftKey && lastSelectedIndex !== null) {
