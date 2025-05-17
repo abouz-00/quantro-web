@@ -60,6 +60,24 @@ export default function LogPage() {
   const [lastSelectedIndex, setLastSelectedIndex] = useState<number | null>(null);
   const [recentFoods, setRecentFoods] = useState<USDAFood[]>([]);
 
+  const handleDateChange = useCallback((date: Date | null) => {
+    if (date) {
+      setSelectedDate(date);
+    }
+  }, []);
+
+  const handlePreviousDay = useCallback(() => {
+    const newDate = new Date(selectedDate);
+    newDate.setDate(newDate.getDate() - 1);
+    setSelectedDate(newDate);
+  }, [selectedDate]);
+
+  const handleNextDay = useCallback(() => {
+    const newDate = new Date(selectedDate);
+    newDate.setDate(newDate.getDate() + 1);
+    setSelectedDate(newDate);
+  }, [selectedDate]);
+
   useEffect(() => {
     const savedFoodData = localStorage.getItem('foodData');
     const savedTotals = localStorage.getItem('totals');
@@ -143,24 +161,6 @@ export default function LogPage() {
   const handleSaveTargets = () => {
     setCustomGoals(targetInput);
   };
-
-  const handleDateChange = useCallback((date: Date | null) => {
-    if (date) {
-      setSelectedDate(date);
-    }
-  }, []);
-
-  const handlePreviousDay = useCallback(() => {
-    const newDate = new Date(selectedDate);
-    newDate.setDate(newDate.getDate() - 1);
-    setSelectedDate(newDate);
-  }, [selectedDate]);
-
-  const handleNextDay = useCallback(() => {
-    const newDate = new Date(selectedDate);
-    newDate.setDate(newDate.getDate() + 1);
-    setSelectedDate(newDate);
-  }, [selectedDate]);
 
   const handleEntrySelect = (id: string, index: number, event: React.MouseEvent) => {
     if (event.shiftKey && lastSelectedIndex !== null) {
