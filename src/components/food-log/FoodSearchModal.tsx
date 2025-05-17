@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { v4 as uuidv4 } from "uuid";
-import { HiPlus } from "react-icons/hi";
 
 interface Nutrients {
   calories: number;
@@ -258,7 +257,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate, rece
               <label className="block text-sm font-medium">Meal</label>
               <select
                 value={mealType}
-                onChange={(e) => setMealType(e.target.value as any)}
+                onChange={(e) => setMealType(e.target.value as "breakfast" | "lunch" | "dinner" | "snack")}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2"
               >
                 <option value="breakfast">Breakfast</option>

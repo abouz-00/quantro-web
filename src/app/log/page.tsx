@@ -1,21 +1,17 @@
 "use client";
 
-import { useState, useEffect, Fragment } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { v4 as uuidv4 } from "uuid";
-import { FaTrash } from "react-icons/fa";
-import { HiPlus } from "react-icons/hi";
-import DatePicker from 'react-datepicker';
+import React, { useState, useEffect } from "react"; // Remove Fragment from import
+// Remove the unused imports (Input, uuidv4, FaTrash, ProgressBar)
+import FoodSearchModal from "../../components/food-log/FoodSearchModal";
+import FoodTable from "../../components/food-log/FoodTable";
+import CustomTargets from "../../components/food-log/CustomTargets";
+import EnergySummary from "../../components/food-log/EnergySummary";
+import { Button } from "../../components/ui/button";
+import { Doughnut } from "react-chartjs-2";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { HiDotsHorizontal, HiChevronLeft, HiChevronRight } from 'react-icons/hi';
-import { Menu } from '@headlessui/react';
-import FoodSearchModal from "@/components/food-log/FoodSearchModal";
-import ProgressBar from "@/components/food-log/ProgressBar";
-import FoodTable from "@/components/food-log/FoodTable";
-import CustomTargets from "@/components/food-log/CustomTargets";
-import EnergySummary from "@/components/food-log/EnergySummary";
-import { Doughnut } from 'react-chartjs-2';
+import { HiDotsHorizontal, HiChevronLeft, HiChevronRight, HiPlus } from "react-icons/hi";
+import { Menu } from "@headlessui/react";
 
 // Types for nutrients, food entry, and USDA food suggestion (extended)
 interface Nutrients {
@@ -103,7 +99,7 @@ export default function LogPage() {
     
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [handleNextDay, handlePreviousDay]); // Add these dependencies
 
   const addFoodEntry = (entry: FoodEntry) => {
     setFoodData(prev => [...prev, entry]);
