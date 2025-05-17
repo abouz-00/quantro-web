@@ -1,6 +1,15 @@
 "use client";
 
+import React from "react";
 import ProgressBar from "./ProgressBar";
+import dynamic from 'next/dynamic';
+import MacroChart from './MacroChart';
+
+// Import Doughnut component with SSR disabled
+const Doughnut = dynamic(
+  () => import('react-chartjs-2').then(mod => mod.Doughnut),
+  { ssr: false }
+);
 
 interface Nutrients {
   calories: number;
@@ -47,6 +56,13 @@ export default function EnergySummary({ totals, customGoals }: EnergySummaryProp
         unit="g"
         color="bg-[#E55640]"
       />
+      <div className="mt-4">
+        <MacroChart 
+          protein={totals.protein}
+          carbs={totals.carbs}
+          fat={totals.fat}
+        />
+      </div>
     </section>
   );
 }
