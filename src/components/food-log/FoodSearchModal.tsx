@@ -19,7 +19,7 @@ interface FoodEntry extends Nutrients {
   amount: string;
   unit: string;
   date: string;
-  mealType: "breakfast" | "lunch" | "dinner" | "snack";
+  mealType: "breakfast" | "lunch" | "dinner" | "snack" | "other"; // Add "other" as a valid type
 }
 
 interface USDAFood {
