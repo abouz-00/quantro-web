@@ -99,6 +99,14 @@ export default function FoodTable({
     setEditingEntry(null);
   };
 
+  // Helper function to format number with at most 2 decimal places
+  const formatNumber = (num: number): string => {
+    // Convert to string with up to 2 decimal places
+    const rounded = parseFloat(num.toFixed(2));
+    // Remove trailing zeros and decimal point if necessary
+    return rounded % 1 === 0 ? rounded.toString() : rounded.toFixed(2);
+  };
+
   return (
     <div className="w-full">
       {sortedMealTypes.map(mealType => (
@@ -154,7 +162,7 @@ export default function FoodTable({
                             className="hover:bg-gray-100 px-1 rounded cursor-pointer"
                             onClick={(e) => startEditing(item, e)}
                           >
-                            {item.amount} {capitalizeWords(item.unit)}
+                            {formatNumber(parseFloat(item.amount))} {capitalizeWords(item.unit)}
                           </span>
                           <FaPencilAlt 
                             size={12} 
@@ -164,10 +172,10 @@ export default function FoodTable({
                         </div>
                       )}
                     </td>
-                    <td className="py-2 px-2 text-right">{Number(item.calories.toFixed(1))}</td>
-                    <td className="py-2 px-2 text-right">{Number(item.protein.toFixed(1))}g</td>
-                    <td className="py-2 px-2 text-right">{Number(item.carbs.toFixed(1))}g</td>
-                    <td className="py-2 px-2 text-right">{Number(item.fat.toFixed(1))}g</td>
+                    <td className="py-2 px-2 text-right">{formatNumber(item.calories)}</td>
+                    <td className="py-2 px-2 text-right">{formatNumber(item.protein)}g</td>
+                    <td className="py-2 px-2 text-right">{formatNumber(item.carbs)}g</td>
+                    <td className="py-2 px-2 text-right">{formatNumber(item.fat)}g</td>
                     <td className="py-2 pl-4">
                       <button
                         onClick={(e) => {

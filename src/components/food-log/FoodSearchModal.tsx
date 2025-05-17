@@ -124,22 +124,22 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate, rece
     }
     
     // Calculate serving adjustment with unit conversion
-    let serving = parseFloat(quantity) || 0;
-    const servingUnit = unit;
+    let servingSizeInGrams = parseFloat(quantity) || 0;
+    const originalUnit = unit;
     
     // Apply unit conversion if needed
-    if (unit !== "Grams" && unit !== "Serving") {
+    if (unit !== "Grams") {
       const conversionFactor = UNIT_CONVERSIONS[unit as keyof typeof UNIT_CONVERSIONS] || 1;
-      serving = serving * conversionFactor;
-    }
+      servingSizeInGrams = servingSizeInGrams * conversionFactor;
+    } 
     
-    const servingMultiplier = serving / 100; // Assuming base is 100g
+    const servingMultiplier = servingSizeInGrams / 100; // Assuming base is 100g
     
     const entry: FoodEntry = {
       id: uuidv4(),
       description: selectedFood.description,
-      amount: serving.toString(),
-      unit: servingUnit,
+      amount: quantity, // Keep the original amount entered by user
+      unit: originalUnit, // Keep the original unit selected by user
       date: selectedDate.toISOString(),
       mealType,
       calories: calories * servingMultiplier,
@@ -147,6 +147,12 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate, rece
       carbs: carbs * servingMultiplier,
       fat: fat * servingMultiplier,
     };
+    
+    // Round the nutritional values to 2 decimal places
+    entry.calories = parseFloat(entry.calories.toFixed(2));
+    entry.protein = parseFloat(entry.protein.toFixed(2));
+    entry.carbs = parseFloat(entry.carbs.toFixed(2));
+    entry.fat = parseFloat(entry.fat.toFixed(2));
     
     onAddFood(entry);
     onClose();
