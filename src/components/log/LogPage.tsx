@@ -95,11 +95,38 @@ export default function LogPage() {
     if (savedGoals) setCustomGoals(JSON.parse(savedGoals));
   }, []);
 
+  // Add this effect to recalculate totals when the date changes
+  useEffect(() => {
+    // Calculate totals for the current date
+    const entriesForDay = foodData.filter(entry => {
+      const entryDate = new Date(entry.date);
+      return sameDay(entryDate, selectedDate);
+    });
+    
+    // Reset totals for the current day
+    const dailyTotals = entriesForDay.reduce((acc, entry) => {
+      return {
+        calories: acc.calories + entry.calories,
+        protein: acc.protein + entry.protein,
+        carbs: acc.carbs + entry.carbs,
+        fat: acc.fat + entry.fat,
+      };
+    }, {
+      calories: 0,
+      protein: 0,
+      carbs: 0,
+      fat: 0,
+    });
+    
+    setTotals(dailyTotals);
+  }, [selectedDate, foodData]);
+
+  // Remove the existing totals from localStorage since we're now calculating them per day
+  // Keep this effect for saving food data and goals only
   useEffect(() => {
     localStorage.setItem('foodData', JSON.stringify(foodData));
-    localStorage.setItem('totals', JSON.stringify(totals));
     localStorage.setItem('customGoals', JSON.stringify(customGoals));
-  }, [foodData, totals, customGoals]);
+  }, [foodData, customGoals]);
 
   // Keyboard shortcuts effect
   useEffect(() => {
@@ -291,7 +318,7 @@ export default function LogPage() {
       </div>
       
       {/* Food entries table */}
-      <div className="bg-white p-4 rounded-lg shadow-lg overflow-x-auto mb-6">
+      <div className="bg-white rounded-lg shadow-md p-4 mb-6">
         <h2 className="text-lg font-medium mb-4">Food Log</h2>
         {filteredEntries.length > 0 ? (
           <div className="w-full overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
