@@ -51,7 +51,6 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate, rece
   const [selectedFood, setSelectedFood] = useState<USDAFood | null>(null);
   const [quantity, setQuantity] = useState<string>("100");
   const [unit, setUnit] = useState("Serving");
-  const [mealType, setMealType] = useState<"breakfast" | "lunch" | "dinner" | "snack">("breakfast");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -141,7 +140,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate, rece
       amount: quantity, // Keep the original amount entered by user
       unit: originalUnit, // Keep the original unit selected by user
       date: selectedDate.toISOString(),
-      mealType,
+      mealType: "other", // Default meal type, will be ignored in UI
       calories: calories * servingMultiplier,
       protein: protein * servingMultiplier,
       carbs: carbs * servingMultiplier,
@@ -280,20 +279,6 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate, rece
               <div>
                 Fiber: {Number((selectedFood.foodNutrients.find(n => n.nutrientName === "Fiber, total dietary")?.value || 0).toFixed(1))} g
               </div>
-            </div>
-            
-            <div className="mb-4">
-              <label className="block text-sm font-medium">Meal</label>
-              <select
-                value={mealType}
-                onChange={(e) => setMealType(e.target.value as "breakfast" | "lunch" | "dinner" | "snack")}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              >
-                <option value="breakfast">Breakfast</option>
-                <option value="lunch">Lunch</option>
-                <option value="dinner">Dinner</option>
-                <option value="snack">Snack</option>
-              </select>
             </div>
             
             <div className="mb-4">
