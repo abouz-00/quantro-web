@@ -233,16 +233,6 @@ export default function LogPage() {
     return sameDay(entryDate, selectedDate);
   });
 
-  // Group entries by meal type
-  const groupedEntries = filteredEntries.reduce((acc: Record<string, FoodEntry[]>, entry) => {
-    const mealType = entry.mealType || 'other';
-    if (!acc[mealType]) {
-      acc[mealType] = [];
-    }
-    acc[mealType].push(entry);
-    return acc;
-  }, {});
-
   // Handle entry selection
   const handleEntrySelect = (id: string, index: number, event: React.MouseEvent) => {
     if (event.ctrlKey || event.metaKey) {
@@ -339,12 +329,11 @@ export default function LogPage() {
       
       {/* Food entries table - MOVED UP */}
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-        <h2 className="text-lg font-medium mb-4">Food Log</h2>
         {filteredEntries.length > 0 ? (
           <div className="w-full overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
             <FoodTable
               foodData={foodData}
-              groupedEntries={groupedEntries}
+              filteredEntries={filteredEntries} // Pass filtered entries directly
               selectedEntries={selectedEntries}
               handleEntrySelect={handleEntrySelect}
               removeFoodEntry={removeFoodEntry}
