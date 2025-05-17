@@ -7,29 +7,28 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "default", size = "default", ...props }, ref) => {
-    // Add variant-specific styling
+    // Use more standard Tailwind classes that are definitely defined
     let variantClasses = "";
     if (variant === "outline") {
-      variantClasses = "bg-transparent border border-current";
+      variantClasses = "bg-transparent border border-gray-300";
     } else if (variant === "ghost") {
       variantClasses = "bg-transparent hover:bg-gray-100";
     } else {
-      variantClasses = "bg-primary text-primary-foreground hover:bg-primary/90";
+      variantClasses = "bg-violet-500 text-white hover:bg-violet-600";
     }
     
-    // Add size-specific styling
     let sizeClasses = "";
     if (size === "sm") {
-      sizeClasses = "h-9 px-3 text-sm";
+      sizeClasses = "py-1 px-3 text-sm";
     } else if (size === "lg") {
-      sizeClasses = "h-11 px-8 text-lg";
+      sizeClasses = "py-3 px-8 text-lg";
     } else {
-      sizeClasses = "h-10 px-4 py-2";
+      sizeClasses = "py-2 px-4";
     }
     
     return (
       <button
-        className={`inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background ${variantClasses} ${sizeClasses} ${className}`}
+        className={`inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ${variantClasses} ${sizeClasses} ${className || ""}`}
         ref={ref}
         {...props}
       />
