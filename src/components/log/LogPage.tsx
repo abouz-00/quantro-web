@@ -243,13 +243,14 @@ export default function LogPage() {
         </div>
         
         <div className="flex items-center">
-          <button
+          <Button
             onClick={() => setIsModalOpen(true)}
+            variant="default"
             className="flex items-center bg-violet-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-violet-600"
           >
             <HiPlus className="mr-1 h-5 w-5" />
             Add Food
-          </button>
+          </Button>
           
           <div className="relative ml-2">
             <Menu>
