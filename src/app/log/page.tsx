@@ -10,6 +10,12 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { HiDotsHorizontal, HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { Menu } from '@headlessui/react';
+import FoodSearchModal from "@/components/food-log/FoodSearchModal";
+import ProgressBar from "@/components/food-log/ProgressBar";
+import FoodTable from "@/components/food-log/FoodTable";
+import CustomTargets from "@/components/food-log/CustomTargets";
+import EnergySummary from "@/components/food-log/EnergySummary";
+import { Doughnut } from 'react-chartjs-2';
 
 // Types for nutrients, food entry, and USDA food suggestion (extended)
 interface Nutrients {
@@ -26,6 +32,7 @@ interface FoodEntry extends Nutrients {
   amount: string;
   unit: string;
   date: string; // Add this
+  mealType: "breakfast" | "lunch" | "dinner" | "snack";
 }
 
 interface USDAFood {
@@ -34,273 +41,6 @@ interface USDAFood {
   foodNutrients: { nutrientName: string; value: number }[];
   servingSize?: number;
   servingSizeUnit?: string;
-}
-
-// ProgressBar component displays a horizontal bar with formatted values
-interface ProgressBarProps {
-  label: string;
-  current: number;
-  goal: number;
-  unit: string;
-  color: string;
-}
-
-function ProgressBar({ label, current, goal, unit, color }: ProgressBarProps) {
-  const percentage = Math.min((current / goal) * 100, 100);
-  return (
-    <div className="mb-4">
-      <div className="flex justify-between text-sm mb-1">
-        <span>{label}</span>
-        <span>
-          {Number(current.toFixed(1))} / {Number(goal.toFixed(1))} {unit}
-        </span>
-      </div>
-      <div className="w-full bg-gray-200 rounded-full h-3">
-        <div
-          className={`${color} h-3 rounded-full`}
-          style={{ width: `${percentage}%` }}
-        ></div>
-      </div>
-    </div>
-  );
-}
-
-// FoodSearchModal: a centered modal for searching/selecting food.
-interface FoodSearchModalProps {
-  onClose: () => void;
-  onAddFood: (entry: FoodEntry) => void;
-}
-
-function FoodSearchModal({ onClose, onAddFood }: FoodSearchModalProps) {
-  const [localQuery, setLocalQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<USDAFood[]>([]);
-  const [selectedFood, setSelectedFood] = useState<USDAFood | null>(null);
-  const [quantity, setQuantity] = useState(100);
-  const [unit, setUnit] = useState("Serving");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const timeout = setTimeout(async () => {
-      if (!localQuery) {
-        setSuggestions([]);
-        return;
-      }
-      setIsLoading(true);
-      try {
-        const apiKey = process.env.NEXT_PUBLIC_USDA_API_KEY;
-        const res = await fetch(
-          `https://api.nal.usda.gov/fdc/v1/foods/search?query=${localQuery}&pageSize=10&api_key=${apiKey}`
-        );
-        const data = await res.json();
-        setSuggestions(data.foods || []);
-      } catch (error) {
-        console.error('Failed to fetch foods:', error);
-        setError('Failed to fetch foods. Please try again later.');
-      } finally {
-        setIsLoading(false);
-      }
-    }, 300);
-    return () => clearTimeout(timeout);
-  }, [localQuery]);
-
-  const handleSelectFood = (food: USDAFood) => {
-    setSelectedFood(food);
-    setQuantity(food.servingSize || 100);
-    setUnit(food.servingSizeUnit || "Serving");
-  };
-
-  const handleAddFood = () => {
-    if (!selectedFood) return;
-    
-    const UNIT_CONVERSIONS = {
-      Ounces: 28.3495,
-      Cup: 236.588,
-      Tablespoon: 14.7868,
-      Teaspoon: 4.92892,
-      Milliliter: 1,
-      Grams: 1,
-    } as const;
-
-    // Convert quantity to grams based on unit selection
-    let amountInGrams = quantity;
-    if (unit in UNIT_CONVERSIONS) {
-      amountInGrams = quantity * UNIT_CONVERSIONS[unit as keyof typeof UNIT_CONVERSIONS];
-    } else if (unit === "Serving" && selectedFood.servingSize) {
-      amountInGrams = quantity * selectedFood.servingSize;
-    }
-
-    // Get base values per 100g
-    const baseNutrients = selectedFood.foodNutrients.reduce(
-      (acc: Nutrients, n: { nutrientName: string; value: number }) => {
-        if (n.nutrientName === "Energy") acc.calories = n.value;
-        if (n.nutrientName === "Protein") acc.protein = n.value;
-        if (n.nutrientName === "Carbohydrate, by difference") acc.carbs = n.value;
-        if (n.nutrientName === "Total lipid (fat)") acc.fat = n.value;
-        if (n.nutrientName === "Fiber, total dietary") acc.fiber = n.value;
-        return acc;
-      },
-      { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 }
-    );
-
-    // Calculate adjusted values based on amount in grams
-    const entry: FoodEntry = {
-      id: uuidv4(),
-      description: selectedFood.description,
-      amount: quantity + "",
-      unit,
-      calories: (baseNutrients.calories * amountInGrams) / 100,
-      protein: (baseNutrients.protein * amountInGrams) / 100,
-      carbs: (baseNutrients.carbs * amountInGrams) / 100,
-      fat: (baseNutrients.fat * amountInGrams) / 100,
-      fiber: baseNutrients.fiber ? (baseNutrients.fiber * amountInGrams) / 100 : undefined,
-      date: new Date().toISOString(),
-    };
-
-    onAddFood(entry);
-    onClose();
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Dimmed gray backdrop instead of black */}
-      <div className="absolute inset-0 bg-gray-500/70" onClick={onClose}></div>
-      {/* Larger modal with max-width and height */}
-      <div
-        className="bg-white rounded-lg p-8 shadow-xl z-10 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto
-                   transform transition-all duration-300 ease-out animate-modalIn"
-      >
-        {!selectedFood ? (
-          <>
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">Food Search</h2>
-              <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-                Close
-              </button>
-            </div>
-            <Input
-              value={localQuery}
-              onChange={(e) => setLocalQuery(e.target.value)}
-              placeholder="Search food..."
-              className="mb-4"
-              autoFocus
-              onKeyDown={(e) => {
-                if (e.key === 'Escape') onClose();
-              }}
-            />
-            <div className="space-y-3 max-h-64 overflow-y-auto">
-              {suggestions.map((food, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => handleSelectFood(food)}
-                  className="p-3 border rounded-lg shadow-sm cursor-pointer hover:bg-gray-50"
-                >
-                  <div className="font-bold">{food.description}</div>
-                  {food.foodCategory && (
-                    <div className="text-xs text-gray-500 mb-2">{food.foodCategory}</div>
-                  )}
-                  <div className="flex space-x-2 mt-2">
-                    <span className="text-xs bg-[#6E44FF] text-white rounded-full px-2 py-1">
-                      {Number((food.foodNutrients.find(n => n.nutrientName === "Energy")?.value || 0).toFixed(1))} cal
-                    </span>
-                    <span className="text-xs bg-[#7EE081] text-white rounded-full px-2 py-1">
-                      P: {Number((food.foodNutrients.find(n => n.nutrientName === "Protein")?.value || 0).toFixed(1))}g
-                    </span>
-                    <span className="text-xs bg-[#F0E15B] text-black rounded-full px-2 py-1">
-                      C: {Number((food.foodNutrients.find(n => n.nutrientName === "Carbohydrate, by difference")?.value || 0).toFixed(1))}g
-                    </span>
-                    <span className="text-xs bg-[#E55640] text-white rounded-full px-2 py-1">
-                      F: {Number((food.foodNutrients.find(n => n.nutrientName === "Total lipid (fat)")?.value || 0).toFixed(1))}g
-                    </span>
-                  </div>
-                </div>
-              ))}
-              {suggestions.length === 0 && !isLoading && !error && (
-                <div className="text-center py-8 text-gray-500">
-                  No foods found. Try a different search term.
-                </div>
-              )}
-
-              {error && (
-                <div className="text-center py-8 text-red-500">
-                  {error}
-                </div>
-              )}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">Nutrition Facts</h2>
-              <button onClick={() => setSelectedFood(null)} className="text-gray-500 hover:text-gray-700">
-                Back
-              </button>
-            </div>
-            <div className="mb-2">
-              <div className="font-bold">{selectedFood.description}</div>
-              {selectedFood.foodCategory && (
-                <div className="text-xs text-gray-500">{selectedFood.foodCategory}</div>
-              )}
-            </div>
-            <div className="space-y-1 mb-4 text-sm">
-              <div>
-                Calories: {Number((selectedFood.foodNutrients.find(n => n.nutrientName === "Energy")?.value || 0).toFixed(1))}
-              </div>
-              <div>
-                Protein: {Number((selectedFood.foodNutrients.find(n => n.nutrientName === "Protein")?.value || 0).toFixed(1))} g
-              </div>
-              <div>
-                Carbs: {Number((selectedFood.foodNutrients.find(n => n.nutrientName === "Carbohydrate, by difference")?.value || 0).toFixed(1))} g
-              </div>
-              <div>
-                Fat: {Number((selectedFood.foodNutrients.find(n => n.nutrientName === "Total lipid (fat)")?.value || 0).toFixed(1))} g
-              </div>
-              <div>
-                Fiber: {Number((selectedFood.foodNutrients.find(n => n.nutrientName === "Fiber, total dietary")?.value || 0).toFixed(1))} g
-              </div>
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium">Quantity</label>
-              <input
-                type="number"
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium">Unit</label>
-              <select
-                value={unit}
-                onChange={(e) => setUnit(e.target.value)}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              >
-                {[
-                  "Serving",
-                  "Grams",
-                  "Ounces",
-                  "Cup",
-                  "Tablespoon",
-                  "Teaspoon",
-                  "Milliliter",
-                ].map(opt => (
-                  <option key={opt} value={opt}>{opt}</option>
-                ))}
-              </select>
-            </div>
-            <div className="text-sm text-gray-600 mb-4">
-              {selectedFood.servingSize && selectedFood.servingSizeUnit
-                ? `1 serving = ${selectedFood.servingSize}${selectedFood.servingSizeUnit.toLowerCase()}`
-                : `Base unit = 100`}
-            </div>
-            <Button onClick={handleAddFood} className="bg-[#6E44FF] hover:bg-[#6E44FF]/90 text-white">
-              Add to Log
-            </Button>
-          </>
-        )}
-      </div>
-    </div>
-  );
 }
 
 export default function LogPage() {
@@ -322,6 +62,7 @@ export default function LogPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
   const [lastSelectedIndex, setLastSelectedIndex] = useState<number | null>(null);
+  const [recentFoods, setRecentFoods] = useState<USDAFood[]>([]);
 
   useEffect(() => {
     const savedFoodData = localStorage.getItem('foodData');
@@ -341,9 +82,22 @@ export default function LogPage() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'a' && (e.metaKey || e.ctrlKey)) {
+      // Add food - Ctrl/Cmd + A
+      if (e.key === 'a' && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
         setIsModalOpen(true);
+      }
+      
+      // Next day - Ctrl/Cmd + Right Arrow
+      if (e.key === 'ArrowRight' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        handleNextDay();
+      }
+      
+      // Previous day - Ctrl/Cmd + Left Arrow
+      if (e.key === 'ArrowLeft' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        handlePreviousDay();
       }
     };
     
@@ -359,6 +113,18 @@ export default function LogPage() {
       carbs: prev.carbs + entry.carbs,
       fat: prev.fat + entry.fat,
     }));
+    updateRecents(entry);
+  };
+
+  const updateRecents = (selectedFood: USDAFood) => {
+    // Add the food to recent foods if not already there
+    setRecentFoods(prev => {
+      const exists = prev.some(f => f.description === selectedFood.description);
+      if (!exists) {
+        return [selectedFood, ...prev].slice(0, 5); // Keep last 5
+      }
+      return prev;
+    });
   };
 
   const removeFoodEntry = (id: string) => {
@@ -419,6 +185,18 @@ export default function LogPage() {
   const copySelectedEntries = () => {
     const selectedData = foodData.filter(entry => selectedEntries.includes(entry.id));
     navigator.clipboard.writeText(JSON.stringify(selectedData));
+  };
+
+  const exportData = () => {
+    const dataStr = JSON.stringify(foodData);
+    const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`;
+    
+    const exportFileDefaultName = `food-log-${selectedDate.toISOString().split('T')[0]}.json`;
+    
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
   };
 
   // Update the groupedEntries reducer to filter by selected date
@@ -499,6 +277,18 @@ export default function LogPage() {
                     <button
                       className={`${
                         active ? 'bg-gray-100' : ''
+                      } w-full text-left px-4 py-2`}
+                      onClick={exportData}
+                    >
+                      Export Data
+                    </button>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${
+                        active ? 'bg-gray-100' : ''
                       } w-full text-left px-4 py-2 text-red-600`}
                       onClick={() => {
                         if (confirm('Are you sure you want to clear all entries?')) {
@@ -520,141 +310,63 @@ export default function LogPage() {
             </Menu>
           </div>
 
-          <div className="w-full overflow-x-auto">
-            <table className="w-full min-w-full">
-              <thead>
-                <tr className="text-left border-b border-white/20">
-                  <th className="pb-2 font-medium">Food</th>
-                  <th className="pb-2 font-medium">Amount</th>
-                  <th className="pb-2 font-medium text-right">Calories</th>
-                  <th className="pb-2 font-medium text-right">Protein</th>
-                  <th className="pb-2 font-medium text-right">Carbs</th>
-                  <th className="pb-2 font-medium text-right">Fat</th>
-                  <th className="pb-2 w-10"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* Flattened mapping structure to avoid unused variables */}
-                {Object.values(groupedEntries).flat().map(item => (
-                  <tr 
-                    key={item.id} 
-                    className={`border-b border-gray-200 last:border-0 cursor-pointer ${
-                      selectedEntries.includes(item.id) ? 'bg-blue-50' : ''
-                    }`}
-                    onClick={(e) => handleEntrySelect(item.id, foodData.indexOf(item), e)}
-                  >
-                    <td className="py-2">{item.description}</td>
-                    <td className="py-2">{item.amount} {item.unit}</td>
-                    <td className="py-2 text-right">{Number(item.calories.toFixed(1))}</td>
-                    <td className="py-2 text-right">{Number(item.protein.toFixed(1))}g</td>
-                    <td className="py-2 text-right">{Number(item.carbs.toFixed(1))}g</td>
-                    <td className="py-2 text-right">{Number(item.fat.toFixed(1))}g</td>
-                    <td className="py-2 pl-4">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          removeFoodEntry(item.id);
-                        }}
-                        className="text-gray-500 hover:text-red-500"
-                        aria-label="Remove entry"
-                      >
-                        <FaTrash />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="w-full overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <FoodTable 
+              foodData={foodData} 
+              groupedEntries={groupedEntries} 
+              selectedEntries={selectedEntries} 
+              handleEntrySelect={handleEntrySelect} 
+              removeFoodEntry={removeFoodEntry} 
+            />
           </div>
         </section>
       )}
 
       {/* Grid container for Energy Summary and Custom Targets */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Energy Summary Section */}
-        <section className="bg-gray-100 rounded-lg p-4 shadow-lg">
-          <h2 className="text-lg font-medium mb-2">Energy Summary</h2>
-          <ProgressBar
-            label="Calories"
-            current={totals.calories}
-            goal={customGoals.calories}
-            unit="kcal"
-            color="bg-[#6E44FF]"
-          />
-          <ProgressBar
-            label="Protein"
-            current={totals.protein}
-            goal={customGoals.protein}
-            unit="g"
-            color="bg-[#7EE081]"
-          />
-          <ProgressBar
-            label="Carbs"
-            current={totals.carbs}
-            goal={customGoals.carbs}
-            unit="g"
-            color="bg-[#F0E15B]"
-          />
-          <ProgressBar
-            label="Fat"
-            current={totals.fat}
-            goal={customGoals.fat}
-            unit="g"
-            color="bg-[#E55640]"
-          />
-        </section>
+        <EnergySummary totals={totals} customGoals={customGoals} />
 
         {/* Set Custom Targets Section */}
-        <section className="bg-gray-100 p-4 rounded-lg shadow-lg"> {/* Added shadow-lg and rounded-lg for consistency */}
-          <h2 className="text-lg font-medium mb-2">Set Custom Targets</h2>
-          <div className="grid grid-cols-1 gap-4"> {/* Changed to single column */}
-            <div>
-              <label className="block text-sm font-medium">Calories</label>
-              <input
-                type="number"
-                value={targetInput.calories}
-                onChange={(e) => handleInputChange("calories", Number(e.target.value))}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Protein</label>
-              <input
-                type="number"
-                value={targetInput.protein}
-                onChange={(e) => handleInputChange("protein", Number(e.target.value))}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Carbs</label>
-              <input
-                type="number"
-                value={targetInput.carbs}
-                onChange={(e) => handleInputChange("carbs", Number(e.target.value))}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Fat</label>
-              <input
-                type="number"
-                value={targetInput.fat}
-                onChange={(e) => handleInputChange("fat", Number(e.target.value))}
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-            <Button onClick={handleSaveTargets} className="w-full bg-[#6E44FF] hover:bg-[#6E44FF]/90 text-white">
-              Save Targets
-            </Button>
-          </div>
-        </section>
+        <CustomTargets 
+          targetInput={targetInput} 
+          handleInputChange={handleInputChange} 
+          handleSaveTargets={handleSaveTargets} 
+        />
+      </div>
+
+      <div className="mt-4 flex justify-center">
+        <div style={{width: '150px', height: '150px'}}>
+          <Doughnut
+            data={{
+              labels: ['Protein', 'Carbs', 'Fat'],
+              datasets: [{
+                data: [
+                  totals.protein * 4, // 4 calories per gram of protein
+                  totals.carbs * 4,   // 4 calories per gram of carbs
+                  totals.fat * 9,     // 9 calories per gram of fat
+                ],
+                backgroundColor: ['#7EE081', '#F0E15B', '#E55640'],
+              }]
+            }}
+            options={{
+              plugins: {
+                legend: {
+                  position: 'bottom'
+                }
+              },
+              cutout: '70%'
+            }}
+          />
+        </div>
       </div>
 
       {isModalOpen && (
         <FoodSearchModal
           onClose={() => setIsModalOpen(false)}
           onAddFood={addFoodEntry}
+          selectedDate={selectedDate}
+          recentFoods={recentFoods}
         />
       )}
     </main>
