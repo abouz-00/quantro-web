@@ -37,6 +37,14 @@ interface FoodSearchModalProps {
   recentFoods: USDAFood[];
 }
 
+const capitalizeWords = (str: string): string => {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
 export default function FoodSearchModal({ onClose, onAddFood, selectedDate, recentFoods }: FoodSearchModalProps) {
   const [localQuery, setLocalQuery] = useState("");
   const [suggestions, setSuggestions] = useState<USDAFood[]>([]);
@@ -155,7 +163,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate, rece
                       onClick={() => handleSelectFood(food)}
                       className="px-2 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded-lg"
                     >
-                      {food.description}
+                      {capitalizeWords(food.description)}
                     </button>
                   ))}
                 </div>
@@ -199,7 +207,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate, rece
                   onClick={() => handleSelectFood(food)}
                   className="p-3 border rounded-lg shadow-sm cursor-pointer hover:bg-gray-50"
                 >
-                  <div className="font-bold">{food.description}</div>
+                  <div className="font-bold">{capitalizeWords(food.description)}</div>
                   {food.foodCategory && (
                     <div className="text-xs text-gray-500 mb-2">{food.foodCategory}</div>
                   )}
@@ -230,7 +238,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate, rece
               </button>
             </div>
             <div className="mb-2">
-              <div className="font-bold">{selectedFood.description}</div>
+              <div className="font-bold">{capitalizeWords(selectedFood.description)}</div>
               {selectedFood.foodCategory && (
                 <div className="text-xs text-gray-500">{selectedFood.foodCategory}</div>
               )}

@@ -2,7 +2,6 @@
 
 import React from "react";
 import ProgressBar from "./ProgressBar";
-import MacroChart from "./MacroChart";
 
 interface Nutrients {
   calories: number;
@@ -49,13 +48,6 @@ export default function EnergySummary({ totals, customGoals }: EnergySummaryProp
         unit="g"
         color="bg-[#E55640]"
       />
-      <div className="mt-4">
-        <MacroChart 
-          protein={totals.protein}
-          carbs={totals.carbs}
-          fat={totals.fat}
-        />
-      </div>
     </section>
   );
 }
