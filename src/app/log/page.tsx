@@ -129,17 +129,6 @@ export default function LogPage() {
     }));
   };
 
-  const updateRecents = (selectedFood: USDAFood) => {
-    // Add the food to recent foods if not already there
-    setRecentFoods(prev => {
-      const exists = prev.some(f => f.description === selectedFood.description);
-      if (!exists) {
-        return [selectedFood, ...prev].slice(0, 5); // Keep last 5
-      }
-      return prev;
-    });
-  };
-
   const removeFoodEntry = (id: string) => {
     const removedEntry = foodData.find(item => item.id === id);
     if (removedEntry) {
