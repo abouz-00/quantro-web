@@ -34,6 +34,7 @@ git clone https://github.com/quantrodev/Quantro.git
 cd Quantro
 npm install
 npm run dev
+```
 
 Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
