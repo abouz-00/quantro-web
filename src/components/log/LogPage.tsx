@@ -181,6 +181,36 @@ export default function LogPage() {
     }));
   };
 
+  const updateFoodEntry = (id: string, updates: Partial<FoodEntry>) => {
+    setFoodData(prev => prev.map(item => {
+      if (item.id === id) {
+        return { ...item, ...updates };
+      }
+      return item;
+    }));
+
+    // If we're updating nutrients, recalculate totals
+    if ('calories' in updates || 'protein' in updates || 'carbs' in updates || 'fat' in updates) {
+      // Find the original entry
+      const originalEntry = foodData.find(item => item.id === id);
+      if (originalEntry) {
+        // Calculate differences
+        const calorieDiff = (updates.calories || 0) - originalEntry.calories;
+        const proteinDiff = (updates.protein || 0) - originalEntry.protein;
+        const carbsDiff = (updates.carbs || 0) - originalEntry.carbs;
+        const fatDiff = (updates.fat || 0) - originalEntry.fat;
+
+        // Update totals with differences
+        setTotals(prev => ({
+          calories: prev.calories + calorieDiff,
+          protein: prev.protein + proteinDiff,
+          carbs: prev.carbs + carbsDiff,
+          fat: prev.fat + fatDiff,
+        }));
+      }
+    }
+  };
+
   const handleInputChange = (field: keyof Nutrients, value: number) => {
     setTargetInput(prev => ({ ...prev, [field]: value }));
   };
@@ -318,6 +348,7 @@ export default function LogPage() {
               selectedEntries={selectedEntries}
               handleEntrySelect={handleEntrySelect}
               removeFoodEntry={removeFoodEntry}
+              updateFoodEntry={updateFoodEntry}
             />
           </div>
         ) : (
