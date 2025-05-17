@@ -307,17 +307,7 @@ export default function LogPage() {
         </div>
       </div>
       
-      {/* Summary and targets grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <EnergySummary totals={totals} customGoals={customGoals} />
-        <CustomTargets
-          targetInput={targetInput}
-          handleInputChange={handleInputChange}
-          handleSaveTargets={handleSaveTargets}
-        />
-      </div>
-      
-      {/* Food entries table */}
+      {/* Food entries table - MOVED UP */}
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
         <h2 className="text-lg font-medium mb-4">Food Log</h2>
         {filteredEntries.length > 0 ? (
@@ -335,6 +325,16 @@ export default function LogPage() {
             No entries for this date. Add some food to get started!
           </div>
         )}
+      </div>
+      
+      {/* Summary and targets grid - MOVED DOWN */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <EnergySummary totals={totals} customGoals={customGoals} />
+        <CustomTargets
+          targetInput={targetInput}
+          handleInputChange={handleInputChange}
+          handleSaveTargets={handleSaveTargets}
+        />
       </div>
       
       {/* Food search modal */}

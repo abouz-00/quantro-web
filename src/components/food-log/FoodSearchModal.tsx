@@ -97,42 +97,39 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate, rece
   const handleAddFood = () => {
     if (!selectedFood) return;
     
-    // Convert quantity to grams based on unit selection
-    let amountInGrams = Number(quantity) || 0;
-    if (unit in UNIT_CONVERSIONS) {
-      amountInGrams = (Number(quantity) || 0) * UNIT_CONVERSIONS[unit as keyof typeof UNIT_CONVERSIONS];
-    } else if (unit === "Serving" && selectedFood.servingSize) {
-      amountInGrams = (Number(quantity) || 0) * selectedFood.servingSize;
-    }
-
-    // Get base values per 100g
-    const baseNutrients = selectedFood.foodNutrients.reduce(
-      (acc: Nutrients, n: { nutrientName: string; value: number }) => {
-        if (n.nutrientName === "Energy") acc.calories = n.value;
-        if (n.nutrientName === "Protein") acc.protein = n.value;
-        if (n.nutrientName === "Carbohydrate, by difference") acc.carbs = n.value;
-        if (n.nutrientName === "Total lipid (fat)") acc.fat = n.value;
-        if (n.nutrientName === "Fiber, total dietary") acc.fiber = n.value;
-        return acc;
-      },
-      { calories: 0, protein: 0, carbs: 0, fat: 0 }
-    );
-
-    // Calculate adjusted values based on amount in grams
+    // Get nutrient values
+    const findNutrient = (name: string): number => {
+      const nutrient = selectedFood.foodNutrients.find(n => 
+        n.nutrientName.toLowerCase().includes(name.toLowerCase())
+      );
+      return nutrient ? nutrient.value : 0;
+    };
+    
+    // Fix the nutrient lookups by being more specific
+    const calories = findNutrient("energy");
+    const protein = findNutrient("protein");
+    const carbs = findNutrient("carbohydrate");
+    const fat = findNutrient("total lipid (fat)");
+    
+    console.log("Nutrients found:", { calories, protein, carbs, fat });
+    console.log("All nutrients:", selectedFood.foodNutrients);
+    
+    // Calculate serving adjustment
+    const servingMultiplier = serving / 100; // Assuming base is 100g
+    
     const entry: FoodEntry = {
       id: uuidv4(),
       description: selectedFood.description,
-      amount: quantity,
-      unit,
-      calories: (baseNutrients.calories * amountInGrams) / 100,
-      protein: (baseNutrients.protein * amountInGrams) / 100,
-      carbs: (baseNutrients.carbs * amountInGrams) / 100,
-      fat: (baseNutrients.fat * amountInGrams) / 100,
-      fiber: baseNutrients.fiber ? (baseNutrients.fiber * amountInGrams) / 100 : undefined,
+      amount: serving.toString(),
+      unit: servingUnit,
       date: selectedDate.toISOString(),
-      mealType
+      mealType,
+      calories: calories * servingMultiplier,
+      protein: protein * servingMultiplier,
+      carbs: carbs * servingMultiplier,
+      fat: fat * servingMultiplier,
     };
-
+    
     onAddFood(entry);
     onClose();
   };
