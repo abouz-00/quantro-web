@@ -40,7 +40,6 @@ interface FoodSearchModalProps {
   onClose: () => void;
   onAddFood: (entry: FoodEntry) => void;
   selectedDate: Date;
-  recentFoods: USDAFood[];
 }
 
 const UNIT_CONVERSIONS = {
@@ -60,7 +59,7 @@ const capitalizeWords = (str: string): string => {
     .join(' ');
 };
 
-export default function FoodSearchModal({ onClose, onAddFood, selectedDate, recentFoods }: FoodSearchModalProps) {
+export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalProps) {
   const [activeTab, setActiveTab] = useState<"search" | "favorites" | "custom">("search");
   const [localQuery, setLocalQuery] = useState("");
   const [suggestions, setSuggestions] = useState<USDAFood[]>([]);

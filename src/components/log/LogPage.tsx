@@ -42,7 +42,6 @@ export default function LogPage() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
-  const recentFoods: USDAFood[] = []; // Simple constant array instead of state
   
   const [totals, setTotals] = useState<Nutrients>({
     calories: 0,
@@ -363,7 +362,6 @@ export default function LogPage() {
           onClose={() => setIsModalOpen(false)}
           onAddFood={addFoodEntry}
           selectedDate={selectedDate}
-          recentFoods={recentFoods}
         />
       )}
     </div>
