@@ -11,7 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { HiDotsHorizontal, HiChevronLeft, HiChevronRight, HiPlus } from "react-icons/hi";
 import { Menu } from "@headlessui/react";
 
-// Types for nutrients, food entry, and USDA food suggestion (extended)
+// Types for nutrients and food entry
 interface Nutrients {
   calories: number;
   protein: number;
@@ -26,16 +26,10 @@ interface FoodEntry extends Nutrients {
   amount: string;
   unit: string;
   date: string;
-  mealType: "breakfast" | "lunch" | "dinner" | "snack" | "other"; // Add "other" as a valid type
+  mealType: "breakfast" | "lunch" | "dinner" | "snack" | "other";
 }
 
-interface USDAFood {
-  description: string;
-  foodCategory?: string;
-  foodNutrients: { nutrientName: string; value: number }[];
-  servingSize?: number;
-  servingSizeUnit?: string;
-}
+// Remove the USDAFood interface since it's not used in this component
 
 export default function LogPage() {
   const [foodData, setFoodData] = useState<FoodEntry[]>([]);
