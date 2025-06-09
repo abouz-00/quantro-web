@@ -61,7 +61,6 @@ const capitalizeWords = (str: string): string => {
 // Sortable row component
 function SortableTableRow({ 
   item, 
-  index, 
   foodData, 
   selectedEntries, 
   handleEntrySelect, 
@@ -73,7 +72,6 @@ function SortableTableRow({
   setEditAmount 
 }: {
   item: FoodEntry;
-  index: number;
   foodData: FoodEntry[];
   selectedEntries: string[];
   handleEntrySelect: (id: string, index: number, event: React.MouseEvent) => void;
@@ -268,7 +266,6 @@ export default function FoodTable({
                 <SortableTableRow
                   key={item.id}
                   item={item}
-                  index={index}
                   foodData={foodData}
                   selectedEntries={selectedEntries}
                   handleEntrySelect={handleEntrySelect}
