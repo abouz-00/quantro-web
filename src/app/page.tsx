@@ -1,7 +1,9 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import ErrorBoundary from '../components/ErrorBoundary';
+import LandingPage from '../components/LandingPage';
 
 // Use dynamic import with SSR disabled for the entire LogPage
 const LogPage = dynamic(() => import('../components/log/LogPage'), {
@@ -9,26 +11,45 @@ const LogPage = dynamic(() => import('../components/log/LogPage'), {
 });
 
 export default function Home() {
-  return (
-    <div className="bg-[#F5F0E7] min-h-screen">
-      <header className="bg-white shadow-sm py-4 px-6">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-violet-600">Quantro</h1>
-          <div>
-            {/* Add navigation or user controls here if needed */}
-          </div>
+  const [hasAccess, setHasAccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Check for access (you can modify this logic as needed)
+    const accessKey = localStorage.getItem('quantro_access');
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlKey = urlParams.get('key');
+    
+    // Allow access if they have the key in localStorage or URL
+    if (accessKey === 'dev-access' || urlKey === 'dev-access') {
+      setHasAccess(true);
+      if (urlKey === 'dev-access') {
+        localStorage.setItem('quantro_access', 'dev-access');
+      }
+    }
+    
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-violet-50 to-purple-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
         </div>
-      </header>
-      
-      <main>
-        <ErrorBoundary>
-          <LogPage />
-        </ErrorBoundary>
-      </main>
-      
-      <footer className="container mx-auto px-6 py-4 text-center text-sm text-gray-500 mt-8">
-        © {new Date().getFullYear()} Quantro - Track your nutrition
-      </footer>
-    </div>
-  );
+      </div>
+    );
+  }
+
+  // Show landing page for public, log page for authorized users
+  if (hasAccess) {
+    return (
+      <ErrorBoundary>
+        <LogPage />
+      </ErrorBoundary>
+    );
+  }
+
+  return <LandingPage />;
 }
