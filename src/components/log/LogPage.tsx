@@ -228,29 +228,21 @@ export default function LogPage() {
 
   // Handle entry selection
   const handleEntrySelect = (id: string, index: number, event: React.MouseEvent) => {
-    if (event.ctrlKey || event.metaKey) {
-      // Toggle selection when Ctrl/Cmd is pressed
-      setSelectedEntries(prev =>
-        prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
-      );
-    } else if (event.shiftKey && selectedEntries.length > 0) {
-      // Select range when Shift is pressed
-      const lastSelectedIndex = foodData.findIndex(
-        entry => entry.id === selectedEntries[selectedEntries.length - 1]
-      );
-      
-      const start = Math.min(lastSelectedIndex, index);
-      const end = Math.max(lastSelectedIndex, index);
-      
-      const newSelection = foodData
-        .slice(start, end + 1)
-        .map(entry => entry.id);
-      
-      setSelectedEntries(prev => [...new Set([...prev, ...newSelection])]);
-    } else {
-      // Regular click (select just this entry)
-      setSelectedEntries([id]);
-    }
+    setSelectedEntries(prev => {
+      if (prev.includes(id)) {
+        // If already selected, deselect it
+        return prev.filter(entryId => entryId !== id);
+      } else {
+        // If not selected, add to selection
+        if (event.ctrlKey || event.metaKey) {
+          // Multi-select with Ctrl/Cmd
+          return [...prev, id];
+        } else {
+          // Single select
+          return [id];
+        }
+      }
+    });
   };
 
   const handleReorderEntries = (newOrder: FoodEntry[]) => {
