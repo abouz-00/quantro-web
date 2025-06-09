@@ -253,6 +253,16 @@ export default function LogPage() {
     }
   };
 
+  const handleReorderEntries = (newOrder: FoodEntry[]) => {
+    // Update the food data to reflect the new order
+    const otherEntries = foodData.filter(entry => {
+      const entryDate = new Date(entry.date);
+      return !sameDay(entryDate, selectedDate);
+    });
+    
+    setFoodData([...otherEntries, ...newOrder]);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header with date navigation */}
@@ -331,6 +341,7 @@ export default function LogPage() {
               handleEntrySelect={handleEntrySelect}
               removeFoodEntry={removeFoodEntry}
               updateFoodEntry={updateFoodEntry}
+              onReorderEntries={handleReorderEntries}
             />
           </div>
         ) : (
