@@ -136,7 +136,7 @@ function SortableTableRow({
       ref={setNodeRef}
       style={style}
       className={`border-b border-gray-200 last:border-0 cursor-pointer select-none ${
-        selectedEntries.includes(item.id) ? 'bg-[#CCB4DA]' : ''
+        selectedEntries.includes(item.id) ? 'bg-[#E8D5E8]' : ''
       } ${isDragging ? 'shadow-lg' : ''}`}
       onClick={(e) => handleEntrySelect(item.id, foodData.indexOf(item), e)}
     >
