@@ -262,7 +262,7 @@ export default function FoodTable({
               items={filteredEntries.map(item => item.id)}
               strategy={verticalListSortingStrategy}
             >
-              {filteredEntries.map((item, index) => (
+              {filteredEntries.map((item) => (
                 <SortableTableRow
                   key={item.id}
                   item={item}
