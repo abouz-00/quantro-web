@@ -95,15 +95,26 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
     localStorage.setItem('customFoods', JSON.stringify(customFoods));
   }, [customFoods]);
 
-  // USDA API search (existing code)
+  // USDA API search (updated code)
   useEffect(() => {
     if (activeTab === "search" && localQuery.length > 2) {
       const timeoutId = setTimeout(async () => {
         try {
+          console.log("Searching for:", localQuery);
+          
           const response = await fetch(
             `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(localQuery)}&pageSize=10&api_key=DEMO_KEY`
           );
+          
+          console.log("Response status:", response.status);
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
           const data = await response.json();
+          console.log("API Response:", data);
+          
           setSuggestions(data.foods || []);
         } catch (error) {
           console.error("Error fetching food data:", error);
