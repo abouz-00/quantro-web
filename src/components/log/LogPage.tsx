@@ -286,7 +286,7 @@ export default function LogPage() {
           <Button
             onClick={() => setIsModalOpen(true)}
             variant="default"
-            className="flex items-center bg-violet-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-violet-600"
+            className="flex items-center bg-violet-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-violet-600 cursor-pointer"
           >
             <HiPlus className="mr-1 h-5 w-5" />
             Add Food
