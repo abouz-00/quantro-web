@@ -15,18 +15,21 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for access (you can modify this logic as needed)
-    const accessKey = localStorage.getItem('quantro_access');
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlKey = urlParams.get('key');
-    
-    // Allow access if they have the key in localStorage or URL
-    if (accessKey === 'dev-access' || urlKey === 'dev-access') {
-      setHasAccess(true);
-      if (urlKey === 'dev-access') {
-        localStorage.setItem('quantro_access', 'dev-access');
+    // Only allow access in development environment
+    if (process.env.NODE_ENV === 'development') {
+      const accessKey = localStorage.getItem('quantro_access');
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlKey = urlParams.get('key');
+      
+      // Allow access if they have the key in localStorage or URL
+      if (accessKey === 'dev-access' || urlKey === 'dev-access') {
+        setHasAccess(true);
+        if (urlKey === 'dev-access') {
+          localStorage.setItem('quantro_access', 'dev-access');
+        }
       }
     }
+    // In production, hasAccess stays false (no access to LogPage)
     
     setIsLoading(false);
   }, []);
@@ -42,7 +45,7 @@ export default function Home() {
     );
   }
 
-  // Show landing page for public, log page for authorized users
+  // Show landing page for public, log page for authorized users (dev only)
   if (hasAccess) {
     return (
       <ErrorBoundary>
