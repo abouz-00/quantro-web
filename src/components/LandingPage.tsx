@@ -20,7 +20,7 @@ export default function LandingPage() {
             Stay Tuned
           </h2>
           <p className="text-xl text-gray-600 leading-relaxed">
-            We're building something amazing for nutrition tracking. 
+            We&apos;re building something amazing for nutrition tracking. 
             Our platform will revolutionize how you monitor your health and wellness journey.
           </p>
         </div>
