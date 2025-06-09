@@ -135,7 +135,7 @@ function SortableTableRow({
     <tr
       ref={setNodeRef}
       style={style}
-      className={`border-b border-gray-200 last:border-0 cursor-pointer ${
+      className={`border-b border-gray-200 last:border-0 cursor-pointer select-none ${
         selectedEntries.includes(item.id) ? 'bg-blue-50' : ''
       } ${isDragging ? 'shadow-lg' : ''}`}
       onClick={(e) => handleEntrySelect(item.id, foodData.indexOf(item), e)}
@@ -238,7 +238,7 @@ export default function FoodTable({
   }
 
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="w-full overflow-x-auto select-none">
       <DndContext 
         sensors={sensors}
         collisionDetection={closestCenter}
