@@ -84,24 +84,27 @@ export default function LandingPage() {
         <p className={`text-white/70 text-sm ${montserrat.className}`}>
           © 2025 Quantro. All rights reserved.
         </p>
-        <a 
-          href="https://x.com/quantroapp" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          aria-label="Follow Quantro on X (Twitter)"
-          className="flex items-center justify-center w-12 h-12 bg-black rounded-full hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
-        >
-          <svg 
-            width="20" 
-            height="20" 
-            viewBox="0 0 24 24" 
-            fill="currentColor" 
-            className="text-white"
-            aria-hidden="true"
+        <div className="flex-1 flex justify-center">
+          <a 
+            href="https://x.com/quantroapp" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            aria-label="Follow Quantro on X (Twitter)"
+            className="flex items-center justify-center p-2 hover:bg-white/10 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
           >
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-          </svg>
-        </a>
+            <svg 
+              width="24" 
+              height="24" 
+              viewBox="0 0 24 24" 
+              fill="currentColor" 
+              className="text-white/70 hover:text-white transition-colors duration-200"
+              aria-hidden="true"
+            >
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+        </div>
+        <div className="w-20"></div> {/* Spacer for balance */}
       </footer>
     </div>
   );
