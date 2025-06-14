@@ -15,8 +15,8 @@ export default function LandingPage() {
             <img 
               src="/logo.svg" 
               alt="Quantro Logo" 
-              className="w-32 h-32"
-              style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+              className="w-32 h-32 bg-transparent"
+              style={{ userSelect: 'none', WebkitUserSelect: 'none', filter: 'brightness(0) invert(1)' }}
             />
             <h1 className={`text-8xl font-bold text-white ${montserrat.className}`}
                 style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
@@ -64,33 +64,31 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="fixed bottom-0 left-0 right-0 px-8 py-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <div className="max-w-7xl mx-auto flex justify-between items-end">
           <p className={`text-white/70 text-sm ${montserrat.className}`}>
             © 2025 Quantro. All rights reserved.
           </p>
           
-          <div className="absolute left-1/2 transform -translate-x-1/2">
+          <div className="flex items-end">
             <a 
               href="https://x.com/quantroapp" 
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="Follow Quantro on X (Twitter)"
-              className="flex items-center justify-center p-3 hover:bg-white/10 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
+              className="focus:outline-none focus:ring-2 focus:ring-white/50"
             >
               <svg 
                 width="32" 
                 height="32" 
                 viewBox="0 0 24 24" 
                 fill="currentColor" 
-                className="text-white/90 hover:text-white transition-colors duration-200"
+                className="text-white"
                 aria-hidden="true"
               >
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
               </svg>
             </a>
           </div>
-          
-          <div className="w-20"></div> {/* Spacer for balance */}
         </div>
       </footer>
     </div>
