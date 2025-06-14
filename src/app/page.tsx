@@ -15,14 +15,16 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Only allow access in development environment
-    if (process.env.NODE_ENV === 'development') {
+    // Make sure we're in the browser environment before checking localStorage
+    if (typeof window !== 'undefined') {
+      // Only allow access in development environment or with specific keys
+      const isDevEnv = process.env.NODE_ENV === 'development';
       const accessKey = localStorage.getItem('quantro_access');
       const urlParams = new URLSearchParams(window.location.search);
       const urlKey = urlParams.get('key');
       
-      // Allow access if they have the key in localStorage or URL
-      if (accessKey === 'dev-access' || urlKey === 'dev-access') {
+      // Allow access if in dev environment AND they have the key in localStorage or URL
+      if (isDevEnv && (accessKey === 'dev-access' || urlKey === 'dev-access')) {
         setHasAccess(true);
         if (urlKey === 'dev-access') {
           localStorage.setItem('quantro_access', 'dev-access');
