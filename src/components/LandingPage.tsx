@@ -1,25 +1,28 @@
 "use client";
 
 import React from 'react';
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-50 to-purple-100 flex items-center justify-center select-none">
+    <div className="min-h-screen flex items-center justify-center select-none" style={{ backgroundColor: '#6e44ff' }}>
       <div className="text-center px-6 py-12 max-w-2xl mx-auto">
         {/* Logo/Brand */}
         <div className="mb-8">
-          <h1 className="text-6xl font-bold text-violet-600 mb-4">
+          <h1 className={`text-6xl font-bold text-white mb-4 ${inter.className}`}>
             Quantro
           </h1>
-          <div className="w-24 h-1 bg-violet-500 mx-auto rounded-full"></div>
+          <div className="w-24 h-1 bg-white mx-auto rounded-full"></div>
         </div>
 
         {/* Main Message */}
         <div className="mb-12">
-          <h2 className="text-4xl font-light text-gray-700 mb-6">
+          <h2 className="text-4xl font-light text-white mb-6">
             Stay Tuned
           </h2>
-          <p className="text-xl text-gray-600 leading-relaxed">
+          <p className="text-xl text-white/90 leading-relaxed">
             We&apos;re building something amazing for nutrition tracking. 
             Our platform will revolutionize how you monitor your health and wellness journey.
           </p>
@@ -74,7 +77,7 @@ export default function LandingPage() {
         </div>
 
         {/* Footer */}
-        <div className="mt-12 text-gray-500 text-sm">
+        <div className="mt-12 text-white/70 text-sm">
           © 2025 Quantro. Coming Soon.
         </div>
       </div>
