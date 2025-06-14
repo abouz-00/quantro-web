@@ -15,11 +15,10 @@ export default function LandingPage() {
             <img 
               src="/header_logo.svg" 
               alt="Quantro Logo" 
-              className="h-24"
+              className="h-32"
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
             />
           </div>
-          <div className="w-32 h-1.5 bg-white mx-auto rounded-full"></div>
         </div>
 
         {/* Main Message */}

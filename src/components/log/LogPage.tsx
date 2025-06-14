@@ -318,8 +318,8 @@ export default function LogPage() {
           <Image 
             src="/header_logo.svg" 
             alt="Quantro Logo" 
-            width={120}
-            height={48}
+            width={150}
+            height={60}
             className=""
             style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
           />
