@@ -15,7 +15,7 @@ export default function LandingPage() {
             <img 
               src="/logo.svg" 
               alt="Quantro Logo" 
-              className="w-20 h-20"
+              className="w-32 h-32"
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
             />
             <h1 className={`text-8xl font-bold text-white ${montserrat.className}`}
