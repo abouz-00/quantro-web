@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { Montserrat } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import FoodSearchModal from "../food-log/FoodSearchModal";
 import FoodTable from "../food-log/FoodTable";
 import EnergySummary from "../food-log/EnergySummary";
@@ -12,7 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { HiDotsHorizontal, HiChevronLeft, HiChevronRight, HiPlus, HiCalendar, HiMenu } from "react-icons/hi";
 import { Menu } from "@headlessui/react";
 
-const montserrat = Montserrat({ subsets: ['latin'] });
+const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 // Types for nutrients and food entry
 interface Nutrients {
@@ -316,17 +316,13 @@ export default function LogPage() {
       <header className="w-full h-16 flex items-center justify-between px-6 shadow-sm relative" style={{ backgroundColor: '#6e44ff' }}>
         <div className="flex items-center">
           <Image 
-            src="/logo.svg" 
-            alt="Quantro Icon" 
-            width={48}
+            src="/header_logo.svg" 
+            alt="Quantro Logo" 
+            width={120}
             height={48}
-            className="mr-3"
+            className=""
             style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
           />
-          <h1 className={`text-2xl font-semibold text-white ${montserrat.className}`}
-              style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
-            Quantro
-          </h1>
         </div>
         
         <button
