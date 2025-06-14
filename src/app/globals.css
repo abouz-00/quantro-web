@@ -114,10 +114,8 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
-@tailwind base;
-@tailwind components;
+@import "tailwindcss/preflight";
 @tailwind utilities;
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
