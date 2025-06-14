@@ -20,10 +20,10 @@ export default function LandingPage() {
 
         {/* Main Message */}
         <div className="mb-12">
-          <h2 className="text-4xl font-light text-white mb-6">
+          <h2 className={`text-4xl font-light text-white mb-6 ${montserrat.className}`}>
             Stay Tuned
           </h2>
-          <p className="text-xl text-white/90 leading-relaxed">
+          <p className={`text-xl text-white/90 leading-relaxed ${montserrat.className}`}>
             We&apos;re building something amazing for nutrition tracking. 
             Our platform will revolutionize how you monitor your health and wellness journey.
           </p>
@@ -35,33 +35,33 @@ export default function LandingPage() {
             <div className="w-12 h-12 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
               <span className="text-white text-xl">🥗</span>
             </div>
-            <h3 className="font-semibold text-gray-800 mb-2">Smart Tracking</h3>
-            <p className="text-gray-600 text-sm">Intelligent food logging with comprehensive nutrition data</p>
+            <h3 className={`font-semibold text-gray-800 mb-2 ${montserrat.className}`}>Smart Tracking</h3>
+            <p className={`text-gray-600 text-sm ${montserrat.className}`}>Intelligent food logging with comprehensive nutrition data</p>
           </div>
           
           <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
             <div className="w-12 h-12 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
               <span className="text-white text-xl">📊</span>
             </div>
-            <h3 className="font-semibold text-gray-800 mb-2">Analytics</h3>
-            <p className="text-gray-600 text-sm">Detailed insights into your nutritional patterns</p>
+            <h3 className={`font-semibold text-gray-800 mb-2 ${montserrat.className}`}>Analytics</h3>
+            <p className={`text-gray-600 text-sm ${montserrat.className}`}>Detailed insights into your nutritional patterns</p>
           </div>
           
           <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
             <div className="w-12 h-12 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
               <span className="text-white text-xl">🎯</span>
             </div>
-            <h3 className="font-semibold text-gray-800 mb-2">Goals</h3>
-            <p className="text-gray-600 text-sm">Personalized targets and progress tracking</p>
+            <h3 className={`font-semibold text-gray-800 mb-2 ${montserrat.className}`}>Goals</h3>
+            <p className={`text-gray-600 text-sm ${montserrat.className}`}>Personalized targets and progress tracking</p>
           </div>
         </div>
 
         {/* Email Signup */}
         <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
-          <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+          <h3 className={`text-2xl font-semibold text-gray-800 mb-4 ${montserrat.className}`}>
             Get Early Access
           </h3>
-          <p className="text-gray-600 mb-6">
+          <p className={`text-gray-600 mb-6 ${montserrat.className}`}>
             Be the first to know when Quantro launches
           </p>
           
@@ -69,17 +69,17 @@ export default function LandingPage() {
             <input
               type="email"
               placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+              className={`flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent ${montserrat.className}`}
               style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
             />
-            <button className="px-6 py-3 bg-violet-500 text-white rounded-lg font-medium hover:bg-violet-600 transition-colors">
+            <button className={`px-6 py-3 bg-violet-500 text-white rounded-lg font-medium hover:bg-violet-600 transition-colors ${montserrat.className}`}>
               Notify Me
             </button>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="mt-12 text-white/70 text-sm" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
+        <div className={`mt-12 text-white/70 text-sm ${montserrat.className}`} style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
           © 2025 Quantro. Coming Soon.
         </div>
       </div>
