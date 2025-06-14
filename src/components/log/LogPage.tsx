@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { Montserrat } from 'next/font/google';
 import FoodSearchModal from "../food-log/FoodSearchModal";
 import FoodTable from "../food-log/FoodTable";
@@ -314,10 +315,12 @@ export default function LogPage() {
       {/* Header/Nav Bar - Fixed at top, full width */}
       <header className="w-full h-16 flex items-center justify-between px-6 shadow-sm relative" style={{ backgroundColor: '#6e44ff' }}>
         <div className="flex items-center">
-          <img 
+          <Image 
             src="/logo.svg" 
             alt="Quantro Icon" 
-            className="w-12 h-12 mr-3"
+            width={48}
+            height={48}
+            className="mr-3"
             style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
           />
           <h1 className={`text-2xl font-semibold text-white ${montserrat.className}`}
@@ -382,11 +385,6 @@ export default function LogPage() {
                 preventOpenOnFocus={true}
                 shouldCloseOnSelect={true}
                 dayClassName={(date) => {
-                  const today = new Date();
-                  const isToday = date.getDate() === today.getDate() &&
-                                date.getMonth() === today.getMonth() &&
-                                date.getFullYear() === today.getFullYear();
-                  
                   // Only highlight the exact selected date - very precise matching
                   if (selectedDate) {
                     const isSameDate = date.getDate() === selectedDate.getDate() &&
