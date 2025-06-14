@@ -7,7 +7,7 @@ const montserrat = Montserrat({ subsets: ['latin'] });
 
 export default function LandingPage() {
   return (
-    <div className="h-screen flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#6e44ff', userSelect: 'none', WebkitUserSelect: 'none' }}>
+    <div className="h-screen w-screen flex items-center justify-center overflow-hidden fixed inset-0" style={{ backgroundColor: '#6e44ff', userSelect: 'none', WebkitUserSelect: 'none' }}>
       <div className="text-center px-6 py-4 max-w-2xl mx-auto h-full flex flex-col justify-center pb-32">
         {/* Logo/Brand */}
         <div className="mb-12">
