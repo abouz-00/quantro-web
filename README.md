@@ -54,10 +54,9 @@ Quantro is a fast, focused nutrition tracking app for people who log their food 
 
 ### Setup Instructions
 
-1. **Clone the repository**
+1. **Navigate to the project directory**
    ```bash
-   git clone https://github.com/quantrodev/Quantro.git
-   cd Quantro
+   cd quantro
    ```
 
 2. **Install dependencies**
@@ -167,62 +166,18 @@ src/
 
 ---
 
-## 🤝 Contributing
-
-We welcome contributions to Quantro! Here's how you can help:
-
-### Ways to Contribute
-
-- 🐛 **Report Bugs** - Found an issue? Open a GitHub issue with details
-- 💡 **Feature Requests** - Have an idea? We'd love to hear it
-- 🔧 **Code Contributions** - Submit pull requests for bug fixes or new features
-- 📚 **Documentation** - Help improve our docs and README
-- 🧪 **Testing** - Help test new features and report feedback
-
-### Development Guidelines
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes following the existing code style
-4. Test your changes thoroughly
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
-
-### Code Style
-
-- Use TypeScript for type safety
-- Follow React best practices and hooks patterns
-- Use Tailwind CSS for styling
-- Ensure components are responsive and accessible
-- Add comments for complex logic
-
----
-
 ## 📬 Contact
 
-For questions, feedback, or contributions:
+For questions, feedback, or support:
 
 - 📧 **Email:** [hello@quantro.fit](mailto:hello@quantro.fit)
-- 🐙 **GitHub Issues:** [Open an issue](https://github.com/quantrodev/Quantro/issues)
 - 🐦 **Twitter:** [@quantroapp](https://twitter.com/quantroapp)
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## ⭐ Show Your Support
-
-If you find Quantro useful, please consider:
-
-- ⭐ Starring this repository
-- 🐦 Following us on Twitter
-- 📤 Sharing with friends who track nutrition
-- 🤝 Contributing to the project
+Quantro is proprietary software. All rights reserved. This project is not open-source and may not be redistributed or modified without explicit permission.
 
 ---
 
