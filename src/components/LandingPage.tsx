@@ -19,7 +19,7 @@ export default function LandingPage() {
             <img 
               src="/logo.svg" 
               alt="Quantro Logo" 
-              className="w-16 h-16"
+              className="w-24 h-24"
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
             />
           </div>
