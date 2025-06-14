@@ -1,9 +1,9 @@
 "use client";
 
 import React from 'react';
-import { Montserrat } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 
-const montserrat = Montserrat({ subsets: ['latin'] });
+const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 export default function LandingPage() {
   return (
@@ -11,24 +11,20 @@ export default function LandingPage() {
       <div className="text-center px-6 py-4 max-w-2xl mx-auto h-full flex flex-col justify-center pb-32">
         {/* Logo/Brand */}
         <div className="mb-12">
-          <div className="flex items-center justify-center mb-3 -space-x-2">
+          <div className="flex items-center justify-center mb-3">
             <img 
-              src="/logo.svg" 
+              src="/header_logo.svg" 
               alt="Quantro Logo" 
-              className="w-32 h-32"
+              className="h-24"
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
             />
-            <h1 className={`text-6xl font-bold text-white ${montserrat.className}`}
-                style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
-              uantro
-            </h1>
           </div>
           <div className="w-32 h-1.5 bg-white mx-auto rounded-full"></div>
         </div>
 
         {/* Main Message */}
         <div className="mb-16">
-          <p className={`text-2xl text-white/90 leading-relaxed ${montserrat.className}`}>
+          <p className={`text-2xl text-white/90 leading-relaxed ${poppins.className}`}>
             We&apos;re building something amazing for nutrition tracking. 
             Our platform will revolutionize how you monitor your health and wellness journey.
           </p>
@@ -40,24 +36,24 @@ export default function LandingPage() {
             <div className="w-14 h-14 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
               <span className="text-white text-2xl">🥗</span>
             </div>
-            <h3 className={`font-semibold text-gray-800 mb-2 text-lg ${montserrat.className}`}>Smart Tracking</h3>
-            <p className={`text-gray-600 text-base ${montserrat.className}`}>Intelligent food logging with comprehensive nutrition data</p>
+            <h3 className={`font-semibold text-gray-800 mb-2 text-lg ${poppins.className}`}>Smart Tracking</h3>
+            <p className={`text-gray-600 text-base ${poppins.className}`}>Intelligent food logging with comprehensive nutrition data</p>
           </div>
           
           <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
             <div className="w-14 h-14 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
               <span className="text-white text-2xl">📊</span>
             </div>
-            <h3 className={`font-semibold text-gray-800 mb-2 text-lg ${montserrat.className}`}>Analytics</h3>
-            <p className={`text-gray-600 text-base ${montserrat.className}`}>Detailed insights into your nutritional patterns</p>
+            <h3 className={`font-semibold text-gray-800 mb-2 text-lg ${poppins.className}`}>Analytics</h3>
+            <p className={`text-gray-600 text-base ${poppins.className}`}>Detailed insights into your nutritional patterns</p>
           </div>
           
           <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
             <div className="w-14 h-14 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
               <span className="text-white text-2xl">🎯</span>
             </div>
-            <h3 className={`font-semibold text-gray-800 mb-2 text-lg ${montserrat.className}`}>Goals</h3>
-            <p className={`text-gray-600 text-base ${montserrat.className}`}>Personalized targets and progress tracking</p>
+            <h3 className={`font-semibold text-gray-800 mb-2 text-lg ${poppins.className}`}>Goals</h3>
+            <p className={`text-gray-600 text-base ${poppins.className}`}>Personalized targets and progress tracking</p>
           </div>
         </div>
       </div>
@@ -65,7 +61,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="fixed bottom-0 left-0 right-0 px-8 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-end">
-          <p className={`text-white/70 text-sm ${montserrat.className}`}>
+          <p className={`text-white/70 text-sm ${poppins.className}`}>
             © 2025 Quantro. All rights reserved.
           </p>
           
