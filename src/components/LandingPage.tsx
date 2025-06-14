@@ -15,8 +15,8 @@ export default function LandingPage() {
             <img 
               src="/logo.svg" 
               alt="Quantro Logo" 
-              className="w-32 h-32 bg-transparent"
-              style={{ userSelect: 'none', WebkitUserSelect: 'none', filter: 'brightness(0) invert(1)' }}
+              className="w-32 h-32"
+              style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
             />
             <h1 className={`text-8xl font-bold text-white ${montserrat.className}`}
                 style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
@@ -69,7 +69,7 @@ export default function LandingPage() {
             © 2025 Quantro. All rights reserved.
           </p>
           
-          <div className="flex items-end">
+          <div className="absolute left-1/2 transform -translate-x-1/2">
             <a 
               href="https://x.com/quantroapp" 
               target="_blank" 
@@ -89,6 +89,8 @@ export default function LandingPage() {
               </svg>
             </a>
           </div>
+          
+          <div className="w-20"></div> {/* Spacer for balance */}
         </div>
       </footer>
     </div>
