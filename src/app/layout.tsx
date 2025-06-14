@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { GeistSans } from 'geist/font'
+import { Montserrat } from 'next/font/google'
 import "./globals.css";
 import ErrorBoundary from '../components/ErrorBoundary';
+
+const montserrat = Montserrat({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: "Quantro",
@@ -14,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={GeistSans.className}>
+    <html lang="en" className={montserrat.className}>
       <body>
         <ErrorBoundary>
           {children}
