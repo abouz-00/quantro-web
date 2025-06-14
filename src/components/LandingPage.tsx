@@ -18,7 +18,7 @@ export default function LandingPage() {
               className="w-32 h-32"
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
             />
-            <h1 className={`text-8xl font-bold text-white ${montserrat.className}`}
+            <h1 className={`text-6xl font-bold text-white ${montserrat.className}`}
                 style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
               uantro
             </h1>
