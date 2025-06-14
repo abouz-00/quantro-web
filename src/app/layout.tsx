@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from 'next/font/google'
 import "./globals.css";
 import ErrorBoundary from '../components/ErrorBoundary';
+import SessionWrapper from '../components/SessionWrapper';
 
 const montserrat = Montserrat({ subsets: ['latin'] });
 
@@ -21,9 +22,11 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="Quantro" />
       </head>
       <body>
-        <ErrorBoundary>
-          {children}
-        </ErrorBoundary>
+        <SessionWrapper>
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
+        </SessionWrapper>
       </body>
     </html>
   )
