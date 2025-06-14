@@ -30,34 +30,40 @@ export default function LandingPage() {
         </div>
 
         {/* Features Preview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div className="grid grid-cols-1 gap-6 mb-8 max-w-4xl mx-auto">
           <div className="backdrop-blur-sm rounded-xl shadow-lg" style={{ backgroundColor: '#EADFCA', userSelect: 'none', WebkitUserSelect: 'none', aspectRatio: '2/1' }}>
-            <div className="p-6 h-full flex flex-col justify-center">
-              <div className="w-14 h-14 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <span className="text-white text-2xl">🥗</span>
+            <div className="p-8 h-full flex items-center">
+              <div className="w-16 h-16 bg-violet-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-white text-3xl">🥗</span>
               </div>
-              <h3 className={`font-semibold text-gray-800 mb-2 text-lg text-center ${poppins.className}`}>Smart Tracking</h3>
-              <p className={`text-gray-600 text-base text-center ${poppins.className}`}>Intelligent food logging with comprehensive nutrition data</p>
+              <div className="ml-6 flex-1">
+                <h3 className={`font-semibold text-gray-800 mb-2 text-xl ${poppins.className}`}>Smart Tracking</h3>
+                <p className={`text-gray-600 text-lg leading-relaxed ${poppins.className}`}>Intelligent food logging with comprehensive nutrition data</p>
+              </div>
             </div>
           </div>
           
           <div className="backdrop-blur-sm rounded-xl shadow-lg" style={{ backgroundColor: '#EADFCA', userSelect: 'none', WebkitUserSelect: 'none', aspectRatio: '2/1' }}>
-            <div className="p-6 h-full flex flex-col justify-center">
-              <div className="w-14 h-14 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <span className="text-white text-2xl">📊</span>
+            <div className="p-8 h-full flex items-center">
+              <div className="w-16 h-16 bg-violet-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-white text-3xl">📊</span>
               </div>
-              <h3 className={`font-semibold text-gray-800 mb-2 text-lg text-center ${poppins.className}`}>Analytics</h3>
-              <p className={`text-gray-600 text-base text-center ${poppins.className}`}>Detailed insights into your nutritional patterns</p>
+              <div className="ml-6 flex-1">
+                <h3 className={`font-semibold text-gray-800 mb-2 text-xl ${poppins.className}`}>Analytics</h3>
+                <p className={`text-gray-600 text-lg leading-relaxed ${poppins.className}`}>Detailed insights into your nutritional patterns</p>
+              </div>
             </div>
           </div>
           
           <div className="backdrop-blur-sm rounded-xl shadow-lg" style={{ backgroundColor: '#EADFCA', userSelect: 'none', WebkitUserSelect: 'none', aspectRatio: '2/1' }}>
-            <div className="p-6 h-full flex flex-col justify-center">
-              <div className="w-14 h-14 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <span className="text-white text-2xl">🎯</span>
+            <div className="p-8 h-full flex items-center">
+              <div className="w-16 h-16 bg-violet-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-white text-3xl">🎯</span>
               </div>
-              <h3 className={`font-semibold text-gray-800 mb-2 text-lg text-center ${poppins.className}`}>Goals</h3>
-              <p className={`text-gray-600 text-base text-center ${poppins.className}`}>Personalized targets and progress tracking</p>
+              <div className="ml-6 flex-1">
+                <h3 className={`font-semibold text-gray-800 mb-2 text-xl ${poppins.className}`}>Goals</h3>
+                <p className={`text-gray-600 text-lg leading-relaxed ${poppins.className}`}>Personalized targets and progress tracking</p>
+              </div>
             </div>
           </div>
         </div>
