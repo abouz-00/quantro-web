@@ -102,8 +102,9 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
         try {
           console.log("Searching for:", localQuery);
           
+          const apiKey = process.env.NEXT_PUBLIC_USDA_API_KEY || 'DEMO_KEY';
           const response = await fetch(
-            `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(localQuery)}&pageSize=10&api_key=DEMO_KEY`
+            `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(localQuery)}&pageSize=10&api_key=${apiKey}`
           );
           
           console.log("Response status:", response.status);
