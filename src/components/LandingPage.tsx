@@ -11,7 +11,7 @@ export default function LandingPage() {
       <div className="text-center px-6 py-4 max-w-2xl mx-auto h-full flex flex-col justify-center pb-32">
         {/* Logo/Brand */}
         <div className="mb-12">
-          <div className="flex items-center justify-center mb-3">
+          <div className="flex items-center justify-center mb-3 -space-x-2">
             <img 
               src="/logo.svg" 
               alt="Quantro Logo" 
