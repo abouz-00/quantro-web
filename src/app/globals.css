@@ -128,3 +128,254 @@
     background: var(--background-color);
   }
 }
+
+/* Custom DatePicker Styles */
+.react-datepicker-wrapper {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.react-datepicker__input-container input {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  cursor: pointer !important;
+  caret-color: transparent !important;
+  pointer-events: auto !important;
+}
+
+.react-datepicker__input-container input:focus {
+  outline: none !important;
+  caret-color: transparent !important;
+}
+
+.react-datepicker-popper {
+  z-index: 9999 !important;
+  transform: translateY(16px) translateX(15px) !important;
+}
+
+.react-datepicker-popper[data-placement^="bottom"] {
+  margin-top: 16px !important;
+}
+
+.react-datepicker {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  font-family: inherit !important;
+  animation: datepicker-fadeIn 0.2s ease-out !important;
+  user-select: none;
+  -webkit-user-select: none;
+  position: relative !important;
+  display: inline-block !important;
+  background: white !important;
+}
+
+@keyframes datepicker-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.react-datepicker__header {
+  background-color: #6e44ff !important;
+  border-bottom: none !important;
+  border-radius: 12px 12px 0 0 !important;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  color: white !important;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.react-datepicker__navigation {
+  border: none !important;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.react-datepicker__navigation--previous {
+  border-right-color: white !important;
+}
+
+.react-datepicker__navigation--next {
+  border-left-color: white !important;
+}
+
+/* Calendar month navigation */
+.react-datepicker__navigation {
+  background: none !important;
+  line-height: 1.7rem !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  position: absolute !important;
+  top: 10px !important;
+  width: 32px !important;
+  height: 32px !important;
+  text-indent: -999em !important;
+  border: none !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background-color 0.2s ease !important;
+  user-select: none;
+  -webkit-user-select: none;
+  font-size: 0 !important;
+  overflow: hidden !important;
+}
+
+.react-datepicker__navigation:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.react-datepicker__navigation--previous {
+  left: 10px !important;
+}
+
+.react-datepicker__navigation--next {
+  right: 10px !important;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: white !important;
+  border-style: solid !important;
+  border-width: 2px 2px 0 0 !important;
+  content: "" !important;
+  display: block !important;
+  height: 8px !important;
+  width: 8px !important;
+  position: relative !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+.react-datepicker__navigation--previous .react-datepicker__navigation-icon::before {
+  transform: rotate(-135deg) !important;
+}
+
+.react-datepicker__navigation--next .react-datepicker__navigation-icon::before {
+  transform: rotate(45deg) !important;
+}
+
+.react-datepicker__navigation-icon {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0 !important;
+}
+
+/* Hide any text content in navigation */
+.react-datepicker__navigation * {
+  font-size: 0 !important;
+  text-indent: -999em !important;
+  color: transparent !important;
+}
+
+.react-datepicker__current-month {
+  font-weight: bold !important;
+  font-size: 1rem !important;
+  margin: 10px 0 !important;
+}
+
+.react-datepicker__day {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  transition: all 0.15s ease !important;
+  display: inline-block !important;
+  width: 1.7rem !important;
+  line-height: 1.7rem !important;
+  text-align: center !important;
+  margin: 0.166rem !important;
+  border-radius: 0.3rem !important;
+  cursor: pointer !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: #6e44ff !important;
+  color: white !important;
+  transform: scale(1.05) !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #6e44ff !important;
+  color: white !important;
+}
+
+.react-datepicker__day--today {
+  background-color: #f3f4f6 !important;
+  color: #6e44ff !important;
+  font-weight: bold !important;
+}
+
+.react-datepicker__month-container {
+  user-select: none;
+  -webkit-user-select: none;
+  display: inline-block !important;
+}
+
+.react-datepicker__month {
+  margin: 0.4rem !important;
+  text-align: center !important;
+}
+
+.react-datepicker__week {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-around !important;
+}
+
+.react-datepicker__day-names {
+  display: flex !important;
+  justify-content: space-around !important;
+  margin-bottom: 8px !important;
+}
+
+.react-datepicker__day-name {
+  display: inline-block !important;
+  width: 1.7rem !important;
+  line-height: 1.7rem !important;
+  text-align: center !important;
+  margin: 0.166rem !important;
+}
+
+/* Smooth sidebar animations */
+@keyframes slide-in-smooth {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes header-extend {
+  from {
+    transform: scaleX(0);
+    transform-origin: right center;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: right center;
+  }
+}
+
+.animate-slide-in-smooth {
+  animation: slide-in-smooth 0.3s ease-out;
+}
+
+.animate-header-extend {
+  animation: header-extend 0.3s ease-out;
+}

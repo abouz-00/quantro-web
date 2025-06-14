@@ -1,17 +1,18 @@
 "use client";
 
 import React from 'react';
-import { Inter } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin'] });
+const montserrat = Montserrat({ subsets: ['latin'] });
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center select-none" style={{ backgroundColor: '#6e44ff' }}>
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#6e44ff', userSelect: 'none', WebkitUserSelect: 'none' }}>
       <div className="text-center px-6 py-12 max-w-2xl mx-auto">
         {/* Logo/Brand */}
         <div className="mb-8">
-          <h1 className={`text-6xl font-bold text-white mb-4 ${inter.className}`}>
+          <h1 className={`text-6xl font-bold text-white mb-4 ${montserrat.className}`}
+              style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
             Quantro
           </h1>
           <div className="w-24 h-1 bg-white mx-auto rounded-full"></div>
@@ -30,7 +31,7 @@ export default function LandingPage() {
 
         {/* Features Preview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg">
+          <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
             <div className="w-12 h-12 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
               <span className="text-white text-xl">🥗</span>
             </div>
@@ -38,7 +39,7 @@ export default function LandingPage() {
             <p className="text-gray-600 text-sm">Intelligent food logging with comprehensive nutrition data</p>
           </div>
           
-          <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg">
+          <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
             <div className="w-12 h-12 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
               <span className="text-white text-xl">📊</span>
             </div>
@@ -46,7 +47,7 @@ export default function LandingPage() {
             <p className="text-gray-600 text-sm">Detailed insights into your nutritional patterns</p>
           </div>
           
-          <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg">
+          <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
             <div className="w-12 h-12 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
               <span className="text-white text-xl">🎯</span>
             </div>
@@ -56,7 +57,7 @@ export default function LandingPage() {
         </div>
 
         {/* Email Signup */}
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
+        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
           <h3 className="text-2xl font-semibold text-gray-800 mb-4">
             Get Early Access
           </h3>
@@ -69,6 +70,7 @@ export default function LandingPage() {
               type="email"
               placeholder="Enter your email"
               className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+              style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
             />
             <button className="px-6 py-3 bg-violet-500 text-white rounded-lg font-medium hover:bg-violet-600 transition-colors">
               Notify Me
@@ -77,7 +79,7 @@ export default function LandingPage() {
         </div>
 
         {/* Footer */}
-        <div className="mt-12 text-white/70 text-sm">
+        <div className="mt-12 text-white/70 text-sm" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
           © 2025 Quantro. Coming Soon.
         </div>
       </div>

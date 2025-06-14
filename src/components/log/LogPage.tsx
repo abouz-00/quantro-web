@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { Montserrat } from 'next/font/google';
 import FoodSearchModal from "../food-log/FoodSearchModal";
 import FoodTable from "../food-log/FoodTable";
 import CustomTargets from "../food-log/CustomTargets";
@@ -8,8 +9,10 @@ import EnergySummary from "../food-log/EnergySummary";
 import { Button } from "../ui/button";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { HiDotsHorizontal, HiChevronLeft, HiChevronRight, HiPlus } from "react-icons/hi";
+import { HiDotsHorizontal, HiChevronLeft, HiChevronRight, HiPlus, HiCalendar, HiMenu } from "react-icons/hi";
 import { Menu } from "@headlessui/react";
+
+const montserrat = Montserrat({ subsets: ['latin'] });
 
 // Types for nutrients and food entry
 interface Nutrients {
@@ -36,6 +39,8 @@ export default function LogPage() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [isTargetsModalOpen, setIsTargetsModalOpen] = useState<boolean>(false);
   
   const [totals, setTotals] = useState<Nutrients>({
     calories: 0,
@@ -256,28 +261,79 @@ export default function LogPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 select-none">
+    <div className="min-h-screen" style={{ backgroundColor: '#F5F0E7', userSelect: 'none', WebkitUserSelect: 'none' }}>
+      {/* Header/Nav Bar - Fixed at top, full width */}
+      <header className="w-full h-16 flex items-center justify-between px-6 shadow-sm relative" style={{ backgroundColor: '#6e44ff' }}>
+        <div className="flex items-center">
+          <img 
+            src="/logo.svg" 
+            alt="Quantro Icon" 
+            className="w-12 h-12 mr-3"
+            style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+          />
+          <h1 className={`text-2xl font-semibold text-white ${montserrat.className}`}
+              style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
+            Quantro
+          </h1>
+        </div>
+        
+        <button
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className={`p-2 rounded-lg transition-all duration-300 relative z-50 ${isSidebarOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+          aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
+        >
+          <HiMenu className="h-6 w-6 text-white" />
+        </button>
+      </header>
+      
+      {/* Content Area with Flex Layout */}
+      <div className="flex" style={{ height: 'calc(100vh - 4rem)' }}>
+        {/* Main Content Area */}
+        <div 
+          className="flex-1 transition-all duration-300 ease-out overflow-hidden"
+          style={{ minWidth: 0 }} // Prevent flex item from growing beyond available space
+        >
+
+        <div className="container mx-auto px-4 py-8">
       {/* Header with date navigation */}
       <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 bg-white rounded-full shadow-lg px-4 py-3" style={{ backgroundColor: '#F8F5F0', border: '1px solid #EDE6DC' }}>
           <button
             onClick={handlePreviousDay}
-            className="p-2 hover:bg-gray-100 rounded-full"
+            className="p-2 hover:bg-white hover:bg-opacity-60 rounded-full transition-colors duration-200"
             aria-label="Previous day"
           >
-            <HiChevronLeft className="h-6 w-6" />
+            <HiChevronLeft className="h-6 w-6 text-gray-600" />
           </button>
           
-          <DatePicker
-            selected={selectedDate}
-            onChange={handleDateChange}
-            dateFormat="MMMM d, yyyy"
-            className="border-none bg-transparent text-xl font-bold text-center cursor-pointer"
-          />
+          <div 
+            className="flex items-center space-x-3 cursor-pointer" 
+            style={{ userSelect: 'none', WebkitUserSelect: 'none', position: 'relative' }}
+            onClick={() => {
+              const datePicker = document.querySelector('.react-datepicker__input-container input') as HTMLInputElement;
+              if (datePicker) datePicker.click();
+            }}
+          >
+            <HiCalendar className="h-6 w-6 text-gray-600" />
+            <DatePicker
+              selected={selectedDate}
+              onChange={handleDateChange}
+              dateFormat="MMMM d, yyyy"
+              className="border-none bg-transparent text-xl font-bold text-center cursor-pointer text-gray-800 px-2"
+              onKeyDown={(e) => e.preventDefault()}
+              onFocus={(e) => e.target.blur()}
+              showPopperArrow={false}
+              calendarClassName="custom-datepicker"
+              popperPlacement="bottom"
+              autoComplete="off"
+            />
+          </div>
           
           <button
             onClick={handleNextDay}
-            className="p-2 hover:bg-gray-100 rounded-full"
+            className="p-2 hover:bg-white hover:bg-opacity-60 rounded-full transition-colors duration-200"
             aria-label="Next day"
           >
             <HiChevronRight className="h-6 w-6" />
@@ -288,7 +344,10 @@ export default function LogPage() {
           <Button
             onClick={() => setIsModalOpen(true)}
             variant="default"
-            className="flex items-center bg-violet-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-violet-600 cursor-pointer"
+            className="flex items-center text-white px-4 py-2 rounded-full text-sm font-medium cursor-pointer"
+            style={{ backgroundColor: '#6e44ff' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#5a37d9'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#6e44ff'}
           >
             <HiPlus className="mr-1 h-5 w-5" />
             Add Food
@@ -337,20 +396,15 @@ export default function LogPage() {
             />
           </div>
         ) : (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-gray-500" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
             No entries for this date. Add some food to get started!
           </div>
         )}
       </div>
       
-      {/* Summary and targets grid - MOVED DOWN */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      {/* Summary grid - Single column now */}
+      <div className="mb-6">
         <EnergySummary totals={totals} customGoals={customGoals} />
-        <CustomTargets
-          targetInput={targetInput}
-          handleInputChange={handleInputChange}
-          handleSaveTargets={handleSaveTargets}
-        />
       </div>
       
       {/* Food search modal */}
@@ -361,6 +415,241 @@ export default function LogPage() {
           selectedDate={selectedDate}
         />
       )}
+        </div>
+
+        {/* Targets Modal */}
+      {isTargetsModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 transition-opacity duration-300"
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}
+            onClick={() => setIsTargetsModalOpen(false)}
+          ></div>
+          
+          {/* Modal */}
+          <div className="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-gray-800">Set Custom Targets</h2>
+              <button
+                onClick={() => setIsTargetsModalOpen(false)}
+                className="p-1 rounded-full transition-colors duration-200"
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                aria-label="Close"
+              >
+                <span className="text-gray-500 text-xl">×</span>
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Calories</label>
+                <input
+                  type="number"
+                  value={targetInput.calories}
+                  onChange={(e) => handleInputChange("calories", Number(e.target.value))}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Protein (g)</label>
+                <input
+                  type="number"
+                  value={targetInput.protein}
+                  onChange={(e) => handleInputChange("protein", Number(e.target.value))}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Carbs (g)</label>
+                <input
+                  type="number"
+                  value={targetInput.carbs}
+                  onChange={(e) => handleInputChange("carbs", Number(e.target.value))}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Fat (g)</label>
+                <input
+                  type="number"
+                  value={targetInput.fat}
+                  onChange={(e) => handleInputChange("fat", Number(e.target.value))}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
+                />
+              </div>
+            </div>
+            
+            <div className="flex justify-end space-x-3 mt-6">
+              <button
+                onClick={() => setIsTargetsModalOpen(false)}
+                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  handleSaveTargets();
+                  setIsTargetsModalOpen(false);
+                }}
+                className="px-6 py-2 text-white rounded-lg transition-colors duration-200"
+                style={{ backgroundColor: '#6e44ff' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#5a37d9'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#6e44ff'}
+              >
+                Save Targets
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      </div>        {/* Sidebar */}
+        <div className={`transition-all duration-300 ease-out ${isSidebarOpen ? 'w-64' : 'w-0'} overflow-hidden`}>
+          {isSidebarOpen && (
+            <>
+              {/* Backdrop for mobile/overlay effect */}
+              <div 
+                className="fixed inset-0 transition-opacity duration-300 z-40 lg:hidden"
+                style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}
+                onClick={() => setIsSidebarOpen(false)}
+              ></div>
+              
+              {/* Sidebar Content */}
+              <div className="shadow-xl relative z-50"
+                   style={{ backgroundColor: '#6e44ff', height: '100vh' }}>
+                {/* Hamburger positioned to match header exactly using fixed positioning */}
+                <button
+                  onClick={() => setIsSidebarOpen(false)}
+                  className="fixed right-6 p-2 rounded-lg transition-colors duration-200 z-50"
+                  style={{ top: '0.75rem' }} // 12px from viewport top to match header hamburger exactly
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  aria-label="Close menu"
+                >
+                  <HiMenu className="h-6 w-6 text-white" />
+                </button>
+                
+                <div className="flex flex-col h-full pt-4">
+                  {/* Sidebar Content */}
+                  <div className="flex-1 px-6 pt-2">
+                  <nav>
+                    <button
+                      onClick={() => {
+                        setIsTargetsModalOpen(true);
+                        setIsSidebarOpen(false);
+                      }}
+                      className="w-full text-left p-4 rounded-lg transition-colors duration-200 flex items-center justify-between"
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    >
+                      <span className="text-white font-medium text-lg">Set Targets</span>
+                      <span className="text-white text-xl">🎯</span>
+                    </button>
+                  </nav>
+                  </div>
+                </div>
+              </div>
+          </>
+        )}
+      </div>
+
+      {/* Targets Modal */}
+      {isTargetsModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 transition-opacity duration-300"
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}
+            onClick={() => setIsTargetsModalOpen(false)}
+          ></div>
+          
+          {/* Modal */}
+          <div className="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-gray-800">Set Custom Targets</h2>
+              <button
+                onClick={() => setIsTargetsModalOpen(false)}
+                className="p-1 rounded-full transition-colors duration-200"
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                aria-label="Close"
+              >
+                <span className="text-gray-500 text-xl">×</span>
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Calories</label>
+                <input
+                  type="number"
+                  value={targetInput.calories}
+                  onChange={(e) => handleInputChange("calories", Number(e.target.value))}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Protein (g)</label>
+                <input
+                  type="number"
+                  value={targetInput.protein}
+                  onChange={(e) => handleInputChange("protein", Number(e.target.value))}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Carbs (g)</label>
+                <input
+                  type="number"
+                  value={targetInput.carbs}
+                  onChange={(e) => handleInputChange("carbs", Number(e.target.value))}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Fat (g)</label>
+                <input
+                  type="number"
+                  value={targetInput.fat}
+                  onChange={(e) => handleInputChange("fat", Number(e.target.value))}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
+                />
+              </div>
+            </div>
+            
+            <div className="flex justify-end space-x-3 mt-6">
+              <button
+                onClick={() => setIsTargetsModalOpen(false)}
+                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  handleSaveTargets();
+                  setIsTargetsModalOpen(false);
+                }}
+                className="px-6 py-2 text-white rounded-lg transition-colors duration-200"
+                style={{ backgroundColor: '#6e44ff' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#5a37d9'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#6e44ff'}
+              >
+                Save Targets
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      </div>
     </div>
   );
 }

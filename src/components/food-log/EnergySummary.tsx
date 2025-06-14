@@ -18,7 +18,7 @@ interface EnergySummaryProps {
 
 export default function EnergySummary({ totals, customGoals }: EnergySummaryProps) {
   return (
-    <section className="bg-gray-100 rounded-lg p-4 shadow-lg">
+    <section className="bg-gray-100 rounded-lg p-4 shadow-lg select-none">
       <h2 className="text-lg font-medium mb-2">Energy Summary</h2>
       <ProgressBar
         label="Calories"
