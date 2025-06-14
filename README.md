@@ -1,42 +1,118 @@
 # 📱 Quantro
 
 **Track what fuels you.**  
-Quantro is a fast, focused nutrition tracking app for people who log their food seriously. Built with modern tools like Next.js, Tailwind, and the USDA FoodData Central API.
+Quantro is a fast, focused nutrition tracking app for people who log their food seriously. Built with modern tools like Next.js, TypeScript, Tailwind CSS, and the USDA FoodData Central API.
 
 ---
 
 ## ⚡ Features
 
-- 🔍 Live food search (USDA database)  
-- 🍽️ Macro & micronutrient tracking  
-- 📊 Calorie & macro breakdown with charts  
-- 🎯 Custom targets for calories, protein, carbs, and fat  
-- 🌈 Clean, colorful UI (Tailwind + shadcn/ui)  
-- 🚀 Blazing fast interface optimized for speed  
+### 🍽️ Food Logging
+- 🔍 **Live USDA Food Search** - Search through 400k+ foods from the USDA database
+- ⭐ **Favorites System** - Save frequently used foods for quick access
+- � **Custom Foods** - Create and save your own food entries with custom macros
+- 📅 **Date Navigation** - Track food intake across different days
+- 🎯 **Flexible Portions** - Support for grams, ounces, cups, tablespoons, and teaspoons
+- 🔄 **Drag & Drop Reordering** - Organize your food entries with intuitive drag-and-drop
+
+### 📊 Nutrition Tracking  
+- � **Real-time Macro Tracking** - Live calculation of calories, protein, carbs, and fat
+- 🎯 **Custom Targets** - Set personalized daily goals for all macronutrients
+- 📊 **Visual Progress Bars** - Color-coded progress indicators for each macro
+- ✏️ **Inline Editing** - Edit food amounts directly in the table
+- 🗑️ **Quick Removal** - Easy food entry deletion
+
+### 🎨 User Experience
+- 🌈 **Modern UI** - Clean, colorful interface built with Tailwind CSS and shadcn/ui
+- 🚀 **Blazing Fast** - Optimized for speed with Next.js 15 and React 19
+- 📱 **Responsive Design** - Works seamlessly on desktop and mobile
+- 🔒 **Local Storage** - Data persists locally (no account required)
+- 🎭 **Error Boundaries** - Robust error handling for smooth user experience
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Next.js 15**  
-- **React**  
-- **Tailwind CSS**  
-- **shadcn/ui**  
-- **Vercel**  
-- **USDA FoodData Central API**  
+- **Next.js 15** - React framework with App Router
+- **React 19** - Latest React with improved performance
+- **TypeScript** - Type-safe development
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **shadcn/ui** - Beautiful, accessible UI components
+- **@dnd-kit** - Modern drag-and-drop functionality
+- **Chart.js & Recharts** - Data visualization
+- **React DatePicker** - Date selection component
+- **USDA FoodData Central API** - Comprehensive nutrition database
 
 ---
 
 ## 🧪 Local Development
 
-```bash
-git clone https://github.com/quantrodev/Quantro.git
-cd Quantro
-npm install
-npm run dev
-```
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn package manager
+- USDA API Key (optional, defaults to DEMO_KEY)
 
-Then open [http://localhost:3000](http://localhost:3000) in your browser.
+### Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/quantrodev/Quantro.git
+   cd Quantro
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Environment Configuration (Optional)**
+   Create a `.env.local` file in the root directory:
+   ```env
+   NEXT_PUBLIC_USDA_API_KEY=your_api_key_here
+   ```
+   > **Note:** The app works with DEMO_KEY, but get a free API key from [USDA FoodData Central](https://fdc.nal.usda.gov/api-guide.html) for higher rate limits.
+
+4. **Start the development server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+5. **Access the application**
+   - Open [http://localhost:3000](http://localhost:3000) in your browser
+   - For development access to the food logging interface, append `?key=dev-access` to the URL
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+### Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── layout.tsx         # Root layout
+│   ├── page.tsx           # Home page with access control
+│   └── globals.css        # Global styles
+├── components/
+│   ├── ui/                # shadcn/ui components
+│   ├── food-log/          # Food logging components
+│   │   ├── FoodTable.tsx
+│   │   ├── FoodSearchModal.tsx
+│   │   ├── MacroChart.tsx
+│   │   └── ...
+│   ├── log/
+│   │   └── LogPage.tsx    # Main logging interface
+│   └── LandingPage.tsx    # Public landing page
+└── lib/
+    └── utils.ts           # Utility functions
+```
 
 ---
 
@@ -48,34 +124,121 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🚧 Roadmap
 
-### 📦 Core MVP
-- [x] Live USDA food search & selection  
-- [x] Add/remove food entries with accurate macros  
-- [x] Daily totals & macro progress bars  
-- [x] Custom calorie/protein/carb/fat targets  
+### ✅ Core MVP (Completed)
+
+- [x] Live USDA food search & selection
+- [x] Add/remove food entries with accurate macros
+- [x] Daily totals & macro progress bars
+- [x] Custom calorie/protein/carb/fat targets
+- [x] Date picker & historical log view
+- [x] Drag & drop food entry reordering
+- [x] Favorites system for frequently used foods
+- [x] Custom food creation and management
+- [x] Inline editing of food amounts
+- [x] Responsive mobile-friendly design
 
 ### 📈 Next Milestones
-- [ ] Date picker & historical log view  
-- [ ] Export/import CSV or Excel logs  
-- [ ] Responsive mobile layout & PWA support  
-- [ ] User authentication & cloud sync (Firebase/Supabase)  
+
+- [ ] Export/import CSV or Excel logs
+- [ ] PWA support with offline functionality
+- [ ] User authentication & cloud sync (Firebase/Supabase)
+- [ ] Meal categorization (breakfast, lunch, dinner, snacks)
+- [ ] Food entry search and filtering
+- [ ] Bulk food operations (select multiple, batch delete)
 
 ### 🌟 Advanced Features
-- [ ] In-app recipe builder & batch logging  
-- [ ] Barcode scanner (mobile camera integration)  
-- [ ] Micronutrient tracking (Vitamins, Minerals)  
-- [ ] Charting: Weekly/monthly trends & exportable graphs  
-- [ ] Smart insights: AI-driven meal suggestions & deficiencies alert  
+
+- [ ] In-app recipe builder & batch logging
+- [ ] Barcode scanner (mobile camera integration)
+- [ ] Micronutrient tracking (Vitamins, Minerals)
+- [ ] Charting: Weekly/monthly trends & exportable graphs
+- [ ] Smart insights: AI-driven meal suggestions & deficiencies alert
+- [ ] Photo logging for meals
+- [ ] Integration with fitness trackers
 
 ### 🚀 Future Vision
-- [ ] iOS & Android native apps (React Native)  
-- [ ] Apple Health / Google Fit integration  
-- [ ] Social sharing & community challenges  
-- [ ] Custom meal plans & grocery lists  
+
+- [ ] iOS & Android native apps (React Native)
+- [ ] Apple Health / Google Fit integration
+- [ ] Social sharing & community challenges
+- [ ] Custom meal plans & grocery lists
+- [ ] Multi-language support
+- [ ] Advanced analytics and reporting  
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions to Quantro! Here's how you can help:
+
+### Ways to Contribute
+
+- 🐛 **Report Bugs** - Found an issue? Open a GitHub issue with details
+- 💡 **Feature Requests** - Have an idea? We'd love to hear it
+- 🔧 **Code Contributions** - Submit pull requests for bug fixes or new features
+- 📚 **Documentation** - Help improve our docs and README
+- 🧪 **Testing** - Help test new features and report feedback
+
+### Development Guidelines
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes following the existing code style
+4. Test your changes thoroughly
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+### Code Style
+
+- Use TypeScript for type safety
+- Follow React best practices and hooks patterns
+- Use Tailwind CSS for styling
+- Ensure components are responsive and accessible
+- Add comments for complex logic
 
 ---
 
 ## 📬 Contact
 
-For questions, feedback, or contributions, open an issue on GitHub or reach out via email at **hello@quantro.fit**.  
-Follow our progress on Twitter: [@quantroapp](https://twitter.com/quantroapp)
+For questions, feedback, or contributions:
+
+- 📧 **Email:** [hello@quantro.fit](mailto:hello@quantro.fit)
+- 🐙 **GitHub Issues:** [Open an issue](https://github.com/quantrodev/Quantro/issues)
+- 🐦 **Twitter:** [@quantroapp](https://twitter.com/quantroapp)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## ⭐ Show Your Support
+
+If you find Quantro useful, please consider:
+
+- ⭐ Starring this repository
+- 🐦 Following us on Twitter
+- 📤 Sharing with friends who track nutrition
+- 🤝 Contributing to the project
+
+---
+
+## 📸 Screenshots
+
+> **Note:** Screenshots coming soon! The app features a modern, clean interface built with Tailwind CSS.
+
+**Key Interface Highlights:**
+
+- 🎨 Beautiful gradient backgrounds and card-based layout
+- 📊 Visual macro progress bars with color coding
+- 🔍 Intuitive food search with real-time suggestions
+- 📱 Responsive design that works on all screen sizes
+- ⭐ Favorites and custom food management
+- 🎯 Customizable nutrition targets
+
+---
+
+Made with ❤️ for the nutrition tracking community
