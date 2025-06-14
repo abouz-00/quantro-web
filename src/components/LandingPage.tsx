@@ -67,11 +67,11 @@ export default function LandingPage() {
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="Follow Quantro on X (Twitter)"
-              className="flex items-center justify-center p-2 hover:bg-white/10 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
+              className="flex items-center justify-center p-3 hover:bg-white/10 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
             >
               <svg 
-                width="24" 
-                height="24" 
+                width="32" 
+                height="32" 
                 viewBox="0 0 24 24" 
                 fill="currentColor" 
                 className="text-white/90 hover:text-white transition-colors duration-200"
