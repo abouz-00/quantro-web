@@ -11,48 +11,45 @@ export default function LandingPage() {
       <div className="text-center px-6 py-4 max-w-2xl mx-auto h-full flex flex-col justify-center pb-32">
         {/* Logo/Brand */}
         <div className="mb-12">
-          <h1 className={`text-5xl font-bold text-white mb-3 ${montserrat.className}`}
+          <h1 className={`text-8xl font-bold text-white mb-3 ${montserrat.className}`}
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
             Quantro
           </h1>
-          <div className="w-24 h-1 bg-white mx-auto rounded-full"></div>
+          <div className="w-32 h-1.5 bg-white mx-auto rounded-full"></div>
         </div>
 
         {/* Main Message */}
         <div className="mb-16">
-          <h2 className={`text-3xl font-light text-white mb-6 ${montserrat.className}`}>
-            Stay Tuned
-          </h2>
-          <p className={`text-lg text-white/90 leading-relaxed ${montserrat.className}`}>
+          <p className={`text-2xl text-white/90 leading-relaxed ${montserrat.className}`}>
             We&apos;re building something amazing for nutrition tracking. 
             Our platform will revolutionize how you monitor your health and wellness journey.
           </p>
         </div>
 
         {/* Features Preview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="p-4 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
-            <div className="w-10 h-10 bg-violet-500 rounded-full mx-auto mb-3 flex items-center justify-center">
-              <span className="text-white text-lg">🥗</span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
+            <div className="w-14 h-14 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+              <span className="text-white text-2xl">🥗</span>
             </div>
-            <h3 className={`font-semibold text-gray-800 mb-1 text-sm ${montserrat.className}`}>Smart Tracking</h3>
-            <p className={`text-gray-600 text-xs ${montserrat.className}`}>Intelligent food logging with comprehensive nutrition data</p>
+            <h3 className={`font-semibold text-gray-800 mb-2 text-lg ${montserrat.className}`}>Smart Tracking</h3>
+            <p className={`text-gray-600 text-base ${montserrat.className}`}>Intelligent food logging with comprehensive nutrition data</p>
           </div>
           
-          <div className="p-4 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
-            <div className="w-10 h-10 bg-violet-500 rounded-full mx-auto mb-3 flex items-center justify-center">
-              <span className="text-white text-lg">📊</span>
+          <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
+            <div className="w-14 h-14 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+              <span className="text-white text-2xl">📊</span>
             </div>
-            <h3 className={`font-semibold text-gray-800 mb-1 text-sm ${montserrat.className}`}>Analytics</h3>
-            <p className={`text-gray-600 text-xs ${montserrat.className}`}>Detailed insights into your nutritional patterns</p>
+            <h3 className={`font-semibold text-gray-800 mb-2 text-lg ${montserrat.className}`}>Analytics</h3>
+            <p className={`text-gray-600 text-base ${montserrat.className}`}>Detailed insights into your nutritional patterns</p>
           </div>
           
-          <div className="p-4 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
-            <div className="w-10 h-10 bg-violet-500 rounded-full mx-auto mb-3 flex items-center justify-center">
-              <span className="text-white text-lg">🎯</span>
+          <div className="p-6 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
+            <div className="w-14 h-14 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+              <span className="text-white text-2xl">🎯</span>
             </div>
-            <h3 className={`font-semibold text-gray-800 mb-1 text-sm ${montserrat.className}`}>Goals</h3>
-            <p className={`text-gray-600 text-xs ${montserrat.className}`}>Personalized targets and progress tracking</p>
+            <h3 className={`font-semibold text-gray-800 mb-2 text-lg ${montserrat.className}`}>Goals</h3>
+            <p className={`text-gray-600 text-base ${montserrat.className}`}>Personalized targets and progress tracking</p>
           </div>
         </div>
       </div>
