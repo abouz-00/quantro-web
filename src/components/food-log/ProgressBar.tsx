@@ -12,7 +12,7 @@ export default function ProgressBar({ label, current, goal, unit, color }: Progr
   const percentage = Math.min(Math.round((current / goal) * 100), 100);
   
   return (
-    <div className="mb-3">
+    <div className="mb-3 select-none">
       <div className="flex justify-between text-sm mb-1">
         <span>{label}</span>
         <span>
