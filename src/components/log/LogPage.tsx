@@ -4,7 +4,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Montserrat } from 'next/font/google';
 import FoodSearchModal from "../food-log/FoodSearchModal";
 import FoodTable from "../food-log/FoodTable";
-import CustomTargets from "../food-log/CustomTargets";
 import EnergySummary from "../food-log/EnergySummary";
 import { Button } from "../ui/button";
 import DatePicker from "react-datepicker";
@@ -41,6 +40,7 @@ export default function LogPage() {
   const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isTargetsModalOpen, setIsTargetsModalOpen] = useState<boolean>(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
   
   const [totals, setTotals] = useState<Nutrients>({
     calories: 0,
@@ -67,7 +67,12 @@ export default function LogPage() {
   const handleDateChange = useCallback((date: Date | null) => {
     if (date) {
       setSelectedDate(date);
+      setIsCalendarOpen(false); // Close calendar after date selection
     }
+  }, []);
+
+  const handleCalendarToggle = useCallback(() => {
+    setIsCalendarOpen(prev => !prev);
   }, []);
 
   const handlePreviousDay = useCallback(() => {
@@ -129,6 +134,12 @@ export default function LogPage() {
   // Keyboard shortcuts effect
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Close calendar with Escape key
+      if (e.key === 'Escape' && isCalendarOpen) {
+        e.preventDefault();
+        setIsCalendarOpen(false);
+      }
+      
       // Add food - Ctrl/Cmd + A
       if (e.key === 'a' && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
@@ -150,7 +161,45 @@ export default function LogPage() {
     
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleNextDay, handlePreviousDay]);
+  }, [handleNextDay, handlePreviousDay, isCalendarOpen]);
+
+  // Manual click outside handler
+  useEffect(() => {
+    if (!isCalendarOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      
+      // Don't close if clicking inside the calendar components
+      if (target.closest('.react-datepicker') || 
+          target.closest('.react-datepicker-popper') ||
+          target.closest('.custom-datepicker') ||
+          target.closest('.custom-datepicker-wrapper') ||
+          target.closest('.datepicker-container') ||
+          target.closest('.react-datepicker__navigation') ||
+          target.closest('.react-datepicker__navigation-icon') ||
+          target.closest('.react-datepicker__header') ||
+          target.closest('.react-datepicker__month') ||
+          target.closest('.react-datepicker__week') ||
+          target.closest('.react-datepicker__day') ||
+          target.closest('input[class*="border-none"]') ||
+          target.closest('[class*="cursor-pointer"]')) {
+        return;
+      }
+      
+      setIsCalendarOpen(false);
+    };
+
+    // Add listener with a small delay to avoid immediate closure
+    const timeoutId = setTimeout(() => {
+      document.addEventListener('mousedown', handleClickOutside);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isCalendarOpen]);
 
   const addFoodEntry = (entry: FoodEntry) => {
     setFoodData(prev => [...prev, entry]);
@@ -279,7 +328,7 @@ export default function LogPage() {
         
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className={`p-2 rounded-lg transition-all duration-300 relative z-50 ${isSidebarOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+          className={`p-2 rounded-lg transition-all duration-300 relative z-50 cursor-pointer ${isSidebarOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
@@ -299,7 +348,7 @@ export default function LogPage() {
         <div className="container mx-auto px-4 py-8">
       {/* Header with date navigation */}
       <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center space-x-2 bg-white rounded-full shadow-lg px-4 py-3" style={{ backgroundColor: '#F8F5F0', border: '1px solid #EDE6DC' }}>
+        <div className="flex items-center space-x-2 bg-white rounded-full shadow-lg px-3 py-2" style={{ backgroundColor: '#F8F5F0', border: '1px solid #EDE6DC' }}>
           <button
             onClick={handlePreviousDay}
             className="p-2 hover:bg-white hover:bg-opacity-60 rounded-full transition-colors duration-200"
@@ -309,26 +358,52 @@ export default function LogPage() {
           </button>
           
           <div 
-            className="flex items-center space-x-3 cursor-pointer" 
+            className="flex items-center space-x-2 custom-datepicker-wrapper" 
             style={{ userSelect: 'none', WebkitUserSelect: 'none', position: 'relative' }}
-            onClick={() => {
-              const datePicker = document.querySelector('.react-datepicker__input-container input') as HTMLInputElement;
-              if (datePicker) datePicker.click();
-            }}
           >
-            <HiCalendar className="h-6 w-6 text-gray-600" />
-            <DatePicker
-              selected={selectedDate}
-              onChange={handleDateChange}
-              dateFormat="MMMM d, yyyy"
-              className="border-none bg-transparent text-xl font-bold text-center cursor-pointer text-gray-800 px-2"
-              onKeyDown={(e) => e.preventDefault()}
-              onFocus={(e) => e.target.blur()}
-              showPopperArrow={false}
-              calendarClassName="custom-datepicker"
-              popperPlacement="bottom"
-              autoComplete="off"
+            <HiCalendar 
+              className="h-6 w-6 text-gray-600 cursor-pointer" 
+              onClick={() => setIsCalendarOpen(true)}
             />
+            <div className="datepicker-container">
+              <DatePicker
+                selected={selectedDate}
+                onChange={handleDateChange}
+                dateFormat="MMMM d, yyyy"
+                className="border-none bg-transparent text-xl font-bold text-center cursor-pointer text-gray-800 px-0"
+                onKeyDown={(e) => e.preventDefault()}
+                onFocus={(e) => e.target.blur()}
+                showPopperArrow={false}
+                calendarClassName="custom-datepicker"
+                popperPlacement="bottom"
+                autoComplete="off"
+                open={isCalendarOpen}
+                onInputClick={handleCalendarToggle}
+                preventOpenOnFocus={true}
+                shouldCloseOnSelect={true}
+                dayClassName={(date) => {
+                  const today = new Date();
+                  const isToday = date.getDate() === today.getDate() &&
+                                date.getMonth() === today.getMonth() &&
+                                date.getFullYear() === today.getFullYear();
+                  
+                  // Only highlight the exact selected date - very precise matching
+                  if (selectedDate) {
+                    const isSameDate = date.getDate() === selectedDate.getDate() &&
+                                     date.getMonth() === selectedDate.getMonth() &&
+                                     date.getFullYear() === selectedDate.getFullYear();
+                    
+                    if (isSameDate) {
+                      return 'custom-selected-day';
+                    }
+                  }
+                  
+                  // Return empty string for other days (today highlighting is handled by CSS)
+                  return '';
+                }}
+                highlightDates={[]}
+              />
+            </div>
           </div>
           
           <button
@@ -525,7 +600,7 @@ export default function LogPage() {
                 {/* Hamburger positioned to match header exactly using fixed positioning */}
                 <button
                   onClick={() => setIsSidebarOpen(false)}
-                  className="fixed right-6 p-2 rounded-lg transition-colors duration-200 z-50"
+                  className="fixed right-6 p-2 rounded-lg transition-colors duration-200 z-50 cursor-pointer"
                   style={{ top: '0.75rem' }} // 12px from viewport top to match header hamburger exactly
                   onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
                   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
