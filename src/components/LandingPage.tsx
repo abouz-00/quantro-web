@@ -8,9 +8,9 @@ const montserrat = Montserrat({ subsets: ['latin'] });
 export default function LandingPage() {
   return (
     <div className="h-screen flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#6e44ff', userSelect: 'none', WebkitUserSelect: 'none' }}>
-      <div className="text-center px-6 py-4 max-w-2xl mx-auto h-full flex flex-col justify-center pb-20">
+      <div className="text-center px-6 py-4 max-w-2xl mx-auto h-full flex flex-col justify-center pb-32">
         {/* Logo/Brand */}
-        <div className="mb-4">
+        <div className="mb-12">
           <h1 className={`text-5xl font-bold text-white mb-3 ${montserrat.className}`}
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
             Quantro
@@ -19,8 +19,8 @@ export default function LandingPage() {
         </div>
 
         {/* Main Message */}
-        <div className="mb-6">
-          <h2 className={`text-3xl font-light text-white mb-4 ${montserrat.className}`}>
+        <div className="mb-16">
+          <h2 className={`text-3xl font-light text-white mb-6 ${montserrat.className}`}>
             Stay Tuned
           </h2>
           <p className={`text-lg text-white/90 leading-relaxed ${montserrat.className}`}>
@@ -30,7 +30,7 @@ export default function LandingPage() {
         </div>
 
         {/* Features Preview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="p-4 bg-white/50 backdrop-blur-sm rounded-xl shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
             <div className="w-10 h-10 bg-violet-500 rounded-full mx-auto mb-3 flex items-center justify-center">
               <span className="text-white text-lg">🥗</span>
@@ -53,28 +53,6 @@ export default function LandingPage() {
             </div>
             <h3 className={`font-semibold text-gray-800 mb-1 text-sm ${montserrat.className}`}>Goals</h3>
             <p className={`text-gray-600 text-xs ${montserrat.className}`}>Personalized targets and progress tracking</p>
-          </div>
-        </div>
-
-        {/* Email Signup */}
-        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
-          <h3 className={`text-xl font-semibold text-gray-800 mb-3 ${montserrat.className}`}>
-            Get Early Access
-          </h3>
-          <p className={`text-gray-600 mb-4 text-sm ${montserrat.className}`}>
-            Be the first to know when Quantro launches
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className={`flex-1 px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent text-sm ${montserrat.className}`}
-              style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
-            />
-            <button className={`px-4 py-2 bg-violet-500 text-white rounded-lg font-medium hover:bg-violet-600 transition-colors text-sm ${montserrat.className}`}>
-              Notify Me
-            </button>
           </div>
         </div>
       </div>
