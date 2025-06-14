@@ -31,7 +31,7 @@ export default function LandingPage() {
 
         {/* Features Preview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          <div className="p-6 backdrop-blur-sm rounded-xl shadow-lg" style={{ backgroundColor: '#FFFFF0', userSelect: 'none', WebkitUserSelect: 'none' }}>
+          <div className="p-6 backdrop-blur-sm rounded-xl shadow-lg" style={{ backgroundColor: '#F5F0E7', userSelect: 'none', WebkitUserSelect: 'none' }}>
             <div className="w-14 h-14 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
               <span className="text-white text-2xl">🥗</span>
             </div>
@@ -39,7 +39,7 @@ export default function LandingPage() {
             <p className={`text-gray-600 text-base ${poppins.className}`}>Intelligent food logging with comprehensive nutrition data</p>
           </div>
           
-          <div className="p-6 backdrop-blur-sm rounded-xl shadow-lg" style={{ backgroundColor: '#FFFFF0', userSelect: 'none', WebkitUserSelect: 'none' }}>
+          <div className="p-6 backdrop-blur-sm rounded-xl shadow-lg" style={{ backgroundColor: '#F5F0E7', userSelect: 'none', WebkitUserSelect: 'none' }}>
             <div className="w-14 h-14 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
               <span className="text-white text-2xl">📊</span>
             </div>
@@ -47,7 +47,7 @@ export default function LandingPage() {
             <p className={`text-gray-600 text-base ${poppins.className}`}>Detailed insights into your nutritional patterns</p>
           </div>
           
-          <div className="p-6 backdrop-blur-sm rounded-xl shadow-lg" style={{ backgroundColor: '#FFFFF0', userSelect: 'none', WebkitUserSelect: 'none' }}>
+          <div className="p-6 backdrop-blur-sm rounded-xl shadow-lg" style={{ backgroundColor: '#F5F0E7', userSelect: 'none', WebkitUserSelect: 'none' }}>
             <div className="w-14 h-14 bg-violet-500 rounded-full mx-auto mb-4 flex items-center justify-center">
               <span className="text-white text-2xl">🎯</span>
             </div>
