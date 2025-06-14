@@ -11,17 +11,17 @@ export default function LandingPage() {
       <div className="text-center px-6 py-4 max-w-2xl mx-auto h-full flex flex-col justify-center pb-32">
         {/* Logo/Brand */}
         <div className="mb-12">
-          <div className="flex items-center justify-center gap-4 mb-3">
-            <h1 className={`text-8xl font-bold text-white ${montserrat.className}`}
-                style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
-              Quantro
-            </h1>
+          <div className="flex items-center justify-center mb-3">
             <img 
               src="/logo.svg" 
               alt="Quantro Logo" 
-              className="w-24 h-24"
+              className="w-20 h-20"
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
             />
+            <h1 className={`text-8xl font-bold text-white ${montserrat.className}`}
+                style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
+              uantro
+            </h1>
           </div>
           <div className="w-32 h-1.5 bg-white mx-auto rounded-full"></div>
         </div>
