@@ -17,6 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={montserrat.className}>
+      <head>
+        <meta name="apple-mobile-web-app-title" content="Quantro" />
+      </head>
       <body>
         <ErrorBoundary>
           {children}
