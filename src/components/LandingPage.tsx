@@ -10,7 +10,7 @@ export default function LandingPage() {
     <div className="h-screen w-screen flex items-center justify-center overflow-hidden fixed inset-0" style={{ backgroundColor: '#6e44ff', userSelect: 'none', WebkitUserSelect: 'none' }}>
       <div className="text-center px-6 py-4 max-w-2xl mx-auto h-full flex flex-col justify-center pb-32">
         {/* Logo/Brand */}
-        <div className="mb-12">
+        <div className="mb-8">
           <div className="flex items-center justify-center mb-3">
             <img 
               src="/header_logo.svg" 
@@ -19,14 +19,6 @@ export default function LandingPage() {
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
             />
           </div>
-        </div>
-
-        {/* Main Message */}
-        <div className="mb-16">
-          <p className={`text-2xl text-white/90 leading-relaxed ${poppins.className}`}>
-            We&apos;re building something amazing for nutrition tracking. 
-            Our platform will revolutionize how you monitor your health and wellness journey.
-          </p>
         </div>
 
         {/* Features Preview */}
