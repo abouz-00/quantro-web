@@ -31,90 +31,6 @@ Quantro is a fast, focused nutrition tracking app for people who log their food 
 
 ---
 
-## 🛠️ Tech Stack
-
-- **Next.js 15** - React framework with App Router
-- **React 19** - Latest React with improved performance
-- **TypeScript** - Type-safe development
-- **Tailwind CSS 4** - Utility-first CSS framework
-- **shadcn/ui** - Beautiful, accessible UI components
-- **@dnd-kit** - Modern drag-and-drop functionality
-- **Chart.js & Recharts** - Data visualization
-- **React DatePicker** - Date selection component
-- **USDA FoodData Central API** - Comprehensive nutrition database
-
----
-
-## 🧪 Local Development
-
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn package manager
-- USDA API Key (optional, defaults to DEMO_KEY)
-
-### Setup Instructions
-
-1. **Navigate to the project directory**
-   ```bash
-   cd quantro
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-3. **Environment Configuration (Optional)**
-   Create a `.env.local` file in the root directory:
-   ```env
-   NEXT_PUBLIC_USDA_API_KEY=your_api_key_here
-   ```
-   > **Note:** The app works with DEMO_KEY, but get a free API key from [USDA FoodData Central](https://fdc.nal.usda.gov/api-guide.html) for higher rate limits.
-
-4. **Start the development server**
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-5. **Access the application**
-   - Open [http://localhost:3000](http://localhost:3000) in your browser
-   - For development access to the food logging interface, append `?key=dev-access` to the URL
-
-### Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-
-### Project Structure
-
-```
-src/
-├── app/                    # Next.js App Router
-│   ├── layout.tsx         # Root layout
-│   ├── page.tsx           # Home page with access control
-│   └── globals.css        # Global styles
-├── components/
-│   ├── ui/                # shadcn/ui components
-│   ├── food-log/          # Food logging components
-│   │   ├── FoodTable.tsx
-│   │   ├── FoodSearchModal.tsx
-│   │   ├── MacroChart.tsx
-│   │   └── ...
-│   ├── log/
-│   │   └── LogPage.tsx    # Main logging interface
-│   └── LandingPage.tsx    # Public landing page
-└── lib/
-    └── utils.ts           # Utility functions
-```
-
----
-
 ## 🌐 Live Site
 
 👉 [https://quantro.fit](https://quantro.fit)
@@ -170,7 +86,7 @@ src/
 
 For questions, feedback, or support:
 
-- 📧 **Email:** [hello@quantro.fit](mailto:hello@quantro.fit)
+- 📧 **Email:** [quantrodev@gmail.com](mailto:quantrodev@gmail.com)
 - 🐦 **Twitter:** [@quantroapp](https://twitter.com/quantroapp)
 
 ---
