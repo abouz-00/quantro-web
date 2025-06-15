@@ -93,23 +93,23 @@ export default function LandingPage() {
         </div>
 
         {/* Sign In Buttons */}
-        <div className="flex flex-col gap-4 justify-center mb-8 max-w-sm mx-auto">
+        <div className="flex gap-4 justify-center mb-8 max-w-md mx-auto">
           <button 
             onClick={handleAppleSignIn}
-            className="w-full transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer rounded-lg overflow-hidden"
+            className="flex-1 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer rounded-lg overflow-hidden"
             style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
           >
             <img 
-              src="/apple-signin-white.svg" 
+              src="/apple-signin-official-black.svg" 
               alt="Sign in with Apple" 
-              className="w-full h-12 object-contain"
+              className="w-full h-10 object-contain"
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
             />
           </button>
           
           <button 
             onClick={handleGoogleSignIn}
-            className="w-full transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer rounded-lg overflow-hidden"
+            className="flex-1 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer rounded-lg overflow-hidden"
             style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
           >
             <img 
