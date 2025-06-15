@@ -313,7 +313,7 @@ export default function LogPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F0E7', userSelect: 'none', WebkitUserSelect: 'none' }}>
       {/* Header/Nav Bar - Fixed at top, full width */}
-      <header className="w-full h-16 flex items-center justify-between px-6 shadow-sm relative" style={{ backgroundColor: '#6e44ff' }}>
+      <header className={`w-full h-16 flex items-center justify-between px-6 shadow-sm relative transition-all duration-300 ${isSidebarOpen ? 'rounded-bl-3xl' : 'rounded-b-3xl'}`} style={{ backgroundColor: '#6e44ff' }}>
         <div className="flex items-center">
           <Image 
             src="/header_logo.svg" 
@@ -337,11 +337,11 @@ export default function LogPage() {
       </header>
       
       {/* Content Area with Flex Layout */}
-      <div className="flex" style={{ height: 'calc(100vh - 4rem)' }}>
+      <div className="flex rounded-t-3xl bg-inherit" style={{ height: 'calc(100vh - 4rem)' }}>
         {/* Main Content Area */}
         <div 
-          className="flex-1 transition-all duration-300 ease-out overflow-hidden"
-          style={{ minWidth: 0 }} // Prevent flex item from growing beyond available space
+          className={`flex-1 transition-all duration-300 ease-out overflow-hidden ${isSidebarOpen ? 'rounded-tl-3xl' : 'rounded-t-3xl'}`}
+          style={{ minWidth: 0, backgroundColor: '#F5F0E7' }} // Prevent flex item from growing beyond available space
         >
 
         <div className="container mx-auto px-4 py-8">
@@ -589,7 +589,7 @@ export default function LogPage() {
               ></div>
               
               {/* Sidebar Content */}
-              <div className="shadow-xl relative z-50"
+              <div className="shadow-xl relative z-50 rounded-bl-3xl"
                    style={{ backgroundColor: '#6e44ff', height: '100vh' }}>
                 {/* Hamburger positioned to match header exactly using fixed positioning */}
                 <button
