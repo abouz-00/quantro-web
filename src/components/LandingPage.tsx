@@ -96,7 +96,7 @@ export default function LandingPage() {
         <div className="flex gap-4 justify-center mb-8 max-w-md mx-auto">
           <button 
             onClick={handleAppleSignIn}
-            className="flex-1 flex items-center justify-center gap-3 px-6 py-3 bg-black text-white rounded-xl font-medium hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
+            className="flex-1 flex items-center justify-center gap-3 px-6 py-3 bg-black text-white rounded-xl font-medium hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer"
             style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -107,7 +107,7 @@ export default function LandingPage() {
           
           <button 
             onClick={handleGoogleSignIn}
-            className="flex-1 flex items-center justify-center gap-3 px-6 py-3 bg-white text-gray-800 rounded-xl font-medium hover:bg-gray-50 transition-colors border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+            className="flex-1 flex items-center justify-center gap-3 px-6 py-3 bg-white text-gray-800 rounded-xl font-medium hover:bg-gray-50 transition-colors border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer"
             style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24">
