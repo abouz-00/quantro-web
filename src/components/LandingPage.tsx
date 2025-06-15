@@ -100,9 +100,9 @@ export default function LandingPage() {
             style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
           >
             <img 
-              src="/apple-signin-official-black.svg" 
+              src="/apple-signin-black-pill-official.svg" 
               alt="Sign in with Apple" 
-              className="w-full h-10 object-contain"
+              className="w-full h-11 object-contain"
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
             />
           </button>
