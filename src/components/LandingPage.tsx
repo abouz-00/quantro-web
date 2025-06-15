@@ -93,28 +93,31 @@ export default function LandingPage() {
         </div>
 
         {/* Sign In Buttons */}
-        <div className="flex gap-4 justify-center mb-8 max-w-md mx-auto">
+        <div className="flex gap-4 justify-center mb-8 max-w-md mx-auto items-center">
           <button 
             onClick={handleAppleSignIn}
-            className="flex-1 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer"
+            className="flex-1 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer overflow-hidden flex items-center justify-center"
             style={{ 
-              borderRadius: '22px', // Match the SVG border radius
+              borderRadius: '8px',
               userSelect: 'none', 
-              WebkitUserSelect: 'none' 
+              WebkitUserSelect: 'none',
+              height: '40px',
+              minWidth: '0',
+              width: '100%'
             }}
           >
-            <svg width="200" height="44" viewBox="0 0 200 44" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-11">
-              <rect x="0" y="0" width="200" height="44" rx="22" ry="22" fill="#000000"/>
+            <svg width="100%" height="40" viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full object-contain">
+              <rect x="0" y="0" width="200" height="40" rx="8" ry="8" fill="#000000"/>
               <g fill="#FFFFFF">
                 {/* Apple Logo */}
-                <g transform="translate(20, 12) scale(0.8)">
+                <g transform="translate(16, 10) scale(0.75)">
                   <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.037-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09z"/>
                   <path d="M15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.883-1.454 2.298-1.273 3.649 1.338.104 2.715-.688 3.56-1.637z"/>
                 </g>
               </g>
-              <text x="110" y="50%" textAnchor="middle" dominantBaseline="middle" fill="#FFFFFF"
+              <text x="110" y="65%" textAnchor="middle" dominantBaseline="alphabetic" fill="#FFFFFF"
                     fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif"
-                    fontSize="16" letterSpacing="-0.01em" fontWeight="600">
+                    fontSize="18" letterSpacing="-0.01em" fontWeight="400">
                 Sign in with Apple
               </text>
             </svg>
@@ -122,17 +125,20 @@ export default function LandingPage() {
           
           <button 
             onClick={handleGoogleSignIn}
-            className="flex-1 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer overflow-hidden"
+            className="flex-1 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer overflow-hidden flex items-center justify-center"
             style={{ 
-              borderRadius: '20px', // Pill shape to match Apple button
+              borderRadius: '20px',
               userSelect: 'none', 
-              WebkitUserSelect: 'none' 
+              WebkitUserSelect: 'none',
+              height: '40px',
+              minWidth: '0',
+              width: '100%'
             }}
           >
             <img 
               src="/google-signin-official-light.svg" 
               alt="Sign in with Google" 
-              className="w-full h-10 object-contain"
+              className="w-full h-full object-contain"
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
             />
           </button>
