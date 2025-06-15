@@ -96,8 +96,9 @@ export default function LandingPage() {
         <div className="flex gap-4 justify-center mb-8 max-w-md mx-auto">
           <button 
             onClick={handleAppleSignIn}
-            className="flex-1 bg-black text-white rounded-lg h-11 px-4 flex items-center justify-center gap-2 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer"
+            className="flex-1 bg-black text-white h-10 px-4 flex items-center justify-center gap-2 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer"
             style={{ 
+              borderRadius: '20px', // Pill shape (half of height)
               fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif',
               fontSize: '13px',
               fontWeight: '600',
@@ -105,24 +106,32 @@ export default function LandingPage() {
               WebkitUserSelect: 'none' 
             }}
           >
-            <svg width="16" height="20" viewBox="0 0 384 460.8" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-43.6-35.5-2.4-74.3 21.2-93.6 21.2-19.7 0-49.4-19.8-81.6-19.1-40.8.6-79.6 25.1-100.9 63.4-43.5 77.6-11.1 192.6 31.3 255.4 20.9 30.4 45.8 64.6 78.6 63.5 31.2-1.1 43.1-20.2 81.2-20.2 37.7 0 49.2 20.2 81.4 19.5 33.9-.5 55.8-30.9 76.8-61.5 24.4-35.8 34.3-70.3 34.6-72.1-.4-.9-82.8-31.7-83-141.2z" fill="white"/>
-              <path d="M267.2 69.7c17.6-21.3 29.2-51.4 26.8-81.2-25.9 1.1-56.7 17.4-75.2 39.3-16.4 19.4-30.8 50.9-26.8 80.8 28.3 2.1 57.2-14.4 75.2-38.9z" fill="white"/>
+            <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13.4 6.8c-.1-1.5.6-2.6 2-3.4-.7-1.1-1.9-1.7-3.4-1.8-1.4-.1-3 .9-3.8.9-.8 0-2-.8-3.3-.8-1.6.1-3.2 1-4.1 2.6-1.7 3.1-.4 7.7 1.2 10.2.8 1.2 1.8 2.6 3.1 2.5 1.2 0 1.7-.8 3.3-.8 1.5 0 2 .8 3.3.8 1.4 0 2.2-1.2 3.1-2.4 1-1.4 1.4-2.8 1.4-2.9-.1 0-3.3-1.3-3.3-5.7z" fill="white"/>
+              <path d="M10.7 2.8c.7-.8 1.2-2.1 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z" fill="white"/>
             </svg>
             <span>Sign in with Apple</span>
           </button>
           
           <button 
             onClick={handleGoogleSignIn}
-            className="flex-1 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer rounded-lg overflow-hidden"
-            style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+            className="flex-1 bg-white text-gray-600 border border-gray-300 h-10 px-4 flex items-center justify-center gap-2 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer"
+            style={{ 
+              borderRadius: '20px', // Pill shape (half of height)
+              fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif',
+              fontSize: '13px',
+              fontWeight: '600',
+              userSelect: 'none', 
+              WebkitUserSelect: 'none' 
+            }}
           >
-            <img 
-              src="/google-signin-official-light.svg" 
-              alt="Sign in with Google" 
-              className="w-full h-10 object-contain"
-              style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
-            />
+            <svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M47.532 24.552c0-1.414-.126-2.807-.37-4.169H24.48v7.89h12.946c-.558 3.011-2.26 5.565-4.816 7.275v6.024h7.786c4.565-4.205 7.136-10.402 7.136-17.02z" fill="#4285F4"/>
+              <path d="M24.48 47.885c6.518 0 11.982-2.162 15.976-5.864l-7.786-6.024c-2.162 1.449-4.927 2.306-8.19 2.306-6.297 0-11.624-4.252-13.527-9.968H2.897v6.218c3.973 7.896 12.127 13.332 21.583 13.332z" fill="#34A853"/>
+              <path d="M10.953 28.335c-.484-1.449-.76-2.993-.76-4.583s.276-3.134.76-4.583v-6.218H2.897C1.055 16.207 0 19.992 0 24.048s1.055 7.841 2.897 11.097l8.056-6.81z" fill="#FBBC04"/>
+              <path d="M24.48.213c3.358 0 6.37 1.155 8.74 3.421l6.555-6.555C35.456-1.414 30.297-3 24.48-3 15.024-3 6.87 2.436 2.897 10.332l8.056 6.218C12.856 10.834 18.183 6.582 24.48 6.582v-6.369z" fill="#EA4335"/>
+            </svg>
+            <span>Continue with Google</span>
           </button>
         </div>
       </div>
