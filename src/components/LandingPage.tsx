@@ -96,15 +96,19 @@ export default function LandingPage() {
         <div className="flex gap-4 justify-center mb-8 max-w-md mx-auto">
           <button 
             onClick={handleAppleSignIn}
-            className="flex-1 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer rounded-lg overflow-hidden"
-            style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+            className="flex-1 bg-black text-white rounded-lg h-11 px-4 flex items-center justify-center gap-2 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer"
+            style={{ 
+              fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif',
+              fontSize: '13px',
+              fontWeight: '600',
+              userSelect: 'none', 
+              WebkitUserSelect: 'none' 
+            }}
           >
-            <img 
-              src="/apple-signin-black-pill-official.svg" 
-              alt="Sign in with Apple" 
-              className="w-full h-11 object-contain"
-              style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
-            />
+            <svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.152 10.328c-.692.658-1.659.614-2.462.276-.87-.365-1.670-.382-2.592 0-1.152.496-1.76.351-2.448-.276C.241 6.602.806.47 5.249.246c1.079.057 1.834.594 2.464.64.944-.192 1.846-.742 2.854-.672 1.206.096 2.122.576 2.72 1.44-2.496 1.498-1.904 4.784.384 5.706-.458 1.2-1.050 2.392-2.032 3.270l.010.010-.634-.766zM9.704-2.002c-.118-1.782 1.328-3.258 2.992-3.402.234 2.064-1.872 3.6-2.992 3.402z" fill="white"/>
+            </svg>
+            <span>Sign in with Apple</span>
           </button>
           
           <button 
