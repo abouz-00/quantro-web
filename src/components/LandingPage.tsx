@@ -96,19 +96,24 @@ export default function LandingPage() {
         <div className="flex gap-4 justify-center mb-8 max-w-md mx-auto">
           <button 
             onClick={handleAppleSignIn}
-            className="flex-1 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer overflow-hidden"
+            className="flex-1 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer"
             style={{ 
-              borderRadius: '20px', // Pill shape to match Google button
+              borderRadius: '22px', // Match the SVG border radius
               userSelect: 'none', 
               WebkitUserSelect: 'none' 
             }}
           >
-            <img 
-              src="/apple-signin-pill-proper.svg" 
-              alt="Sign in with Apple" 
-              className="w-full h-10 object-contain"
-              style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
-            />
+            <svg width="200" height="44" viewBox="0 0 200 44" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-11">
+              <rect x="0" y="0" width="200" height="44" rx="22" ry="22" fill="#000000"/>
+              <g fill="#FFFFFF">
+                <path d="M12.42 22.01C12.42 21.03 12.65 20.08 13.09 19.16C13.54 18.25 14.19 17.43 15.02 16.71C15.86 15.98 16.88 15.42 18.06 15.02C19.25 14.63 20.59 14.43 22.09 14.43C23.59 14.43 24.93 14.63 26.11 15.02C27.3 15.42 28.32 15.98 29.16 16.71C30 17.43 30.65 18.25 31.09 19.16C31.54 20.08 31.76 21.03 31.76 22.01C31.76 22.99 31.54 23.94 31.09 24.85C30.65 25.77 30 26.59 29.16 27.32C28.32 28.04 27.3 28.6 26.11 28.99C24.93 29.39 23.59 29.58 22.09 29.58C20.59 29.58 19.25 29.39 18.06 28.99C16.88 28.6 15.86 28.04 15.02 27.32C14.19 26.59 13.54 25.77 13.09 24.85C12.65 23.94 12.42 22.99 12.42 22.01ZM22.09 31.6C20.15 31.6 18.42 31.25 16.91 30.56C15.4 29.87 14.13 28.92 13.1 27.7C12.06 26.49 11.23 25.09 10.6 23.5C9.97 21.91 9.66 20.2 9.66 18.37C9.66 16.54 9.97 14.83 10.6 13.24C11.23 11.65 12.06 10.25 13.1 9.04C14.13 7.82 15.4 6.87 16.91 6.18C18.42 5.49 20.15 5.14 22.09 5.14C24.03 5.14 25.76 5.49 27.27 6.18C28.78 6.87 30.05 7.82 31.09 9.04C32.12 10.25 32.95 11.65 33.58 13.24C34.21 14.83 34.52 16.54 34.52 18.37C34.52 20.2 34.21 21.91 33.58 23.5C32.95 25.09 32.12 26.49 31.09 27.7C30.05 28.92 28.78 29.87 27.27 30.56C25.76 31.25 24.03 31.6 22.09 31.6Z" transform="translate(0, -3)"/>
+              </g>
+              <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fill="#FFFFFF"
+                    fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif"
+                    fontSize="16" letterSpacing="-0.01em" fontWeight="600">
+                Sign in with Apple
+              </text>
+            </svg>
           </button>
           
           <button 
