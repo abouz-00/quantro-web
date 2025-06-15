@@ -148,6 +148,26 @@ npx prisma generate
 
 ## Troubleshooting
 
+### Build Errors Fixed ✅
+
+#### Prisma Client Generation Error
+**Error**: `Prisma has detected that this project was built on Vercel, which caches dependencies...`
+
+**Solution**: Added `prisma generate` to the build process:
+```json
+{
+  "scripts": {
+    "build": "prisma generate && next build",
+    "postinstall": "prisma generate"
+  }
+}
+```
+
+#### useSearchParams Suspense Boundary Error
+**Error**: `useSearchParams() should be wrapped in a suspense boundary`
+
+**Solution**: Wrapped the component using `useSearchParams()` with a Suspense boundary.
+
 ### Common Issues
 1. **Port 3000 in use** - App automatically uses port 3001
 2. **Missing environment variables** - Check `.env.local` configuration
