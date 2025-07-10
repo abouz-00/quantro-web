@@ -316,7 +316,7 @@ export default function LogPage() {
       <header className={`w-full h-16 flex items-center justify-between px-6 shadow-sm relative transition-all duration-300 ${isSidebarOpen ? 'rounded-bl-3xl' : 'rounded-b-3xl'}`} style={{ backgroundColor: '#6e44ff' }}>
         <div className="flex items-center">
           <Image 
-            src="/header_logo.svg" 
+            src="/quantro_header.svg" 
             alt="Quantro Logo" 
             width={150}
             height={60}
