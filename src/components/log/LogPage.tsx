@@ -312,33 +312,87 @@ export default function LogPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F0E7', userSelect: 'none', WebkitUserSelect: 'none' }}>
       {/* Header/Nav Bar - Fixed at top, full width */}
-      <header className={`w-full h-20 flex items-center justify-between px-6 shadow-sm relative transition-all duration-300 rounded-b-3xl`} style={{ backgroundColor: '#6e44ff' }}>
+      <header className={`w-full h-16 flex items-center justify-between px-6 shadow-sm relative transition-all duration-300 rounded-b-3xl`} style={{ backgroundColor: '#6e44ff' }}>
         <div className="flex items-center">
           <img 
             src="/main_header.svg" 
             alt="Quantro Logo" 
-            className="h-12"
+            className="h-6.5"
             style={{ 
               userSelect: 'none', 
               WebkitUserSelect: 'none',
-              filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.1))' // Adding subtle drop shadow
+              filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.1))', // Adding subtle drop shadow
+              maxHeight: '2rem', // Enforce 32px max height
+              width: 'auto' // Let width scale proportionally
             }}
           />
         </div>
         
-        <button
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="p-2 rounded-lg transition-colors duration-200 relative z-[60] cursor-pointer"
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-          aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
-        >
-          <HiMenu className="h-6 w-6 text-white" />
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="p-2 rounded-lg transition-colors duration-200 relative z-[60] cursor-pointer"
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+            aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
+          >
+            <HiMenu className={`h-6 w-6 ${isSidebarOpen ? 'text-[#6e44ff]' : 'text-white'}`} />
+          </button>
+          
+          {/* Dropdown Menu */}
+          {isSidebarOpen && (
+            <>
+              {/* Backdrop */}
+              <div 
+                className="fixed inset-0 transition-opacity duration-300 z-40"
+                style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}
+                onClick={() => setIsSidebarOpen(false)}
+              ></div>
+              
+              {/* Dropdown Content */}
+              <div 
+                className="absolute top-12 right-0 bg-white rounded-lg shadow-xl z-50"
+                style={{ 
+                  width: '12rem', 
+                  minWidth: '10rem',
+                  animation: 'fadeIn 0.15s ease-out'
+                }}
+              >
+                <div className="py-2">
+                  <nav>
+                    <button
+                      onClick={() => {
+                        setIsTargetsModalOpen(true);
+                        setIsSidebarOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                    >
+                      <span className="font-medium text-base flex items-center gap-2" style={{ color: '#6e44ff' }}>
+                        🎯 Set Targets
+                      </span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        // Add sign out logic here
+                        setIsSidebarOpen(false);
+                        console.log('Sign out clicked');
+                      }}
+                      className="w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                    >
+                      <span className="font-medium text-base flex items-center gap-2" style={{ color: '#6e44ff' }}>
+                        🚪 Sign Out
+                      </span>
+                    </button>
+                  </nav>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       </header>
       
       {/* Content Area with Flex Layout */}
-      <div className="flex rounded-t-3xl bg-inherit" style={{ height: 'calc(100vh - 5rem)' }}>
+      <div className="flex rounded-t-3xl bg-inherit" style={{ height: 'calc(100vh - 4rem)' }}>
         {/* Main Content Area */}
         <div 
           className={`flex-1 transition-all duration-300 ease-out overflow-hidden rounded-t-3xl`}
@@ -578,43 +632,6 @@ export default function LogPage() {
           </div>
         </div>
       )}
-      </div>        {/* Sidebar */}
-        <div className={`transition-all duration-300 ease-out ${isSidebarOpen ? 'h-full opacity-100' : 'h-0 opacity-0'} overflow-hidden fixed top-0 right-0 z-50`}>
-          {isSidebarOpen && (
-            <>
-              {/* Backdrop for mobile/overlay effect */}
-              <div 
-                className="fixed inset-0 transition-opacity duration-300 z-40 lg:hidden"
-                style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}
-                onClick={() => setIsSidebarOpen(false)}
-              ></div>
-              
-              {/* Sidebar Content */}
-              <div className="shadow-xl relative z-50 animate-slide-in-from-top"
-                   style={{ backgroundColor: 'white', height: '100vh', width: '16rem' /* w-64 = 16rem */ }}>
-                
-                <div className="flex flex-col h-full pt-6">
-                  {/* Sidebar Content */}
-                  <div className="flex-1 px-6 pt-2">
-                  <nav>
-                    <button
-                      onClick={() => {
-                        setIsTargetsModalOpen(true);
-                        setIsSidebarOpen(false);
-                      }}
-                      className="w-full text-left p-4 rounded-lg transition-colors duration-200 flex items-center justify-between"
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(110, 68, 255, 0.1)'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                    >
-                      <span className="font-medium text-lg" style={{ color: '#6e44ff' }}>Set Targets</span>
-                      <span className="text-xl">🎯</span>
-                    </button>
-                  </nav>
-                  </div>
-                </div>
-              </div>
-          </>
-        )}
       </div>
 
       {/* Targets Modal */}
