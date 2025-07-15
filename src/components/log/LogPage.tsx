@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import Image from "next/image";
 import { Poppins } from 'next/font/google';
 import FoodSearchModal from "../food-log/FoodSearchModal";
 import FoodTable from "../food-log/FoodTable";
@@ -9,7 +8,7 @@ import EnergySummary from "../food-log/EnergySummary";
 import { Button } from "../ui/button";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { HiDotsHorizontal, HiChevronLeft, HiChevronRight, HiPlus, HiCalendar, HiMenu } from "react-icons/hi";
+import { HiDotsHorizontal, HiChevronLeft, HiChevronRight, HiPlus, HiCalendar, HiMenu, HiX } from "react-icons/hi";
 import { Menu } from "@headlessui/react";
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
@@ -313,21 +312,23 @@ export default function LogPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F0E7', userSelect: 'none', WebkitUserSelect: 'none' }}>
       {/* Header/Nav Bar - Fixed at top, full width */}
-      <header className={`w-full h-16 flex items-center justify-between px-6 shadow-sm relative transition-all duration-300 ${isSidebarOpen ? 'rounded-bl-3xl' : 'rounded-b-3xl'}`} style={{ backgroundColor: '#6e44ff' }}>
+      <header className={`w-full h-20 flex items-center justify-between px-6 shadow-sm relative transition-all duration-300 rounded-b-3xl`} style={{ backgroundColor: '#6e44ff' }}>
         <div className="flex items-center">
-          <Image 
+          <img 
             src="/quantro_header.svg" 
             alt="Quantro Logo" 
-            width={150}
-            height={60}
-            className=""
-            style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+            className="h-12"
+            style={{ 
+              userSelect: 'none', 
+              WebkitUserSelect: 'none',
+              filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.1))' // Adding subtle drop shadow
+            }}
           />
         </div>
         
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className={`p-2 rounded-lg transition-all duration-300 relative z-50 cursor-pointer ${isSidebarOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+          className="p-2 rounded-lg transition-colors duration-200 relative z-[60] cursor-pointer"
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
@@ -337,10 +338,10 @@ export default function LogPage() {
       </header>
       
       {/* Content Area with Flex Layout */}
-      <div className="flex rounded-t-3xl bg-inherit" style={{ height: 'calc(100vh - 4rem)' }}>
+      <div className="flex rounded-t-3xl bg-inherit" style={{ height: 'calc(100vh - 5rem)' }}>
         {/* Main Content Area */}
         <div 
-          className={`flex-1 transition-all duration-300 ease-out overflow-hidden ${isSidebarOpen ? 'rounded-tl-3xl' : 'rounded-t-3xl'}`}
+          className={`flex-1 transition-all duration-300 ease-out overflow-hidden rounded-t-3xl`}
           style={{ minWidth: 0, backgroundColor: '#F5F0E7' }} // Prevent flex item from growing beyond available space
         >
 
@@ -578,7 +579,7 @@ export default function LogPage() {
         </div>
       )}
       </div>        {/* Sidebar */}
-        <div className={`transition-all duration-300 ease-out ${isSidebarOpen ? 'w-64' : 'w-0'} overflow-hidden`}>
+        <div className={`transition-all duration-300 ease-out ${isSidebarOpen ? 'h-full opacity-100' : 'h-0 opacity-0'} overflow-hidden fixed top-0 right-0 z-50`}>
           {isSidebarOpen && (
             <>
               {/* Backdrop for mobile/overlay effect */}
@@ -589,21 +590,10 @@ export default function LogPage() {
               ></div>
               
               {/* Sidebar Content */}
-              <div className="shadow-xl relative z-50 rounded-bl-3xl"
-                   style={{ backgroundColor: '#6e44ff', height: '100vh' }}>
-                {/* Hamburger positioned to match header exactly using fixed positioning */}
-                <button
-                  onClick={() => setIsSidebarOpen(false)}
-                  className="fixed right-6 p-2 rounded-lg transition-colors duration-200 z-50 cursor-pointer"
-                  style={{ top: '0.75rem' }} // 12px from viewport top to match header hamburger exactly
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                  aria-label="Close menu"
-                >
-                  <HiMenu className="h-6 w-6 text-white" />
-                </button>
+              <div className="shadow-xl relative z-50 animate-slide-in-from-top"
+                   style={{ backgroundColor: 'white', height: '100vh', width: '16rem' /* w-64 = 16rem */ }}>
                 
-                <div className="flex flex-col h-full pt-4">
+                <div className="flex flex-col h-full pt-6">
                   {/* Sidebar Content */}
                   <div className="flex-1 px-6 pt-2">
                   <nav>
@@ -613,11 +603,11 @@ export default function LogPage() {
                         setIsSidebarOpen(false);
                       }}
                       className="w-full text-left p-4 rounded-lg transition-colors duration-200 flex items-center justify-between"
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(110, 68, 255, 0.1)'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     >
-                      <span className="text-white font-medium text-lg">Set Targets</span>
-                      <span className="text-white text-xl">🎯</span>
+                      <span className="font-medium text-lg" style={{ color: '#6e44ff' }}>Set Targets</span>
+                      <span className="text-xl">🎯</span>
                     </button>
                   </nav>
                   </div>

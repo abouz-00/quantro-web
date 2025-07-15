@@ -48,7 +48,11 @@ export default function LandingPage() {
               src="/quantro_header.svg" 
               alt="Quantro Logo" 
               className="h-32"
-              style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+              style={{ 
+                userSelect: 'none', 
+                WebkitUserSelect: 'none',
+                filter: 'drop-shadow(0 0 10px rgba(0,0,0,0.05))' // Adding subtle drop shadow to make it pop
+              }}
             />
           </div>
         </div>
