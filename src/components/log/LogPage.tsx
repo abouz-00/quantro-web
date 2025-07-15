@@ -315,7 +315,7 @@ export default function LogPage() {
       <header className={`w-full h-20 flex items-center justify-between px-6 shadow-sm relative transition-all duration-300 rounded-b-3xl`} style={{ backgroundColor: '#6e44ff' }}>
         <div className="flex items-center">
           <img 
-            src="/quantro_header.svg" 
+            src="/main_header.svg" 
             alt="Quantro Logo" 
             className="h-12"
             style={{ 
@@ -351,7 +351,7 @@ export default function LogPage() {
         <div className="flex items-center space-x-2 bg-white rounded-full shadow-lg px-3 py-2" style={{ backgroundColor: '#F8F5F0', border: '1px solid #EDE6DC' }}>
           <button
             onClick={handlePreviousDay}
-            className="p-2 hover:bg-white hover:bg-opacity-60 rounded-full transition-colors duration-200"
+            className="p-2 hover:bg-white hover:bg-opacity-60 rounded-full transition-colors duration-200 cursor-pointer"
             aria-label="Previous day"
           >
             <HiChevronLeft className="h-6 w-6 text-gray-600" />
@@ -403,7 +403,7 @@ export default function LogPage() {
           
           <button
             onClick={handleNextDay}
-            className="p-2 hover:bg-white hover:bg-opacity-60 rounded-full transition-colors duration-200"
+            className="p-2 hover:bg-white hover:bg-opacity-60 rounded-full transition-colors duration-200 cursor-pointer"
             aria-label="Next day"
           >
             <HiChevronRight className="h-6 w-6" />
@@ -425,7 +425,7 @@ export default function LogPage() {
           
           <div className="relative ml-2">
             <Menu>
-              <Menu.Button className="p-2 hover:bg-gray-100 rounded-full">
+              <Menu.Button className="p-2 hover:bg-gray-100 rounded-full cursor-pointer transition-colors duration-200">
                 <HiDotsHorizontal className="h-5 w-5" />
               </Menu.Button>
               <Menu.Items className="absolute right-0 mt-1 w-56 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg z-10">
@@ -433,7 +433,7 @@ export default function LogPage() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        className={`${active ? 'bg-gray-100' : ''} w-full text-left px-4 py-2`}
+                        className={`${active ? 'bg-gray-100' : ''} w-full text-left px-4 py-2 cursor-pointer hover:bg-gray-100 transition-colors duration-200 rounded-md`}
                         onClick={() => {
                           if (selectedEntries.length > 0) {
                             selectedEntries.forEach(id => removeFoodEntry(id));
