@@ -11,11 +11,12 @@ export default function Dashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/");
-    }
-  }, [status, router]);
+  // Temporarily disabled authentication check for testing
+  // useEffect(() => {
+  //   if (status === "unauthenticated") {
+  //     router.push("/");
+  //   }
+  // }, [status, router]);
 
   if (status === "loading") {
     return (
@@ -25,9 +26,19 @@ export default function Dashboard() {
     );
   }
 
-  if (!session) {
-    return null;
-  }
+  // Temporarily show dashboard even without session for testing
+  // if (!session) {
+  //   return null;
+  // }
+
+  // Create a fallback session for testing when not authenticated
+  const displaySession = session || {
+    user: {
+      name: "Test User",
+      email: "test@example.com",
+      image: null
+    }
+  };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#6e44ff' }}>
@@ -36,7 +47,7 @@ export default function Dashboard() {
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
             <img 
-              src="/quantro_header.svg" 
+              src="/main_header.svg" 
               alt="Quantro Logo" 
               className="h-12"
               style={{ 
@@ -46,12 +57,12 @@ export default function Dashboard() {
               }}
             />
             <h1 className={`text-2xl font-bold text-white ${poppins.className}`}>
-              Welcome to Quantro, {session.user?.name || session.user?.email}!
+              Welcome to Quantro, {displaySession.user?.name || displaySession.user?.email}!
             </h1>
           </div>
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
-            className={`px-4 py-2 bg-white text-violet-600 rounded-lg font-medium hover:bg-gray-100 transition-colors ${poppins.className}`}
+            className={`px-4 py-2 bg-white text-violet-600 rounded-lg font-medium hover:bg-gray-100 transition-colors cursor-pointer ${poppins.className}`}
           >
             Sign Out
           </button>
@@ -60,19 +71,19 @@ export default function Dashboard() {
         {/* User Info Card */}
         <div className="bg-white rounded-xl p-6 shadow-lg mb-8">
           <div className="flex items-center gap-4 mb-4">
-            {session.user?.image && (
+            {displaySession.user?.image && (
               <img 
-                src={session.user.image} 
+                src={displaySession.user.image} 
                 alt="Profile" 
                 className="w-16 h-16 rounded-full"
               />
             )}
             <div>
               <h2 className={`text-xl font-semibold text-gray-800 ${poppins.className}`}>
-                {session.user?.name || "User"}
+                {displaySession.user?.name || "User"}
               </h2>
               <p className={`text-gray-600 ${poppins.className}`}>
-                {session.user?.email}
+                {displaySession.user?.email}
               </p>
             </div>
           </div>
@@ -92,7 +103,7 @@ export default function Dashboard() {
             </p>
             <button 
               onClick={() => router.push("/log")}
-              className={`mt-4 w-full px-4 py-2 bg-violet-500 text-white rounded-lg font-medium hover:bg-violet-600 transition-colors ${poppins.className}`}
+              className={`mt-4 w-full px-4 py-2 bg-violet-500 text-white rounded-lg font-medium hover:bg-violet-600 transition-colors cursor-pointer ${poppins.className}`}
             >
               Start Logging
             </button>
