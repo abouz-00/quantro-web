@@ -125,6 +125,8 @@
   }
 }
 
+
+
 /* Custom DatePicker Styles */
 .react-datepicker-wrapper {
   user-select: none;
@@ -444,6 +446,15 @@ div[class*="datepicker-container"] .react-datepicker__day--keyboard-selected:hov
   }
 }
 
+@keyframes slide-in-from-top {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 @keyframes header-extend {
   from {
     transform: scaleX(0);
@@ -459,8 +470,8 @@ div[class*="datepicker-container"] .react-datepicker__day--keyboard-selected:hov
   animation: slide-in-smooth 0.3s ease-out;
 }
 
-.animate-header-extend {
-  animation: header-extend 0.3s ease-out;
+.animate-slide-in-from-top {
+  animation: slide-in-from-top 0.3s ease-out;
 }
 
 /* CRITICAL FIXES FOR NAVIGATION ARROWS AND DUPLICATE HEADERS */
@@ -594,3 +605,5 @@ div[class*="datepicker-container"] .react-datepicker__day--keyboard-selected:hov
   color: white !important;
   transform: scale(1.05) !important;
 }
+
+

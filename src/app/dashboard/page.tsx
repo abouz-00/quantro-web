@@ -36,9 +36,14 @@ export default function Dashboard() {
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
             <img 
-              src="/header_logo.svg" 
+              src="/quantro_header.svg" 
               alt="Quantro Logo" 
               className="h-12"
+              style={{ 
+                userSelect: 'none', 
+                WebkitUserSelect: 'none',
+                filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.1))'
+              }}
             />
             <h1 className={`text-2xl font-bold text-white ${poppins.className}`}>
               Welcome to Quantro, {session.user?.name || session.user?.email}!
