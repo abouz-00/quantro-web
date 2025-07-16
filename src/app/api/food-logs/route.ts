@@ -90,3 +90,87 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    
+    if (!id) {
+      return NextResponse.json({ error: 'Food log ID is required' }, { status: 400 });
+    }
+
+    // Verify the food log belongs to the user before deleting
+    const foodLog = await prisma.foodLog.findFirst({
+      where: {
+        id: id,
+        userId: session.user.id,
+      },
+    });
+
+    if (!foodLog) {
+      return NextResponse.json({ error: 'Food log not found' }, { status: 404 });
+    }
+
+    await prisma.foodLog.delete({
+      where: { id: id },
+    });
+
+    return NextResponse.json({ message: 'Food log deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting food log:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const { id, quantity, calories, protein, carbs, fat } = body;
+    
+    if (!id) {
+      return NextResponse.json({ error: 'Food log ID is required' }, { status: 400 });
+    }
+
+    // Verify the food log belongs to the user before updating
+    const existingFoodLog = await prisma.foodLog.findFirst({
+      where: {
+        id: id,
+        userId: session.user.id,
+      },
+    });
+
+    if (!existingFoodLog) {
+      return NextResponse.json({ error: 'Food log not found' }, { status: 404 });
+    }
+
+    const updatedFoodLog = await prisma.foodLog.update({
+      where: { id: id },
+      data: {
+        quantity,
+        calories,
+        protein,
+        carbs,
+        fat,
+        updatedAt: new Date(),
+      },
+    });
+
+    return NextResponse.json(updatedFoodLog);
+  } catch (error) {
+    console.error('Error updating food log:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}

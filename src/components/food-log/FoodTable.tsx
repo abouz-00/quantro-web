@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { FaTrash, FaPencilAlt, FaCheck, FaGripVertical } from "react-icons/fa";
+import { FaPencilAlt, FaCheck } from "react-icons/fa";
 import {
   DndContext,
   KeyboardSensor,
@@ -24,7 +24,6 @@ import {
 import {
   useSortable,
 } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 
 interface Nutrients {
   calories: number;
@@ -51,6 +50,8 @@ interface FoodTableProps {
   removeFoodEntry: (id: string) => void;
   updateFoodEntry?: (id: string, updates: Partial<FoodEntry>) => void;
   onReorderEntries?: (newOrder: FoodEntry[]) => void;
+  onContextMenu?: (e: React.MouseEvent, entryId: string) => void;
+  setSelectedEntries?: (entries: string[]) => void; // Add this prop to allow direct selection
 }
 
 // Helper function to capitalize first letter of each word
@@ -62,10 +63,30 @@ const capitalizeWords = (str: string): string => {
     .join(' ');
 };
 
+// Helper function to abbreviate units
+const abbreviateUnit = (unit: string): string => {
+  const lowerUnit = unit.toLowerCase();
+  const unitMap: { [key: string]: string } = {
+    'grams': 'g',
+    'gram': 'g',
+    'cups': 'cups',
+    'cup': 'cups',
+    'ounces': 'oz',
+    'ounce': 'oz',
+    'tablespoons': 'tbsp',
+    'tablespoon': 'tbsp',
+    'teaspoons': 'tsp',
+    'teaspoon': 'tsp'
+  };
+  
+  return unitMap[lowerUnit] || unit;
+};
+
 // Sortable row component
 function SortableTableRow({ 
   item, 
   foodData, 
+  filteredEntries,
   selectedEntries, 
   handleEntrySelect, 
   removeFoodEntry, 
@@ -77,10 +98,12 @@ function SortableTableRow({
   dragOverId,
   dragDirection,
   activeId,
-  formatNumber
+  formatNumber,
+  onContextMenu
 }: {
   item: FoodEntry;
   foodData: FoodEntry[];
+  filteredEntries: FoodEntry[];
   selectedEntries: string[];
   handleEntrySelect: (id: string, index: number, event: React.MouseEvent) => void;
   removeFoodEntry: (id: string) => void;
@@ -93,7 +116,10 @@ function SortableTableRow({
   dragDirection: 'up' | 'down' | null;
   activeId: string | null;
   formatNumber: (num: number) => string;
+  onContextMenu?: (e: React.MouseEvent, entryId: string) => void;
 }) {
+  const isSelected = selectedEntries.includes(item.id);
+  
   const {
     attributes,
     listeners,
@@ -101,26 +127,57 @@ function SortableTableRow({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: item.id });
+  } = useSortable({ 
+    id: item.id,
+    disabled: false // Allow dragging on any entry
+  });
 
-// Enhanced visual feedback for solid boxes
+  // Custom drag listeners that respect modifier keys and preserve click behavior
+  const customListeners = {
+    ...listeners,
+    onPointerDown: (event: React.PointerEvent) => {
+      // Don't start drag if modifier keys are held - let click handler manage selection
+      if (event.shiftKey || event.ctrlKey || event.metaKey) {
+        return;
+      }
+      
+      // Also don't start drag immediately on pointer down to allow for click-to-deselect
+      // The activation constraint distance/delay will handle this naturally
+      
+      // Call the original pointer down handler
+      if (listeners?.onPointerDown) {
+        listeners.onPointerDown(event as any);
+      }
+    }
+  };
+
+  // Simplified transform - instant snapping with no smooth animations
+  const style: React.CSSProperties = {
+    transform: transform ? `translate3d(0px, ${transform.y}px, 0px)` : undefined,
+    transition: 'none', // Remove all transitions for instant snapping
+    opacity: isDragging ? 0.9 : 1,
+    zIndex: isDragging ? 1000 : 1,
+    // Ensure dragged element maintains table structure
+    ...(isDragging && {
+      position: 'relative' as const,
+      backgroundColor: '#f8fafc',
+      border: '2px solid #3b82f6',
+      boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
+      borderRadius: '4px',
+    }),
+    // Add cursor style based on state
+    cursor: 'pointer', // Always show pointer cursor for clicking
+    ...(isDragging && { cursor: 'move' }), // Show move cursor when dragging
+  };
+
+  // Enhanced visual feedback for discrete snapping
   const isDropTarget = dragOverId === item.id && activeId !== item.id;
   const isBeingDragged = activeId === item.id;
-  
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition: isDragging 
-      ? 'none' 
-      : transition || 'transform 250ms cubic-bezier(0.4, 0, 0.2, 1)',
-    // Show the item but make it semi-transparent when being dragged
-    opacity: isDragging ? 0.5 : 1,
-    zIndex: isDragging ? 1000 : 1,
-  };
 
   // Solid box classes with clear visual states
   const getRowClasses = () => {
     const baseClasses = "food-table-row border-b border-gray-200 last:border-0 select-none relative";
-    const selectedClasses = selectedEntries.includes(item.id) ? 'selected' : '';
+    const selectedClasses = isSelected ? 'selected' : '';
     const draggingClasses = isDragging ? 'dragging-item' : '';
     const dropTargetClasses = isDropTarget 
       ? `drop-target-${dragDirection}` 
@@ -166,21 +223,16 @@ function SortableTableRow({
       style={style}
       className={getRowClasses()}
       onClick={(e) => handleEntrySelect(item.id, foodData.indexOf(item), e)}
+      onContextMenu={(e) => {
+        // Prevent context menu during drag operations
+        if (!isDragging && !activeId) {
+          onContextMenu?.(e, item.id);
+        }
+      }}
+      data-id={item.id}
+      {...attributes}
+      {...customListeners} // Use custom listeners that respect modifier keys
     >
-      <td className="py-2 pl-2 pr-2">
-        <div 
-          className="p-2 rounded pointer-events-auto drag-handle"
-          {...attributes}
-          {...listeners}
-        >
-          <FaGripVertical 
-            className={`transition-colors duration-200 ${
-              isDragging ? 'text-blue-500' : 'text-gray-400 hover:text-gray-600'
-            }`} 
-            size={12} 
-          />
-        </div>
-      </td>
       <td className="py-2 pl-2 pr-2">{capitalizeWords(item.description)}</td>
       <td className="py-2 px-2">
         {editingEntry === item.id ? (
@@ -194,7 +246,7 @@ function SortableTableRow({
               onClick={e => e.stopPropagation()}
               onPointerDown={e => e.stopPropagation()}
             />
-            <span>{capitalizeWords(item.unit)}</span>
+            <span>{abbreviateUnit(item.unit)}</span>
             <button 
               onClick={(e) => saveEdit(item, e)}
               onPointerDown={e => e.stopPropagation()}
@@ -210,7 +262,7 @@ function SortableTableRow({
               onClick={(e) => startEditing(item, e)}
               onPointerDown={e => e.stopPropagation()}
             >
-              {formatNumber(parseFloat(item.amount))} {capitalizeWords(item.unit)}
+              {formatNumber(parseFloat(item.amount))} {abbreviateUnit(item.unit)}
             </span>
             <FaPencilAlt 
               size={12} 
@@ -221,23 +273,7 @@ function SortableTableRow({
           </div>
         )}
       </td>
-      <td className="py-2 px-2 text-right">{formatNumber(item.calories)}</td>
-      <td className="py-2 px-2 text-right">{formatNumber(item.protein)}g</td>
-      <td className="py-2 px-2 text-right">{formatNumber(item.carbs)}g</td>
-      <td className="py-2 px-2 text-right">{formatNumber(item.fat)}g</td>
-      <td className="py-2 pl-4">
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            removeFoodEntry(item.id);
-          }}
-          onPointerDown={e => e.stopPropagation()}
-          className="text-gray-500 hover:text-red-500"
-          aria-label="Remove entry"
-        >
-          <FaTrash />
-        </button>
-      </td>
+      <td className="py-2 px-2 text-right">{formatNumber(item.calories)} cal</td>
     </tr>
   );
 }
@@ -249,7 +285,9 @@ export default function FoodTable({
   handleEntrySelect, 
   removeFoodEntry,
   updateFoodEntry = () => {},
-  onReorderEntries = () => {}
+  onReorderEntries = () => {},
+  onContextMenu,
+  setSelectedEntries
 }: FoodTableProps) {
   const [editingEntry, setEditingEntry] = useState<string | null>(null);
   const [editAmount, setEditAmount] = useState<string>("");
@@ -277,27 +315,33 @@ export default function FoodTable({
     return undefined;
   };
 
-  // Custom collision detection for more precise vertical sorting
+  // Custom collision detection for discrete snapping behavior
   const customCollisionDetection: CollisionDetection = (args) => {
-    // Use closest center for more predictable behavior
+    // Use closest center for predictable discrete positioning
     const closestCenterCollisions = closestCenter(args);
     
-    // If we have results, return them
     if (closestCenterCollisions.length > 0) {
-      return closestCenterCollisions;
+      // Filter to only include valid table entries
+      const validCollisions = closestCenterCollisions.filter(collision => {
+        return filteredEntries.some((entry: FoodEntry) => entry.id === collision.id);
+      });
+      
+      if (validCollisions.length > 0) {
+        // Only return the closest valid collision to prevent dropping outside bounds
+        return [validCollisions[0]];
+      }
     }
     
-    // Fallback to rect intersection for edge cases
-    const rectCollisions = rectIntersection(args);
-    return rectCollisions;
+    // No valid collision found - return empty array to prevent invalid drops
+    return [];
   };
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 3, // Reduced for more responsive dragging
-        tolerance: 3,
-        delay: 0, // Removed delay for immediate visual feedback
+        distance: 10, // Increase distance to allow clicks without triggering drag
+        tolerance: 5,
+        delay: 100, // Add small delay to distinguish clicks from drags
       },
     }),
     useSensor(KeyboardSensor, {
@@ -306,31 +350,58 @@ export default function FoodTable({
   );
 
   function handleDragStart(event: DragStartEvent) {
-    setActiveId(event.active.id as string);
+    const draggedEntryId = event.active.id as string;
+    
+    // Don't allow dragging if there's only one entry or no entries
+    if (filteredEntries.length <= 1) {
+      return;
+    }
+    
+    // Auto-select the entry being dragged if it's not already selected
+    if (!selectedEntries.includes(draggedEntryId)) {
+      setSelectedEntries?.([draggedEntryId]);
+    }
+    
+    setActiveId(draggedEntryId);
     setDragOverId(null);
     setDragDirection(null);
     
     // Lock cursor and prevent any floating behavior
-    document.body.style.cursor = 'grabbing';
+    document.body.style.cursor = 'move'; // Show move cursor during drag
     document.body.classList.add('dragging');
+    
+    // Highlight the container boundaries during drag
+    const containerElement = document.querySelector('.food-table-container .bg-white.rounded-lg');
+    if (containerElement) {
+      containerElement.classList.add('drag-boundary-active');
+    }
   }
 
   function handleDragOver(event: DragOverEvent) {
     const { active, over } = event;
     
     if (over && active.id !== over.id) {
-      setDragOverId(over.id as string);
+      // Only allow dropping on valid targets (other entries)
+      const isValidTarget = filteredEntries.some((entry: FoodEntry) => entry.id === over.id);
       
-      // Calculate drop direction based on element positions rather than pointer
-      const activeRect = active.rect.current.translated;
-      const overRect = over.rect;
-      
-      if (activeRect && overRect) {
-        // Compare the centers to determine direction
-        const activeCenter = activeRect.top + activeRect.height / 2;
-        const overCenter = overRect.top + overRect.height / 2;
-        const newDirection = activeCenter < overCenter ? 'down' : 'up';
-        setDragDirection(newDirection);
+      if (isValidTarget) {
+        setDragOverId(over.id as string);
+        
+        // Calculate direction for visual feedback
+        const activeIndex = filteredEntries.findIndex((entry: FoodEntry) => entry.id === active.id);
+        const overIndex = filteredEntries.findIndex((entry: FoodEntry) => entry.id === over.id);
+        
+        // Ensure both indices are valid
+        if (activeIndex !== -1 && overIndex !== -1) {
+          const newDirection = activeIndex < overIndex ? 'down' : 'up';
+          setDragDirection(newDirection);
+        } else {
+          setDragOverId(null);
+          setDragDirection(null);
+        }
+      } else {
+        setDragOverId(null);
+        setDragDirection(null);
       }
     } else {
       setDragOverId(null);
@@ -349,19 +420,25 @@ export default function FoodTable({
     // Reset cursor
     document.body.style.cursor = '';
     document.body.classList.remove('dragging');
+    
+    // Remove boundary highlight
+    const containerElement = document.querySelector('.food-table-container .bg-white.rounded-lg');
+    if (containerElement) {
+      containerElement.classList.remove('drag-boundary-active');
+    }
 
-    // Simple approach: Let dnd-kit handle the positioning automatically
+    // Only allow reordering if dropping on a valid target
     if (active.id !== over?.id && over?.id) {
-      const oldIndex = filteredEntries.findIndex(item => item.id === active.id);
-      const newIndex = filteredEntries.findIndex(item => item.id === over.id);
+      const oldIndex = filteredEntries.findIndex((item: FoodEntry) => item.id === active.id);
+      const newIndex = filteredEntries.findIndex((item: FoodEntry) => item.id === over.id);
       
-      // Ensure we have valid indices
+      // Ensure we have valid indices and they're different
       if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
         const newOrder = arrayMove(filteredEntries, oldIndex, newIndex);
         onReorderEntries(newOrder);
       }
     }
-    // If no valid target, item automatically returns to original position
+    // If no valid target, item automatically snaps back to original position
   }
 
   // Enhanced CSS for solid, anchored box behavior with strict boundaries
@@ -371,7 +448,11 @@ export default function FoodTable({
     style.textContent = `
       .food-table-container {
         position: relative;
-        overflow: visible; /* Allow drag overlay to be visible */
+        overflow: hidden; /* Prevent infinite scrolling */
+        max-height: fit-content; /* Only as tall as content */
+        contain: layout; /* CSS containment for better performance */
+        /* Define clear rounded boundary */
+        border-radius: 0.5rem; /* rounded-lg */
       }
       
       .food-table-container table {
@@ -379,59 +460,85 @@ export default function FoodTable({
         border-collapse: separate;
         border-spacing: 0;
         position: relative;
+        width: 100%;
+        height: fit-content; /* Only as tall as needed */
       }
       
       .food-table-container tbody {
         position: relative;
+        overflow: hidden; /* Prevent tbody from creating extra space */
+        height: fit-content; /* Only as tall as needed */
       }
       
       .food-table-row {
         position: relative;
         background: white;
         border: 1px solid #e5e7eb;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: none; /* Remove all transitions for instant snapping */
+        width: 100%;
+        display: table-row;
+        height: fit-content; /* Prevent extra height */
+        cursor: pointer; /* Show pointer cursor for all rows */
       }
       
       .food-table-row.selected {
         background-color: #E8D5E8 !important;
         border-color: #d1d5db;
+        cursor: pointer !important;
+        transition: none; /* No transitions */
       }
       
-      .food-table-row:not(.dragging-item):hover {
+      .food-table-row.selected.dragging-item {
+        cursor: move !important; /* Show move cursor when dragging */
+        transition: none; /* No transitions during drag */
+      }
+      
+      .food-table-row:not(.selected):not(.dragging-item):hover {
         background-color: #f9fafb;
         border-color: #d1d5db;
+        cursor: pointer; /* Maintain pointer cursor on hover */
+        transition: none; /* Remove hover transition */
+      }
+      
+      /* Special cursor for shift/ctrl selection */
+      .food-table-row:not(.dragging-item):hover:active {
+        cursor: pointer; /* Show pointer cursor when clicking for selection */
       }
       
       .food-table-row.dragging-item {
         background-color: #f8fafc !important;
-        opacity: 0.5;
-        border: 2px dashed #9ca3af;
+        opacity: 0.8;
+        border: 2px solid #3b82f6;
         transform-origin: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        /* Ensure dragged row maintains table structure */
+        display: table-row !important;
+        width: 100% !important;
+        position: relative !important;
+        left: 0 !important;
+        right: 0 !important;
+        /* Constrain dragged element within container bounds */
+        z-index: 1000;
+      }
+      
+      .food-table-row.dragging-item td {
+        /* Prevent table cells from breaking during drag */
+        position: relative;
+        border-right: 1px solid #f3f4f6;
       }
       
       .food-table-row.drop-target-up {
         border-top: 3px solid #3b82f6;
         background-color: #eff6ff;
-        transform: translateY(2px);
-        transition: all 0.2s ease;
+        box-shadow: 0 -2px 4px rgba(59, 130, 246, 0.2);
+        transition: none; /* Instant visual feedback */
       }
       
       .food-table-row.drop-target-down {
         border-bottom: 3px solid #3b82f6;
         background-color: #eff6ff;
-        transform: translateY(-2px);
-        transition: all 0.2s ease;
-      }
-      
-      .drag-handle {
-        touch-action: pan-y;
-        user-select: none;
-        cursor: grab;
-        transition: all 0.15s ease;
-      }
-      
-      .drag-handle:active {
-        cursor: grabbing;
+        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+        transition: none; /* Instant visual feedback */
       }
       
       .dragging {
@@ -442,9 +549,17 @@ export default function FoodTable({
         pointer-events: none;
       }
       
-      .dragging .drag-handle {
+      .dragging .food-table-row.selected {
         pointer-events: auto;
-        cursor: grabbing;
+        cursor: move; /* Show move cursor during drag */
+      }
+      
+      /* Visual boundary indicator when dragging */
+      .drag-boundary-active {
+        border: 2px solid #3b82f6 !important;
+        box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2) inset !important;
+        background-color: rgba(59, 130, 246, 0.01) !important;
+        transition: none !important; /* Instant boundary feedback */
       }
       
       /* Row structure */
@@ -472,6 +587,25 @@ export default function FoodTable({
 
 
 
+  // Modifiers for instant snapping behavior - no smooth interpolation
+  const dragModifiers = [
+    (args: any) => {
+      const { transform } = args;
+      
+      if (!transform) return transform;
+      
+      // Lock horizontal movement and snap vertical movement to discrete positions
+      const snapThreshold = 40; // Snap every 40px (approximate row height)
+      const snappedY = Math.round(transform.y / snapThreshold) * snapThreshold;
+      
+      return {
+        ...transform,
+        x: 0, // Lock horizontal movement
+        y: snappedY, // Snap to discrete vertical positions
+      };
+    }
+  ];
+
   return (
     <div className="w-full overflow-x-auto select-none relative food-table-container">
       <DndContext 
@@ -480,8 +614,9 @@ export default function FoodTable({
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
+        modifiers={dragModifiers}
       >
-        <div className="min-h-[200px] bg-white rounded-lg shadow-sm border border-gray-100">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100">
           <table className="w-full table-fixed border-collapse">
             <tbody className="divide-y divide-gray-100">
               <SortableContext 
@@ -493,6 +628,7 @@ export default function FoodTable({
                     key={item.id}
                     item={item}
                     foodData={foodData}
+                    filteredEntries={filteredEntries}
                     selectedEntries={selectedEntries}
                     handleEntrySelect={handleEntrySelect}
                     removeFoodEntry={removeFoodEntry}
@@ -505,6 +641,7 @@ export default function FoodTable({
                     dragDirection={dragDirection}
                     activeId={activeId}
                     formatNumber={formatNumber}
+                    onContextMenu={onContextMenu}
                   />
                 ))}
               </SortableContext>
