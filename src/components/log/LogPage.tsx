@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Poppins } from 'next/font/google';
 import FoodSearchModal from "../food-log/FoodSearchModal";
 import FoodTable from "../food-log/FoodTable";
@@ -41,6 +41,15 @@ export default function LogPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isTargetsModalOpen, setIsTargetsModalOpen] = useState<boolean>(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+  const [clipboardEntries, setClipboardEntries] = useState<FoodEntry[]>([]);
+  const [contextMenu, setContextMenu] = useState<{
+    visible: boolean;
+    x: number;
+    y: number;
+    targetEntryId: string | null;
+  }>({ visible: false, x: 0, y: 0, targetEntryId: null });
+  const [editModalEntry, setEditModalEntry] = useState<FoodEntry | null>(null);
+  const [showCopyToast, setShowCopyToast] = useState(false);
   
   const [totals, setTotals] = useState<Nutrients>({
     calories: 0,
@@ -87,15 +96,87 @@ export default function LogPage() {
     setSelectedDate(newDate);
   }, [selectedDate]);
 
-  // Local storage effects
+  // Load food data from API when component mounts or date changes
   useEffect(() => {
-    const savedFoodData = localStorage.getItem('foodData');
-    const savedTotals = localStorage.getItem('totals');
-    const savedGoals = localStorage.getItem('customGoals');
-    
-    if (savedFoodData) setFoodData(JSON.parse(savedFoodData));
-    if (savedTotals) setTotals(JSON.parse(savedTotals));
-    if (savedGoals) setCustomGoals(JSON.parse(savedGoals));
+    const loadFoodData = async () => {
+      try {
+        // Format the selected date for the API
+        const dateParam = selectedDate.toISOString().split('T')[0];
+        const response = await fetch(`/api/food-logs?date=${dateParam}`);
+        
+        if (response.ok) {
+          const apiData = await response.json();
+          // Convert API data to frontend format
+          const formattedData: FoodEntry[] = apiData.map((log: any) => ({
+            id: log.id,
+            description: log.foodName + (log.brand ? ` (${log.brand})` : ''),
+            amount: log.quantity.toString(),
+            unit: log.unit,
+            date: log.date,
+            mealType: log.mealType,
+            calories: log.calories,
+            protein: log.protein,
+            carbs: log.carbs,
+            fat: log.fat,
+            fiber: log.fiber || 0,
+          }));
+          setFoodData(formattedData);
+        } else {
+          // If API fails, try localStorage as fallback
+          const savedFoodData = localStorage.getItem('foodData');
+          if (savedFoodData) {
+            const parsedData = JSON.parse(savedFoodData);
+            // Filter by selected date
+            const filteredData = parsedData.filter((entry: FoodEntry) => {
+              const entryDate = new Date(entry.date);
+              return sameDay(entryDate, selectedDate);
+            });
+            setFoodData(filteredData);
+          } else {
+            setFoodData([]);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading food data:', error);
+        // Fallback to localStorage
+        const savedFoodData = localStorage.getItem('foodData');
+        if (savedFoodData) {
+          const parsedData = JSON.parse(savedFoodData);
+          const filteredData = parsedData.filter((entry: FoodEntry) => {
+            const entryDate = new Date(entry.date);
+            return sameDay(entryDate, selectedDate);
+          });
+          setFoodData(filteredData);
+        } else {
+          setFoodData([]);
+        }
+      }
+    };
+
+    loadFoodData();
+  }, [selectedDate]); // Re-load when date changes
+
+  // Load goals on component mount
+  useEffect(() => {
+    const loadGoals = () => {
+      const savedGoals = localStorage.getItem('customGoals');
+      if (savedGoals) {
+        const parsedGoals = JSON.parse(savedGoals);
+        setCustomGoals(parsedGoals);
+        setTargetInput(parsedGoals); // Also sync target input
+      }
+    };
+
+    loadGoals();
+  }, []);
+
+  // Helper function to check if two dates are the same day
+  const sameDay = useCallback((d1: Date, d2: Date) => {
+    return (
+      d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate()
+    );
   }, []);
 
   // Add this effect to recalculate totals when the date changes
@@ -122,14 +203,17 @@ export default function LogPage() {
     });
     
     setTotals(dailyTotals);
-  }, [selectedDate, foodData]);
+  }, [selectedDate, foodData, sameDay]);
 
-  // Remove the existing totals from localStorage since we're now calculating them per day
-  // Keep this effect for saving food data and goals only
+  // Save goals to localStorage when they change (but skip initial load)
+  const [goalsLoaded, setGoalsLoaded] = useState(false);
   useEffect(() => {
-    localStorage.setItem('foodData', JSON.stringify(foodData));
-    localStorage.setItem('customGoals', JSON.stringify(customGoals));
-  }, [foodData, customGoals]);
+    if (goalsLoaded) {
+      localStorage.setItem('customGoals', JSON.stringify(customGoals));
+    } else {
+      setGoalsLoaded(true);
+    }
+  }, [customGoals, goalsLoaded]);
 
   // Keyboard shortcuts effect
   useEffect(() => {
@@ -201,106 +285,191 @@ export default function LogPage() {
     };
   }, [isCalendarOpen]);
 
-  const addFoodEntry = (entry: FoodEntry) => {
-    setFoodData(prev => [...prev, entry]);
-    setTotals(prev => ({
-      calories: prev.calories + entry.calories,
-      protein: prev.protein + entry.protein,
-      carbs: prev.carbs + entry.carbs,
-      fat: prev.fat + entry.fat,
-    }));
-  };
+  const addFoodEntry = useCallback(async (entry: FoodEntry) => {
+    try {
+      // Ensure the entry uses the selected date
+      const entryWithCorrectDate = {
+        ...entry,
+        date: selectedDate.toISOString(),
+      };
 
-  const removeFoodEntry = (id: string) => {
+      // Save to API
+      const response = await fetch('/api/food-logs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          foodName: entryWithCorrectDate.description.split(' (')[0], // Extract food name before brand
+          brand: entryWithCorrectDate.description.includes(' (') ? entryWithCorrectDate.description.split(' (')[1].replace(')', '') : null,
+          quantity: parseFloat(entryWithCorrectDate.amount),
+          unit: entryWithCorrectDate.unit,
+          mealType: entryWithCorrectDate.mealType,
+          calories: entryWithCorrectDate.calories,
+          protein: entryWithCorrectDate.protein,
+          carbs: entryWithCorrectDate.carbs,
+          fat: entryWithCorrectDate.fat,
+          fiber: entryWithCorrectDate.fiber || 0,
+        }),
+      });
+
+      if (response.ok) {
+        const savedEntry = await response.json();
+        // Update local state with API response
+        const formattedEntry: FoodEntry = {
+          id: savedEntry.id,
+          description: savedEntry.foodName + (savedEntry.brand ? ` (${savedEntry.brand})` : ''),
+          amount: savedEntry.quantity.toString(),
+          unit: savedEntry.unit,
+          date: savedEntry.date,
+          mealType: savedEntry.mealType,
+          calories: savedEntry.calories,
+          protein: savedEntry.protein,
+          carbs: savedEntry.carbs,
+          fat: savedEntry.fat,
+          fiber: savedEntry.fiber || 0,
+        };
+        setFoodData(prev => [...prev, formattedEntry]);
+      } else {
+        // Fallback to local storage
+        setFoodData(prev => [...prev, entryWithCorrectDate]);
+        const allLocalData = JSON.parse(localStorage.getItem('foodData') || '[]');
+        localStorage.setItem('foodData', JSON.stringify([...allLocalData, entryWithCorrectDate]));
+      }
+    } catch (error) {
+      console.error('Error saving food entry:', error);
+      // Fallback to local storage
+      const entryWithCorrectDate = {
+        ...entry,
+        date: selectedDate.toISOString(),
+      };
+      setFoodData(prev => [...prev, entryWithCorrectDate]);
+      const allLocalData = JSON.parse(localStorage.getItem('foodData') || '[]');
+      localStorage.setItem('foodData', JSON.stringify([...allLocalData, entryWithCorrectDate]));
+    }
+  }, [selectedDate]);
+
+  const removeFoodEntry = useCallback(async (id: string) => {
     const entryToRemove = foodData.find(item => item.id === id);
     
     if (!entryToRemove) return;
     
-    setFoodData(prev => prev.filter(item => item.id !== id));
-    setSelectedEntries(prev => prev.filter(item => item !== id));
-    
-    // Subtract the removed entry's nutrients from totals
-    setTotals(prev => ({
-      calories: prev.calories - entryToRemove.calories,
-      protein: prev.protein - entryToRemove.protein,
-      carbs: prev.carbs - entryToRemove.carbs,
-      fat: prev.fat - entryToRemove.fat,
-    }));
-  };
+    try {
+      // Try to delete from API
+      const response = await fetch(`/api/food-logs?id=${id}`, {
+        method: 'DELETE',
+      });
 
-  const updateFoodEntry = (id: string, updates: Partial<FoodEntry>) => {
-    setFoodData(prev => prev.map(item => {
-      if (item.id === id) {
-        return { ...item, ...updates };
+      if (response.ok) {
+        // Remove from local state only if API call succeeds
+        setFoodData(prev => prev.filter(item => item.id !== id));
+        setSelectedEntries(prev => prev.filter(item => item !== id));
+      } else {
+        // Fallback to local storage only
+        setFoodData(prev => prev.filter(item => item.id !== id));
+        setSelectedEntries(prev => prev.filter(item => item !== id));
+        localStorage.setItem('foodData', JSON.stringify(foodData.filter(item => item.id !== id)));
       }
-      return item;
-    }));
-
-    // If we're updating nutrients, recalculate totals
-    if ('calories' in updates || 'protein' in updates || 'carbs' in updates || 'fat' in updates) {
-      // Find the original entry
-      const originalEntry = foodData.find(item => item.id === id);
-      if (originalEntry) {
-        // Calculate differences
-        const calorieDiff = (updates.calories || 0) - originalEntry.calories;
-        const proteinDiff = (updates.protein || 0) - originalEntry.protein;
-        const carbsDiff = (updates.carbs || 0) - originalEntry.carbs;
-        const fatDiff = (updates.fat || 0) - originalEntry.fat;
-
-        // Update totals with differences
-        setTotals(prev => ({
-          calories: prev.calories + calorieDiff,
-          protein: prev.protein + proteinDiff,
-          carbs: prev.carbs + carbsDiff,
-          fat: prev.fat + fatDiff,
-        }));
-      }
+    } catch (error) {
+      console.error('Error deleting food entry:', error);
+      // Fallback to local storage only
+      setFoodData(prev => prev.filter(item => item.id !== id));
+      setSelectedEntries(prev => prev.filter(item => item !== id));
+      localStorage.setItem('foodData', JSON.stringify(foodData.filter(item => item.id !== id)));
     }
-  };
+  }, [foodData]);
 
-  const handleInputChange = (field: keyof Nutrients, value: number) => {
+  const updateFoodEntry = useCallback(async (id: string, updates: Partial<FoodEntry>) => {
+    try {
+      // Try to update via API
+      const response = await fetch('/api/food-logs', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id,
+          quantity: updates.amount ? parseFloat(updates.amount) : undefined,
+          calories: updates.calories,
+          protein: updates.protein,
+          carbs: updates.carbs,
+          fat: updates.fat,
+        }),
+      });
+
+      if (response.ok) {
+        // Update local state only if API call succeeds
+        setFoodData(prev => prev.map(item => {
+          if (item.id === id) {
+            return { ...item, ...updates };
+          }
+          return item;
+        }));
+      } else {
+        // Fallback to local storage only
+        setFoodData(prev => prev.map(item => {
+          if (item.id === id) {
+            return { ...item, ...updates };
+          }
+          return item;
+        }));
+        localStorage.setItem('foodData', JSON.stringify(foodData.map(item => 
+          item.id === id ? { ...item, ...updates } : item
+        )));
+      }
+    } catch (error) {
+      console.error('Error updating food entry:', error);
+      // Fallback to local storage only
+      setFoodData(prev => prev.map(item => {
+        if (item.id === id) {
+          return { ...item, ...updates };
+        }
+        return item;
+      }));
+      localStorage.setItem('foodData', JSON.stringify(foodData.map(item => 
+        item.id === id ? { ...item, ...updates } : item
+      )));
+    }
+  }, [foodData]);
+
+  const handleInputChange = useCallback((field: keyof Nutrients, value: number) => {
     setTargetInput(prev => ({ ...prev, [field]: value }));
-  };
+  }, []);
 
-  const handleSaveTargets = () => {
+  const handleSaveTargets = useCallback(() => {
     setCustomGoals({ ...targetInput });
-  };
+  }, [targetInput]);
 
-  // Filter entries by selected date (only showing entries for the current day)
-  const sameDay = (d1: Date, d2: Date) => {
-    return (
-      d1.getFullYear() === d2.getFullYear() &&
-      d1.getMonth() === d2.getMonth() &&
-      d1.getDate() === d2.getDate()
-    );
-  };
-
-  const filteredEntries = foodData.filter(entry => {
-    const entryDate = new Date(entry.date);
-    return sameDay(entryDate, selectedDate);
-  });
+  const filteredEntries = useMemo(() => {
+    return foodData.filter(entry => {
+      const entryDate = new Date(entry.date);
+      return sameDay(entryDate, selectedDate);
+    });
+  }, [foodData, selectedDate, sameDay]);
 
   // Calculate totals for selected entries (if any selected) or use daily totals
-  const selectedEntriesTotals = selectedEntries.length > 0 
-    ? filteredEntries
-        .filter(entry => selectedEntries.includes(entry.id))
-        .reduce((acc, entry) => ({
-          calories: acc.calories + entry.calories,
-          protein: acc.protein + entry.protein,
-          carbs: acc.carbs + entry.carbs,
-          fat: acc.fat + entry.fat,
-        }), {
-          calories: 0,
-          protein: 0,
-          carbs: 0,
-          fat: 0,
-        })
-    : totals;
+  const selectedEntriesTotals = useMemo(() => {
+    if (selectedEntries.length === 0) return totals;
+    
+    return filteredEntries
+      .filter((entry: FoodEntry) => selectedEntries.includes(entry.id))
+      .reduce((acc: Nutrients, entry: FoodEntry) => ({
+        calories: acc.calories + entry.calories,
+        protein: acc.protein + entry.protein,
+        carbs: acc.carbs + entry.carbs,
+        fat: acc.fat + entry.fat,
+      }), {
+        calories: 0,
+        protein: 0,
+        carbs: 0,
+        fat: 0,
+      });
+  }, [filteredEntries, selectedEntries, totals]);
 
   const displayTotals = selectedEntries.length > 0 ? selectedEntriesTotals : totals;
 
   // Handle entry selection
-  const handleEntrySelect = (id: string, index: number, event: React.MouseEvent) => {
+  const handleEntrySelect = useCallback((id: string, index: number, event: React.MouseEvent) => {
     setSelectedEntries(prev => {
       if (prev.includes(id)) {
         // If already selected, deselect it
@@ -310,23 +479,170 @@ export default function LogPage() {
         if (event.ctrlKey || event.metaKey) {
           // Multi-select with Ctrl/Cmd
           return [...prev, id];
+        } else if (event.shiftKey && prev.length > 0) {
+          // Range selection with Shift
+          const lastSelectedIndex = filteredEntries.findIndex((entry: FoodEntry) => 
+            entry.id === prev[prev.length - 1]
+          );
+          
+          if (lastSelectedIndex !== -1) {
+            const startIndex = Math.min(lastSelectedIndex, index);
+            const endIndex = Math.max(lastSelectedIndex, index);
+            const rangeIds = filteredEntries
+              .slice(startIndex, endIndex + 1)
+              .map((entry: FoodEntry) => entry.id);
+            
+            // Combine existing selection with range selection
+            const combined = [...prev, ...rangeIds];
+            // Remove duplicates
+            return [...new Set(combined)];
+          } else {
+            // Fallback to regular multi-select
+            return [...prev, id];
+          }
         } else {
           // Single select
           return [id];
         }
       }
     });
-  };
+  }, [filteredEntries]);
 
-  const handleReorderEntries = (newOrder: FoodEntry[]) => {
+  const handleReorderEntries = useCallback((newOrder: FoodEntry[]) => {
     // Update the food data to reflect the new order
-    const otherEntries = foodData.filter(entry => {
+    const otherEntries = foodData.filter((entry: FoodEntry) => {
       const entryDate = new Date(entry.date);
       return !sameDay(entryDate, selectedDate);
     });
     
     setFoodData([...otherEntries, ...newOrder]);
-  };
+  }, [foodData, selectedDate, sameDay]);
+
+  // Context menu handlers
+  const handleContextMenu = useCallback((e: React.MouseEvent, entryId: string) => {
+    e.preventDefault();
+    setContextMenu({
+      visible: true,
+      x: e.clientX,
+      y: e.clientY,
+      targetEntryId: entryId
+    });
+  }, []);
+
+  const closeContextMenu = useCallback(() => {
+    setContextMenu({ visible: false, x: 0, y: 0, targetEntryId: null });
+  }, []);
+
+  const handleCopyEntries = useCallback(() => {
+    const entriesToCopy = selectedEntries.length > 0 
+      ? foodData.filter(entry => selectedEntries.includes(entry.id))
+      : contextMenu.targetEntryId 
+        ? foodData.filter(entry => entry.id === contextMenu.targetEntryId)
+        : [];
+    
+    setClipboardEntries(entriesToCopy);
+    setShowCopyToast(true);
+    setTimeout(() => setShowCopyToast(false), 2000);
+    closeContextMenu();
+  }, [selectedEntries, foodData, contextMenu.targetEntryId, closeContextMenu]);
+
+  const handleCopyCurrentDay = useCallback(() => {
+    const currentDayEntries = filteredEntries;
+    setClipboardEntries(currentDayEntries);
+    setShowCopyToast(true);
+    setTimeout(() => setShowCopyToast(false), 2000);
+  }, [filteredEntries]);
+
+  const handleCopySelectedItems = useCallback(() => {
+    if (selectedEntries.length === 0) return;
+    const entriesToCopy = foodData.filter(entry => selectedEntries.includes(entry.id));
+    setClipboardEntries(entriesToCopy);
+    setShowCopyToast(true);
+    setTimeout(() => setShowCopyToast(false), 2000);
+  }, [selectedEntries, foodData]);
+
+  const handlePasteEntries = useCallback(() => {
+    if (clipboardEntries.length === 0) return;
+    
+    const newEntries = clipboardEntries.map(entry => ({
+      ...entry,
+      id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+      date: selectedDate.toISOString()
+    }));
+    
+    newEntries.forEach(entry => addFoodEntry(entry));
+    closeContextMenu();
+  }, [clipboardEntries, selectedDate, addFoodEntry, closeContextMenu]);
+
+  const handleDeleteSelectedEntries = useCallback(() => {
+    const entriesToDelete = selectedEntries.length > 0 
+      ? selectedEntries
+      : contextMenu.targetEntryId 
+        ? [contextMenu.targetEntryId]
+        : [];
+    
+    entriesToDelete.forEach(id => removeFoodEntry(id));
+    closeContextMenu();
+  }, [selectedEntries, contextMenu.targetEntryId, removeFoodEntry, closeContextMenu]);
+
+  const handleEditEntry = useCallback(() => {
+    const entryToEdit = contextMenu.targetEntryId 
+      ? foodData.find(entry => entry.id === contextMenu.targetEntryId)
+      : selectedEntries.length === 1 
+        ? foodData.find(entry => entry.id === selectedEntries[0])
+        : null;
+    
+    if (entryToEdit) {
+      setEditModalEntry(entryToEdit);
+    }
+    closeContextMenu();
+  }, [contextMenu.targetEntryId, selectedEntries, foodData, closeContextMenu]);
+
+  // Close context menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      if (contextMenu.visible) {
+        closeContextMenu();
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [contextMenu.visible, closeContextMenu]);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Only handle shortcuts when not in input fields
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+
+      // Ctrl+C or Cmd+C - Copy selected entries
+      if ((e.ctrlKey || e.metaKey) && e.key === 'c' && selectedEntries.length > 0) {
+        e.preventDefault();
+        const entriesToCopy = foodData.filter(entry => selectedEntries.includes(entry.id));
+        setClipboardEntries(entriesToCopy);
+        setShowCopyToast(true);
+        setTimeout(() => setShowCopyToast(false), 2000);
+      }
+
+      // Ctrl+V or Cmd+V - Paste entries
+      if ((e.ctrlKey || e.metaKey) && e.key === 'v' && clipboardEntries.length > 0) {
+        e.preventDefault();
+        handlePasteEntries();
+      }
+
+      // Delete or Backspace - Delete selected entries
+      if ((e.key === 'Delete' || e.key === 'Backspace') && selectedEntries.length > 0) {
+        e.preventDefault();
+        selectedEntries.forEach(id => removeFoodEntry(id));
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [selectedEntries, foodData, clipboardEntries, handlePasteEntries, removeFoodEntry]);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F0E7', userSelect: 'none', WebkitUserSelect: 'none' }}>
@@ -496,12 +812,54 @@ export default function LogPage() {
             Add Food
           </Button>
           
+          {/* Clipboard indicator */}
+          {clipboardEntries.length > 0 && (
+            <div className="ml-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+              📋 {clipboardEntries.length} copied
+            </div>
+          )}
+          
           <div className="relative ml-2">
             <Menu>
               <Menu.Button className="p-2 hover:bg-gray-100 rounded-full cursor-pointer transition-colors duration-200">
                 <HiDotsHorizontal className="h-5 w-5" />
               </Menu.Button>
               <Menu.Items className="absolute right-0 mt-1 w-56 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg z-10">
+                <div className="p-1">
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${active ? 'bg-gray-100' : ''} w-full text-left px-4 py-2 cursor-pointer hover:bg-gray-100 transition-colors duration-200 rounded-md`}
+                        onClick={handleCopyCurrentDay}
+                        disabled={filteredEntries.length === 0}
+                      >
+                        Copy Current Day
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${active ? 'bg-gray-100' : ''} w-full text-left px-4 py-2 cursor-pointer hover:bg-gray-100 transition-colors duration-200 rounded-md ${selectedEntries.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={handleCopySelectedItems}
+                        disabled={selectedEntries.length === 0}
+                      >
+                        Copy Selected Items
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${active ? 'bg-gray-100' : ''} w-full text-left px-4 py-2 cursor-pointer hover:bg-gray-100 transition-colors duration-200 rounded-md ${clipboardEntries.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        onClick={handlePasteEntries}
+                        disabled={clipboardEntries.length === 0}
+                      >
+                        Paste {clipboardEntries.length > 0 ? `(${clipboardEntries.length} items)` : ''}
+                      </button>
+                    )}
+                  </Menu.Item>
+                </div>
                 <div className="p-1">
                   <Menu.Item>
                     {({ active }) => (
@@ -527,7 +885,7 @@ export default function LogPage() {
       {/* Food entries table - MOVED UP */}
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
         {filteredEntries.length > 0 ? (
-          <div className="w-full overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="w-full -mx-4 px-4 sm:mx-0 sm:px-0">
             <FoodTable
               foodData={foodData}
               filteredEntries={filteredEntries} // Pass filtered entries directly
@@ -536,6 +894,8 @@ export default function LogPage() {
               removeFoodEntry={removeFoodEntry}
               updateFoodEntry={updateFoodEntry}
               onReorderEntries={handleReorderEntries}
+              onContextMenu={handleContextMenu}
+              setSelectedEntries={setSelectedEntries}
             />
           </div>
         ) : (
@@ -561,6 +921,201 @@ export default function LogPage() {
           onAddFood={addFoodEntry}
           selectedDate={selectedDate}
         />
+      )}
+
+      {/* Context Menu */}
+      {contextMenu.visible && (
+        <div
+          className="fixed bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1 min-w-48"
+          style={{
+            left: Math.min(contextMenu.x, window.innerWidth - 200), // Prevent off-screen
+            top: Math.min(contextMenu.y, window.innerHeight - 200),
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            onClick={handleEditEntry}
+            className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-gray-700 flex items-center space-x-2 transition-colors duration-150"
+          >
+            <span>✏️</span>
+            <span>View/Edit Food</span>
+          </button>
+          <button
+            onClick={handleCopyEntries}
+            className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-gray-700 flex items-center space-x-2 transition-colors duration-150"
+          >
+            <span>📋</span>
+            <span>Copy {selectedEntries.length > 0 ? `Selected (${selectedEntries.length})` : 'Item'}</span>
+            <span className="text-xs text-gray-400 ml-auto">Ctrl+C</span>
+          </button>
+          <button
+            onClick={handlePasteEntries}
+            disabled={clipboardEntries.length === 0}
+            className={`w-full text-left px-4 py-2 text-sm flex items-center space-x-2 transition-colors duration-150 ${
+              clipboardEntries.length === 0 
+                ? 'text-gray-400 cursor-not-allowed' 
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <span>📋</span>
+            <span>Paste {clipboardEntries.length > 0 ? `(${clipboardEntries.length} items)` : ''}</span>
+            {clipboardEntries.length > 0 && <span className="text-xs text-gray-400 ml-auto">Ctrl+V</span>}
+          </button>
+          <hr className="my-1 border-gray-200" />
+          <button
+            onClick={handleDeleteSelectedEntries}
+            className="w-full text-left px-4 py-2 hover:bg-red-50 text-sm text-red-600 flex items-center space-x-2 transition-colors duration-150"
+          >
+            <span>🗑️</span>
+            <span>Delete {selectedEntries.length > 0 ? `Selected (${selectedEntries.length})` : 'Item'}</span>
+            <span className="text-xs text-red-400 ml-auto">Del</span>
+          </button>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {editModalEntry && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 transition-opacity duration-300"
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}
+            onClick={() => setEditModalEntry(null)}
+          ></div>
+          
+          {/* Modal */}
+          <div className="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-gray-800">Edit Food Entry</h2>
+              <button
+                onClick={() => setEditModalEntry(null)}
+                className="p-1 rounded-full transition-colors duration-200"
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                aria-label="Close"
+              >
+                <span className="text-gray-500 text-xl">×</span>
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Food Description</label>
+                <p className="mt-1 p-3 bg-gray-50 rounded-md text-gray-800">{editModalEntry.description}</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Amount</label>
+                <input
+                  type="number"
+                  value={editModalEntry.amount}
+                  onChange={(e) => {
+                    const newAmount = e.target.value;
+                    setEditModalEntry({...editModalEntry, amount: newAmount});
+                  }}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                  style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Unit</label>
+                <p className="mt-1 p-3 bg-gray-50 rounded-md text-gray-800">{editModalEntry.unit}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Calories</label>
+                  <p className="mt-1 p-3 bg-gray-50 rounded-md text-gray-800">
+                    {(() => {
+                      const originalEntry = foodData.find(entry => entry.id === editModalEntry.id);
+                      if (originalEntry) {
+                        const ratio = parseFloat(editModalEntry.amount) / parseFloat(originalEntry.amount);
+                        return (originalEntry.calories * ratio).toFixed(1);
+                      }
+                      return editModalEntry.calories.toFixed(1);
+                    })()}
+                  </p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Protein (g)</label>
+                  <p className="mt-1 p-3 bg-gray-50 rounded-md text-gray-800">
+                    {(() => {
+                      const originalEntry = foodData.find(entry => entry.id === editModalEntry.id);
+                      if (originalEntry) {
+                        const ratio = parseFloat(editModalEntry.amount) / parseFloat(originalEntry.amount);
+                        return (originalEntry.protein * ratio).toFixed(1);
+                      }
+                      return editModalEntry.protein.toFixed(1);
+                    })()}
+                  </p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Carbs (g)</label>
+                  <p className="mt-1 p-3 bg-gray-50 rounded-md text-gray-800">
+                    {(() => {
+                      const originalEntry = foodData.find(entry => entry.id === editModalEntry.id);
+                      if (originalEntry) {
+                        const ratio = parseFloat(editModalEntry.amount) / parseFloat(originalEntry.amount);
+                        return (originalEntry.carbs * ratio).toFixed(1);
+                      }
+                      return editModalEntry.carbs.toFixed(1);
+                    })()}
+                  </p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Fat (g)</label>
+                  <p className="mt-1 p-3 bg-gray-50 rounded-md text-gray-800">
+                    {(() => {
+                      const originalEntry = foodData.find(entry => entry.id === editModalEntry.id);
+                      if (originalEntry) {
+                        const ratio = parseFloat(editModalEntry.amount) / parseFloat(originalEntry.amount);
+                        return (originalEntry.fat * ratio).toFixed(1);
+                      }
+                      return editModalEntry.fat.toFixed(1);
+                    })()}
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex justify-end space-x-3 mt-6">
+              <button
+                onClick={() => setEditModalEntry(null)}
+                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (editModalEntry) {
+                    // Find the original entry to get the original amount
+                    const originalEntry = foodData.find(entry => entry.id === editModalEntry.id);
+                    if (originalEntry) {
+                      const originalAmount = parseFloat(originalEntry.amount);
+                      const newAmount = parseFloat(editModalEntry.amount);
+                      
+                      if (originalAmount !== newAmount && newAmount > 0) {
+                        const ratio = newAmount / originalAmount;
+                        updateFoodEntry(editModalEntry.id, {
+                          amount: editModalEntry.amount,
+                          calories: originalEntry.calories * ratio,
+                          protein: originalEntry.protein * ratio,
+                          carbs: originalEntry.carbs * ratio,
+                          fat: originalEntry.fat * ratio,
+                        });
+                      }
+                    }
+                    setEditModalEntry(null);
+                  }
+                }}
+                className="px-6 py-2 text-white rounded-lg transition-colors duration-200"
+                style={{ backgroundColor: '#6e44ff' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#5a37d9'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#6e44ff'}
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
       )}
         </div>
 
@@ -653,6 +1208,14 @@ export default function LogPage() {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Copy Toast Notification */}
+      {showCopyToast && (
+        <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 flex items-center space-x-2">
+          <span>📋</span>
+          <span>Copied {clipboardEntries.length} item{clipboardEntries.length !== 1 ? 's' : ''} to clipboard</span>
         </div>
       )}
       </div>

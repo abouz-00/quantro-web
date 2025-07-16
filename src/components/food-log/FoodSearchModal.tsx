@@ -86,14 +86,25 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
     if (savedCustomFoods) setCustomFoods(JSON.parse(savedCustomFoods));
   }, []);
 
-  // Save favorites and custom foods to localStorage
+  // Save favorites to localStorage when they change (but skip initial load)
+  const [favoritesLoaded, setFavoritesLoaded] = useState(false);
   useEffect(() => {
-    localStorage.setItem('favoriteFoods', JSON.stringify(favorites));
-  }, [favorites]);
+    if (favoritesLoaded) {
+      localStorage.setItem('favoriteFoods', JSON.stringify(favorites));
+    } else {
+      setFavoritesLoaded(true);
+    }
+  }, [favorites, favoritesLoaded]);
 
+  // Save custom foods to localStorage when they change (but skip initial load)
+  const [customFoodsLoaded, setCustomFoodsLoaded] = useState(false);
   useEffect(() => {
-    localStorage.setItem('customFoods', JSON.stringify(customFoods));
-  }, [customFoods]);
+    if (customFoodsLoaded) {
+      localStorage.setItem('customFoods', JSON.stringify(customFoods));
+    } else {
+      setCustomFoodsLoaded(true);
+    }
+  }, [customFoods, customFoodsLoaded]);
 
   // USDA API search (updated code)
   useEffect(() => {
