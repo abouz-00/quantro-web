@@ -14,12 +14,18 @@ interface Nutrients {
 interface EnergySummaryProps {
   totals: Nutrients;
   customGoals: Nutrients;
+  selectedEntryCount?: number;
 }
 
-export default function EnergySummary({ totals, customGoals }: EnergySummaryProps) {
+export default function EnergySummary({ totals, customGoals, selectedEntryCount = 0 }: EnergySummaryProps) {
+  const isShowingSelectedEntry = selectedEntryCount > 0;
+  const title = isShowingSelectedEntry 
+    ? `${selectedEntryCount === 1 ? 'Selected Entry' : 'Selected Entries'} (${selectedEntryCount})`
+    : 'Daily Summary';
+  
   return (
     <section className="bg-gray-100 rounded-lg p-4 shadow-lg select-none">
-      <h2 className="text-lg font-medium mb-2">Energy Summary</h2>
+      <h2 className="text-lg font-medium mb-2">{title}</h2>
       <ProgressBar
         label="Calories"
         current={totals.calories}

@@ -280,6 +280,25 @@ export default function LogPage() {
     return sameDay(entryDate, selectedDate);
   });
 
+  // Calculate totals for selected entries (if any selected) or use daily totals
+  const selectedEntriesTotals = selectedEntries.length > 0 
+    ? filteredEntries
+        .filter(entry => selectedEntries.includes(entry.id))
+        .reduce((acc, entry) => ({
+          calories: acc.calories + entry.calories,
+          protein: acc.protein + entry.protein,
+          carbs: acc.carbs + entry.carbs,
+          fat: acc.fat + entry.fat,
+        }), {
+          calories: 0,
+          protein: 0,
+          carbs: 0,
+          fat: 0,
+        })
+    : totals;
+
+  const displayTotals = selectedEntries.length > 0 ? selectedEntriesTotals : totals;
+
   // Handle entry selection
   const handleEntrySelect = (id: string, index: number, event: React.MouseEvent) => {
     setSelectedEntries(prev => {
@@ -528,7 +547,11 @@ export default function LogPage() {
       
       {/* Summary grid - Single column now */}
       <div className="mb-6">
-        <EnergySummary totals={totals} customGoals={customGoals} />
+        <EnergySummary 
+          totals={displayTotals} 
+          customGoals={customGoals} 
+          selectedEntryCount={selectedEntries.length}
+        />
       </div>
       
       {/* Food search modal */}
