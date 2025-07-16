@@ -4,12 +4,16 @@ import React, { useState } from "react";
 import { FaTrash, FaPencilAlt, FaCheck, FaGripVertical } from "react-icons/fa";
 import {
   DndContext,
-  closestCenter,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
   DragEndEvent,
+  DragStartEvent,
+  DragOverEvent,
+  closestCenter,
+  CollisionDetection,
+  rectIntersection,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -69,7 +73,11 @@ function SortableTableRow({
   editingEntry, 
   setEditingEntry, 
   editAmount, 
-  setEditAmount 
+  setEditAmount,
+  dragOverId,
+  dragDirection,
+  activeId,
+  formatNumber
 }: {
   item: FoodEntry;
   foodData: FoodEntry[];
@@ -81,6 +89,10 @@ function SortableTableRow({
   setEditingEntry: (id: string | null) => void;
   editAmount: string;
   setEditAmount: (amount: string) => void;
+  dragOverId: string | null;
+  dragDirection: 'up' | 'down' | null;
+  activeId: string | null;
+  formatNumber: (num: number) => string;
 }) {
   const {
     attributes,
@@ -91,11 +103,33 @@ function SortableTableRow({
     isDragging,
   } = useSortable({ id: item.id });
 
+// Enhanced visual feedback for solid boxes
+  const isDropTarget = dragOverId === item.id && activeId !== item.id;
+  const isBeingDragged = activeId === item.id;
+  
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition: isDragging 
+      ? 'none' 
+      : transition || 'transform 250ms cubic-bezier(0.4, 0, 0.2, 1)',
+    // Show the item but make it semi-transparent when being dragged
     opacity: isDragging ? 0.5 : 1,
+    zIndex: isDragging ? 1000 : 1,
   };
+
+  // Solid box classes with clear visual states
+  const getRowClasses = () => {
+    const baseClasses = "food-table-row border-b border-gray-200 last:border-0 select-none relative";
+    const selectedClasses = selectedEntries.includes(item.id) ? 'selected' : '';
+    const draggingClasses = isDragging ? 'dragging-item' : '';
+    const dropTargetClasses = isDropTarget 
+      ? `drop-target-${dragDirection}` 
+      : '';
+    
+    return `${baseClasses} ${selectedClasses} ${draggingClasses} ${dropTargetClasses}`.trim();
+  };
+
+  // Remove insertion indicator component - using CSS borders instead
 
   const startEditing = (entry: FoodEntry, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -126,28 +160,25 @@ function SortableTableRow({
     setEditingEntry(null);
   };
 
-  const formatNumber = (num: number): string => {
-    const rounded = parseFloat(num.toFixed(2));
-    return rounded % 1 === 0 ? rounded.toString() : rounded.toFixed(2);
-  };
-
   return (
     <tr
       ref={setNodeRef}
       style={style}
-      className={`border-b border-gray-200 last:border-0 cursor-pointer select-none ${
-        selectedEntries.includes(item.id) ? 'bg-[#E8D5E8]' : ''
-      } ${isDragging ? 'shadow-lg' : ''}`}
+      className={getRowClasses()}
       onClick={(e) => handleEntrySelect(item.id, foodData.indexOf(item), e)}
     >
       <td className="py-2 pl-2 pr-2">
         <div 
-          {...attributes} 
+          className="p-2 rounded pointer-events-auto drag-handle"
+          {...attributes}
           {...listeners}
-          className="cursor-grab active:cursor-grabbing p-1 hover:bg-gray-100 rounded"
-          onClick={(e) => e.stopPropagation()}
         >
-          <FaGripVertical className="text-gray-400" size={12} />
+          <FaGripVertical 
+            className={`transition-colors duration-200 ${
+              isDragging ? 'text-blue-500' : 'text-gray-400 hover:text-gray-600'
+            }`} 
+            size={12} 
+          />
         </div>
       </td>
       <td className="py-2 pl-2 pr-2">{capitalizeWords(item.description)}</td>
@@ -161,10 +192,12 @@ function SortableTableRow({
               className="w-16 p-1 border border-gray-300 rounded text-right"
               autoFocus
               onClick={e => e.stopPropagation()}
+              onPointerDown={e => e.stopPropagation()}
             />
             <span>{capitalizeWords(item.unit)}</span>
             <button 
               onClick={(e) => saveEdit(item, e)}
+              onPointerDown={e => e.stopPropagation()}
               className="text-green-500 hover:text-green-600 ml-1"
             >
               <FaCheck size={14} />
@@ -175,6 +208,7 @@ function SortableTableRow({
             <span 
               className="hover:bg-gray-100 px-1 rounded cursor-pointer"
               onClick={(e) => startEditing(item, e)}
+              onPointerDown={e => e.stopPropagation()}
             >
               {formatNumber(parseFloat(item.amount))} {capitalizeWords(item.unit)}
             </span>
@@ -182,6 +216,7 @@ function SortableTableRow({
               size={12} 
               className="text-gray-400 hover:text-gray-600 cursor-pointer"
               onClick={(e) => startEditing(item, e)}
+              onPointerDown={e => e.stopPropagation()}
             />
           </div>
         )}
@@ -196,6 +231,7 @@ function SortableTableRow({
             e.stopPropagation();
             removeFoodEntry(item.id);
           }}
+          onPointerDown={e => e.stopPropagation()}
           className="text-gray-500 hover:text-red-500"
           aria-label="Remove entry"
         >
@@ -217,69 +253,264 @@ export default function FoodTable({
 }: FoodTableProps) {
   const [editingEntry, setEditingEntry] = useState<string | null>(null);
   const [editAmount, setEditAmount] = useState<string>("");
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
+  const [dragDirection, setDragDirection] = useState<'up' | 'down' | null>(null);
   
+  // Helper function to format numbers without trailing zeros
+  const formatNumber = (num: number): string => {
+    // Round to 2 decimal places and remove trailing zeros
+    const fixed = num.toFixed(2);
+    return parseFloat(fixed).toString();
+  };
+  
+  // Custom coordinate getter that constrains movement to vertical axis only
+  const verticalOnlyCoordinateGetter = (event: KeyboardEvent, args: any) => {
+    const coordinates = sortableKeyboardCoordinates(event, args);
+    if (coordinates) {
+      // Only allow vertical movement, lock horizontal position to 0
+      return {
+        x: 0,
+        y: coordinates.y
+      };
+    }
+    return undefined;
+  };
+
+  // Custom collision detection for more precise vertical sorting
+  const customCollisionDetection: CollisionDetection = (args) => {
+    // Use closest center for more predictable behavior
+    const closestCenterCollisions = closestCenter(args);
+    
+    // If we have results, return them
+    if (closestCenterCollisions.length > 0) {
+      return closestCenterCollisions;
+    }
+    
+    // Fallback to rect intersection for edge cases
+    const rectCollisions = rectIntersection(args);
+    return rectCollisions;
+  };
+
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 3, // Reduced for more responsive dragging
+        tolerance: 3,
+        delay: 0, // Removed delay for immediate visual feedback
+      },
+    }),
     useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
+      coordinateGetter: verticalOnlyCoordinateGetter,
     })
   );
 
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
+  function handleDragStart(event: DragStartEvent) {
+    setActiveId(event.active.id as string);
+    setDragOverId(null);
+    setDragDirection(null);
+    
+    // Lock cursor and prevent any floating behavior
+    document.body.style.cursor = 'grabbing';
+    document.body.classList.add('dragging');
+  }
 
-    if (active.id !== over?.id) {
-      const oldIndex = filteredEntries.findIndex(item => item.id === active.id);
-      const newIndex = filteredEntries.findIndex(item => item.id === over?.id);
+  function handleDragOver(event: DragOverEvent) {
+    const { active, over } = event;
+    
+    if (over && active.id !== over.id) {
+      setDragOverId(over.id as string);
       
-      const newOrder = arrayMove(filteredEntries, oldIndex, newIndex);
-      onReorderEntries(newOrder);
+      // Calculate drop direction based on element positions rather than pointer
+      const activeRect = active.rect.current.translated;
+      const overRect = over.rect;
+      
+      if (activeRect && overRect) {
+        // Compare the centers to determine direction
+        const activeCenter = activeRect.top + activeRect.height / 2;
+        const overCenter = overRect.top + overRect.height / 2;
+        const newDirection = activeCenter < overCenter ? 'down' : 'up';
+        setDragDirection(newDirection);
+      }
+    } else {
+      setDragOverId(null);
+      setDragDirection(null);
     }
   }
 
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    
+    // Clean up all drag-related state
+    setActiveId(null);
+    setDragOverId(null);
+    setDragDirection(null);
+    
+    // Reset cursor
+    document.body.style.cursor = '';
+    document.body.classList.remove('dragging');
+
+    // Simple approach: Let dnd-kit handle the positioning automatically
+    if (active.id !== over?.id && over?.id) {
+      const oldIndex = filteredEntries.findIndex(item => item.id === active.id);
+      const newIndex = filteredEntries.findIndex(item => item.id === over.id);
+      
+      // Ensure we have valid indices
+      if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
+        const newOrder = arrayMove(filteredEntries, oldIndex, newIndex);
+        onReorderEntries(newOrder);
+      }
+    }
+    // If no valid target, item automatically returns to original position
+  }
+
+  // Enhanced CSS for solid, anchored box behavior with strict boundaries
+  React.useEffect(() => {
+    const style = document.createElement('style');
+    style.id = 'food-table-solid-boxes';
+    style.textContent = `
+      .food-table-container {
+        position: relative;
+        overflow: visible; /* Allow drag overlay to be visible */
+      }
+      
+      .food-table-container table {
+        table-layout: fixed;
+        border-collapse: separate;
+        border-spacing: 0;
+        position: relative;
+      }
+      
+      .food-table-container tbody {
+        position: relative;
+      }
+      
+      .food-table-row {
+        position: relative;
+        background: white;
+        border: 1px solid #e5e7eb;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .food-table-row.selected {
+        background-color: #E8D5E8 !important;
+        border-color: #d1d5db;
+      }
+      
+      .food-table-row:not(.dragging-item):hover {
+        background-color: #f9fafb;
+        border-color: #d1d5db;
+      }
+      
+      .food-table-row.dragging-item {
+        background-color: #f8fafc !important;
+        opacity: 0.5;
+        border: 2px dashed #9ca3af;
+        transform-origin: center;
+      }
+      
+      .food-table-row.drop-target-up {
+        border-top: 3px solid #3b82f6;
+        background-color: #eff6ff;
+        transform: translateY(2px);
+        transition: all 0.2s ease;
+      }
+      
+      .food-table-row.drop-target-down {
+        border-bottom: 3px solid #3b82f6;
+        background-color: #eff6ff;
+        transform: translateY(-2px);
+        transition: all 0.2s ease;
+      }
+      
+      .drag-handle {
+        touch-action: pan-y;
+        user-select: none;
+        cursor: grab;
+        transition: all 0.15s ease;
+      }
+      
+      .drag-handle:active {
+        cursor: grabbing;
+      }
+      
+      .dragging {
+        user-select: none;
+      }
+      
+      .dragging * {
+        pointer-events: none;
+      }
+      
+      .dragging .drag-handle {
+        pointer-events: auto;
+        cursor: grabbing;
+      }
+      
+      /* Row structure */
+      .food-table-row td {
+        border-right: 1px solid #f3f4f6;
+        position: relative;
+      }
+      
+      .food-table-row td:last-child {
+        border-right: none;
+      }
+    `;
+    
+    if (!document.getElementById('food-table-solid-boxes')) {
+      document.head.appendChild(style);
+    }
+    
+    return () => {
+      const existingStyle = document.getElementById('food-table-solid-boxes');
+      if (existingStyle) {
+        document.head.removeChild(existingStyle);
+      }
+    };
+  }, []);
+
+
+
   return (
-    <div className="w-full overflow-x-auto select-none">
+    <div className="w-full overflow-x-auto select-none relative food-table-container">
       <DndContext 
         sensors={sensors}
-        collisionDetection={closestCenter}
+        collisionDetection={customCollisionDetection}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-200">
-              <th className="w-8 py-2 pl-2"></th>
-              <th className="text-left py-2 pl-2 pr-2">Food</th>
-              <th className="text-left py-2 px-2 min-w-[120px]">Amount</th>
-              <th className="text-right py-2 px-2 min-w-[80px]">Calories</th>
-              <th className="text-right py-2 px-2 min-w-[80px]">Protein</th>
-              <th className="text-right py-2 px-2 min-w-[80px]">Carbs</th>
-              <th className="text-right py-2 px-2 min-w-[80px]">Fat</th>
-              <th className="w-16 py-2 pl-4"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <SortableContext 
-              items={filteredEntries.map(item => item.id)}
-              strategy={verticalListSortingStrategy}
-            >
-              {filteredEntries.map((item) => (
-                <SortableTableRow
-                  key={item.id}
-                  item={item}
-                  foodData={foodData}
-                  selectedEntries={selectedEntries}
-                  handleEntrySelect={handleEntrySelect}
-                  removeFoodEntry={removeFoodEntry}
-                  updateFoodEntry={updateFoodEntry}
-                  editingEntry={editingEntry}
-                  setEditingEntry={setEditingEntry}
-                  editAmount={editAmount}
-                  setEditAmount={setEditAmount}
-                />
-              ))}
-            </SortableContext>
-          </tbody>
-        </table>
+        <div className="min-h-[200px] bg-white rounded-lg shadow-sm border border-gray-100">
+          <table className="w-full table-fixed border-collapse">
+            <tbody className="divide-y divide-gray-100">
+              <SortableContext 
+                items={filteredEntries.map(item => item.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                {filteredEntries.map((item) => (
+                  <SortableTableRow
+                    key={item.id}
+                    item={item}
+                    foodData={foodData}
+                    selectedEntries={selectedEntries}
+                    handleEntrySelect={handleEntrySelect}
+                    removeFoodEntry={removeFoodEntry}
+                    updateFoodEntry={updateFoodEntry}
+                    editingEntry={editingEntry}
+                    setEditingEntry={setEditingEntry}
+                    editAmount={editAmount}
+                    setEditAmount={setEditAmount}
+                    dragOverId={dragOverId}
+                    dragDirection={dragDirection}
+                    activeId={activeId}
+                    formatNumber={formatNumber}
+                  />
+                ))}
+              </SortableContext>
+            </tbody>
+          </table>
+        </div>
       </DndContext>
     </div>
   );
