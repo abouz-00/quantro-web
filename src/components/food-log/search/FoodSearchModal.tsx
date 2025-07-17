@@ -28,6 +28,7 @@ interface USDAFood {
   servingSize?: number;
   servingSizeUnit?: string;
   isFavorite?: boolean;
+  uniqueId?: string;
 }
 
 interface CustomFood extends Nutrients {
@@ -155,8 +156,10 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
     return favorites.some(fav => fav.description === food.description);
   };
 
-  const handleSelectFood = (food: USDAFood) => {
-    setSelectedFood(food);
+  const handleSelectFood = (food: USDAFood, index: number) => {
+    // Create a unique identifier for the food item to avoid multiple selections of same-named foods
+    const foodWithIndex = { ...food, uniqueId: `${food.description}_${index}` };
+    setSelectedFood(foodWithIndex);
   };
 
   const handleAddCustomFood = () => {
@@ -282,11 +285,11 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50" style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}>
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden food-search-modal">
         <div className="p-4 border-b border-gray-200">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Add Food</h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors duration-200">
               <FaTimes size={20} />
             </button>
           </div>
@@ -295,7 +298,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
           <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
             <button
               onClick={() => setActiveTab("search")}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium cursor-pointer transition-colors duration-200 ${
                 activeTab === "search" 
                   ? "bg-white text-violet-600 shadow-sm" 
                   : "text-gray-600 hover:text-gray-800"
@@ -305,7 +308,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
             </button>
             <button
               onClick={() => setActiveTab("favorites")}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium cursor-pointer transition-colors duration-200 ${
                 activeTab === "favorites" 
                   ? "bg-white text-violet-600 shadow-sm" 
                   : "text-gray-600 hover:text-gray-800"
@@ -315,7 +318,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
             </button>
             <button
               onClick={() => setActiveTab("custom")}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium cursor-pointer transition-colors duration-200 ${
                 activeTab === "custom" 
                   ? "bg-white text-violet-600 shadow-sm" 
                   : "text-gray-600 hover:text-gray-800"
@@ -343,11 +346,11 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
                 {suggestions.map((food, idx) => (
                   <div
                     key={idx}
-                    onClick={() => handleSelectFood(food)}
-                    className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                      selectedFood?.description === food.description
+                    onClick={() => handleSelectFood(food, idx)}
+                    className={`p-3 border rounded-lg cursor-pointer food-search-item transform hover:scale-[1.01] hover:shadow-md transition-all duration-200 ease-in-out ${
+                      selectedFood?.uniqueId === `${food.description}_${idx}`
                         ? "border-violet-500 bg-violet-50"
-                        : "border-gray-200 hover:border-gray-300"
+                        : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
                     }`}
                   >
                     <div className="flex justify-between items-start">
@@ -362,7 +365,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
                           e.stopPropagation();
                           toggleFavorite(food);
                         }}
-                        className="ml-2 text-yellow-400 hover:text-yellow-500"
+                        className="ml-2 text-yellow-400 hover:text-yellow-500 cursor-pointer star-button transition-colors duration-200"
                       >
                         {isFavorite(food) ? <FaStar size={16} /> : <FaRegStar size={16} />}
                       </button>
@@ -386,11 +389,11 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
                   {favorites.map((food, idx) => (
                     <div
                       key={idx}
-                      onClick={() => handleSelectFood(food)}
-                      className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                        selectedFood?.description === food.description
+                      onClick={() => handleSelectFood(food, idx + 1000)} // offset to avoid conflicts with search results
+                      className={`p-3 border rounded-lg cursor-pointer food-search-item transform hover:scale-[1.01] hover:shadow-md transition-all duration-200 ease-in-out ${
+                        selectedFood?.uniqueId === `${food.description}_${idx + 1000}`
                           ? "border-violet-500 bg-violet-50"
-                          : "border-gray-200 hover:border-gray-300"
+                          : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
                       }`}
                     >
                       <div className="flex justify-between items-start">
@@ -405,7 +408,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
                             e.stopPropagation();
                             toggleFavorite(food);
                           }}
-                          className="ml-2 text-yellow-400 hover:text-yellow-500"
+                          className="ml-2 text-yellow-400 hover:text-yellow-500 cursor-pointer star-button transition-colors duration-200"
                         >
                           <FaStar size={16} />
                         </button>
@@ -487,7 +490,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
                 <button
                   onClick={handleAddCustomFood}
                   disabled={!customName.trim()}
-                  className="mt-4 w-full bg-violet-500 text-white py-2 px-4 rounded-md hover:bg-violet-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="mt-4 w-full bg-violet-500 text-white py-2 px-4 rounded-md hover:bg-violet-600 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors duration-200"
                 >
                   Add Custom Food
                 </button>
@@ -502,7 +505,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
                       <div
                         key={food.id}
                         onClick={() => handleAddFromCustomList(food)}
-                        className="p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-gray-300 transition-colors"
+                        className="p-3 border border-gray-200 rounded-lg cursor-pointer food-search-item transform hover:scale-[1.01] hover:shadow-md hover:border-gray-300 hover:bg-gray-50 transition-all duration-200 ease-in-out"
                       >
                         <div className="font-bold">{food.name}</div>
                         <div className="text-sm text-gray-500">
@@ -552,7 +555,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
             
             <button
               onClick={handleAddFood}
-              className="w-full bg-violet-500 text-white py-2 px-4 rounded-md hover:bg-violet-600"
+              className="w-full bg-violet-500 text-white py-2 px-4 rounded-md hover:bg-violet-600 cursor-pointer transition-colors duration-200"
             >
               Add to Log
             </button>

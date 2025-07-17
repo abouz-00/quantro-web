@@ -148,11 +148,11 @@
 
 .react-datepicker-popper {
   z-index: 9999 !important;
-  transform: translateY(16px) translateX(15px) !important;
+  transform: translateY(8px) !important;
 }
 
 .react-datepicker-popper[data-placement^="bottom"] {
-  margin-top: 16px !important;
+  margin-top: 8px !important;
 }
 
 .react-datepicker {
@@ -553,15 +553,17 @@ div[class*="datepicker-container"] .react-datepicker__day--keyboard-selected:hov
 
 /* Custom selected day styling to override react-datepicker defaults */
 .custom-selected-day {
-  background-color: #374151 !important;
-  color: white !important;
+  background-color: transparent !important;
+  color: #6e44ff !important;
   font-weight: bold !important;
+  border: 2px solid #6e44ff !important;
   border-radius: 0.3rem !important;
 }
 
 .custom-selected-day:hover {
-  background-color: #1f2937 !important;
-  color: white !important;
+  background-color: rgba(110, 68, 255, 0.1) !important;
+  color: #6e44ff !important;
+  border: 2px solid #6e44ff !important;
   transform: scale(1.05) !important;
 }
 
@@ -593,17 +595,234 @@ div[class*="datepicker-container"] .react-datepicker__day--keyboard-selected:hov
 /* Force only our custom class to show selection */
 .react-datepicker__day.custom-selected-day,
 .custom-datepicker .react-datepicker__day.custom-selected-day {
-  background-color: #374151 !important;
-  color: white !important;
+  background-color: transparent !important;
+  color: #6e44ff !important;
   font-weight: bold !important;
+  border: 2px solid #6e44ff !important;
   border-radius: 0.3rem !important;
 }
 
 .react-datepicker__day.custom-selected-day:hover,
 .custom-datepicker .react-datepicker__day.custom-selected-day:hover {
-  background-color: #1f2937 !important;
-  color: white !important;
+  background-color: rgba(110, 68, 255, 0.1) !important;
+  color: #6e44ff !important;
+  border: 2px solid #6e44ff !important;
   transform: scale(1.05) !important;
+}
+
+/* Ensure date picker display text always has pointer cursor */
+.custom-datepicker-wrapper .react-datepicker__input-container,
+.custom-datepicker-wrapper .react-datepicker__input-container div,
+.custom-datepicker-wrapper .react-datepicker__input-container input,
+.datepicker-container,
+.datepicker-container div,
+.datepicker-container input {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+/* Specifically target the date display div that shows "Today" */
+div[class*="border-none bg-transparent text-xl font-bold"],
+div[class*="text-xl font-bold text-center cursor-pointer"] {
+  cursor: pointer !important;
+}
+
+/* Additional fallback for any text inside date picker containers */
+.custom-datepicker-wrapper *,
+.datepicker-container * {
+  cursor: pointer !important;
+}
+
+/* Force pointer cursor on any element that might be interfering */
+.datepicker-container > div:first-child,
+.datepicker-container > div:first-child * {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+/* Nuclear option - force cursor on everything in the date picker area */
+.custom-datepicker-wrapper,
+.custom-datepicker-wrapper *,
+.datepicker-container,
+.datepicker-container * {
+  cursor: pointer !important;
+}
+
+/* Enhanced Food Search Modal Animations */
+.food-search-item {
+  transform-origin: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.food-search-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure all clickable elements have pointer cursor */
+button,
+.cursor-pointer,
+[role="button"] {
+  cursor: pointer !important;
+}
+
+/* Food search modal specific button styling */
+.food-search-modal button {
+  cursor: pointer !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.food-search-modal button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.food-search-modal button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Star button animations */
+.star-button {
+  transition: all 0.2s ease-in-out;
+}
+
+.star-button:hover {
+  transform: scale(1.1);
+}
+
+/* React Big Calendar Custom Styles */
+.rbc-calendar {
+  background: white !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  font-family: inherit !important;
+}
+
+.rbc-header {
+  background-color: #f8fafc !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  color: #374151 !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  padding: 8px 4px !important;
+  text-align: center !important;
+}
+
+.rbc-month-view {
+  border: none !important;
+}
+
+.rbc-month-row {
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+.rbc-date-cell {
+  padding: 8px !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  border-right: 1px solid #e5e7eb !important;
+  min-height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+.rbc-date-cell:hover {
+  background-color: #f3f4f6 !important;
+}
+
+.rbc-date-cell.rbc-off-range {
+  color: #9ca3af !important;
+  background-color: #f9fafb !important;
+}
+
+.rbc-date-cell a {
+  color: inherit !important;
+  text-decoration: none !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Today styling for React Big Calendar */
+.rbc-today {
+  background-color: #e5e7eb !important;
+  font-weight: bold !important;
+}
+
+/* Selected day styling - these are applied via dayPropGetter */
+.selected-today-day {
+  background-color: #3b82f6 !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.selected-day-only {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+.today-day-only {
+  background-color: #e5e7eb !important;
+  font-weight: bold !important;
+}
+
+/* Month navigation buttons in toolbar */
+.rbc-toolbar {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.rbc-toolbar button {
+  color: inherit !important;
+  border: none !important;
+  background: none !important;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.rbc-toolbar button:hover {
+  background-color: #f3f4f6 !important;
+}
+
+/* Hide the default toolbar since we're using custom one */
+.rbc-toolbar-label {
+  font-weight: 600 !important;
+  font-size: 1.125rem !important;
+  color: #374151 !important;
+}
+
+/* Remove borders and clean up the calendar appearance */
+.rbc-month-view .rbc-row {
+  border: none !important;
+}
+
+.rbc-month-view .rbc-date-cell:last-child {
+  border-right: none !important;
+}
+
+.rbc-month-view .rbc-month-row:last-child {
+  border-bottom: none !important;
+}
+
+/* Remove event styling since we're not using events */
+.rbc-event {
+  display: none !important;
+}
+
+.rbc-event-content {
+  display: none !important;
+}
+
+/* Ensure proper spacing and layout */
+.rbc-month-view .rbc-header + .rbc-month-row {
+  border-top: 1px solid #e5e7eb !important;
 }
 
 

@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Poppins } from 'next/font/google';
-import FoodSearchModal from "../food-log/FoodSearchModal";
-import FoodTable from "../food-log/FoodTable";
-import EnergySummary from "../food-log/EnergySummary";
+import { FoodSearchModal } from "../food-log/search";
+import { FoodTableModular } from "../food-log";
+import { EnergySummary } from "../food-log/core";
 import { Button } from "../ui/button";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { HiDotsHorizontal, HiChevronLeft, HiChevronRight, HiPlus, HiCalendar, HiMenu, HiX } from "react-icons/hi";
+import DatePickerComponent from "../ui/DatePicker";
+import { useDateManager } from "../../hooks/useDateManager";
+import { HiDotsHorizontal, HiPlus, HiMenu, HiX } from "react-icons/hi";
 import { Menu } from "@headlessui/react";
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
@@ -35,12 +35,10 @@ interface FoodEntry extends Nutrients {
 
 export default function LogPage() {
   const [foodData, setFoodData] = useState<FoodEntry[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [isTargetsModalOpen, setIsTargetsModalOpen] = useState<boolean>(false);
-  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
   const [clipboardEntries, setClipboardEntries] = useState<FoodEntry[]>([]);
   const [contextMenu, setContextMenu] = useState<{
     visible: boolean;
@@ -72,36 +70,26 @@ export default function LogPage() {
     fat: 70,
   });
   
-  // Define these callback functions BEFORE the useEffect that depends on them
-  const handleDateChange = useCallback((date: Date | null) => {
-    if (date) {
-      setSelectedDate(date);
-      setIsCalendarOpen(false); // Close calendar after date selection
-    }
-  }, []);
-
-  const handleCalendarToggle = useCallback(() => {
-    setIsCalendarOpen(prev => !prev);
-  }, []);
-
-  const handlePreviousDay = useCallback(() => {
-    const newDate = new Date(selectedDate);
-    newDate.setDate(newDate.getDate() - 1);
-    setSelectedDate(newDate);
-  }, [selectedDate]);
-
-  const handleNextDay = useCallback(() => {
-    const newDate = new Date(selectedDate);
-    newDate.setDate(newDate.getDate() + 1);
-    setSelectedDate(newDate);
-  }, [selectedDate]);
-
+  // Use the date manager hook for all date-related functionality
+  const {
+    selectedDate,
+    setSelectedDate,
+    formatApiDate,
+    goToToday,
+    goToPreviousDay,
+    goToNextDay
+  } = useDateManager({
+    enableLocalStorage: true,
+    storageKey: 'foodLogSelectedDate'
+  });
+  
+  // Helper function to format date display
   // Load food data from API when component mounts or date changes
   useEffect(() => {
     const loadFoodData = async () => {
       try {
-        // Format the selected date for the API
-        const dateParam = selectedDate.toISOString().split('T')[0];
+        // Format the selected date for the API using our date manager
+        const dateParam = formatApiDate();
         const response = await fetch(`/api/food-logs?date=${dateParam}`);
         
         if (response.ok) {
@@ -154,7 +142,7 @@ export default function LogPage() {
     };
 
     loadFoodData();
-  }, [selectedDate]); // Re-load when date changes
+  }, [selectedDate, formatApiDate]); // Re-load when date changes
 
   // Load goals on component mount
   useEffect(() => {
@@ -203,7 +191,7 @@ export default function LogPage() {
     });
     
     setTotals(dailyTotals);
-  }, [selectedDate, foodData, sameDay]);
+  }, [selectedDate, foodData]);
 
   // Save goals to localStorage when they change (but skip initial load)
   const [goalsLoaded, setGoalsLoaded] = useState(false);
@@ -218,12 +206,6 @@ export default function LogPage() {
   // Keyboard shortcuts effect
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Close calendar with Escape key
-      if (e.key === 'Escape' && isCalendarOpen) {
-        e.preventDefault();
-        setIsCalendarOpen(false);
-      }
-      
       // Add food - Ctrl/Cmd + A
       if (e.key === 'a' && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
@@ -233,57 +215,25 @@ export default function LogPage() {
       // Next day - Ctrl/Cmd + Right Arrow
       if (e.key === 'ArrowRight' && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
-        handleNextDay();
+        goToNextDay();
       }
       
       // Previous day - Ctrl/Cmd + Left Arrow
       if (e.key === 'ArrowLeft' && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
-        handlePreviousDay();
+        goToPreviousDay();
+      }
+      
+      // Go to today - Ctrl/Cmd + T
+      if (e.key === 't' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        goToToday();
       }
     };
     
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleNextDay, handlePreviousDay, isCalendarOpen]);
-
-  // Manual click outside handler
-  useEffect(() => {
-    if (!isCalendarOpen) return;
-
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-      
-      // Don't close if clicking inside the calendar components
-      if (target.closest('.react-datepicker') || 
-          target.closest('.react-datepicker-popper') ||
-          target.closest('.custom-datepicker') ||
-          target.closest('.custom-datepicker-wrapper') ||
-          target.closest('.datepicker-container') ||
-          target.closest('.react-datepicker__navigation') ||
-          target.closest('.react-datepicker__navigation-icon') ||
-          target.closest('.react-datepicker__header') ||
-          target.closest('.react-datepicker__month') ||
-          target.closest('.react-datepicker__week') ||
-          target.closest('.react-datepicker__day') ||
-          target.closest('input[class*="border-none"]') ||
-          target.closest('[class*="cursor-pointer"]')) {
-        return;
-      }
-      
-      setIsCalendarOpen(false);
-    };
-
-    // Add listener with a small delay to avoid immediate closure
-    const timeoutId = setTimeout(() => {
-      document.addEventListener('mousedown', handleClickOutside);
-    }, 100);
-
-    return () => {
-      clearTimeout(timeoutId);
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isCalendarOpen]);
+  }, [goToNextDay, goToPreviousDay, goToToday]);
 
   const addFoodEntry = useCallback(async (entry: FoodEntry) => {
     try {
@@ -350,10 +300,6 @@ export default function LogPage() {
   }, [selectedDate]);
 
   const removeFoodEntry = useCallback(async (id: string) => {
-    const entryToRemove = foodData.find(item => item.id === id);
-    
-    if (!entryToRemove) return;
-    
     try {
       // Try to delete from API
       const response = await fetch(`/api/food-logs?id=${id}`, {
@@ -366,18 +312,24 @@ export default function LogPage() {
         setSelectedEntries(prev => prev.filter(item => item !== id));
       } else {
         // Fallback to local storage only
-        setFoodData(prev => prev.filter(item => item.id !== id));
+        setFoodData(prev => {
+          const updatedData = prev.filter(item => item.id !== id);
+          localStorage.setItem('foodData', JSON.stringify(updatedData));
+          return updatedData;
+        });
         setSelectedEntries(prev => prev.filter(item => item !== id));
-        localStorage.setItem('foodData', JSON.stringify(foodData.filter(item => item.id !== id)));
       }
     } catch (error) {
       console.error('Error deleting food entry:', error);
       // Fallback to local storage only
-      setFoodData(prev => prev.filter(item => item.id !== id));
+      setFoodData(prev => {
+        const updatedData = prev.filter(item => item.id !== id);
+        localStorage.setItem('foodData', JSON.stringify(updatedData));
+        return updatedData;
+      });
       setSelectedEntries(prev => prev.filter(item => item !== id));
-      localStorage.setItem('foodData', JSON.stringify(foodData.filter(item => item.id !== id)));
     }
-  }, [foodData]);
+  }, []); // Remove foodData dependency
 
   const updateFoodEntry = useCallback(async (id: string, updates: Partial<FoodEntry>) => {
     try {
@@ -407,30 +359,32 @@ export default function LogPage() {
         }));
       } else {
         // Fallback to local storage only
-        setFoodData(prev => prev.map(item => {
-          if (item.id === id) {
-            return { ...item, ...updates };
-          }
-          return item;
-        }));
-        localStorage.setItem('foodData', JSON.stringify(foodData.map(item => 
-          item.id === id ? { ...item, ...updates } : item
-        )));
+        setFoodData(prev => {
+          const updatedData = prev.map(item => {
+            if (item.id === id) {
+              return { ...item, ...updates };
+            }
+            return item;
+          });
+          localStorage.setItem('foodData', JSON.stringify(updatedData));
+          return updatedData;
+        });
       }
     } catch (error) {
       console.error('Error updating food entry:', error);
       // Fallback to local storage only
-      setFoodData(prev => prev.map(item => {
-        if (item.id === id) {
-          return { ...item, ...updates };
-        }
-        return item;
-      }));
-      localStorage.setItem('foodData', JSON.stringify(foodData.map(item => 
-        item.id === id ? { ...item, ...updates } : item
-      )));
+      setFoodData(prev => {
+        const updatedData = prev.map(item => {
+          if (item.id === id) {
+            return { ...item, ...updates };
+          }
+          return item;
+        });
+        localStorage.setItem('foodData', JSON.stringify(updatedData));
+        return updatedData;
+      });
     }
-  }, [foodData]);
+  }, []); // Remove foodData dependency
 
   const handleInputChange = useCallback((field: keyof Nutrients, value: number) => {
     setTargetInput(prev => ({ ...prev, [field]: value }));
@@ -445,7 +399,7 @@ export default function LogPage() {
       const entryDate = new Date(entry.date);
       return sameDay(entryDate, selectedDate);
     });
-  }, [foodData, selectedDate, sameDay]);
+  }, [foodData, selectedDate]);
 
   // Calculate totals for selected entries (if any selected) or use daily totals
   const selectedEntriesTotals = useMemo(() => {
@@ -510,13 +464,15 @@ export default function LogPage() {
 
   const handleReorderEntries = useCallback((newOrder: FoodEntry[]) => {
     // Update the food data to reflect the new order
-    const otherEntries = foodData.filter((entry: FoodEntry) => {
-      const entryDate = new Date(entry.date);
-      return !sameDay(entryDate, selectedDate);
+    setFoodData(prevFoodData => {
+      const otherEntries = prevFoodData.filter((entry: FoodEntry) => {
+        const entryDate = new Date(entry.date);
+        return !sameDay(entryDate, selectedDate);
+      });
+      
+      return [...otherEntries, ...newOrder];
     });
-    
-    setFoodData([...otherEntries, ...newOrder]);
-  }, [foodData, selectedDate, sameDay]);
+  }, [selectedDate]);
 
   // Context menu handlers
   const handleContextMenu = useCallback((e: React.MouseEvent, entryId: string) => {
@@ -586,17 +542,20 @@ export default function LogPage() {
   }, [selectedEntries, contextMenu.targetEntryId, removeFoodEntry, closeContextMenu]);
 
   const handleEditEntry = useCallback(() => {
-    const entryToEdit = contextMenu.targetEntryId 
-      ? foodData.find(entry => entry.id === contextMenu.targetEntryId)
-      : selectedEntries.length === 1 
-        ? foodData.find(entry => entry.id === selectedEntries[0])
-        : null;
-    
-    if (entryToEdit) {
-      setEditModalEntry(entryToEdit);
-    }
-    closeContextMenu();
-  }, [contextMenu.targetEntryId, selectedEntries, foodData, closeContextMenu]);
+    setFoodData(currentFoodData => {
+      const entryToEdit = contextMenu.targetEntryId 
+        ? currentFoodData.find(entry => entry.id === contextMenu.targetEntryId)
+        : selectedEntries.length === 1 
+          ? currentFoodData.find(entry => entry.id === selectedEntries[0])
+          : null;
+      
+      if (entryToEdit) {
+        setEditModalEntry(entryToEdit);
+      }
+      closeContextMenu();
+      return currentFoodData; // Return unchanged data
+    });
+  }, [contextMenu.targetEntryId, selectedEntries, closeContextMenu]);
 
   // Close context menu when clicking outside
   useEffect(() => {
@@ -735,71 +694,20 @@ export default function LogPage() {
         >
 
         <div className="container mx-auto px-4 py-8">
-      {/* Header with date navigation */}
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center space-x-2 bg-white rounded-full shadow-lg px-3 py-2" style={{ backgroundColor: '#F8F5F0', border: '1px solid #EDE6DC' }}>
-          <button
-            onClick={handlePreviousDay}
-            className="p-2 hover:bg-white hover:bg-opacity-60 rounded-full transition-colors duration-200 cursor-pointer"
-            aria-label="Previous day"
-          >
-            <HiChevronLeft className="h-6 w-6 text-gray-600" />
-          </button>
-          
-          <div 
-            className="flex items-center space-x-2 custom-datepicker-wrapper" 
-            style={{ userSelect: 'none', WebkitUserSelect: 'none', position: 'relative' }}
-          >
-            <HiCalendar 
-              className="h-6 w-6 text-gray-600 cursor-pointer" 
-              onClick={() => setIsCalendarOpen(true)}
-            />
-            <div className="datepicker-container">
-              <DatePicker
-                selected={selectedDate}
-                onChange={handleDateChange}
-                dateFormat="MMMM d, yyyy"
-                className="border-none bg-transparent text-xl font-bold text-center cursor-pointer text-gray-800 px-0"
-                onKeyDown={(e) => e.preventDefault()}
-                onFocus={(e) => e.target.blur()}
-                showPopperArrow={false}
-                calendarClassName="custom-datepicker"
-                popperPlacement="bottom"
-                autoComplete="off"
-                open={isCalendarOpen}
-                onInputClick={handleCalendarToggle}
-                preventOpenOnFocus={true}
-                shouldCloseOnSelect={true}
-                dayClassName={(date) => {
-                  // Only highlight the exact selected date - very precise matching
-                  if (selectedDate) {
-                    const isSameDate = date.getDate() === selectedDate.getDate() &&
-                                     date.getMonth() === selectedDate.getMonth() &&
-                                     date.getFullYear() === selectedDate.getFullYear();
-                    
-                    if (isSameDate) {
-                      return 'custom-selected-day';
-                    }
-                  }
-                  
-                  // Return empty string for other days (today highlighting is handled by CSS)
-                  return '';
-                }}
-                highlightDates={[]}
+          {/* Centered Date Navigation */}
+          <div className="flex justify-center mb-8">
+            <div className="flex items-center space-x-2 bg-white rounded-full shadow-lg px-3 py-2" style={{ backgroundColor: '#F8F5F0', border: '1px solid #EDE6DC' }}>
+              <DatePickerComponent
+                selectedDate={selectedDate}
+                onDateChange={setSelectedDate}
+                className=""
               />
             </div>
           </div>
-          
-          <button
-            onClick={handleNextDay}
-            className="p-2 hover:bg-white hover:bg-opacity-60 rounded-full transition-colors duration-200 cursor-pointer"
-            aria-label="Next day"
-          >
-            <HiChevronRight className="h-6 w-6" />
-          </button>
-        </div>
-        
-        <div className="flex items-center">
+
+          {/* Header with Add Food button */}
+          <div className="flex justify-end items-center mb-6">
+            <div className="flex items-center">
           <Button
             onClick={() => setIsModalOpen(true)}
             variant="default"
@@ -886,7 +794,7 @@ export default function LogPage() {
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
         {filteredEntries.length > 0 ? (
           <div className="w-full -mx-4 px-4 sm:mx-0 sm:px-0">
-            <FoodTable
+            <FoodTableModular
               foodData={foodData}
               filteredEntries={filteredEntries} // Pass filtered entries directly
               selectedEntries={selectedEntries}

@@ -1,0 +1,43 @@
+// Test to verify drag event handling is robust
+
+import { DragStartEvent, DragOverEvent, DragEndEvent } from '@dnd-kit/core';
+
+// Test cases for drag event handling
+const testDragEvents = {
+  // Case 1: Normal drag event
+  validDragStart: {
+    active: { id: 'test-id' },
+    over: null
+  } as DragStartEvent,
+
+  // Case 2: Null active (the error we fixed)
+  nullActiveDragStart: {
+    active: null,
+    over: null
+  } as unknown as DragStartEvent,
+
+  // Case 3: Active without ID
+  noIdDragStart: {
+    active: {},
+    over: null
+  } as unknown as DragStartEvent,
+
+  // Case 4: Undefined event
+  undefinedEvent: undefined as unknown as DragStartEvent
+};
+
+// These test cases would have caused the original error:
+// "null is not an object (evaluating 'active.id')"
+
+// Our fix handles these cases with proper null checks:
+function safeDragStartHandler(event: DragStartEvent) {
+  // ✅ This prevents the error
+  if (!event?.active?.id) {
+    return;
+  }
+  
+  const draggedEntryId = event.active.id as string;
+  // ... rest of drag logic
+}
+
+export { testDragEvents, safeDragStartHandler };

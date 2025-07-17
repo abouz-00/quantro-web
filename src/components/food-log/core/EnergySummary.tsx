@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import ProgressBar from "./ProgressBar";
+import ProgressBar from "../charts/ProgressBar";
 
 interface Nutrients {
   calories: number;
