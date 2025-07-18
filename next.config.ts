@@ -45,8 +45,6 @@ const nextConfig: NextConfig = {
   ...(process.env.NODE_ENV === 'development' && {
     // Reduce startup time by only transpiling what's needed
     transpilePackages: [],
-    // Skip static optimization for faster dev startup
-    optimizeFonts: false,
   }),
 };
 

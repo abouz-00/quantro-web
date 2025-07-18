@@ -165,46 +165,37 @@ export default function DatePickerComponent({
             }
           }}
         >
-          <div className="relative bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
-            {/* Close button */}
-            <button
-              onClick={() => setIsCalendarOpen(false)}
-              className="absolute top-4 right-4 z-10 p-2 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200"
-              aria-label="Close calendar"
-            >
-              <HiX className="h-5 w-5 text-gray-600 hover:text-gray-800" />
-            </button>
-            
+          <div className="relative" onClick={(e) => e.stopPropagation()}>
             {/* Calendar */}
-            <div className="mt-4">
-              <Calendar
-                onChange={handleDateChange}
-                value={selectedDate}
-                locale="en-US"
-                calendarType="gregory"
-                showNeighboringMonth={false}
-                showNavigation={true}
-                prev2Label={null}
-                next2Label={null}
-                prevLabel={<HiChevronLeft className="w-4 h-4" />}
-                nextLabel={<HiChevronRight className="w-4 h-4" />}
-                tileClassName={({ date, view }) => {
-                  if (view === 'month') {
-                    const isSelected = dateHelpers.isSameDate(date, selectedDate);
-                    const isToday = dateHelpers.isToday(date);
-                    
-                    if (isSelected && isToday) {
-                      return 'selected-today';
-                    } else if (isSelected) {
-                      return 'selected-day';
-                    } else if (isToday) {
-                      return 'today-only';
-                    }
+            <Calendar
+              onChange={handleDateChange}
+              value={selectedDate}
+              locale="en-US"
+              calendarType="gregory"
+              showNeighboringMonth={true}
+              showNavigation={true}
+              prev2Label={null}
+              next2Label={null}
+              prevLabel={<HiChevronLeft className="w-4 h-4" />}
+              nextLabel={<HiChevronRight className="w-4 h-4" />}
+              minDate={new Date(2021, 0, 1)}
+              maxDate={new Date(2040, 11, 31)}
+              tileClassName={({ date, view }) => {
+                if (view === 'month') {
+                  const isSelected = dateHelpers.isSameDate(date, selectedDate);
+                  const isToday = dateHelpers.isToday(date);
+                  
+                  if (isSelected && isToday) {
+                    return 'selected-today';
+                  } else if (isSelected) {
+                    return 'selected-day';
+                  } else if (isToday) {
+                    return 'today-only';
                   }
-                  return null;
-                }}
-              />
-            </div>
+                }
+                return null;
+              }}
+            />
           </div>
         </div>
       )}

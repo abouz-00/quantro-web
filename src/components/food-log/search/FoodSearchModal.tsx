@@ -509,7 +509,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
                       >
                         <div className="font-bold">{food.name}</div>
                         <div className="text-sm text-gray-500">
-                          {food.calories} cal • {food.protein}g protein • {food.carbs}g carbs • {food.fat}g fat
+                          {food.calories} kcal • {food.protein}g protein • {food.carbs}g carbs • {food.fat}g fat
                         </div>
                       </div>
                     ))}

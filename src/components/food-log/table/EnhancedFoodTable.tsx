@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DndContext,
   KeyboardSensor,
@@ -19,10 +19,10 @@ import {
 } from '@dnd-kit/sortable';
 
 import { FoodTableProps, FoodEntry } from './types';
-import { SortableTableRow } from './SortableTableRow';
+import { EnhancedSortableTableRow } from './EnhancedSortableTableRow';
 import { formatNumber } from './utils';
 
-export default function FoodTable({ 
+export default function EnhancedFoodTable({ 
   foodData, 
   filteredEntries, 
   selectedEntries, 
@@ -35,12 +35,13 @@ export default function FoodTable({
 }: FoodTableProps) {
   const [editingEntry, setEditingEntry] = useState<string | null>(null);
   const [editAmount, setEditAmount] = useState<string>("");
+  const [editUnit, setEditUnit] = useState<string>("");
   const [activeId, setActiveId] = useState<string | null>(null);
   
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8, // Small movement threshold for clean drag activation
+        distance: 8,
       },
     }),
     useSensor(KeyboardSensor, {
@@ -77,30 +78,31 @@ export default function FoodTable({
     }
   }
 
-  // Simple CSS for clean drag behavior
-  React.useEffect(() => {
+  // Simple CSS styles
+  useEffect(() => {
     const style = document.createElement('style');
-    style.id = 'food-table-drag-styles';
+    style.id = 'enhanced-food-table-styles';
     style.textContent = `
       .food-table-row {
         position: relative;
         background: white;
         cursor: pointer;
-      }
-      
-      .food-table-row.selected {
-        background-color: #E8D5E8 !important;
+        transition: all 0.15s ease;
       }
       
       .food-table-row:hover:not(.selected):not(.dragging-item) {
         background-color: #f9fafb;
       }
       
+      .food-table-row.selected {
+        background-color: #E8D5E8 !important;
+        border-left: 4px solid #9333ea;
+      }
+      
       .food-table-row.dragging-item {
         background-color: #f3f4f6 !important;
         opacity: 0.8;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        cursor: move !important;
         z-index: 1000;
       }
       
@@ -109,22 +111,15 @@ export default function FoodTable({
       }
     `;
     
-    if (!document.getElementById('food-table-drag-styles')) {
+    if (!document.getElementById('enhanced-food-table-styles')) {
       document.head.appendChild(style);
     }
     
     return () => {
-      const existingStyle = document.getElementById('food-table-drag-styles');
+      const existingStyle = document.getElementById('enhanced-food-table-styles');
       if (existingStyle) {
         document.head.removeChild(existingStyle);
       }
-    };
-  }, []);
-
-  // Cleanup on unmount
-  React.useEffect(() => {
-    return () => {
-      document.body.classList.remove('dragging');
     };
   }, []);
 
@@ -144,7 +139,7 @@ export default function FoodTable({
                 strategy={verticalListSortingStrategy}
               >
                 {filteredEntries.map((item) => (
-                  <SortableTableRow
+                  <EnhancedSortableTableRow
                     key={item.id}
                     item={item}
                     foodData={foodData}
@@ -157,6 +152,8 @@ export default function FoodTable({
                     setEditingEntry={setEditingEntry}
                     editAmount={editAmount}
                     setEditAmount={setEditAmount}
+                    editUnit={editUnit}
+                    setEditUnit={setEditUnit}
                     activeId={activeId}
                     setActiveId={setActiveId}
                     formatNumber={formatNumber}

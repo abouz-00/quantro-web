@@ -1,7 +1,11 @@
-// Table components for food log
-export { default as FoodTable } from './FoodTable';
-export { default as FoodTableModular } from './FoodTable'; // Alias for compatibility
-export { SortableTableRow } from './SortableTableRow';
+// Table components for food log - Clean and Modular
+
+// Main Table Component (Enhanced with solid boundaries)
+export { default as FoodTable } from './EnhancedFoodTable';
+export { default as EnhancedFoodTable } from './EnhancedFoodTable';
+
+// Table Row Component (Enhanced with all features)
+export { EnhancedSortableTableRow } from './EnhancedSortableTableRow';
 
 // Table utilities and types
 export * from './types';

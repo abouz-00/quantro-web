@@ -41,6 +41,8 @@ export interface SortableRowProps {
   setEditingEntry: (id: string | null) => void;
   editAmount: string;
   setEditAmount: (amount: string) => void;
+  editUnit: string;
+  setEditUnit: (unit: string) => void;
   activeId: string | null;
   setActiveId: (id: string | null) => void;
   formatNumber: (num: number) => string;

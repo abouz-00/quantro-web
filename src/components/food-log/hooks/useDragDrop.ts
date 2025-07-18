@@ -41,11 +41,17 @@ export function useDragDrop(
     setDragOverId(null);
     setDragDirection(null);
     
-    // Add visual feedback
+    // Add visual feedback with strict containment
     requestAnimationFrame(() => {
       document.body.classList.add('dragging');
-      const container = document.querySelector('.food-table-container .bg-white.rounded-lg');
-      container?.classList.add('drag-boundary-active');
+      const container = document.querySelector('.food-table-container');
+      if (container) {
+        container.classList.add('drag-boundary-active');
+        // Ensure strict overflow containment
+        (container as HTMLElement).style.overflow = 'hidden';
+        (container as HTMLElement).style.position = 'relative';
+        (container as HTMLElement).style.isolation = 'isolate';
+      }
     });
   }, [filteredEntries.length, selectedEntries, setSelectedEntries]);
 
@@ -58,9 +64,31 @@ export function useDragDrop(
       return;
     }
     
+    // STRICT: Only allow operations within valid entries and strict boundaries
     const isValidTarget = filteredEntries.some((entry: FoodEntry) => entry.id === over.id);
     
     if (isValidTarget) {
+      // Additional boundary checking - ensure we're still within the container
+      const container = document.querySelector('.food-table-container');
+      if (container) {
+        const containerRect = container.getBoundingClientRect();
+        const activatorEvent = event.activatorEvent as PointerEvent | null;
+        
+        if (activatorEvent) {
+          const isWithinBounds = 
+            activatorEvent.clientX >= containerRect.left &&
+            activatorEvent.clientX <= containerRect.right &&
+            activatorEvent.clientY >= containerRect.top &&
+            activatorEvent.clientY <= containerRect.bottom;
+          
+          if (!isWithinBounds) {
+            setDragOverId(null);
+            setDragDirection(null);
+            return;
+          }
+        }
+      }
+      
       const activeIndex = filteredEntries.findIndex((entry: FoodEntry) => entry.id === active.id);
       const overIndex = filteredEntries.findIndex((entry: FoodEntry) => entry.id === over.id);
       
@@ -82,12 +110,38 @@ export function useDragDrop(
     setDragOverId(null);
     setDragDirection(null);
     
-    // Cleanup visual feedback
+    // Cleanup visual feedback with strict containment cleanup
     document.body.classList.remove('dragging');
-    const container = document.querySelector('.food-table-container .bg-white.rounded-lg');
-    container?.classList.remove('drag-boundary-active');
+    const container = document.querySelector('.food-table-container');
+    if (container) {
+      container.classList.remove('drag-boundary-active');
+      // Reset strict containment styles
+      (container as HTMLElement).style.overflow = '';
+      (container as HTMLElement).style.position = '';
+      (container as HTMLElement).style.isolation = '';
+    }
 
     if (active?.id && over?.id && active.id !== over.id) {
+      // Final boundary check before allowing reorder
+      const containerElement = document.querySelector('.food-table-container');
+      if (containerElement) {
+        const containerRect = containerElement.getBoundingClientRect();
+        const activatorEvent = event.activatorEvent as PointerEvent | null;
+        
+        if (activatorEvent) {
+          const isWithinBounds = 
+            activatorEvent.clientX >= containerRect.left &&
+            activatorEvent.clientX <= containerRect.right &&
+            activatorEvent.clientY >= containerRect.top &&
+            activatorEvent.clientY <= containerRect.bottom;
+          
+          if (!isWithinBounds) {
+            // Drop is outside bounds, cancel the operation
+            return;
+          }
+        }
+      }
+
       const isValidDropTarget = filteredEntries.some((entry: FoodEntry) => entry.id === over.id);
       
       if (isValidDropTarget) {
@@ -107,9 +161,16 @@ export function useDragDrop(
     setDragOverId(null);
     setDragDirection(null);
     
+    // Enhanced cleanup with strict containment reset
     document.body.classList.remove('dragging');
-    const container = document.querySelector('.food-table-container .bg-white.rounded-lg');
-    container?.classList.remove('drag-boundary-active');
+    const container = document.querySelector('.food-table-container');
+    if (container) {
+      container.classList.remove('drag-boundary-active');
+      // Reset all strict containment styles
+      (container as HTMLElement).style.overflow = '';
+      (container as HTMLElement).style.position = '';
+      (container as HTMLElement).style.isolation = '';
+    }
   }, []);
 
   const state: UseDragDropState = {
