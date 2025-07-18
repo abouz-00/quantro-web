@@ -60,6 +60,7 @@ interface UseDateManagerProps {
   onDateChange?: (date: Date) => void;
   enableLocalStorage?: boolean;
   storageKey?: string;
+  defaultToTodayOnRefresh?: boolean;
 }
 ```
 
@@ -93,7 +94,8 @@ const {
   goToNextDay
 } = useDateManager({
   enableLocalStorage: true,
-  storageKey: 'foodLogSelectedDate'
+  storageKey: 'foodLogSelectedDate',
+  defaultToTodayOnRefresh: true  // New option to always default to today on page refresh
 });
 ```
 

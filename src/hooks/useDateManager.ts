@@ -5,6 +5,7 @@ interface UseDateManagerProps {
   onDateChange?: (date: Date) => void;
   enableLocalStorage?: boolean;
   storageKey?: string;
+  defaultToTodayOnRefresh?: boolean; // When true, always defaults to today on page refresh, ignoring localStorage
 }
 
 interface UseDateManagerReturn {
@@ -25,7 +26,8 @@ export function useDateManager({
   initialDate = new Date(),
   onDateChange,
   enableLocalStorage = false,
-  storageKey = 'selectedDate'
+  storageKey = 'selectedDate',
+  defaultToTodayOnRefresh = false
 }: UseDateManagerProps = {}): UseDateManagerReturn {
   
   // Initialize date from localStorage if enabled, otherwise use initialDate
@@ -36,12 +38,21 @@ export function useDateManager({
         const parsedDate = new Date(savedDate);
         // Validate the date
         if (!isNaN(parsedDate.getTime())) {
+          // If defaultToTodayOnRefresh is true, always return today instead of saved date
+          if (defaultToTodayOnRefresh) {
+            const today = new Date();
+            return new Date(today.getFullYear(), today.getMonth(), today.getDate());
+          }
           // Normalize to local date without time component
           return new Date(parsedDate.getFullYear(), parsedDate.getMonth(), parsedDate.getDate());
         }
       }
     }
-    // Normalize initial date to remove time component
+    // Normalize initial date to remove time component (or today if defaultToTodayOnRefresh is true)
+    if (defaultToTodayOnRefresh) {
+      const today = new Date();
+      return new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    }
     return new Date(initialDate.getFullYear(), initialDate.getMonth(), initialDate.getDate());
   });
 

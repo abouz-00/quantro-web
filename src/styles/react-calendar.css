@@ -108,7 +108,7 @@
   align-items: center;
   justify-content: center;
   font-size: 0.75em;
-  font-weight: bold;
+  font-weight: 900;
 }
 
 .react-calendar__month-view__days__day--weekend {
@@ -130,19 +130,21 @@
 .react-calendar__tile {
   max-width: 100%;
   padding: 10px 6px;
-  background: none;
+  background: white;
   text-align: center;
   line-height: 16px;
   font-size: 0.9rem;
+  font-weight: 900 !important;
   color: #374151;
-  border-radius: 8px;
-  margin: 1px;
+  border-radius: 0;
+  margin: 0;
   transition: all 0.15s ease;
   position: relative;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
 }
 
 .react-calendar__tile:disabled {
@@ -154,12 +156,13 @@
 .react-calendar__tile:enabled:focus {
   background-color: rgba(59, 130, 246, 0.1);
   color: #3b82f6;
-  transform: scale(1.05);
+  transform: none;
+  z-index: 1;
 }
 
 .react-calendar__tile--now {
   background: #e5e7eb;
-  font-weight: bold;
+  font-weight: 900;
   color: #374151;
 }
 
@@ -181,13 +184,15 @@
 .react-calendar__tile--active {
   background: #3b82f6 !important;
   color: white !important;
-  font-weight: 600;
+  font-weight: 900 !important;
+  border-color: #3b82f6 !important;
 }
 
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
   background: #2563eb !important;
   color: white !important;
+  border-color: #2563eb !important;
 }
 
 .react-calendar--selectRange .react-calendar__tile--hover {
@@ -198,18 +203,20 @@
 .selected-today {
   background: #3b82f6 !important;
   color: white !important;
-  font-weight: bold !important;
+  font-weight: 900 !important;
+  border-color: #3b82f6 !important;
 }
 
 .selected-day {
   background: #3b82f6 !important;
   color: white !important;
-  font-weight: 600 !important;
+  font-weight: 900 !important;
+  border-color: #3b82f6 !important;
 }
 
 .today-only {
   background: #e5e7eb !important;
-  font-weight: bold !important;
+  font-weight: 900 !important;
   color: #374151 !important;
 }
 
@@ -221,8 +228,13 @@
 .react-calendar__month-view__days {
   display: grid !important;
   grid-template-columns: repeat(7, 1fr);
-  grid-gap: 2px;
+  grid-template-rows: repeat(6, 1fr);
+  grid-gap: 1px;
   padding: 0.5em;
+  min-height: 240px;
+  border: 2px solid #6b7280;
+  border-radius: 8px;
+  background: #6b7280;
 }
 
 .react-calendar__viewContainer {
@@ -252,4 +264,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 900 !important;
 }
+
+/* Grid lines are now created by the grid-gap and background color */

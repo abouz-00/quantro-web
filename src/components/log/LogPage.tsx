@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { Poppins } from 'next/font/google';
 import { FoodSearchModal } from "../food-log/search";
-import { FoodTableModular } from "../food-log";
+import { EnhancedFoodTable } from "../food-log";
 import { EnergySummary } from "../food-log/core";
 import { Button } from "../ui/button";
 import DatePickerComponent from "../ui/DatePicker";
@@ -34,6 +35,7 @@ interface FoodEntry extends Nutrients {
 // Remove the USDAFood interface since it's not used in this component
 
 export default function LogPage() {
+  const router = useRouter();
   const [foodData, setFoodData] = useState<FoodEntry[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
@@ -80,7 +82,8 @@ export default function LogPage() {
     goToNextDay
   } = useDateManager({
     enableLocalStorage: true,
-    storageKey: 'foodLogSelectedDate'
+    storageKey: 'foodLogSelectedDate',
+    defaultToTodayOnRefresh: true
   });
   
   // Helper function to format date display
@@ -202,6 +205,68 @@ export default function LogPage() {
       setGoalsLoaded(true);
     }
   }, [customGoals, goalsLoaded]);
+
+  // STRICT: Global drag containment enforcement - prevents ANY dragging outside food log area
+  useEffect(() => {
+    const handleGlobalDragStart = (e: DragEvent) => {
+      // Check if this drag originates from our food table
+      const target = e.target as HTMLElement;
+      const foodTableContainer = document.querySelector('.food-table-container');
+      
+      if (foodTableContainer && !foodTableContainer.contains(target)) {
+        // Drag started outside food table, allow it
+        return;
+      }
+      
+      // This is a food table drag - set up strict boundary enforcement
+      const handleGlobalDragOver = (dragEvent: DragEvent) => {
+        if (!foodTableContainer) return;
+        
+        const containerRect = foodTableContainer.getBoundingClientRect();
+        const isOutside = 
+          dragEvent.clientX < containerRect.left ||
+          dragEvent.clientX > containerRect.right ||
+          dragEvent.clientY < containerRect.top ||
+          dragEvent.clientY > containerRect.bottom;
+        
+        if (isOutside) {
+          dragEvent.preventDefault();
+          dragEvent.stopPropagation();
+          document.body.style.cursor = 'not-allowed';
+        }
+      };
+      
+      const handleGlobalDrop = (dropEvent: DragEvent) => {
+        if (!foodTableContainer) return;
+        
+        const containerRect = foodTableContainer.getBoundingClientRect();
+        const isOutside = 
+          dropEvent.clientX < containerRect.left ||
+          dropEvent.clientX > containerRect.right ||
+          dropEvent.clientY < containerRect.top ||
+          dropEvent.clientY > containerRect.bottom;
+        
+        if (isOutside) {
+          dropEvent.preventDefault();
+          dropEvent.stopPropagation();
+        }
+        
+        // Cleanup
+        document.removeEventListener('dragover', handleGlobalDragOver);
+        document.removeEventListener('drop', handleGlobalDrop);
+        document.body.style.cursor = '';
+      };
+      
+      document.addEventListener('dragover', handleGlobalDragOver);
+      document.addEventListener('drop', handleGlobalDrop);
+    };
+    
+    document.addEventListener('dragstart', handleGlobalDragStart);
+    
+    return () => {
+      document.removeEventListener('dragstart', handleGlobalDragStart);
+    };
+  }, []);
 
   // Keyboard shortcuts effect
   useEffect(() => {
@@ -425,37 +490,41 @@ export default function LogPage() {
   // Handle entry selection
   const handleEntrySelect = useCallback((id: string, index: number, event: React.MouseEvent) => {
     setSelectedEntries(prev => {
-      if (prev.includes(id)) {
-        // If already selected, deselect it
-        return prev.filter(entryId => entryId !== id);
-      } else {
-        // If not selected, add to selection
-        if (event.ctrlKey || event.metaKey) {
-          // Multi-select with Ctrl/Cmd
-          return [...prev, id];
-        } else if (event.shiftKey && prev.length > 0) {
-          // Range selection with Shift
-          const lastSelectedIndex = filteredEntries.findIndex((entry: FoodEntry) => 
-            entry.id === prev[prev.length - 1]
-          );
-          
-          if (lastSelectedIndex !== -1) {
-            const startIndex = Math.min(lastSelectedIndex, index);
-            const endIndex = Math.max(lastSelectedIndex, index);
-            const rangeIds = filteredEntries
-              .slice(startIndex, endIndex + 1)
-              .map((entry: FoodEntry) => entry.id);
-            
-            // Combine existing selection with range selection
-            const combined = [...prev, ...rangeIds];
-            // Remove duplicates
-            return [...new Set(combined)];
-          } else {
-            // Fallback to regular multi-select
-            return [...prev, id];
-          }
+      if (event.ctrlKey || event.metaKey) {
+        // Multi-select with Ctrl/Cmd - toggle selection
+        if (prev.includes(id)) {
+          return prev.filter(entryId => entryId !== id);
         } else {
-          // Single select
+          return [...prev, id];
+        }
+      } else if (event.shiftKey && prev.length > 0) {
+        // Range selection with Shift
+        const lastSelectedIndex = filteredEntries.findIndex((entry: FoodEntry) => 
+          entry.id === prev[prev.length - 1]
+        );
+        
+        if (lastSelectedIndex !== -1) {
+          const startIndex = Math.min(lastSelectedIndex, index);
+          const endIndex = Math.max(lastSelectedIndex, index);
+          const rangeIds = filteredEntries
+            .slice(startIndex, endIndex + 1)
+            .map((entry: FoodEntry) => entry.id);
+          
+          // Combine existing selection with range selection
+          const combined = [...prev, ...rangeIds];
+          // Remove duplicates
+          return [...new Set(combined)];
+        } else {
+          // Fallback to regular multi-select
+          return [...prev, id];
+        }
+      } else {
+        // Single click - toggle selection or select new item
+        if (prev.includes(id)) {
+          // If already selected, deselect it
+          return prev.filter(entryId => entryId !== id);
+        } else {
+          // If not selected, select only this item (replace any previous selection)
           return [id];
         }
       }
@@ -608,18 +677,24 @@ export default function LogPage() {
       {/* Header/Nav Bar - Fixed at top, full width */}
       <header className={`w-full h-16 flex items-center justify-between px-6 shadow-sm relative transition-all duration-300 rounded-b-3xl`} style={{ backgroundColor: '#6e44ff' }}>
         <div className="flex items-center">
-          <img 
-            src="/main_header.svg" 
-            alt="Quantro Logo" 
-            className="h-6.5"
-            style={{ 
-              userSelect: 'none', 
-              WebkitUserSelect: 'none',
-              filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.1))', // Adding subtle drop shadow
-              maxHeight: '2rem', // Enforce 32px max height
-              width: 'auto' // Let width scale proportionally
-            }}
-          />
+          <button
+            onClick={() => router.push('/dashboard')}
+            className="p-1 rounded-lg transition-all duration-200 hover:bg-white/10 cursor-pointer"
+            aria-label="Go to Dashboard"
+          >
+            <img 
+              src="/main_header.svg" 
+              alt="Quantro Logo" 
+              className="h-6.5"
+              style={{ 
+                userSelect: 'none', 
+                WebkitUserSelect: 'none',
+                filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.1))', // Adding subtle drop shadow
+                maxHeight: '2rem', // Enforce 32px max height
+                width: 'auto' // Let width scale proportionally
+              }}
+            />
+          </button>
         </div>
         
         <div className="relative">
@@ -794,9 +869,9 @@ export default function LogPage() {
       <div className="bg-white rounded-lg shadow-md p-4 mb-6">
         {filteredEntries.length > 0 ? (
           <div className="w-full -mx-4 px-4 sm:mx-0 sm:px-0">
-            <FoodTableModular
+            <EnhancedFoodTable
               foodData={foodData}
-              filteredEntries={filteredEntries} // Pass filtered entries directly
+              filteredEntries={filteredEntries}
               selectedEntries={selectedEntries}
               handleEntrySelect={handleEntrySelect}
               removeFoodEntry={removeFoodEntry}
