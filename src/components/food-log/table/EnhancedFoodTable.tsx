@@ -10,7 +10,14 @@ import {
   DragEndEvent,
   DragStartEvent,
   closestCenter,
+  DragOverlay,
+  rectIntersection,
+  DragOverEvent,
 } from '@dnd-kit/core';
+import {
+  restrictToVerticalAxis,
+  restrictToParentElement,
+} from '@dnd-kit/modifiers';
 import {
   arrayMove,
   SortableContext,
@@ -37,6 +44,7 @@ export default function EnhancedFoodTable({
   const [editAmount, setEditAmount] = useState<string>("");
   const [editUnit, setEditUnit] = useState<string>("");
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [draggedItem, setDraggedItem] = useState<FoodEntry | null>(null);
   
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -51,7 +59,10 @@ export default function EnhancedFoodTable({
 
   function handleDragStart(event: DragStartEvent) {
     const draggedEntryId = event.active.id as string;
+    const draggedEntry = filteredEntries.find(entry => entry.id === draggedEntryId);
+    
     setActiveId(draggedEntryId);
+    setDraggedItem(draggedEntry || null);
     
     // Auto-select the entry being dragged if not already selected
     if (!selectedEntries.includes(draggedEntryId)) {
@@ -65,6 +76,7 @@ export default function EnhancedFoodTable({
     const { active, over } = event;
     
     setActiveId(null);
+    setDraggedItem(null);
     document.body.classList.remove('dragging');
 
     if (active.id !== over?.id && over?.id) {
@@ -109,6 +121,20 @@ export default function EnhancedFoodTable({
       body.dragging {
         user-select: none;
       }
+      
+      .food-table-container {
+        position: relative;
+        border: 2px solid #e5e7eb;
+        border-radius: 0.5rem;
+      }
+      
+      .drag-overlay-item {
+        background: white;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        border-radius: 0.375rem;
+        opacity: 0.95;
+        border: 2px solid #9333ea;
+      }
     `;
     
     if (!document.getElementById('enhanced-food-table-styles')) {
@@ -124,12 +150,13 @@ export default function EnhancedFoodTable({
   }, []);
 
   return (
-    <div className="w-full overflow-x-auto food-table-container">
+    <div className={`w-full overflow-x-auto food-table-container ${activeId ? 'dragging' : ''}`}>
       <DndContext 
         sensors={sensors}
-        collisionDetection={closestCenter}
+        collisionDetection={rectIntersection}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+        modifiers={[restrictToVerticalAxis, restrictToParentElement]}
       >
         <div className="bg-white rounded-lg shadow-sm border border-gray-100">
           <table className="w-full">
@@ -164,6 +191,36 @@ export default function EnhancedFoodTable({
             </tbody>
           </table>
         </div>
+        
+        <DragOverlay>
+          {draggedItem ? (
+            <div className="drag-overlay-item">
+              <table className="w-full">
+                <tbody>
+                  <EnhancedSortableTableRow
+                    item={draggedItem}
+                    foodData={foodData}
+                    filteredEntries={filteredEntries}
+                    selectedEntries={selectedEntries}
+                    handleEntrySelect={handleEntrySelect}
+                    removeFoodEntry={removeFoodEntry}
+                    updateFoodEntry={updateFoodEntry}
+                    editingEntry={editingEntry}
+                    setEditingEntry={setEditingEntry}
+                    editAmount={editAmount}
+                    setEditAmount={setEditAmount}
+                    editUnit={editUnit}
+                    setEditUnit={setEditUnit}
+                    activeId={activeId}
+                    setActiveId={setActiveId}
+                    formatNumber={formatNumber}
+                    onContextMenu={onContextMenu}
+                  />
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+        </DragOverlay>
       </DndContext>
     </div>
   );
