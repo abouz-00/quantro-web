@@ -19,11 +19,12 @@ table/
 ## 🎯 Components
 
 ### `EnhancedFoodTable`
-- **Main table component** with bulletproof drag boundaries
-- **Solid black boundaries** that prevent items from escaping
-- **Advanced collision detection** and drag modifiers
-- **Professional styling** with strict containment
-- **Auto-scroll disabled** to prevent boundary escaping
+- **Main table component** with proper drag boundaries and constraints
+- **Drag restrictions** prevent items from escaping the container
+- **Visual drag boundaries** with clear container highlights during drag
+- **DragOverlay** provides smooth visual feedback during dragging
+- **Vertical-only dragging** prevents horizontal drift
+- **Auto-scroll disabled** to maintain strict boundary enforcement
 
 ### `EnhancedSortableTableRow`
 - **Enhanced row component** with all table features
