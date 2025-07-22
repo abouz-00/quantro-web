@@ -1,5 +1,23 @@
+/* Hide number input arrows (spinners) for all browsers */
+input.hide-number-spin::-webkit-outer-spin-button,
+input.hide-number-spin::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+input.hide-number-spin[type=number] {
+  appearance: textfield !important;
+  -moz-appearance: textfield !important;
+  -webkit-appearance: none !important;
+}
 @import "tailwindcss";
 @import "tw-animate-css";
+
+/* Allow selection and caret for quantity input */
+.quantity-input {
+  user-select: auto !important;
+  -webkit-user-select: auto !important;
+  caret-color: auto !important;
+}
 
 @custom-variant dark (&:is(.dark *));
 
