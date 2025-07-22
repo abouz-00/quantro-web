@@ -768,7 +768,7 @@ export default function LogPage() {
           style={{ minWidth: 0, backgroundColor: '#F5F0E7' }} // Prevent flex item from growing beyond available space
         >
 
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 pb-40">
           {/* Centered Date Navigation */}
           <div className="flex justify-center mb-8">
             <div className="flex items-center space-x-2 bg-white rounded-full shadow-lg px-3 py-2" style={{ backgroundColor: '#F8F5F0', border: '1px solid #EDE6DC' }}>

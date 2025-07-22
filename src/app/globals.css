@@ -650,13 +650,11 @@ div[class*="text-xl font-bold text-center cursor-pointer"] {
 
 /* Enhanced Food Search Modal Animations */
 .food-search-item {
-  transform-origin: center;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease-in-out;
 }
 
 .food-search-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Ensure all clickable elements have pointer cursor */
@@ -673,11 +671,11 @@ button,
 }
 
 .food-search-modal button:hover:not(:disabled) {
-  transform: translateY(-1px);
+  opacity: 0.9;
 }
 
 .food-search-modal button:active:not(:disabled) {
-  transform: translateY(0);
+  opacity: 0.8;
 }
 
 /* Star button animations */
@@ -686,7 +684,7 @@ button,
 }
 
 .star-button:hover {
-  transform: scale(1.1);
+  opacity: 0.8;
 }
 
 /* React Big Calendar Custom Styles */

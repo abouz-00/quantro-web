@@ -43,8 +43,7 @@ export interface SortableRowProps {
   setEditAmount: (amount: string) => void;
   editUnit: string;
   setEditUnit: (unit: string) => void;
-  activeId: string | null;
-  setActiveId: (id: string | null) => void;
   formatNumber: (num: number) => string;
   onContextMenu?: (e: React.MouseEvent, entryId: string) => void;
+  activeId?: string | null; // Add activeId to detect when any item is being dragged
 }
