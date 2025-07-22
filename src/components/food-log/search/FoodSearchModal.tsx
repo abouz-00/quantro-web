@@ -3,6 +3,13 @@
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { FaStar, FaRegStar, FaTimes } from "react-icons/fa";
+import { useFoodSearch } from "./hooks/useFoodSearch";
+import { useFavorites } from "./hooks/useFavorites";
+import { useCustomFoods } from "./hooks/useCustomFoods";
+
+import SearchTab from "./SearchTab";
+import FavoritesTab from "./FavoritesTab";
+import CustomTab from "./CustomTab";
 
 interface Nutrients {
   calories: number;
@@ -11,6 +18,8 @@ interface Nutrients {
   fat: number;
   fiber?: number;
 }
+
+export default FoodSearchModal;
 
 interface FoodEntry extends Nutrients {
   id: string;
@@ -60,16 +69,23 @@ const capitalizeWords = (str: string): string => {
     .join(' ');
 };
 
-export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalProps) {
+
+function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalProps) {
   const [activeTab, setActiveTab] = useState<"search" | "favorites" | "custom">("search");
   const [localQuery, setLocalQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<USDAFood[]>([]);
   const [selectedFood, setSelectedFood] = useState<USDAFood | null>(null);
+
+  // Reset selectedFood when query is cleared or tab changes
+  useEffect(() => {
+    setSelectedFood(null);
+  }, [localQuery, activeTab]);
   const [quantity, setQuantity] = useState("100");
   const [unit, setUnit] = useState("Grams");
-  const [favorites, setFavorites] = useState<USDAFood[]>([]);
-  const [customFoods, setCustomFoods] = useState<CustomFood[]>([]);
-  
+  // Hooks for search, favorites, custom foods
+  const { suggestions, loading: searchLoading, error: searchError } = useFoodSearch(localQuery, activeTab === "search");
+  const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  const { customFoods, addCustomFood, setCustomFoods } = useCustomFoods();
+
   // Custom food form state
   const [customName, setCustomName] = useState("");
   const [customCalories, setCustomCalories] = useState("");
@@ -78,83 +94,42 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
   const [customFat, setCustomFat] = useState("");
   const [customFiber, setCustomFiber] = useState("");
 
-  // Load favorites and custom foods from localStorage
+  // Add styles for the table appearance to match the log table
   useEffect(() => {
-    const savedFavorites = localStorage.getItem('favoriteFoods');
-    const savedCustomFoods = localStorage.getItem('customFoods');
+    const style = document.createElement('style');
+    style.id = 'food-search-modal-styles';
+    style.textContent = `
+      .food-search-modal .food-table-row {
+        position: relative;
+        background: white;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      
+      .food-search-modal .food-table-row:hover {
+        background-color: #f9fafb;
+      }
+      
+      .food-search-modal .food-table-row.selected {
+        background-color: #f3f4f6 !important;
+        border-left: 4px solid #7c3aed;
+      }
+    `;
     
-    if (savedFavorites) setFavorites(JSON.parse(savedFavorites));
-    if (savedCustomFoods) setCustomFoods(JSON.parse(savedCustomFoods));
+    if (!document.getElementById('food-search-modal-styles')) {
+      document.head.appendChild(style);
+    }
+    
+    return () => {
+      const existingStyle = document.getElementById('food-search-modal-styles');
+      if (existingStyle) {
+        document.head.removeChild(existingStyle);
+      }
+    };
   }, []);
 
-  // Save favorites to localStorage when they change (but skip initial load)
-  const [favoritesLoaded, setFavoritesLoaded] = useState(false);
-  useEffect(() => {
-    if (favoritesLoaded) {
-      localStorage.setItem('favoriteFoods', JSON.stringify(favorites));
-    } else {
-      setFavoritesLoaded(true);
-    }
-  }, [favorites, favoritesLoaded]);
 
-  // Save custom foods to localStorage when they change (but skip initial load)
-  const [customFoodsLoaded, setCustomFoodsLoaded] = useState(false);
-  useEffect(() => {
-    if (customFoodsLoaded) {
-      localStorage.setItem('customFoods', JSON.stringify(customFoods));
-    } else {
-      setCustomFoodsLoaded(true);
-    }
-  }, [customFoods, customFoodsLoaded]);
 
-  // USDA API search (updated code)
-  useEffect(() => {
-    if (activeTab === "search" && localQuery.length > 2) {
-      const timeoutId = setTimeout(async () => {
-        try {
-          console.log("Searching for:", localQuery);
-          
-          const apiKey = process.env.NEXT_PUBLIC_USDA_API_KEY || 'DEMO_KEY';
-          const response = await fetch(
-            `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(localQuery)}&pageSize=10&api_key=${apiKey}`
-          );
-          
-          console.log("Response status:", response.status);
-          
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          
-          const data = await response.json();
-          console.log("API Response:", data);
-          
-          setSuggestions(data.foods || []);
-        } catch (error) {
-          console.error("Error fetching food data:", error);
-          setSuggestions([]);
-        }
-      }, 500);
-
-      return () => clearTimeout(timeoutId);
-    } else {
-      setSuggestions([]);
-    }
-  }, [localQuery, activeTab]);
-
-  const toggleFavorite = (food: USDAFood) => {
-    setFavorites(prev => {
-      const isFavorite = prev.some(fav => fav.description === food.description);
-      if (isFavorite) {
-        return prev.filter(fav => fav.description !== food.description);
-      } else {
-        return [...prev, { ...food, isFavorite: true }];
-      }
-    });
-  };
-
-  const isFavorite = (food: USDAFood) => {
-    return favorites.some(fav => fav.description === food.description);
-  };
 
   const handleSelectFood = (food: USDAFood, index: number) => {
     // Create a unique identifier for the food item to avoid multiple selections of same-named foods
@@ -164,7 +139,6 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
 
   const handleAddCustomFood = () => {
     if (!customName.trim()) return;
-
     const newCustomFood: CustomFood = {
       id: uuidv4(),
       name: customName.trim(),
@@ -174,9 +148,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
       fat: parseFloat(customFat) || 0,
       fiber: parseFloat(customFiber) || 0,
     };
-
-    setCustomFoods(prev => [...prev, newCustomFood]);
-    
+    addCustomFood(newCustomFood);
     // Reset form
     setCustomName("");
     setCustomCalories("");
@@ -184,7 +156,6 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
     setCustomCarbs("");
     setCustomFat("");
     setCustomFiber("");
-    
     // Add to food log
     const entry: FoodEntry = {
       id: uuidv4(),
@@ -198,7 +169,6 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
       carbs: (newCustomFood.carbs * parseFloat(quantity)) / 100,
       fat: (newCustomFood.fat * parseFloat(quantity)) / 100,
     };
-
     onAddFood(entry);
     onClose();
   };
@@ -284,9 +254,17 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50" style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}>
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden food-search-modal">
-        <div className="p-4 border-b border-gray-200">
+    <div className="fixed inset-0 flex items-center justify-center z-50 p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}>
+      <div
+        className="bg-white rounded-sm shadow-xl h-[600px] max-h-[90vh] food-search-modal flex flex-col"
+        style={{
+          width: '60vw',
+          minWidth: '320px',
+          maxWidth: '900px',
+          margin: '0 auto',
+        }}
+      >
+        <div className="p-4 border-b border-gray-200 flex-shrink-0">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Add Food</h2>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors duration-200">
@@ -295,10 +273,10 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
           </div>
           
           {/* Tab Navigation */}
-          <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+          <div className="flex space-x-1 bg-gray-100 rounded-sm p-1">
             <button
               onClick={() => setActiveTab("search")}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium cursor-pointer transition-colors duration-200 ${
+              className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ${
                 activeTab === "search" 
                   ? "bg-white text-violet-600 shadow-sm" 
                   : "text-gray-600 hover:text-gray-800"
@@ -308,7 +286,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
             </button>
             <button
               onClick={() => setActiveTab("favorites")}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium cursor-pointer transition-colors duration-200 ${
+              className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ${
                 activeTab === "favorites" 
                   ? "bg-white text-violet-600 shadow-sm" 
                   : "text-gray-600 hover:text-gray-800"
@@ -318,7 +296,7 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
             </button>
             <button
               onClick={() => setActiveTab("custom")}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium cursor-pointer transition-colors duration-200 ${
+              className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ${
                 activeTab === "custom" 
                   ? "bg-white text-violet-600 shadow-sm" 
                   : "text-gray-600 hover:text-gray-800"
@@ -329,204 +307,60 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
           </div>
         </div>
 
-        <div className="p-4 overflow-y-auto max-h-[60vh]">
-          {/* Search Tab */}
+        <div className="p-4 overflow-y-auto flex-1">
           {activeTab === "search" && (
-            <div>
-              <input
-                type="text"
-                placeholder="Search for food..."
-                value={localQuery}
-                onChange={(e) => setLocalQuery(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
-                autoFocus
-              />
-              
-              <div className="space-y-2 max-h-64 overflow-y-auto">
-                {suggestions.map((food, idx) => (
-                  <div
-                    key={idx}
-                    onClick={() => handleSelectFood(food, idx)}
-                    className={`p-3 border rounded-lg cursor-pointer food-search-item transform hover:scale-[1.01] hover:shadow-md transition-all duration-200 ease-in-out ${
-                      selectedFood?.uniqueId === `${food.description}_${idx}`
-                        ? "border-violet-500 bg-violet-50"
-                        : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                    }`}
-                  >
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <div className="font-bold">{capitalizeWords(food.description)}</div>
-                        {food.foodCategory && (
-                          <div className="text-sm text-gray-500">{food.foodCategory}</div>
-                        )}
-                      </div>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleFavorite(food);
-                        }}
-                        className="ml-2 text-yellow-400 hover:text-yellow-500 cursor-pointer star-button transition-colors duration-200"
-                      >
-                        {isFavorite(food) ? <FaStar size={16} /> : <FaRegStar size={16} />}
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <SearchTab
+              localQuery={localQuery}
+              setLocalQuery={setLocalQuery}
+              suggestions={suggestions}
+              selectedFood={selectedFood}
+              handleSelectFood={handleSelectFood}
+              toggleFavorite={toggleFavorite}
+              isFavorite={isFavorite}
+              capitalizeWords={capitalizeWords}
+              handleAddFood={handleAddFood}
+              loading={searchLoading}
+              error={searchError}
+            />
           )}
-
-          {/* Favorites Tab */}
           {activeTab === "favorites" && (
-            <div>
-              <h3 className="font-medium mb-3">Your Favorite Foods</h3>
-              {favorites.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">
-                  No favorites yet. Star some foods from the search tab!
-                </p>
-              ) : (
-                <div className="space-y-2">
-                  {favorites.map((food, idx) => (
-                    <div
-                      key={idx}
-                      onClick={() => handleSelectFood(food, idx + 1000)} // offset to avoid conflicts with search results
-                      className={`p-3 border rounded-lg cursor-pointer food-search-item transform hover:scale-[1.01] hover:shadow-md transition-all duration-200 ease-in-out ${
-                        selectedFood?.uniqueId === `${food.description}_${idx + 1000}`
-                          ? "border-violet-500 bg-violet-50"
-                          : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                      }`}
-                    >
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <div className="font-bold">{capitalizeWords(food.description)}</div>
-                          {food.foodCategory && (
-                            <div className="text-sm text-gray-500">{food.foodCategory}</div>
-                          )}
-                        </div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleFavorite(food);
-                          }}
-                          className="ml-2 text-yellow-400 hover:text-yellow-500 cursor-pointer star-button transition-colors duration-200"
-                        >
-                          <FaStar size={16} />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            <FavoritesTab
+              favorites={favorites}
+              selectedFood={selectedFood}
+              handleSelectFood={handleSelectFood}
+              toggleFavorite={toggleFavorite}
+              capitalizeWords={capitalizeWords}
+              loading={false}
+              error={""}
+            />
           )}
-
-          {/* Custom Tab */}
           {activeTab === "custom" && (
-            <div>
-              <div className="mb-6">
-                <h3 className="font-medium mb-3">Create Custom Food</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium mb-1">Food Name</label>
-                    <input
-                      type="text"
-                      value={customName}
-                      onChange={(e) => setCustomName(e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded-md"
-                      placeholder="e.g., Homemade Pizza"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Calories (per 100g)</label>
-                    <input
-                      type="number"
-                      value={customCalories}
-                      onChange={(e) => setCustomCalories(e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded-md"
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Protein (g)</label>
-                    <input
-                      type="number"
-                      value={customProtein}
-                      onChange={(e) => setCustomProtein(e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded-md"
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Carbs (g)</label>
-                    <input
-                      type="number"
-                      value={customCarbs}
-                      onChange={(e) => setCustomCarbs(e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded-md"
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Fat (g)</label>
-                    <input
-                      type="number"
-                      value={customFat}
-                      onChange={(e) => setCustomFat(e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded-md"
-                      placeholder="0"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Fiber (g)</label>
-                    <input
-                      type="number"
-                      value={customFiber}
-                      onChange={(e) => setCustomFiber(e.target.value)}
-                      className="w-full p-2 border border-gray-300 rounded-md"
-                      placeholder="0"
-                    />
-                  </div>
-                </div>
-                <button
-                  onClick={handleAddCustomFood}
-                  disabled={!customName.trim()}
-                  className="mt-4 w-full bg-violet-500 text-white py-2 px-4 rounded-md hover:bg-violet-600 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors duration-200"
-                >
-                  Add Custom Food
-                </button>
-              </div>
-
-              {/* Saved Custom Foods */}
-              {customFoods.length > 0 && (
-                <div>
-                  <h3 className="font-medium mb-3">Your Custom Foods</h3>
-                  <div className="space-y-2">
-                    {customFoods.map((food) => (
-                      <div
-                        key={food.id}
-                        onClick={() => handleAddFromCustomList(food)}
-                        className="p-3 border border-gray-200 rounded-lg cursor-pointer food-search-item transform hover:scale-[1.01] hover:shadow-md hover:border-gray-300 hover:bg-gray-50 transition-all duration-200 ease-in-out"
-                      >
-                        <div className="font-bold">{food.name}</div>
-                        <div className="text-sm text-gray-500">
-                          {food.calories} kcal • {food.protein}g protein • {food.carbs}g carbs • {food.fat}g fat
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+            <CustomTab
+              customName={customName}
+              setCustomName={setCustomName}
+              customCalories={customCalories}
+              setCustomCalories={setCustomCalories}
+              customProtein={customProtein}
+              setCustomProtein={setCustomProtein}
+              customCarbs={customCarbs}
+              setCustomCarbs={setCustomCarbs}
+              customFat={customFat}
+              setCustomFat={setCustomFat}
+              customFiber={customFiber}
+              setCustomFiber={setCustomFiber}
+              handleAddCustomFood={handleAddCustomFood}
+              customFoods={customFoods}
+              handleAddFromCustomList={handleAddFromCustomList}
+            />
           )}
         </div>
 
-        {/* Bottom section for selected food */}
-        {selectedFood && (activeTab === "search" || activeTab === "favorites") && (
-          <div className="p-4 border-t border-gray-200 bg-gray-50">
+        {/* Bottom section for selected food - only show in search tab */}
+        {selectedFood && activeTab === "search" && (
+          <div className="p-4 border-t border-gray-200 bg-gray-50 flex-shrink-0">
             <div className="mb-4">
               <div className="font-bold">{capitalizeWords(selectedFood.description)}</div>
             </div>
-            
             <div className="flex space-x-4 mb-4">
               <div className="flex-1">
                 <label className="block text-sm font-medium mb-1">Quantity</label>
@@ -534,7 +368,12 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
                   type="number"
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleAddFood();
+                    }
+                  }}
+                  className="w-full p-2 border border-gray-300 rounded-sm"
                 />
               </div>
               <div className="flex-1">
@@ -542,7 +381,12 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
                 <select
                   value={unit}
                   onChange={(e) => setUnit(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleAddFood();
+                    }
+                  }}
+                  className="w-full p-2 border border-gray-300 rounded-sm"
                 >
                   <option value="Grams">Grams</option>
                   <option value="Ounces">Ounces</option>
@@ -552,10 +396,9 @@ export default function FoodSearchModal({ onClose, onAddFood, selectedDate }: Fo
                 </select>
               </div>
             </div>
-            
             <button
               onClick={handleAddFood}
-              className="w-full bg-violet-500 text-white py-2 px-4 rounded-md hover:bg-violet-600 cursor-pointer transition-colors duration-200"
+              className="w-full bg-violet-500 text-white py-2 px-4 rounded-sm hover:bg-violet-600 cursor-pointer transition-colors duration-200"
             >
               Add to Log
             </button>

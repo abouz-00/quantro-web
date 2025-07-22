@@ -22,10 +22,9 @@ export function EnhancedSortableTableRow({
   setEditAmount,
   editUnit,
   setEditUnit,
-  activeId,
-  setActiveId,
   formatNumber,
-  onContextMenu
+  onContextMenu,
+  activeId
 }: SortableRowProps) {
   const isSelected = selectedEntries.includes(item.id);
   
@@ -54,19 +53,39 @@ export function EnhancedSortableTableRow({
     disabled: editingEntry === item.id, // Disable dragging when editing
     data: {
       type: 'food-entry',
-    }
+    },
+    transition: {
+      duration: 600, // Slower transitions for weight effect
+      easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+    },
   });
 
-  // Clean, simple transform - just vertical movement with proper containment
   const style: React.CSSProperties = {
-    transform: transform ? CSS.Translate.toString(transform) : undefined,
-    transition: isDragging ? 'none' : transition,
+    // Apply a more weighted transform with momentum simulation
+    transform: isDragging 
+      ? 'scale(1.02) rotate(0.5deg)' 
+      : CSS.Transform.toString(transform),
+    // Disable transitions for non-dragged items when any item is being dragged
+    // This prevents the "snapping" animation that conflicts with the heavy drag feel
+    transition: isDragging 
+      ? 'transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease' 
+      : activeId && activeId !== item.id 
+        ? 'none' // No transition for items being displaced during drag
+        : transition, // Normal transition when no drag is active
     zIndex: isDragging ? 1000 : 1,
-    opacity: isDragging ? 0.8 : 1,
+    opacity: isDragging ? 0.9 : 1,
     // Add inline styles for selection to override any CSS conflicts
     ...(isSelected && !isDragging && {
       backgroundColor: '#E8D5E8',
       borderLeft: '4px solid #9333ea',
+    }),
+    // Style the dragged item with weight simulation
+    ...(isDragging && {
+      backgroundColor: '#E8D5E8',
+      borderLeft: '4px solid #9333ea',
+      boxShadow: '0 12px 35px rgba(0, 0, 0, 0.2), 0 4px 15px rgba(147, 51, 234, 0.1)',
+      borderRadius: '0.375rem',
+      transformOrigin: 'center center',
     }),
   };
 
@@ -171,8 +190,10 @@ export function EnhancedSortableTableRow({
     >
       {/* Drag handle area - only active when not editing */}
       <td 
-        className="py-2 pl-2 pr-2 cursor-grab active:cursor-grabbing"
-        style={editingEntry === item.id ? { cursor: 'default' } : undefined}
+        className="py-2 pl-2 pr-2"
+        style={{ 
+          cursor: editingEntry === item.id ? 'default' : isDragging ? 'grabbing' : 'grab'
+        }}
       >
         <div className="flex items-center space-x-2">
           {isSupplement(item.description) ? (
