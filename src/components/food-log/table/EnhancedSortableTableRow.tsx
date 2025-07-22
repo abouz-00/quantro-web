@@ -61,32 +61,12 @@ export function EnhancedSortableTableRow({
   });
 
   const style: React.CSSProperties = {
-    // Apply a more weighted transform with momentum simulation
-    transform: isDragging 
-      ? 'scale(1.02) rotate(0.5deg)' 
-      : CSS.Transform.toString(transform),
-    // Disable transitions for non-dragged items when any item is being dragged
-    // This prevents the "snapping" animation that conflicts with the heavy drag feel
-    transition: isDragging 
-      ? 'transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease' 
-      : activeId && activeId !== item.id 
-        ? 'none' // No transition for items being displaced during drag
-        : transition, // Normal transition when no drag is active
-    zIndex: isDragging ? 1000 : 1,
-    opacity: isDragging ? 0.9 : 1,
-    // Add inline styles for selection to override any CSS conflicts
-    ...(isSelected && !isDragging && {
-      backgroundColor: '#E8D5E8',
-      borderLeft: '4px solid #9333ea',
-    }),
-    // Style the dragged item with weight simulation
-    ...(isDragging && {
-      backgroundColor: '#E8D5E8',
-      borderLeft: '4px solid #9333ea',
-      boxShadow: '0 12px 35px rgba(0, 0, 0, 0.2), 0 4px 15px rgba(147, 51, 234, 0.1)',
-      borderRadius: '0.375rem',
-      transformOrigin: 'center center',
-    }),
+    // Snap the dragged row in place by disabling transform when dragging
+    transform: isDragging ? 'none' : CSS.Transform.toString(transform),
+    transition: transition,
+    zIndex: 1,
+    opacity: 1,
+    // No background, border, or shadow changes for drag or selection
   };
 
   // Clean row classes with proper state management
@@ -190,7 +170,7 @@ export function EnhancedSortableTableRow({
     >
       {/* Drag handle area - only active when not editing */}
       <td 
-        className="py-2 pl-2 pr-2"
+        className="py-2 pl-2 pr-2 min-w-[16rem] w-64"
         style={{ 
           cursor: editingEntry === item.id ? 'default' : isDragging ? 'grabbing' : 'grab'
         }}
@@ -205,9 +185,9 @@ export function EnhancedSortableTableRow({
         </div>
       </td>
       
-      <td className="py-2 px-2">
+      <td className="py-2 px-4 text-center" style={{ minWidth: 160 }}>
         {editingEntry === item.id ? (
-          <div className="flex items-center justify-end space-x-1" onClick={e => e.stopPropagation()}>
+          <div className="inline-flex items-center gap-6 justify-center w-full" onClick={e => e.stopPropagation()} tabIndex={-1}>
             <input
               type="text"
               value={editAmount}
@@ -221,10 +201,16 @@ export function EnhancedSortableTableRow({
                   setEditUnit(normalizeUnit(item.unit));
                 }
               }}
-              className="w-16 p-1 border border-gray-300 rounded text-right focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-16 p-1 pr-2 border border-gray-300 rounded text-right focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono"
               autoFocus
               onClick={e => e.stopPropagation()}
               onPointerDown={e => e.stopPropagation()}
+              onBlur={e => {
+                // Only save if focus leaves both input and select
+                if (!e.currentTarget.contains(e.relatedTarget)) {
+                  saveEdit(item, e as any);
+                }
+              }}
             />
             <select
               value={editUnit}
@@ -238,9 +224,15 @@ export function EnhancedSortableTableRow({
                   setEditUnit(normalizeUnit(item.unit));
                 }
               }}
-              className="p-1 border border-gray-300 rounded text-sm bg-white cursor-pointer focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="p-1 border border-gray-300 rounded text-sm bg-white cursor-pointer focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-16"
               onClick={e => e.stopPropagation()}
               onPointerDown={e => e.stopPropagation()}
+              onBlur={e => {
+                // Only save if focus leaves both input and select
+                if (!e.currentTarget.contains(e.relatedTarget)) {
+                  saveEdit(item, e as any);
+                }
+              }}
             >
               {AVAILABLE_UNITS.map(unit => (
                 <option key={unit} value={unit}>
@@ -248,35 +240,28 @@ export function EnhancedSortableTableRow({
                 </option>
               ))}
             </select>
-            <button 
-              onClick={(e) => saveEdit(item, e)}
-              onPointerDown={e => e.stopPropagation()}
-              className="text-green-500 hover:text-green-600 ml-1 p-1 rounded hover:bg-green-50 transition-colors"
-            >
-              <FaCheck size={14} />
-            </button>
           </div>
         ) : (
-          <div className="flex items-center justify-end space-x-2">
+          <div className="inline-flex items-center gap-6 justify-center w-full">
             <span 
               className="hover:bg-gray-100 px-1 rounded cursor-pointer flex items-center transition-colors"
               onClick={(e) => startEditing(item, e)}
               onPointerDown={e => e.stopPropagation()}
             >
-              <span className="font-medium text-right min-w-[3rem]">{formatNumber(parseFloat(item.amount))}</span>
-              <span className="text-gray-600 text-left ml-1">{abbreviateUnit(item.unit)}</span>
+              <span className="font-medium text-right min-w-[3rem] font-mono">{formatNumber(parseFloat(item.amount))}</span>
             </span>
-            <FaPencilAlt 
-              size={12} 
-              className="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
+            <span 
+              className="hover:bg-gray-100 px-1 rounded cursor-pointer flex items-center transition-colors"
               onClick={(e) => startEditing(item, e)}
               onPointerDown={e => e.stopPropagation()}
-            />
+            >
+              <span className="inline-block w-12 text-left text-gray-600">{abbreviateUnit(item.unit)}</span>
+            </span>
           </div>
         )}
       </td>
-      
-      <td className="py-2 px-2 text-right">
+
+      <td className="py-2 px-8 text-right" style={{ minWidth: 140 }}>
         <div className="flex items-center justify-end space-x-2">
           <span className="font-medium">{formatNumber(item.calories)}</span>
           <span className="text-gray-600">kcal</span>
