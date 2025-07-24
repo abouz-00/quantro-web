@@ -39,7 +39,7 @@ export default function LogPage() {
   const [foodData, setFoodData] = useState<FoodEntry[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [isMainMenuOpen, setIsMainMenuOpen] = useState<boolean>(false);
   const [isTargetsModalOpen, setIsTargetsModalOpen] = useState<boolean>(false);
   const [clipboardEntries, setClipboardEntries] = useState<FoodEntry[]>([]);
   const [contextMenu, setContextMenu] = useState<{
@@ -679,7 +679,7 @@ export default function LogPage() {
         <div className="flex items-center">
           <button
             onClick={() => router.push('/dashboard')}
-            className="p-1 rounded-lg transition-all duration-200 hover:bg-white/10 cursor-pointer"
+            className="p-1 rounded-lg transition-all duration-200 cursor-pointer"
             aria-label="Go to Dashboard"
           >
             <img 
@@ -699,23 +699,21 @@ export default function LogPage() {
         
         <div className="relative">
           <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            onClick={() => setIsMainMenuOpen(!isMainMenuOpen)}
             className="p-2 rounded-lg transition-colors duration-200 relative z-[60] cursor-pointer"
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-            aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
+            aria-label={isMainMenuOpen ? "Close main menu" : "Open main menu"}
           >
-            <HiMenu className={`h-6 w-6 ${isSidebarOpen ? 'text-[#6e44ff]' : 'text-white'}`} />
+            <HiMenu className="h-6 w-6 text-white" />
           </button>
           
           {/* Dropdown Menu */}
-          {isSidebarOpen && (
+          {isMainMenuOpen && (
             <>
               {/* Backdrop */}
               <div 
                 className="fixed inset-0 transition-opacity duration-300 z-40"
                 style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}
-                onClick={() => setIsSidebarOpen(false)}
+                onClick={() => setIsMainMenuOpen(false)}
               ></div>
               
               {/* Dropdown Content */}
@@ -732,7 +730,7 @@ export default function LogPage() {
                     <button
                       onClick={() => {
                         setIsTargetsModalOpen(true);
-                        setIsSidebarOpen(false);
+                        setIsMainMenuOpen(false);
                       }}
                       className="w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
                     >
@@ -743,7 +741,7 @@ export default function LogPage() {
                     <button
                       onClick={() => {
                         // Add sign out logic here
-                        setIsSidebarOpen(false);
+                        setIsMainMenuOpen(false);
                         console.log('Sign out clicked');
                       }}
                       className="w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer"

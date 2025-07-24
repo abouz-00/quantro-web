@@ -1,3 +1,5 @@
+/* EnhancedFoodTable.tsx injected styles moved to module CSS */
+/* Zebra striping and no horizontal lines */
 .foodTableRow {
   position: relative;
   background: white;
@@ -13,19 +15,20 @@
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   contain: paint;
+  border-top: none !important;
+  border-bottom: none !important;
 }
 .foodTableRow * {
   color: inherit !important;
 }
 .foodTableRow:nth-child(even):not(.selected):not(.draggingItem) {
-  background: #f5f6fa !important;
-}
-.foodTableRow:hover:not(.selected):not(.draggingItem) {
-  transition: none;
+  background: #e5e7eb !important; /* gray-200 */
 }
 .foodTableRow.selected {
-  background-color: #a78bfa !important; /* Tailwind purple-400 */
+  background-color: #a78bfa !important; /* #a78bfa */
   border-left: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
   transition: all 0.3s ease;
 }
 .foodTableRow.draggingItem {
@@ -49,6 +52,7 @@
   contain: paint;
   display: table-row !important;
   visibility: visible !important;
+  pointer-events: none;
 }
 .foodTableRow.draggingItem * {
   color: #a3a3a3 !important;
@@ -66,6 +70,27 @@
 .foodTableRow.selected.draggingItem *, .foodTableRow.draggingItem.selected * {
   color: #a3a3a3 !important;
 }
+.foodTableContainer {
+  position: relative;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+}
+.foodTableContainer.dragging {
+  cursor: grabbing !important;
+}
+.foodTableContainer.dragging * {
+  cursor: grabbing !important;
+}
+/* Body dragging state for global cursor (not module-scoped, but for reference) */
+/*
+body.dragging {
+  user-select: none;
+  cursor: grabbing !important;
+}
+body.dragging * {
+  cursor: grabbing !important;
+}
+*/
 .foodTableContainer {
   position: relative;
   border: 2px solid #e5e7eb;

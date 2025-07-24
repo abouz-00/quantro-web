@@ -30,6 +30,7 @@ import { Pill } from "lucide-react";
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { capitalizeWords, abbreviateUnit, AVAILABLE_UNITS, convertUnits, normalizeUnit } from './utils';
+import styles from './EnhancedFoodTable.module.css';
 
 // --- Begin EnhancedSortableTableRow (inlined, cleaned) ---
 interface EnhancedSortableTableRowProps {
@@ -134,12 +135,11 @@ function EnhancedSortableTableRow({
   };
 
   const getRowClasses = () => {
-    const baseClasses = "food-table-row border-b border-gray-200 last:border-0 transition-colors duration-150";
-    let classes = [baseClasses];
+    let classes = [styles.foodTableRow];
     if (isDragging) {
-      classes.push('dragging-item opacity-80');
+      classes.push(styles.draggingItem);
     } else if (isSelected) {
-      classes.push('selected');
+      classes.push(styles.selected);
     }
     return classes.join(' ');
   };
@@ -217,7 +217,7 @@ function EnhancedSortableTableRow({
     <tr
       ref={setNodeRef}
       style={style}
-      className={getRowClasses() + (editingEntry === item.id ? ' bg-blue-50' : '')}
+      className={getRowClasses()}
       data-id={item.id}
       aria-selected={isSelected}
       onPointerDown={e => {
@@ -495,105 +495,6 @@ export default function EnhancedFoodTable({
     setCurrentEntries(filteredEntries);
   }, [filteredEntries]);
 
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.id = 'enhanced-food-table-styles';
-    style.textContent = `
-      .food-table-row {
-        position: relative;
-        background: white;
-        color: #111827; /* Ensure default text color */
-        cursor: pointer;
-        transition: none !important;
-        transform-origin: center center;
-        box-shadow: none !important;
-        z-index: auto !important;
-        will-change: color, background;
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        contain: paint;
-      }
-      .food-table-row * {
-        color: inherit !important;
-      }
-      .food-table-row:hover:not(.selected):not(.dragging-item) {
-        background-color: #f9fafb;
-        transition: all 0.2s ease;
-      }
-      .food-table-row.selected {
-        background-color: #E8D5E8 !important;
-        /* border-left: 4px solid #9333ea; */
-        border-left: none !important;
-        transition: all 0.3s ease;
-      }
-      .food-table-row.dragging-item {
-        color: #a3a3a3 !important; /* Gray text */
-        background: white !important;
-        opacity: 1 !important;
-        box-shadow: none !important;
-        z-index: auto !important;
-        border-left: none !important;
-        border-right: none !important;
-        border-top: none !important;
-        border-bottom: none !important;
-        border-radius: 0 !important;
-        outline: none !important;
-        transition: color 0.2s ease;
-        will-change: color, background;
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-        contain: paint;
-        pointer-events: none;
-      }
-      .food-table-row.dragging-item * {
-        color: #a3a3a3 !important;
-      }
-      .food-table-row.selected.dragging-item, .food-table-row.dragging-item.selected {
-        background: white !important;
-        color: #a3a3a3 !important;
-        border-left: none !important;
-        border-right: none !important;
-        border-top: none !important;
-        border-bottom: none !important;
-        border-radius: 0 !important;
-        outline: none !important;
-      }
-      .food-table-row.selected.dragging-item *, .food-table-row.dragging-item.selected * {
-        color: #a3a3a3 !important;
-      }
-      body.dragging {
-        user-select: none;
-        cursor: grabbing !important;
-      }
-      body.dragging * {
-        cursor: grabbing !important;
-      }
-      .food-table-container {
-        position: relative;
-        border: 2px solid #e5e7eb;
-        border-radius: 0.5rem;
-      }
-      .food-table-container.dragging {
-        cursor: grabbing !important;
-      }
-      .food-table-container.dragging * {
-        cursor: grabbing !important;
-      }
-    `;
-    if (!document.getElementById('enhanced-food-table-styles')) {
-      document.head.appendChild(style);
-    }
-    return () => {
-      const existingStyle = document.getElementById('enhanced-food-table-styles');
-      if (existingStyle) {
-        document.head.removeChild(existingStyle);
-      }
-    };
-  }, []);
 
   // =====================
   // Handlers
@@ -673,7 +574,7 @@ export default function EnhancedFoodTable({
   // =====================
   return (
     <div 
-      className={`w-full overflow-x-auto food-table-container ${activeId ? 'dragging' : ''}`}
+      className={`w-full overflow-x-auto ${styles.foodTableContainer} ${activeId ? styles.dragging : ''}`}
       style={{ cursor: activeId ? 'grabbing' : 'default' }}
     >
       <DndContext 
