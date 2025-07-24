@@ -1,0 +1,79 @@
+.foodTableRow {
+  position: relative;
+  background: white;
+  color: #111827;
+  cursor: pointer;
+  transition: none !important;
+  transform-origin: center center;
+  box-shadow: none !important;
+  z-index: auto !important;
+  will-change: color, background;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  contain: paint;
+}
+.foodTableRow * {
+  color: inherit !important;
+}
+.foodTableRow:nth-child(even):not(.selected):not(.draggingItem) {
+  background: #f5f6fa !important;
+}
+.foodTableRow:hover:not(.selected):not(.draggingItem) {
+  transition: none;
+}
+.foodTableRow.selected {
+  background-color: #a78bfa !important; /* Tailwind purple-400 */
+  border-left: none !important;
+  transition: all 0.3s ease;
+}
+.foodTableRow.draggingItem {
+  color: #a3a3a3 !important;
+  background: white !important;
+  opacity: 1 !important;
+  box-shadow: none !important;
+  z-index: auto !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  transition: color 0.2s ease;
+  will-change: color, background;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  contain: paint;
+  display: table-row !important;
+  visibility: visible !important;
+}
+.foodTableRow.draggingItem * {
+  color: #a3a3a3 !important;
+}
+.foodTableRow.selected.draggingItem, .foodTableRow.draggingItem.selected {
+  background: white !important;
+  color: #a3a3a3 !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  border-radius: 0 !important;
+  outline: none !important;
+}
+.foodTableRow.selected.draggingItem *, .foodTableRow.draggingItem.selected * {
+  color: #a3a3a3 !important;
+}
+.foodTableContainer {
+  position: relative;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+}
+.foodTableContainer.dragging {
+  cursor: grabbing !important;
+}
+.foodTableContainer.dragging * {
+  cursor: grabbing !important;
+}
