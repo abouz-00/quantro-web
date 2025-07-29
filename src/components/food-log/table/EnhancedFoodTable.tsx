@@ -74,6 +74,8 @@ function EnhancedSortableTableRow({
   contextMenuOpen,
   setContextMenuOpen
 }: EnhancedSortableTableRowProps) {
+  // Track if a drag occurred to distinguish from click
+  const wasDraggingRef = useRef(false);
   const isSelected = selectedEntries.includes(item.id);
   const isSupplement = useCallback((description: string) => {
     const supplementKeywords = [
@@ -88,21 +90,8 @@ function EnhancedSortableTableRow({
 
   // Helper to check if drag should be disabled for a pointer or keyboard event
   const shouldDisableDrag = (e?: PointerEvent | MouseEvent | KeyboardEvent | any) => {
-    // Always disable if editing or context menu is open
+    // Only disable if editing or context menu is open
     if (editingEntry === item.id || contextMenuOpen) return true;
-    // If event is present, check modifiers
-    if (e) {
-      // Only allow drag for normal click (no modifier) or cmd+click
-      // On Mac: cmdKey (metaKey) is allowed, ctrlKey alone is not
-      // On Windows: ctrlKey is allowed for cmd+click, but we treat as Mac for consistency
-      if (
-        e.button !== undefined && e.button !== 0 // not left click
-        || e.shiftKey
-        || (e.ctrlKey && !e.metaKey) // ctrl (non-cmd) on Mac
-      ) {
-        return true;
-      }
-    }
     // Also check global flag for fallback
     if (typeof window !== 'undefined' && (window as any)._disableDragForRow === item.id) {
       return true;
@@ -119,13 +108,23 @@ function EnhancedSortableTableRow({
     isDragging,
   } = useSortable({ 
     id: item.id,
-    disabled: editingEntry === item.id || contextMenuOpen,
+    // Do not disable drag here; let listeners/attributes control it
     data: { type: 'food-entry' },
     transition: {
       duration: 600,
       easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
     },
   });
+
+  // Listen for drag events to set/reset drag state
+  useEffect(() => {
+    if (isDragging) {
+      wasDraggingRef.current = true;
+    } else {
+      // Reset after drag ends
+      wasDraggingRef.current = false;
+    }
+  }, [isDragging]);
 
   const style = {
     transform: isDragging ? 'none' : CSS.Transform.toString(transform),
@@ -213,36 +212,37 @@ function EnhancedSortableTableRow({
     }
   }, [editingEntry, item.id]);
 
+  // Save edit if focus leaves the input/select (blur)
+  const handleBlur = useCallback(
+    (e: React.FocusEvent) => {
+      // Only save if still editing this row
+      if (editingEntry === item.id) {
+        saveEdit(item, e);
+      }
+    },
+    [editingEntry, item, saveEdit]
+  );
+
+  // --- Click logic only: selection is only handled by onClick ---
   return (
     <tr
       ref={setNodeRef}
-      style={style}
+      style={{...style, position: 'relative'}} // ensure relative for overlay
       className={getRowClasses()}
       data-id={item.id}
       aria-selected={isSelected}
-      onPointerDown={e => {
-        // Always set global flag for drag disable if needed (for dnd-kit internal events)
-        if (shouldDisableDrag(e)) {
-          (window as any)._disableDragForRow = item.id;
-        } else {
-          delete (window as any)._disableDragForRow;
-          // Call dnd-kit drag listener if allowed
-          if (listeners && typeof listeners.onPointerDown === 'function') {
-            listeners.onPointerDown(e);
-          }
+      onPointerUp={e => {
+        // If editing and clicking another row, save edit first
+        if (editingEntry && editingEntry !== item.id) {
+          // Save edit for the previous editing row
+          setEditingEntry(null); // triggers blur on input/select, which will save
         }
-      }}
-      onPointerUp={() => {
-        // Clean up the flag
-        if ((window as any)._disableDragForRow === item.id) {
-          delete (window as any)._disableDragForRow;
+        // Only select/deselect if not a drag
+        if (!wasDraggingRef.current) {
+          handleEntrySelect(item.id, foodData.indexOf(item), e);
         }
-      }}
-      onClick={(e) => {
-        // Always single-select on any click (normal, ctrl, cmd, shift)
-        handleEntrySelect(item.id, foodData.indexOf(item), e);
-      }}
-      onMouseUp={(e) => {
+        // Always reset drag flag after pointer up
+        wasDraggingRef.current = false;
         if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 && e.ctrlKey && e.button === 0 && typeof onContextMenu === 'function') {
           if (editingEntry !== item.id && !isSelected) {
             handleEntrySelect(item.id, foodData.indexOf(item), e);
@@ -263,14 +263,20 @@ function EnhancedSortableTableRow({
           }, 0);
         }
       }}
-      onDoubleClick={(e) => {
+      onDoubleClick={e => {
         e.stopPropagation();
+        if (editingEntry && editingEntry !== item.id) {
+          setEditingEntry(null); // triggers blur/save
+        }
         if (editingEntry !== item.id) {
           handleEntrySelect(item.id, foodData.indexOf(item), e);
         }
       }}
-      onContextMenu={(e) => {
+      onContextMenu={e => {
         if (!isDragging) {
+          if (editingEntry && editingEntry !== item.id) {
+            setEditingEntry(null); // triggers blur/save
+          }
           if (editingEntry !== item.id && !isSelected) {
             handleEntrySelect(item.id, foodData.indexOf(item), e);
           }
@@ -280,27 +286,16 @@ function EnhancedSortableTableRow({
       }}
       onKeyDown={e => {
         if ((e.key === 'Enter' || e.key === ' ') && editingEntry !== item.id) {
+          if (editingEntry) setEditingEntry(null); // triggers blur/save
           startEditing(item, e);
         }
       }}
-      {...attributes}
-      {...(contextMenuOpen
-        ? {}
-        : listeners
-          ? Object.fromEntries(Object.entries(listeners).filter(([k, v]) => {
-              // Patch drag listeners to block drag if shift/ctrl (non-cmd) is held
-              if (typeof v !== 'function') return true;
-              if (k.startsWith('onPointerDown')) {
-                return false; // We'll handle pointerDown manually
-              }
-              return true;
-            }))
-          : {})}
       // Prevent drag listeners if context menu is open
       draggable={contextMenuOpen ? false : undefined}
       onBlur={() => setContextMenuOpen(false)}
       onClickCapture={() => setContextMenuOpen(false)}
     >
+      {/* Drag handle area - only active when not editing */}
       {/* Drag handle area - only active when not editing */}
       <td
         className="py-2 pl-2 pr-2 min-w-[16rem] w-64"
@@ -309,6 +304,7 @@ function EnhancedSortableTableRow({
         }}
         role="cell"
         aria-label={capitalizeWords(item.description)}
+        {...((!contextMenuOpen && editingEntry !== item.id) ? { ...listeners, ...attributes } : {})}
       >
         <div className="flex items-center space-x-2">
           {isSupplement(item.description) ? (
@@ -316,11 +312,11 @@ function EnhancedSortableTableRow({
           ) : (
             <img src="/toast.svg" alt="toast" className="w-6 h-6 flex-shrink-0" aria-label="food" />
           )}
-          <span style={{ marginLeft: '32px', fontFamily: 'Rubik, Helvetica, sans-serif', fontWeight: 400 }}>{capitalizeWords(item.description)}</span>
+          <span style={{ marginLeft: '32px', fontWeight: 400 }}>{capitalizeWords(item.description)}</span>
         </div>
       </td>
 
-      <td className="py-2 px-4 text-center" style={{ minWidth: 160 }} role="cell">
+      <td className="py-2 px-4 text-center" style={{ minWidth: 160 }}>
         {editingEntry === item.id ? (
           <div className="inline-flex items-center gap-6 justify-center w-full" onClick={e => e.stopPropagation()} tabIndex={-1}>
             <input
@@ -371,6 +367,7 @@ function EnhancedSortableTableRow({
                   e.preventDefault();
                 }
               }}
+              onBlur={handleBlur}
               className={
                 "w-16 p-1 pr-2 border rounded text-right focus:ring-2 focus:ring-blue-500 focus:border-blue-500 " +
                 (editError ? "border-red-500" : "border-gray-300")
@@ -399,6 +396,7 @@ function EnhancedSortableTableRow({
                   inputRef.current?.focus();
                 }
               }}
+              onBlur={handleBlur}
               className="p-1 border rounded text-sm bg-white cursor-pointer focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-16 border-gray-300"
               aria-label="Edit unit"
               onClick={e => e.stopPropagation()}
@@ -415,7 +413,11 @@ function EnhancedSortableTableRow({
             )}
           </div>
         ) : (
-          <div className="inline-flex items-center gap-6 justify-center w-full">
+          <div
+            className="inline-flex items-center gap-6 justify-center w-full"
+            style={{ cursor: editingEntry === item.id ? 'default' : isDragging ? 'grabbing' : 'grab' }}
+            {...((!contextMenuOpen && editingEntry !== item.id) ? { ...listeners, ...attributes } : {})}
+          >
             <span
               className="hover:bg-gray-100 px-1 rounded cursor-pointer flex items-center transition-colors"
               tabIndex={0}
@@ -426,7 +428,7 @@ function EnhancedSortableTableRow({
                 if (e.key === 'Enter' || e.key === ' ') startEditing(item, e);
               }}
             >
-              <span className="text-right min-w-[3rem]" style={{fontFamily: 'Rubik, Helvetica, sans-serif', fontWeight: 400}}>{formatNumber(parseFloat(item.amount))}</span>
+              <span className="text-right min-w-[3rem]" style={{fontWeight: 400}}>{formatNumber(parseFloat(item.amount))}</span>
             </span>
             <span
               className="hover:bg-gray-100 px-1 rounded cursor-pointer flex items-center transition-colors"
@@ -438,16 +440,20 @@ function EnhancedSortableTableRow({
                 if (e.key === 'Enter' || e.key === ' ') startEditing(item, e);
               }}
             >
-              <span className="inline-block w-12 text-left text-gray-600" style={{fontFamily: 'Rubik, Helvetica, sans-serif', fontWeight: 400}}>{abbreviateUnit(item.unit)}</span>
+              <span className="inline-block w-12 text-left text-gray-600" style={{fontWeight: 400}}>{abbreviateUnit(item.unit)}</span>
             </span>
           </div>
         )}
       </td>
 
       <td className="py-2 px-8 text-right" style={{ minWidth: 140 }} role="cell">
-        <div className="flex items-center justify-end space-x-2">
-          <span style={{fontFamily: 'Rubik, Helvetica, sans-serif', fontWeight: 400}}>{formatNumber(item.calories)}</span>
-          <span className="text-gray-600" style={{fontFamily: 'Rubik, Helvetica, sans-serif', fontWeight: 400}}>kcal</span>
+        <div
+          className="flex items-center justify-end space-x-2"
+          style={{ cursor: editingEntry === item.id ? 'default' : isDragging ? 'grabbing' : 'grab' }}
+          {...((!contextMenuOpen && editingEntry !== item.id) ? { ...listeners, ...attributes } : {})}
+        >
+          <span style={{fontWeight: 400}}>{formatNumber(item.calories)}</span>
+          <span className="text-gray-600" style={{fontWeight: 400}}>kcal</span>
         </div>
       </td>
     </tr>
@@ -502,15 +508,29 @@ export default function EnhancedFoodTable({
   // Selection
   function handleEntrySelect(id: string, index: number, event: React.MouseEvent) {
     if (!setSelectedEntries) return;
-    if (event.shiftKey) {
-      // Multi-select range
-      const lastSelectedIndex = selectedEntries.length > 0 ? currentEntries.findIndex(e => e.id === selectedEntries[selectedEntries.length - 1]) : -1;
-      const rangeStart = lastSelectedIndex === -1 ? index : Math.min(lastSelectedIndex, index);
-      const rangeEnd = lastSelectedIndex === -1 ? index : Math.max(lastSelectedIndex, index);
-      const rangeIds = currentEntries.slice(rangeStart, rangeEnd + 1).map(e => e.id);
-      setSelectedEntries(Array.from(new Set([...selectedEntries, ...rangeIds])));
+    // Robustly detect modifier keys for multi-select, even if event is synthetic or missing them
+    let isMulti = false;
+    if (event && (typeof event.shiftKey === 'boolean' || typeof event.ctrlKey === 'boolean' || typeof event.metaKey === 'boolean')) {
+      isMulti = event.shiftKey || event.ctrlKey || event.metaKey;
+    } else if (typeof window !== 'undefined') {
+      // Fallback: check global key state (best effort)
+      const winEvent = window.event as MouseEvent | undefined;
+      isMulti = winEvent ? (winEvent.shiftKey || winEvent.ctrlKey || winEvent.metaKey) : false;
+    }
+    // Debug: log event and selection state
+    if (process.env.NODE_ENV !== 'production') {
+      // eslint-disable-next-line no-console
+      console.log('[handleEntrySelect]', { id, index, event, isMulti, selectedEntries });
+    }
+    if (isMulti) {
+      // Toggle this entry in the selection
+      if (selectedEntries.includes(id)) {
+        setSelectedEntries(selectedEntries.filter(eid => eid !== id));
+      } else {
+        setSelectedEntries([...selectedEntries, id]);
+      }
     } else {
-      // Any other click: always single-select the clicked entry
+      // Always select the clicked entry (single-select mode)
       setSelectedEntries([id]);
     }
     // Optionally call the original handler if needed

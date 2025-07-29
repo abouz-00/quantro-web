@@ -158,15 +158,6 @@ export default function LandingPage() {
           
           <div className="absolute left-1/2 transform -translate-x-1/2">
             <div className="flex items-center justify-center gap-6">
-              <a
-                href="https://tiktok.com/@quantro_app"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Follow Quantro on TikTok"
-                className="focus:outline-none focus:ring-2 focus:ring-white/50 inline-block align-middle"
-              >
-                <img src="/tiktok-logo.svg" alt="TikTok Logo" width="32" height="32" className="object-contain" style={{ filter: 'brightness(0) invert(1)', width: '32px', height: '32px', display: 'block' }} />
-              </a>
               <a 
                 href="https://x.com/quantroapp" 
                 target="_blank" 
@@ -196,6 +187,27 @@ export default function LandingPage() {
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 32 32" className="text-white" style={{ width: '32px', height: '32px', display: 'block' }} aria-hidden="true">
                   <path d="M16 0C11.658 0 11.112.02 9.406.096 7.7.172 6.538.444 5.52.84a7.8 7.8 0 0 0-2.834 1.846A7.8 7.8 0 0 0 .84 5.52C.444 6.538.172 7.7.096 9.406.02 11.112 0 11.654 0 16.002c0 4.342.02 4.884.096 6.59.076 1.706.348 2.868.744 3.886.41 1.052.956 1.944 1.846 2.834a7.8 7.8 0 0 0 2.834 1.846c1.018.396 2.18.668 3.886.744C11.112 31.98 11.654 32 16 32s4.884-.02 6.59-.096c1.706-.076 2.868-.348 3.886-.744a7.8 7.8 0 0 0 2.834-1.846c.89-.89 1.436-1.782 1.846-2.834.394-1.018.666-2.18.744-3.886C31.98 20.886 32 20.344 32 16s-.02-4.886-.096-6.594c-.076-1.706-.35-2.868-.744-3.886a7.8 7.8 0 0 0-1.846-2.834A7.8 7.8 0 0 0 26.48.84c-1.018-.396-2.18-.668-3.886-.744C20.886.02 20.344 0 16 0zm-1.434 2.884h1.436c4.272 0 4.778.014 6.464.092 1.56.07 2.408.332 2.972.55.746.29 1.28.638 1.84 1.198.56.56.908 1.092 1.198 1.84.218.564.48 1.412.55 2.972.078 1.686.094 2.192.094 6.464s-.016 4.778-.094 6.464c-.07 1.56-.332 2.408-.55 2.972a5 5 0 0 1-1.198 1.838c-.56.56-1.094.908-1.84 1.198-.564.218-1.412.48-2.972.55-1.686.078-2.192.094-6.464.094s-4.78-.016-6.466-.094c-1.56-.07-2.408-.332-2.972-.55a5 5 0 0 1-1.84-1.198 5 5 0 0 1-1.2-1.838c-.218-.564-.48-1.412-.55-2.972-.078-1.686-.092-2.192-.092-6.466s.014-4.778.092-6.464c.07-1.56.332-2.408.55-2.972.29-.746.638-1.28 1.198-1.84.56-.56 1.094-.908 1.84-1.198.564-.218 1.412-.48 2.972-.55 1.476-.068 2.048-.088 5.03-.09zm9.976 2.656a1.92 1.92 0 1 0 0 3.84 1.92 1.92 0 0 0 0-3.84zm-8.54 2.244a8.218 8.218 0 1 0 0 16.436 8.218 8.218 0 0 0 0-16.436zm0 2.882a5.334 5.334 0 1 1 0 10.668 5.334 5.334 0 0 1 0-10.668z"/>
                 </svg>
+              </a>
+              <a
+                href="https://tiktok.com/@quantro_app"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Follow Quantro on TikTok"
+                className="focus:outline-none focus:ring-2 focus:ring-white/50 inline-block align-middle"
+              >
+                <img 
+                  src="/tiktok-logo.svg" 
+                  alt="TikTok Logo" 
+                  width="40" 
+                  height="40" 
+                  className="object-contain" 
+                  style={{ 
+                    width: '40px', 
+                    height: '40px', 
+                    display: 'block', 
+                    filter: 'brightness(0) invert(1)'
+                  }}
+                />
               </a>
             </div>
           </div>
