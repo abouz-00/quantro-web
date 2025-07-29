@@ -69,7 +69,7 @@ import { FoodEntry, SortableRowProps, formatNumber } from './table';
 - ✅ **Bulletproof Containment** - Cannot drag outside table
 - ✅ **Inline Editing** - Click to edit amount/unit
 - ✅ **Smart Unit Conversion** - Automatic nutritional scaling
-- ✅ **Supplement Detection** - Visual pill icons for supplements
+- ✅ **Supplement Detection** - Visual pill icons for supplements (now uses `pill.svg`)
 - ✅ **Selection Management** - Multi-select with visual feedback
 - ✅ **Context Menu Support** - Right-click actions
 - ✅ **Keyboard Navigation** - Full accessibility

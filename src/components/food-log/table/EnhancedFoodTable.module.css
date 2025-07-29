@@ -1,3 +1,8 @@
+.foodTableRow.draggingItem [aria-label="food"] {
+  color: #d1d5db !important; /* gray-300 */
+  filter: grayscale(1);
+  opacity: 0.5;
+}
 /* EnhancedFoodTable.tsx injected styles moved to module CSS */
 /* Zebra striping and no horizontal lines */
 .foodTableRow {
@@ -17,9 +22,13 @@
   contain: paint;
   border-top: none !important;
   border-bottom: none !important;
+  font-family: 'Rubik', 'Roboto Flex', sans-serif !important;
+  font-weight: 400 !important;
 }
 .foodTableRow * {
   color: inherit !important;
+  font-family: 'Rubik', 'Roboto Flex', sans-serif !important;
+  font-weight: 400 !important;
 }
 .foodTableRow:nth-child(even):not(.selected):not(.draggingItem) {
   background: #e5e7eb !important; /* gray-200 */
@@ -33,7 +42,7 @@
 }
 .foodTableRow.draggingItem {
   color: #a3a3a3 !important;
-  background: white !important;
+  /* background intentionally not set, so zebra striping remains */
   opacity: 1 !important;
   box-shadow: none !important;
   z-index: auto !important;
@@ -56,6 +65,8 @@
 }
 .foodTableRow.draggingItem * {
   color: #a3a3a3 !important;
+  font-family: 'Rubik', 'Roboto Flex', sans-serif !important;
+  font-weight: 400 !important;
 }
 .foodTableRow.selected.draggingItem, .foodTableRow.draggingItem.selected {
   background: white !important;
@@ -69,6 +80,8 @@
 }
 .foodTableRow.selected.draggingItem *, .foodTableRow.draggingItem.selected * {
   color: #a3a3a3 !important;
+  font-family: 'Rubik', 'Roboto Flex', sans-serif !important;
+  font-weight: 400 !important;
 }
 .foodTableContainer {
   position: relative;

@@ -56,9 +56,7 @@ export default function Dashboard() {
                 filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.1))'
               }}
             />
-            <h1 className={`text-2xl font-bold text-white ${poppins.className}`}>
-              Welcome to Quantro, {displaySession.user?.name || displaySession.user?.email}!
-            </h1>
+            {/* Removed welcome header text as requested */}
           </div>
           <button
             onClick={() => signOut({ callbackUrl: "/" })}

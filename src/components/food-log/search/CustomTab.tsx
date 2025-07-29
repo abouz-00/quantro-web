@@ -192,7 +192,7 @@ export default function CustomTab({
                   >
                     <td className="py-2 pl-2 pr-2">
                       <div className="flex items-center space-x-2">
-                        <span className="text-lg flex-shrink-0">🍞</span>
+                        <img src="/src/components/food-log/table/toast.svg" alt="toast" className="w-6 h-6 flex-shrink-0" />
                         <div className="flex-1">
                           <div className="font-medium">{food.name}</div>
                           <div className="text-sm text-gray-500">
