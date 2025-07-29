@@ -26,7 +26,7 @@ import {
 
 import { FoodTableProps, FoodEntry } from './types';
 
-import { Pill } from "lucide-react";
+// import { Pill } from "lucide-react"; // Replaced by pill.svg
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { capitalizeWords, abbreviateUnit, AVAILABLE_UNITS, convertUnits, normalizeUnit } from './utils';
@@ -312,11 +312,11 @@ function EnhancedSortableTableRow({
       >
         <div className="flex items-center space-x-2">
           {isSupplement(item.description) ? (
-            <Pill size={16} className="text-blue-500 flex-shrink-0" />
+            <img src="/pill.svg" alt="pill" className="w-6 h-6 flex-shrink-0" aria-label="supplement pill" />
           ) : (
-            <span className="text-lg flex-shrink-0" aria-label="food">🍞</span>
+            <img src="/toast.svg" alt="toast" className="w-6 h-6 flex-shrink-0" aria-label="food" />
           )}
-          <span>{capitalizeWords(item.description)}</span>
+          <span style={{ marginLeft: '32px', fontFamily: 'Rubik, Helvetica, sans-serif', fontWeight: 400 }}>{capitalizeWords(item.description)}</span>
         </div>
       </td>
 
@@ -372,7 +372,7 @@ function EnhancedSortableTableRow({
                 }
               }}
               className={
-                "w-16 p-1 pr-2 border rounded text-right focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono " +
+                "w-16 p-1 pr-2 border rounded text-right focus:ring-2 focus:ring-blue-500 focus:border-blue-500 " +
                 (editError ? "border-red-500" : "border-gray-300")
               }
               autoFocus
@@ -426,7 +426,7 @@ function EnhancedSortableTableRow({
                 if (e.key === 'Enter' || e.key === ' ') startEditing(item, e);
               }}
             >
-              <span className="font-medium text-right min-w-[3rem] font-mono">{formatNumber(parseFloat(item.amount))}</span>
+              <span className="text-right min-w-[3rem]" style={{fontFamily: 'Rubik, Helvetica, sans-serif', fontWeight: 400}}>{formatNumber(parseFloat(item.amount))}</span>
             </span>
             <span
               className="hover:bg-gray-100 px-1 rounded cursor-pointer flex items-center transition-colors"
@@ -438,7 +438,7 @@ function EnhancedSortableTableRow({
                 if (e.key === 'Enter' || e.key === ' ') startEditing(item, e);
               }}
             >
-              <span className="inline-block w-12 text-left text-gray-600">{abbreviateUnit(item.unit)}</span>
+              <span className="inline-block w-12 text-left text-gray-600" style={{fontFamily: 'Rubik, Helvetica, sans-serif', fontWeight: 400}}>{abbreviateUnit(item.unit)}</span>
             </span>
           </div>
         )}
@@ -446,8 +446,8 @@ function EnhancedSortableTableRow({
 
       <td className="py-2 px-8 text-right" style={{ minWidth: 140 }} role="cell">
         <div className="flex items-center justify-end space-x-2">
-          <span className="font-medium">{formatNumber(item.calories)}</span>
-          <span className="text-gray-600">kcal</span>
+          <span style={{fontFamily: 'Rubik, Helvetica, sans-serif', fontWeight: 400}}>{formatNumber(item.calories)}</span>
+          <span className="text-gray-600" style={{fontFamily: 'Rubik, Helvetica, sans-serif', fontWeight: 400}}>kcal</span>
         </div>
       </td>
     </tr>

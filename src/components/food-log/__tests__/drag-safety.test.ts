@@ -5,25 +5,25 @@ import { DragStartEvent, DragOverEvent, DragEndEvent } from '@dnd-kit/core';
 // Test cases for drag event handling
 const testDragEvents = {
   // Case 1: Normal drag event
-  validDragStart: {
+  validDragStart: ({
     active: { id: 'test-id' },
     over: null
-  } as DragStartEvent,
+  } as unknown) as Partial<DragStartEvent>,
 
   // Case 2: Null active (the error we fixed)
-  nullActiveDragStart: {
+  nullActiveDragStart: ({
     active: null,
     over: null
-  } as unknown as DragStartEvent,
+  } as unknown) as Partial<DragStartEvent>,
 
   // Case 3: Active without ID
-  noIdDragStart: {
+  noIdDragStart: ({
     active: {},
     over: null
-  } as unknown as DragStartEvent,
+  } as unknown) as Partial<DragStartEvent>,
 
   // Case 4: Undefined event
-  undefinedEvent: undefined as unknown as DragStartEvent
+  undefinedEvent: (undefined as unknown) as Partial<DragStartEvent>
 };
 
 // These test cases would have caused the original error:

@@ -4,8 +4,8 @@
 "use client";
 
 import React from 'react';
-import DatePickerComponent from '../components/ui/DatePicker';
-import { useDateManager, dateHelpers } from '../hooks/useDateManager';
+import DatePickerComponent from '../src/components/ui/DatePicker';
+import { useDateManager, dateHelpers } from '../src/hooks/useDateManager';
 
 export default function ExampleDateComponent() {
   // Use the date manager hook with localStorage persistence
