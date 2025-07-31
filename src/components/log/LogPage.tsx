@@ -683,7 +683,7 @@ export default function LogPage() {
             aria-label="Go to Dashboard"
           >
             <img 
-              src="/main_header.svg" 
+              src="/quantro_header_main.svg" 
               alt="Quantro Logo" 
               className="h-6.5"
               style={{ 

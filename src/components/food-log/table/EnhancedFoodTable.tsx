@@ -302,7 +302,6 @@ function EnhancedSortableTableRow({
         style={{
           cursor: editingEntry === item.id ? 'default' : isDragging ? 'grabbing' : 'grab'
         }}
-        role="cell"
         aria-label={capitalizeWords(item.description)}
         {...((!contextMenuOpen && editingEntry !== item.id) ? { ...listeners, ...attributes } : {})}
       >
