@@ -673,7 +673,7 @@ export default function LogPage() {
   }, [selectedEntries, foodData, clipboardEntries, handlePasteEntries, removeFoodEntry]);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F5F0E7', userSelect: 'none', WebkitUserSelect: 'none' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#F5F0E7' }}>
       {/* Header/Nav Bar - Fixed at top, full width */}
       <header className={`w-full h-16 flex items-center justify-between px-6 shadow-sm relative transition-all duration-300 rounded-b-3xl`} style={{ backgroundColor: '#6e44ff' }}>
         <div className="flex items-center">
@@ -762,7 +762,7 @@ export default function LogPage() {
       <div className="flex rounded-t-3xl bg-inherit" style={{ height: 'calc(100vh - 4rem)' }}>
         {/* Main Content Area */}
         <div 
-          className={`flex-1 transition-all duration-300 ease-out overflow-hidden rounded-t-3xl`}
+          className={`flex-1 transition-all duration-300 ease-out overflow-y-auto rounded-t-3xl`}
           style={{ minWidth: 0, backgroundColor: '#F5F0E7' }} // Prevent flex item from growing beyond available space
         >
 
@@ -892,6 +892,9 @@ export default function LogPage() {
           totals={displayTotals} 
           customGoals={customGoals} 
           selectedEntryCount={selectedEntries.length}
+          entries={selectedEntries.length > 0 
+            ? filteredEntries.filter(entry => selectedEntries.includes(entry.id))
+            : filteredEntries}
         />
       </div>
       
