@@ -1,0 +1,23 @@
+/* Global font override for DM Sans */
+* {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+body {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* Target specific elements to ensure they use DM Sans */
+h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, textarea, select, option {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* Target specific components that might have their own font declarations */
+.react-datepicker, .react-datepicker *, .rbc-calendar, .rbc-calendar * {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* Target food table elements */
+.foodTableRow, .foodTableRow * {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}

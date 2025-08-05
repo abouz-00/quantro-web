@@ -102,7 +102,7 @@ export default function DatePickerComponent({
         {/* Previous Day Button */}
         <button
           onClick={handlePreviousDay}
-          className="p-2 hover:bg-gray-100 hover:scale-110 rounded-full transition-all duration-200 group cursor-pointer"
+          className="p-2 hover:bg-gray-100 rounded-full transition-all duration-200 group cursor-pointer"
           aria-label="Previous day"
           style={{ cursor: 'pointer' }}
         >
@@ -115,14 +115,14 @@ export default function DatePickerComponent({
           style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
         >
           <HiCalendar 
-            className="h-6 w-6 text-gray-600 cursor-pointer hover:text-blue-600 hover:scale-110 transition-all duration-200" 
+            className="h-6 w-6 text-gray-600 cursor-pointer hover:text-gray-700 transition-all duration-200" 
             onClick={handleCalendarToggle}
             title="Open calendar"
             style={{ cursor: 'pointer' }}
           />
           <button
             type="button"
-            className="border-none bg-transparent text-xl font-bold text-center cursor-pointer text-gray-800 px-0 hover:text-blue-600 hover:scale-105 transition-all duration-200 select-none rounded-md hover:bg-blue-50"
+            className="border-none bg-transparent text-xl font-bold text-center cursor-pointer text-gray-800 px-0 hover:text-gray-700 transition-all duration-200 select-none rounded-md hover:bg-gray-100"
             style={{ 
               minWidth: '200px', 
               cursor: 'pointer !important',
@@ -146,7 +146,7 @@ export default function DatePickerComponent({
         {/* Next Day Button */}
         <button
           onClick={handleNextDay}
-          className="p-2 hover:bg-gray-100 hover:scale-110 rounded-full transition-all duration-200 group cursor-pointer"
+          className="p-2 hover:bg-gray-100 rounded-full transition-all duration-200 group cursor-pointer"
           aria-label="Next day"
           style={{ cursor: 'pointer' }}
         >

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import ProgressBar from "../charts/ProgressBar";
+import { NutrientDonutChart } from "../charts";
 
 interface Nutrients {
   calories: number;
@@ -24,36 +24,38 @@ export default function EnergySummary({ totals, customGoals, selectedEntryCount 
     : 'Daily Summary';
   
   return (
-    <section className="bg-gray-100 rounded-lg p-4 shadow-lg select-none">
-      <h2 className="text-lg font-medium mb-2">{title}</h2>
-      <ProgressBar
-        label="Calories"
-        current={totals.calories}
-        goal={customGoals.calories}
-        unit="kcal"
-        color="bg-[#6E44FF]"
-      />
-      <ProgressBar
-        label="Protein"
-        current={totals.protein}
-        goal={customGoals.protein}
-        unit="g"
-        color="bg-[#7EE081]"
-      />
-      <ProgressBar
-        label="Carbs"
-        current={totals.carbs}
-        goal={customGoals.carbs}
-        unit="g"
-        color="bg-[#F0E15B]"
-      />
-      <ProgressBar
-        label="Fat"
-        current={totals.fat}
-        goal={customGoals.fat}
-        unit="g"
-        color="bg-[#E55640]"
-      />
+    <section className="bg-gray-100 rounded-lg p-4 md:p-5 shadow-lg select-none">
+      <h2 className="text-lg font-medium mb-3">{title}</h2>
+      <div className="flex flex-row flex-wrap justify-between">
+        <NutrientDonutChart
+          label="Calories"
+          current={totals.calories}
+          goal={customGoals.calories}
+          unit="kcal"
+          color="#F3439B"
+        />
+        <NutrientDonutChart
+          label="Protein"
+          current={totals.protein}
+          goal={customGoals.protein}
+          unit="g"
+          color="#7EE081"
+        />
+        <NutrientDonutChart
+          label="Carbs"
+          current={totals.carbs}
+          goal={customGoals.carbs}
+          unit="g"
+          color="#F0E15B"
+        />
+        <NutrientDonutChart
+          label="Fat"
+          current={totals.fat}
+          goal={customGoals.fat}
+          unit="g"
+          color="#E55640"
+        />
+      </div>
     </section>
   );
 }
