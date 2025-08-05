@@ -1,0 +1,30 @@
+/* This file ensures that all elements in the application use DM Sans */
+
+* {
+  font-family: 'DM Sans', sans-serif !important;
+}
+
+/* Ensure this overrides any other font-family declarations */
+html, body, div, span, h1, h2, h3, h4, h5, h6, p, 
+blockquote, pre, a, abbr, address, cite, code, 
+del, dfn, em, img, ins, kbd, q, s, samp, 
+small, strike, strong, sub, sup, tt, var, b, 
+u, i, dl, dt, dd, ol, ul, li, fieldset, 
+form, label, legend, table, caption, tbody, 
+tfoot, thead, tr, th, td, article, aside, 
+canvas, details, embed, figure, figcaption, 
+footer, header, menu, nav, output, ruby, 
+section, summary, time, mark, audio, video, button, input, textarea, select {
+  font-family: 'DM Sans', sans-serif !important;
+}
+
+/* Add specific overrides for any problematic elements */
+.react-datepicker, 
+.react-datepicker *, 
+.rbc-calendar, 
+.rbc-calendar *, 
+table *, 
+.foodTableRow, 
+.foodTableRow * {
+  font-family: 'DM Sans', sans-serif !important;
+}

@@ -145,19 +145,22 @@ function EnhancedSortableTableRow({
 
   const startEditing = (entry: FoodEntry, e: React.MouseEvent | React.KeyboardEvent | any) => {
     if (e) e.stopPropagation();
-    if (!isSelected) {
-      let mouseEvent = (e && 'button' in e) ? e : {
-        stopPropagation: () => {},
-        preventDefault: () => {},
-        type: 'click',
-        button: 0,
-        ctrlKey: false,
-        shiftKey: false,
-        metaKey: false,
-        ...e
-      };
-      handleEntrySelect(entry.id, foodData.indexOf(entry), mouseEvent);
-    }
+    
+    // Always ensure the entry is selected before editing
+    let mouseEvent = (e && 'button' in e) ? e : {
+      stopPropagation: () => {},
+      preventDefault: () => {},
+      type: 'click',
+      button: 0,
+      ctrlKey: false,
+      shiftKey: false,
+      metaKey: false,
+      ...e
+    };
+    
+    // Ensure this entry is selected (even if already selected, re-select to trigger parent handlers)
+    handleEntrySelect(entry.id, foodData.indexOf(entry), mouseEvent);
+    
     setEditingEntry(entry.id);
     setEditAmount(entry.amount);
     setEditUnit(normalizeUnit(entry.unit));
@@ -215,6 +218,14 @@ function EnhancedSortableTableRow({
   // Save edit if focus leaves the input/select (blur)
   const handleBlur = useCallback(
     (e: React.FocusEvent) => {
+      // Check if focus is moving to another edit control within the same row
+      if (
+        e.relatedTarget &&
+        (e.relatedTarget === inputRef.current || e.relatedTarget === selectRef.current)
+      ) {
+        return; // Don't save yet, focus is still within the edit controls
+      }
+      
       // Only save if still editing this row
       if (editingEntry === item.id) {
         saveEdit(item, e);
@@ -232,68 +243,108 @@ function EnhancedSortableTableRow({
       data-id={item.id}
       aria-selected={isSelected}
       onPointerUp={e => {
+        // Skip selection logic if currently editing this row
+        if (editingEntry === item.id) {
+          return;
+        }
+        
         // If editing and clicking another row, save edit first
         if (editingEntry && editingEntry !== item.id) {
           // Save edit for the previous editing row
           setEditingEntry(null); // triggers blur on input/select, which will save
         }
-        // Only select/deselect if not a drag
+        
+        // Handle different click behaviors
         if (!wasDraggingRef.current) {
-          handleEntrySelect(item.id, foodData.indexOf(item), e);
-        }
-        // Always reset drag flag after pointer up
-        wasDraggingRef.current = false;
-        if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 && e.ctrlKey && e.button === 0 && typeof onContextMenu === 'function') {
-          if (editingEntry !== item.id && !isSelected) {
+          // Special handling for Ctrl+Click (don't deselect)
+          if (e.ctrlKey && e.button === 0) {
+            // For Ctrl+Click, we only want to select (never deselect)
+            if (!selectedEntries.includes(item.id)) {
+              // Force multi-select behavior to add to selection
+              const modifiedEvent = {...e, isMultiSelectForced: true};
+              handleEntrySelect(item.id, foodData.indexOf(item), modifiedEvent);
+            }
+            
+            // Then handle context menu
+            if (typeof onContextMenu === 'function') {
+              setTimeout(() => {
+                setContextMenuOpen(true);
+                const syntheticEvent = {
+                  ...e,
+                  preventDefault: () => e.preventDefault(),
+                  stopPropagation: () => e.stopPropagation(),
+                  type: 'contextmenu',
+                  currentTarget: e.currentTarget,
+                  target: e.target,
+                  clientX: e.clientX,
+                  clientY: e.clientY,
+                };
+                onContextMenu(syntheticEvent, item.id);
+              }, 0);
+            }
+          } else {
+            // Normal click handling (without Ctrl)
             handleEntrySelect(item.id, foodData.indexOf(item), e);
           }
-          setTimeout(() => {
-            setContextMenuOpen(true);
-            const syntheticEvent = {
-              ...e,
-              preventDefault: () => e.preventDefault(),
-              stopPropagation: () => e.stopPropagation(),
-              type: 'contextmenu',
-              currentTarget: e.currentTarget,
-              target: e.target,
-              clientX: e.clientX,
-              clientY: e.clientY,
-            };
-            onContextMenu(syntheticEvent, item.id);
-          }, 0);
         }
+        
+        // Always reset drag flag after pointer up
+        wasDraggingRef.current = false;
       }}
       onDoubleClick={e => {
         e.stopPropagation();
         if (editingEntry && editingEntry !== item.id) {
           setEditingEntry(null); // triggers blur/save
         }
-        if (editingEntry !== item.id) {
-          handleEntrySelect(item.id, foodData.indexOf(item), e);
-        }
+        
+        // Only select on double-click, don't start editing
+        handleEntrySelect(item.id, foodData.indexOf(item), e);
       }}
       onContextMenu={e => {
         if (!isDragging) {
           if (editingEntry && editingEntry !== item.id) {
             setEditingEntry(null); // triggers blur/save
           }
-          if (editingEntry !== item.id && !isSelected) {
-            handleEntrySelect(item.id, foodData.indexOf(item), e);
-          }
+          
+          // Always select the right-clicked item
+          handleEntrySelect(item.id, foodData.indexOf(item), e);
+          
           setContextMenuOpen(true);
           onContextMenu?.(e, item.id);
         }
       }}
       onKeyDown={e => {
-        if ((e.key === 'Enter' || e.key === ' ') && editingEntry !== item.id) {
-          if (editingEntry) setEditingEntry(null); // triggers blur/save
-          startEditing(item, e);
+        if (e.key === 'Enter' || e.key === ' ') {
+          // Prevent default space scrolling
+          if (e.key === ' ') e.preventDefault();
+          
+          // Save any existing edits first
+          if (editingEntry) setEditingEntry(null);
+          
+          // Select the item on keyboard activation
+          handleEntrySelect(item.id, foodData.indexOf(item), e);
+          
+          // If enter/space and not currently editing, start editing
+          if (editingEntry !== item.id) {
+            startEditing(item, e);
+          }
         }
       }}
       // Prevent drag listeners if context menu is open
       draggable={contextMenuOpen ? false : undefined}
       onBlur={() => setContextMenuOpen(false)}
-      onClickCapture={() => setContextMenuOpen(false)}
+      onClickCapture={(e) => {
+        // Don't close context menu if clicking within the edit controls
+        if (editingEntry === item.id && (
+          e.target instanceof HTMLInputElement || 
+          e.target instanceof HTMLSelectElement ||
+          e.target instanceof HTMLOptionElement
+        )) {
+          e.stopPropagation();
+          return;
+        }
+        setContextMenuOpen(false);
+      }}
     >
       {/* Drag handle area - only active when not editing */}
       {/* Drag handle area - only active when not editing */}
@@ -307,9 +358,9 @@ function EnhancedSortableTableRow({
       >
         <div className="flex items-center space-x-2">
           {isSupplement(item.description) ? (
-            <img src="/pill.svg" alt="pill" className="w-6 h-6 flex-shrink-0" aria-label="supplement pill" />
+            <img src="/pill.svg" alt="pill" className="w-5 h-5 flex-shrink-0" aria-label="supplement pill" />
           ) : (
-            <img src="/toast.svg" alt="toast" className="w-6 h-6 flex-shrink-0" aria-label="food" />
+            <img src="/toast.svg" alt="toast" className="w-5 h-5 flex-shrink-0" aria-label="food" />
           )}
           <span style={{ marginLeft: '32px', fontWeight: 400 }}>{capitalizeWords(item.description)}</span>
         </div>
@@ -317,7 +368,7 @@ function EnhancedSortableTableRow({
 
       <td className="py-2 px-4 text-center" style={{ minWidth: 160 }}>
         {editingEntry === item.id ? (
-          <div className="inline-flex items-center gap-6 justify-center w-full" onClick={e => e.stopPropagation()} tabIndex={-1}>
+          <div className="inline-flex items-center gap-6 justify-center w-full" onClick={e => e.stopPropagation()} onPointerDown={e => e.stopPropagation()} tabIndex={-1}>
             <input
               ref={inputRef}
               type="text"
@@ -400,6 +451,7 @@ function EnhancedSortableTableRow({
               aria-label="Edit unit"
               onClick={e => e.stopPropagation()}
               onPointerDown={e => e.stopPropagation()}
+              onPointerUp={e => e.stopPropagation()}
             >
               {AVAILABLE_UNITS.map(unit => (
                 <option key={unit} value={unit}>
@@ -505,45 +557,83 @@ export default function EnhancedFoodTable({
   // Handlers
   // =====================
   // Selection
-  function handleEntrySelect(id: string, index: number, event: React.MouseEvent) {
+  function handleEntrySelect(id: string, index: number, event: React.MouseEvent | any) {
+    // First, always call the original handler if provided
+    // This ensures the parent component's logic is executed
+    if (_handleEntrySelect) {
+      _handleEntrySelect(id, index, event);
+    }
+    
+    // Then handle our internal selection state if setSelectedEntries is provided
     if (!setSelectedEntries) return;
+    
     // Robustly detect modifier keys for multi-select, even if event is synthetic or missing them
     let isMulti = false;
-    if (event && (typeof event.shiftKey === 'boolean' || typeof event.ctrlKey === 'boolean' || typeof event.metaKey === 'boolean')) {
-      isMulti = event.shiftKey || event.ctrlKey || event.metaKey;
-    } else if (typeof window !== 'undefined') {
-      // Fallback: check global key state (best effort)
-      const winEvent = window.event as MouseEvent | undefined;
-      isMulti = winEvent ? (winEvent.shiftKey || winEvent.ctrlKey || winEvent.metaKey) : false;
+    
+    // First try to get modifier keys from the event
+    if (event && typeof event === 'object') {
+      // Check for our special flag for forced multi-select (used for Ctrl+Click)
+      if (event.isMultiSelectForced) {
+        isMulti = true;
+      } else {
+        isMulti = Boolean(event.shiftKey || event.ctrlKey || event.metaKey);
+      }
+    } 
+    
+    // Fallback to window.event if available
+    if (!isMulti && typeof window !== 'undefined') {
+      const winEvent = window.event as MouseEvent | KeyboardEvent | undefined;
+      isMulti = winEvent ? Boolean(winEvent.shiftKey || winEvent.ctrlKey || winEvent.metaKey) : false;
     }
+    
     // Debug: log event and selection state
     if (process.env.NODE_ENV !== 'production') {
       // eslint-disable-next-line no-console
       console.log('[handleEntrySelect]', { id, index, event, isMulti, selectedEntries });
     }
+    
     if (isMulti) {
-      // Toggle this entry in the selection
+      // Toggle this entry in the selection for multi-select (Cmd/Ctrl/Shift + click)
       if (selectedEntries.includes(id)) {
         setSelectedEntries(selectedEntries.filter(eid => eid !== id));
       } else {
         setSelectedEntries([...selectedEntries, id]);
       }
     } else {
-      // Always select the clicked entry (single-select mode)
-      setSelectedEntries([id]);
+      // For single-select mode:
+      // If the entry is already selected, unselect it
+      // Otherwise, select just this entry
+      if (selectedEntries.length === 1 && selectedEntries[0] === id) {
+        setSelectedEntries([]);  // Unselect when clicking the only selected item
+      } else {
+        setSelectedEntries([id]); // Select only this entry
+      }
     }
-    // Optionally call the original handler if needed
-    if (_handleEntrySelect) _handleEntrySelect(id, index, event);
   }
 
   // Drag
   function handleDragStart(event: DragStartEvent) {
     const draggedEntryId = event.active.id as string;
     setActiveId(draggedEntryId);
+    
     // Auto-select the entry being dragged if not already selected
     if (!selectedEntries.includes(draggedEntryId)) {
-      setSelectedEntries?.([draggedEntryId]);
+      // Create a synthetic event to pass to handleEntrySelect
+      const syntheticEvent = {
+        type: 'dragstart',
+        preventDefault: () => {},
+        stopPropagation: () => {},
+      };
+      
+      // Get the index of the entry
+      const index = currentEntries.findIndex(item => item.id === draggedEntryId);
+      
+      // Call handleEntrySelect to ensure proper parent update
+      if (index !== -1) {
+        handleEntrySelect(draggedEntryId, index, syntheticEvent);
+      }
     }
+    
     document.body.classList.add('dragging');
   }
 
