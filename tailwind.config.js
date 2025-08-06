@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+import tailwindForms from '@tailwindcss/forms';
+
+export default {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
@@ -31,6 +33,6 @@ module.exports = {
     },
   },
   plugins: [
-    require('@tailwindcss/forms'),
+    tailwindForms
   ],
 }
