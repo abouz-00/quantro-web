@@ -1,11 +1,13 @@
 # Quantro Authentication Setup
 
 ## Overview
+
 Quantro now includes complete Apple and Google Sign-In authentication using NextAuth.js with a SQLite database for development.
 
 ## What's Implemented
 
 ### ✅ Complete Authentication System
+
 1. **Apple Sign-In Integration** - Users can sign in with their Apple ID
 2. **Google Sign-In Integration** - Users can sign in with their Google account
 3. **Database Schema** - Complete user management with Prisma and SQLite
@@ -15,6 +17,7 @@ Quantro now includes complete Apple and Google Sign-In authentication using Next
 7. **API Endpoints** - User profile and food logging APIs
 
 ### ✅ Database Schema
+
 - **Users** - Profile information and nutrition preferences
 - **Accounts** - OAuth account linking
 - **Sessions** - Session management
@@ -22,11 +25,13 @@ Quantro now includes complete Apple and Google Sign-In authentication using Next
 - **Verification Tokens** - Security tokens
 
 ### ✅ Pages Created
+
 - **Landing Page** - Updated with working sign-in buttons
 - **Dashboard** - Post-authentication welcome page
 - **Auth Error Page** - Handles authentication errors gracefully
 
 ### ✅ API Endpoints
+
 - `/api/auth/[...nextauth]` - NextAuth authentication
 - `/api/user/profile` - User profile management
 - `/api/food-logs` - Food logging API
@@ -34,6 +39,7 @@ Quantro now includes complete Apple and Google Sign-In authentication using Next
 ## Setup Instructions
 
 ### 1. Environment Variables
+
 Update your `.env.local` file with your provider credentials:
 
 ```bash
@@ -58,6 +64,7 @@ DATABASE_URL="file:./dev.db"
 ```
 
 ### 2. Google OAuth Setup
+
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project or select existing
 3. Enable Google+ API
@@ -67,6 +74,7 @@ DATABASE_URL="file:./dev.db"
 7. Copy Client ID and Client Secret to `.env.local`
 
 ### 3. Apple Sign-In Setup
+
 1. Go to [Apple Developer Portal](https://developer.apple.com/)
 2. Create a new Service ID in "Certificates, Identifiers & Profiles"
 3. Configure Sign In with Apple
@@ -75,7 +83,9 @@ DATABASE_URL="file:./dev.db"
 6. Add all credentials to `.env.local`
 
 ### 4. Database Setup
+
 The SQLite database is already configured and ready. The schema includes:
+
 - User profiles with nutrition preferences
 - OAuth account linking
 - Session management
@@ -84,12 +94,15 @@ The SQLite database is already configured and ready. The schema includes:
 ## Usage
 
 ### 1. Development Server
+
 ```bash
 npm run dev
 ```
+
 The app will run on `http://localhost:3001`
 
 ### 2. User Flow
+
 1. User visits landing page
 2. Clicks "Sign in with Apple" or "Sign in with Google"
 3. Completes OAuth flow with provider
@@ -98,7 +111,9 @@ The app will run on `http://localhost:3001`
 6. User can access food logging and other authenticated features
 
 ### 3. Authentication Status
+
 The app automatically:
+
 - Redirects authenticated users from landing page to dashboard
 - Redirects unauthenticated users from protected pages to landing page
 - Shows loading states during authentication checks
@@ -107,16 +122,19 @@ The app automatically:
 ## Database Management
 
 ### View Database
+
 ```bash
 npx prisma studio
 ```
 
 ### Reset Database
+
 ```bash
 npx prisma db push --force-reset
 ```
 
 ### Generate Prisma Client
+
 ```bash
 npx prisma generate
 ```
@@ -124,6 +142,7 @@ npx prisma generate
 ## Security Features
 
 ### ✅ Implemented
+
 - Secure session management with NextAuth
 - CSRF protection
 - JWT tokens for session handling
@@ -132,6 +151,7 @@ npx prisma generate
 - Middleware for route protection
 
 ### 🔒 Production Considerations
+
 - Use strong `NEXTAUTH_SECRET` in production
 - Enable HTTPS for production deployment
 - Configure proper CORS settings
@@ -151,9 +171,11 @@ npx prisma generate
 ### Build Errors Fixed ✅
 
 #### Prisma Client Generation Error
+
 **Error**: `Prisma has detected that this project was built on Vercel, which caches dependencies...`
 
 **Solution**: Added `prisma generate` to the build process:
+
 ```json
 {
   "scripts": {
@@ -164,18 +186,22 @@ npx prisma generate
 ```
 
 #### useSearchParams Suspense Boundary Error
+
 **Error**: `useSearchParams() should be wrapped in a suspense boundary`
 
 **Solution**: Wrapped the component using `useSearchParams()` with a Suspense boundary.
 
 ### Common Issues
+
 1. **Port 3000 in use** - App automatically uses port 3001
 2. **Missing environment variables** - Check `.env.local` configuration
 3. **OAuth errors** - Verify redirect URIs match provider configuration
 4. **Database errors** - Run `npx prisma db push` to sync schema
 
 ### Debug Mode
+
 Set environment variable for debugging:
+
 ```bash
 NEXTAUTH_DEBUG=true
 ```

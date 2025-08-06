@@ -1,11 +1,12 @@
 # Food Log Component Structure - FULLY MODULARIZED
 
 ## Overview
+
 The food log system is now completely modularized with a clean, maintainable structure.
 
 ## Structure
 
-```
+```typescript
 src/components/food-log/
 ├── index.ts                 # Main export barrel
 ├── core/                    # Core business logic components
@@ -25,14 +26,16 @@ src/components/food-log/
 
 ## What Was Fixed
 
-### ❌ BEFORE (Confusing):
+### ❌ BEFORE (Confusing)
+
 - `FoodTable.tsx` - legacy monolithic component with complex drag logic
 - `FoodTableModular.tsx` - partially modularized version  
 - `SimplifiedFoodTable.tsx` - another variant
 - Multiple overlapping drag configurations
 - Complex, buggy drag and drop with bouncing/glitching
 
-### ✅ AFTER (Clean & Modular):
+### ✅ AFTER (Clean & Modular)
+
 - **Single `FoodTable.tsx`** - clean, working component in `table/` directory
 - **Simplified drag logic** - smooth, no bouncing, no glitches
 - **Proper modular structure** - everything in its right place
@@ -41,7 +44,7 @@ src/components/food-log/
 
 ## Key Improvements
 
-1. **Fixed Drag & Drop**: 
+1. **Fixed Drag & Drop**:
    - Removed complex collision detection causing bouncing
    - Simplified transform logic for smooth movement
    - Clean 8px activation threshold
@@ -71,6 +74,7 @@ import { formatNumber, capitalizeWords } from '@/components/food-log/table';
 ```
 
 ## Current Status
+
 ✅ **Build successful**  
 ✅ **No TypeScript errors**  
 ✅ **Drag & drop working smoothly**  
