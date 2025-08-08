@@ -9,6 +9,9 @@ export * from './charts';
 // Search components
 export * from './search';
 
+// Modal components
+export * from './modals';
+
 // Table components (main exports)
 export * from './table';
 

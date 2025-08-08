@@ -125,6 +125,7 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
     responsive: true,
     maintainAspectRatio: false,
     cutout: '70%',
+    animation: false,
     plugins: {
       legend: {
         display: false,

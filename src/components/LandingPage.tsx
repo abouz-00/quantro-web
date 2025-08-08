@@ -157,13 +157,13 @@ export default function LandingPage() {
           </p>
           
           <div className="absolute left-1/2 transform -translate-x-1/2">
-            <div className="flex items-center justify-center gap-6">
+            <div className="flex items-end justify-center gap-6">
               <a 
                 href="https://x.com/quantroapp" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 aria-label="Follow Quantro on X (Twitter)"
-                className="focus:outline-none focus:ring-2 focus:ring-white/50"
+                className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-end"
               >
                 <svg 
                   width="32" 
@@ -182,7 +182,7 @@ export default function LandingPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Follow Quantro on Instagram"
-                className="focus:outline-none focus:ring-2 focus:ring-white/50 inline-block align-middle"
+                className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-end"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 32 32" className="text-white" style={{ width: '32px', height: '32px', display: 'block' }} aria-hidden="true">
                   <path d="M16 0C11.658 0 11.112.02 9.406.096 7.7.172 6.538.444 5.52.84a7.8 7.8 0 0 0-2.834 1.846A7.8 7.8 0 0 0 .84 5.52C.444 6.538.172 7.7.096 9.406.02 11.112 0 11.654 0 16.002c0 4.342.02 4.884.096 6.59.076 1.706.348 2.868.744 3.886.41 1.052.956 1.944 1.846 2.834a7.8 7.8 0 0 0 2.834 1.846c1.018.396 2.18.668 3.886.744C11.112 31.98 11.654 32 16 32s4.884-.02 6.59-.096c1.706-.076 2.868-.348 3.886-.744a7.8 7.8 0 0 0 2.834-1.846c.89-.89 1.436-1.782 1.846-2.834.394-1.018.666-2.18.744-3.886C31.98 20.886 32 20.344 32 16s-.02-4.886-.096-6.594c-.076-1.706-.35-2.868-.744-3.886a7.8 7.8 0 0 0-1.846-2.834A7.8 7.8 0 0 0 26.48.84c-1.018-.396-2.18-.668-3.886-.744C20.886.02 20.344 0 16 0zm-1.434 2.884h1.436c4.272 0 4.778.014 6.464.092 1.56.07 2.408.332 2.972.55.746.29 1.28.638 1.84 1.198.56.56.908 1.092 1.198 1.84.218.564.48 1.412.55 2.972.078 1.686.094 2.192.094 6.464s-.016 4.778-.094 6.464c-.07 1.56-.332 2.408-.55 2.972a5 5 0 0 1-1.198 1.838c-.56.56-1.094.908-1.84 1.198-.564.218-1.412.48-2.972.55-1.686.078-2.192.094-6.464.094s-4.78-.016-6.466-.094c-1.56-.07-2.408-.332-2.972-.55a5 5 0 0 1-1.84-1.198 5 5 0 0 1-1.2-1.838c-.218-.564-.48-1.412-.55-2.972-.078-1.686-.092-2.192-.092-6.466s.014-4.778.092-6.464c.07-1.56.332-2.408.55-2.972.29-.746.638-1.28 1.198-1.84.56-.56 1.094-.908 1.84-1.198.564-.218 1.412-.48 2.972-.55 1.476-.068 2.048-.088 5.03-.09zm9.976 2.656a1.92 1.92 0 1 0 0 3.84 1.92 1.92 0 0 0 0-3.84zm-8.54 2.244a8.218 8.218 0 1 0 0 16.436 8.218 8.218 0 0 0 0-16.436zm0 2.882a5.334 5.334 0 1 1 0 10.668 5.334 5.334 0 0 1 0-10.668z"/>
@@ -193,13 +193,14 @@ export default function LandingPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Follow Quantro on TikTok"
-                className="focus:outline-none focus:ring-2 focus:ring-white/50 inline-block align-middle"
+                className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-end"
               >
-                <svg width="40" height="40" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#fff" strokeWidth="1.224" style={{ display: 'block' }}>
+                <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg" className="text-white" style={{ width: '32px', height: '32px', display: 'block' }}>
                   <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                   <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                   <g id="SVGRepo_iconCarrier">
-                    <path d="M16.8217 5.1344C16.0886 4.29394 15.6479 3.19805 15.6479 2H14.7293M16.8217 5.1344C17.4898 5.90063 18.3944 6.45788 19.4245 6.67608C19.7446 6.74574 20.0786 6.78293 20.4266 6.78293V10.2191C18.645 10.2191 16.9932 9.64801 15.6477 8.68211V15.6707C15.6477 19.1627 12.8082 22 9.32386 22C7.50043 22 5.85334 21.2198 4.69806 19.98C3.64486 18.847 2.99994 17.3331 2.99994 15.6707C2.99994 12.2298 5.75592 9.42509 9.17073 9.35079M16.8217 5.1344C16.8039 5.12276 16.7861 5.11101 16.7684 5.09914M6.9855 17.3517C6.64217 16.8781 6.43802 16.2977 6.43802 15.6661C6.43802 14.0734 7.73249 12.7778 9.32394 12.7778C9.62087 12.7778 9.9085 12.8288 10.1776 12.9124V9.40192C9.89921 9.36473 9.61622 9.34149 9.32394 9.34149C9.27287 9.34149 8.86177 9.36884 8.81073 9.36884M14.7244 2H12.2097L12.2051 15.7775C12.1494 17.3192 10.8781 18.5591 9.32386 18.5591C8.35878 18.5591 7.50971 18.0808 6.98079 17.3564" stroke="#fff" strokeLinejoin="round"></path>
+                    <title>TikTok icon</title>
+                    <path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"></path>
                   </g>
                 </svg>
               </a>

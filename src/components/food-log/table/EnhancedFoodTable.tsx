@@ -292,6 +292,7 @@ function EnhancedSortableTableRow({
         wasDraggingRef.current = false;
       }}
       onDoubleClick={e => {
+        e.preventDefault();
         e.stopPropagation();
         if (editingEntry && editingEntry !== item.id) {
           setEditingEntry(null); // triggers blur/save
@@ -311,6 +312,12 @@ function EnhancedSortableTableRow({
           
           setContextMenuOpen(true);
           onContextMenu?.(e, item.id);
+        }
+      }}
+      onMouseDown={e => {
+        // Prevent text selection on multiple clicks
+        if (e.detail > 1) {
+          e.preventDefault();
         }
       }}
       onKeyDown={e => {
@@ -362,7 +369,7 @@ function EnhancedSortableTableRow({
           ) : (
             <img src="/toast.svg" alt="toast" className="w-5 h-5 flex-shrink-0" aria-label="food" />
           )}
-          <span style={{ marginLeft: '32px', fontWeight: 400 }}>{capitalizeWords(item.description)}</span>
+          <span style={{ marginLeft: '16px', fontWeight: 400 }}>{capitalizeWords(item.description)}</span>
         </div>
       </td>
 
