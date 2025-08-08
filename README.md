@@ -110,7 +110,7 @@ Quantro is a fast, focused nutrition tracking app for people who log their food 
 
 For questions, feedback, or support:
 
-- 📧 **Email:** [quantrodev@gmail.com](mailto:quantrodev@gmail.com)
+- 📧 **Email:** [hello@quantro.fit](mailto:hello@quantro.fit)
 - 🐦 **X/Twitter:** [@quantroapp](https://x.com/quantroapp)
 - 📸 **Instagram:** [@quantro_app](https://instagram.com/quantro_app)
 - 📱 **TikTok:** [@quantro_app](https://tiktok.com/@quantro_app)

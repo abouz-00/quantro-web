@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "../styles/dm-sans.css";
-import ErrorBoundary from '../components/ErrorBoundary';
 import SessionWrapper from '../components/SessionWrapper';
+
+// Simple wrapper that only enables ErrorBoundary in production
+const ErrorWrapper = ({ children }: { children: React.ReactNode }) => {
+  if (process.env.NODE_ENV === 'development') {
+    return <>{children}</>;
+  }
+  
+  const ErrorBoundary = require('../components/ErrorBoundary').default;
+  return <ErrorBoundary>{children}</ErrorBoundary>;
+};
 
 export const metadata: Metadata = {
   title: "Quantro",
@@ -25,9 +34,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body style={{ fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif" }}>
         <SessionWrapper>
-          <ErrorBoundary>
+          <ErrorWrapper>
             {children}
-          </ErrorBoundary>
+          </ErrorWrapper>
         </SessionWrapper>
       </body>
     </html>
