@@ -40,4 +40,30 @@ function safeDragStartHandler(event: DragStartEvent) {
   // ... rest of drag logic
 }
 
+describe('Drag Safety Tests', () => {
+  it('should handle null active drag events safely', () => {
+    expect(() => {
+      safeDragStartHandler(testDragEvents.nullActiveDragStart as DragStartEvent);
+    }).not.toThrow();
+  });
+
+  it('should handle undefined event safely', () => {
+    expect(() => {
+      safeDragStartHandler(testDragEvents.undefinedEvent as DragStartEvent);
+    }).not.toThrow();
+  });
+
+  it('should handle active without ID safely', () => {
+    expect(() => {
+      safeDragStartHandler(testDragEvents.noIdDragStart as DragStartEvent);
+    }).not.toThrow();
+  });
+
+  it('should process valid drag events', () => {
+    expect(() => {
+      safeDragStartHandler(testDragEvents.validDragStart as DragStartEvent);
+    }).not.toThrow();
+  });
+});
+
 export { testDragEvents, safeDragStartHandler };

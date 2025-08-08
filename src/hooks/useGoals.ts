@@ -18,9 +18,14 @@ export const useGoals = () => {
     const loadGoals = () => {
       const savedGoals = localStorage.getItem('customGoals');
       if (savedGoals) {
-        const parsedGoals = JSON.parse(savedGoals);
-        setCustomGoals(parsedGoals);
-        setTargetInput(parsedGoals);
+        try {
+          const parsedGoals = JSON.parse(savedGoals);
+          setCustomGoals(parsedGoals);
+          setTargetInput(parsedGoals);
+        } catch (error) {
+          console.warn('Failed to parse saved goals from localStorage:', error);
+          // Use default goals if parsing fails
+        }
       }
       setGoalsLoaded(true);
     };

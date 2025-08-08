@@ -1,0 +1,62 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run ESLint
+      run: npm run lint -- --format=json --output-file=eslint-report.json
+      continue-on-error: true
+      
+    - name: Run Prettier check
+      run: npx prettier --check "src/**/*.{ts,tsx,js,jsx,json,md}"
+      continue-on-error: true
+      
+    - name: Run type checking
+      run: npm run type-check
+      continue-on-error: true
+      
+    - name: Analyze bundle size
+      run: |
+        npm run build
+        npx next-bundle-analyzer
+      continue-on-error: true
+      
+    - name: Run tests with coverage
+      run: npm test -- --coverage --passWithNoTests --json --outputFile=test-results.json
+      continue-on-error: true
+      
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: >
+          -Dsonar.projectKey=quantro
+          -Dsonar.organization=your-org
+          -Dsonar.sources=src/
+          -Dsonar.tests=src/
+          -Dsonar.inclusions=**/*.ts,**/*.tsx
+          -Dsonar.test.inclusions=**/*.test.ts,**/*.test.tsx
+          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+          -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info

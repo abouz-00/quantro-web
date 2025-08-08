@@ -1,4 +1,5 @@
 import { FoodEntry } from '../types/food';
+import { errorService } from './errorService';
 import { transformApiDataToFoodEntry, transformFoodEntryToApiData } from '../utils/foodEntryUtils';
 
 /**
@@ -21,6 +22,11 @@ export class FoodLogService {
         return this.loadFromLocalStorage(dateParam);
       }
     } catch (error) {
+      await errorService.logError(error as Error, {
+        severity: 'medium',
+        category: 'network',
+        metadata: { operation: 'loadFoodData', dateParam },
+      });
       console.error('Error loading food data:', error);
       return this.loadFromLocalStorage(dateParam);
     }
@@ -48,6 +54,11 @@ export class FoodLogService {
         return entry;
       }
     } catch (error) {
+      await errorService.logError(error as Error, {
+        severity: 'medium',
+        category: 'network',
+        metadata: { operation: 'addFoodEntry', entryId: entry.id },
+      });
       console.error('Error saving food entry:', error);
       this.saveToLocalStorage(entry);
       return entry;
@@ -71,6 +82,11 @@ export class FoodLogService {
         return true;
       }
     } catch (error) {
+      await errorService.logError(error as Error, {
+        severity: 'medium',
+        category: 'network',
+        metadata: { operation: 'removeFoodEntry', entryId: id },
+      });
       console.error('Error deleting food entry:', error);
       this.removeFromLocalStorage(id);
       return true;
@@ -105,6 +121,11 @@ export class FoodLogService {
         return true;
       }
     } catch (error) {
+      await errorService.logError(error as Error, {
+        severity: 'medium',
+        category: 'network',
+        metadata: { operation: 'updateFoodEntry', entryId: id, updates },
+      });
       console.error('Error updating food entry:', error);
       this.updateInLocalStorage(id, updates);
       return true;

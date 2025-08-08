@@ -4,17 +4,25 @@ import { FoodEntry, Nutrients } from '../types/food';
  * Calculates totals for a collection of food entries
  */
 export const calculateTotals = (entries: FoodEntry[]): Nutrients => {
-  return entries.reduce((acc, entry) => ({
-    calories: acc.calories + entry.calories,
-    protein: acc.protein + entry.protein,
-    carbs: acc.carbs + entry.carbs,
-    fat: acc.fat + entry.fat,
+  const result = entries.reduce((acc, entry) => ({
+    calories: acc.calories + (entry.calories || 0),
+    protein: acc.protein + (entry.protein || 0),
+    carbs: acc.carbs + (entry.carbs || 0),
+    fat: acc.fat + (entry.fat || 0),
   }), {
     calories: 0,
     protein: 0,
     carbs: 0,
     fat: 0,
   });
+
+  // Round to one decimal place
+  return {
+    calories: Math.round(result.calories * 10) / 10,
+    protein: Math.round(result.protein * 10) / 10,
+    carbs: Math.round(result.carbs * 10) / 10,
+    fat: Math.round(result.fat * 10) / 10,
+  };
 };
 
 /**
@@ -26,7 +34,7 @@ export const transformApiDataToFoodEntry = (apiData: any): FoodEntry => {
     description: apiData.foodName + (apiData.brand ? ` (${apiData.brand})` : ''),
     amount: apiData.quantity.toString(),
     unit: apiData.unit,
-    date: apiData.date,
+    date: apiData.date || new Date().toISOString().split('T')[0], // Default to today if no date
     mealType: apiData.mealType,
     calories: apiData.calories,
     protein: apiData.protein,

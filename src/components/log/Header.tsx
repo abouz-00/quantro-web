@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 import { HiMenu } from 'react-icons/hi';
 
 interface HeaderProps {
@@ -58,6 +59,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="fixed inset-0 transition-opacity duration-300 z-40"
               style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}
               onClick={() => setIsMainMenuOpen(false)}
+              data-testid="menu-backdrop"
             />
             
             {/* Dropdown Content */}
@@ -83,10 +85,12 @@ export const Header: React.FC<HeaderProps> = ({
                     </span>
                   </button>
                   <button
-                    onClick={() => {
-                      // Add sign out logic here
+                    onClick={async () => {
                       setIsMainMenuOpen(false);
-                      console.log('Sign out clicked');
+                      await signOut({ 
+                        callbackUrl: '/',
+                        redirect: true 
+                      });
                     }}
                     className="w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
                   >
