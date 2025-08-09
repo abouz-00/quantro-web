@@ -1,4 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+
+// Move nutrientMapping outside the component to avoid recreating it on every render
+const nutrientMapping: { [key: number]: string } = {
+  1008: "Energy",
+  1003: "Protein",
+  1004: "Total lipid (fat)",
+  1005: "Carbohydrate, by difference",
+  1079: "Fiber, total dietary"
+};
 
 interface FoodNutrient {
   nutrientId: number;
@@ -32,16 +41,7 @@ export function useFoodSearch(query: string, active: boolean) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Nutrient ID to name mapping for common nutrients
-  const nutrientMapping: Record<number, string> = {
-    1008: "Energy", // Calories
-    1003: "Protein",
-    1004: "Total lipid (fat)",
-    1005: "Carbohydrate, by difference",
-    1079: "Fiber, total dietary"
-  };
-
-  const transformApiData = (apiFood: ApiFood): FoodSuggestion => {
+  const transformApiData = useCallback((apiFood: ApiFood): FoodSuggestion => {
     return {
       fdcId: apiFood.fdcId,
       description: apiFood.description,
@@ -54,7 +54,7 @@ export function useFoodSearch(query: string, active: boolean) {
         value: nutrient.value
       }))
     };
-  };
+  }, []);
 
   useEffect(() => {
     if (active && query.length > 2) {
