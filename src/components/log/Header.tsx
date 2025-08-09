@@ -30,12 +30,12 @@ export const Header: React.FC<HeaderProps> = ({
           <img 
             src="/quantro_header.svg" 
             alt="Quantro Logo" 
-            className="h-6.5"
+            className="h-10"
             style={{ 
               userSelect: 'none', 
               WebkitUserSelect: 'none',
               filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.1))',
-              maxHeight: '2rem',
+              maxHeight: '2.5rem',
               width: 'auto'
             }}
           />
