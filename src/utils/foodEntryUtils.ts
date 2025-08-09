@@ -28,14 +28,30 @@ export const calculateTotals = (entries: FoodEntry[]): Nutrients => {
 /**
  * Transforms API data to frontend FoodEntry format
  */
-export const transformApiDataToFoodEntry = (apiData: any): FoodEntry => {
+interface ApiData {
+  id: string;
+  foodName: string;
+  brand?: string;
+  quantity: number;
+  unit: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+  fiber?: number;
+  createdAt?: string;
+  date?: string;
+  mealType?: "breakfast" | "lunch" | "dinner" | "snack" | "other";
+}
+
+export const transformApiDataToFoodEntry = (apiData: ApiData): FoodEntry => {
   return {
     id: apiData.id,
     description: apiData.foodName + (apiData.brand ? ` (${apiData.brand})` : ''),
     amount: apiData.quantity.toString(),
     unit: apiData.unit,
     date: apiData.date || new Date().toISOString().split('T')[0], // Default to today if no date
-    mealType: apiData.mealType,
+    mealType: apiData.mealType || "other",
     calories: apiData.calories,
     protein: apiData.protein,
     carbs: apiData.carbs,

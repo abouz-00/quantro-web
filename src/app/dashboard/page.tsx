@@ -2,8 +2,8 @@
 
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { Poppins } from 'next/font/google';
+import Image from 'next/image';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
@@ -46,9 +46,11 @@ export default function Dashboard() {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
-            <img 
+            <Image 
               src="/quantro_header_main.svg" 
               alt="Quantro Logo" 
+              width={48}
+              height={48}
               className="h-12"
               style={{ 
                 userSelect: 'none', 
@@ -70,9 +72,11 @@ export default function Dashboard() {
         <div className="bg-white rounded-xl p-6 shadow-lg mb-8">
           <div className="flex items-center gap-4 mb-4">
             {displaySession.user?.image && (
-              <img 
+              <Image 
                 src={displaySession.user.image} 
                 alt="Profile" 
+                width={64}
+                height={64}
                 className="w-16 h-16 rounded-full"
               />
             )}

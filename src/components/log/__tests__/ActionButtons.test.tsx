@@ -1,11 +1,17 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ActionButtons } from '../ActionButtons'
 import { FoodEntry } from '../../../types/food'
 
+interface ButtonProps {
+  children: React.ReactNode;
+  onClick?: () => void;
+  [key: string]: unknown;
+}
+
 // Mock the Button component
 jest.mock('../../ui/button', () => ({
-  Button: ({ children, onClick, ...props }: any) => (
+  Button: ({ children, onClick, ...props }: ButtonProps) => (
     <button onClick={onClick} {...props}>
       {children}
     </button>

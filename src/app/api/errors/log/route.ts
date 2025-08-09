@@ -14,7 +14,7 @@ interface ErrorLog {
     severity?: string;
     category?: string;
     tags?: Record<string, string>;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
     serverTimestamp?: string;
     environment?: string;
   };

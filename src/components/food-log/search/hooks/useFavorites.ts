@@ -1,7 +1,17 @@
 import { useState, useEffect } from "react";
 
+interface FavoriteFood {
+  description: string;
+  foodCategory?: string;
+  foodNutrients: { nutrientName: string; value: number }[];
+  servingSize?: number;
+  servingSizeUnit?: string;
+  isFavorite?: boolean;
+  uniqueId?: string;
+}
+
 export function useFavorites() {
-  const [favorites, setFavorites] = useState<any[]>([]);
+  const [favorites, setFavorites] = useState<FavoriteFood[]>([]);
   useEffect(() => {
     const saved = localStorage.getItem('favoriteFoods');
     if (saved) setFavorites(JSON.parse(saved));
@@ -9,13 +19,13 @@ export function useFavorites() {
   useEffect(() => {
     localStorage.setItem('favoriteFoods', JSON.stringify(favorites));
   }, [favorites]);
-  const toggleFavorite = (food: any) => {
+  const toggleFavorite = (food: FavoriteFood) => {
     setFavorites(prev => {
       const isFav = prev.some(fav => fav.description === food.description);
       if (isFav) return prev.filter(fav => fav.description !== food.description);
       return [...prev, { ...food, isFavorite: true }];
     });
   };
-  const isFavorite = (food: any) => favorites.some(fav => fav.description === food.description);
+  const isFavorite = (food: FavoriteFood) => favorites.some(fav => fav.description === food.description);
   return { favorites, toggleFavorite, isFavorite };
 }

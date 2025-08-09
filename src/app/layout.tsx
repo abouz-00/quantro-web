@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "../styles/dm-sans.css";
 import SessionWrapper from '../components/SessionWrapper';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 // Simple wrapper that only enables ErrorBoundary in production
 const ErrorWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -9,7 +10,6 @@ const ErrorWrapper = ({ children }: { children: React.ReactNode }) => {
     return <>{children}</>;
   }
   
-  const ErrorBoundary = require('../components/ErrorBoundary').default;
   return <ErrorBoundary>{children}</ErrorBoundary>;
 };
 

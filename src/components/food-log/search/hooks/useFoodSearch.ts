@@ -1,9 +1,46 @@
 import { useState, useEffect } from "react";
 
+interface FoodSuggestion {
+  fdcId: number;
+  description: string;
+  foodNutrients: {
+    nutrientName: string;
+    value: number;
+  }[];
+  foodCategory?: string;
+  servingSize?: number;
+  servingSizeUnit?: string;
+  uniqueId?: string;
+}
+
 export function useFoodSearch(query: string, active: boolean) {
-  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [suggestions, setSuggestions] = useState<FoodSuggestion[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Nutrient ID to name mapping for common nutrients
+  const nutrientMapping: Record<number, string> = {
+    1008: "Energy", // Calories
+    1003: "Protein",
+    1004: "Total lipid (fat)",
+    1005: "Carbohydrate, by difference",
+    1079: "Fiber, total dietary"
+  };
+
+  const transformApiData = (apiFood: any): FoodSuggestion => {
+    return {
+      fdcId: apiFood.fdcId,
+      description: apiFood.description,
+      foodCategory: apiFood.foodCategory,
+      servingSize: apiFood.servingSize,
+      servingSizeUnit: apiFood.servingSizeUnit,
+      uniqueId: `${apiFood.fdcId}`,
+      foodNutrients: (apiFood.foodNutrients || []).map((nutrient: any) => ({
+        nutrientName: nutrientMapping[nutrient.nutrientId] || `Nutrient ${nutrient.nutrientId}`,
+        value: nutrient.value
+      }))
+    };
+  };
 
   useEffect(() => {
     if (active && query.length > 2) {
@@ -17,11 +54,12 @@ export function useFoodSearch(query: string, active: boolean) {
           );
           if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
           const data = await response.json();
-          setSuggestions(data.foods || []);
+          const transformedFoods = (data.foods || []).map(transformApiData);
+          setSuggestions(transformedFoods);
           setLoading(false);
-        } catch (err: any) {
+        } catch (err: unknown) {
           setSuggestions([]);
-          setError(err?.message || "Failed to fetch food data.");
+          setError(err instanceof Error ? err.message : "Failed to fetch food data.");
           setLoading(false);
         }
       }, 500);

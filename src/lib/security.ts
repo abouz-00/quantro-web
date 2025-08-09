@@ -41,36 +41,49 @@ export function rateLimit(options: RateLimitOptions) {
   }
 }
 
-export function validateInput(data: any, schema: any) {
+interface ValidationRule {
+  required?: boolean;
+  type?: string;
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+  pattern?: RegExp;
+}
+
+interface ValidationSchema {
+  [key: string]: ValidationRule;
+}
+
+export function validateInput(data: Record<string, unknown>, schema: ValidationSchema) {
   // Basic input validation - extend with Zod or similar in production
   const errors: string[] = []
   
   for (const [key, rules] of Object.entries(schema)) {
     const value = data[key]
-    const ruleSet = rules as any
     
-    if (ruleSet.required && (value === undefined || value === null || value === '')) {
+    if (rules.required && (value === undefined || value === null || value === '')) {
       errors.push(`${key} is required`)
     }
     
     if (value !== undefined && value !== null) {
-      if (ruleSet.type === 'string' && typeof value !== 'string') {
+      if (rules.type === 'string' && typeof value !== 'string') {
         errors.push(`${key} must be a string`)
       }
       
-      if (ruleSet.type === 'number' && typeof value !== 'number') {
+      if (rules.type === 'number' && typeof value !== 'number') {
         errors.push(`${key} must be a number`)
       }
       
-      if (ruleSet.min && value < ruleSet.min) {
-        errors.push(`${key} must be at least ${ruleSet.min}`)
+      if ('min' in rules && typeof value === 'number' && rules.min && value < rules.min) {
+        errors.push(`${key} must be at least ${rules.min}`)
       }
       
-      if (ruleSet.max && value > ruleSet.max) {
-        errors.push(`${key} must be at most ${ruleSet.max}`)
+      if ('max' in rules && typeof value === 'number' && rules.max && value > rules.max) {
+        errors.push(`${key} must be at most ${rules.max}`)
       }
       
-      if (ruleSet.pattern && typeof value === 'string' && !ruleSet.pattern.test(value)) {
+      if (rules.pattern && typeof value === 'string' && !rules.pattern.test(value)) {
         errors.push(`${key} has invalid format`)
       }
     }

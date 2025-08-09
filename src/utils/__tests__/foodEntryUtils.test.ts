@@ -3,7 +3,7 @@ import {
   transformApiDataToFoodEntry, 
   transformFoodEntryToApiData 
 } from '../foodEntryUtils';
-import { FoodEntry, Nutrients } from '../../types/food';
+import { FoodEntry } from '../../types/food';
 
 describe('foodEntryUtils', () => {
   const mockFoodEntries: FoodEntry[] = [
@@ -86,8 +86,8 @@ describe('foodEntryUtils', () => {
       const entriesWithUndefined: FoodEntry[] = [
         {
           ...mockFoodEntries[0],
-          protein: undefined as any,
-          fat: undefined as any,
+          protein: undefined as unknown as number,
+          fat: undefined as unknown as number,
         },
       ];
 
@@ -130,7 +130,7 @@ describe('foodEntryUtils', () => {
       brand: 'Organic',
       quantity: 1,
       unit: 'medium',
-      mealType: 'breakfast',
+      mealType: 'breakfast' as const,
       calories: 95,
       protein: 0.5,
       carbs: 25,
@@ -160,7 +160,7 @@ describe('foodEntryUtils', () => {
     it('should handle API data without brand', () => {
       const apiDataWithoutBrand = {
         ...mockApiData,
-        brand: null,
+        brand: undefined,
       };
 
       const result = transformApiDataToFoodEntry(apiDataWithoutBrand);
@@ -262,7 +262,7 @@ describe('foodEntryUtils', () => {
     it('should handle missing fiber', () => {
       const entryWithoutFiber = {
         ...mockFoodEntry,
-        fiber: undefined as any,
+        fiber: undefined as unknown as number,
       };
 
       const result = transformFoodEntryToApiData(entryWithoutFiber);

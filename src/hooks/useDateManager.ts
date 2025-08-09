@@ -164,7 +164,7 @@ export function useDateManager({
 
 // Additional utility functions for date operations
 export const dateHelpers = {
-  isValidDate: (date: any): date is Date => {
+  isValidDate: (date: unknown): date is Date => {
     return date instanceof Date && !isNaN(date.getTime());
   },
 

@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { FoodEntry } from '../table/types';
 
 export interface UseFoodTableState {
   selectedEntries: string[];

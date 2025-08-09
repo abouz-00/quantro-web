@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from 'react';
+import Image from 'next/image';
 import { Poppins } from 'next/font/google';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -9,7 +10,7 @@ import { useEffect } from 'react';
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 export default function LandingPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -44,14 +45,17 @@ export default function LandingPage() {
         {/* Logo/Brand */}
         <div className="mb-8">
           <div className="flex items-center justify-center mb-3">
-            <img 
+            <Image 
               src="/quantro_header_main.svg" 
               alt="Quantro Logo" 
               className="h-32"
+              width={128}
+              height={128}
               style={{ 
                 userSelect: 'none', 
                 WebkitUserSelect: 'none',
-                filter: 'drop-shadow(0 0 10px rgba(0,0,0,0.05))' // Adding subtle drop shadow to make it pop
+                // Adding subtle drop shadow to make it pop
+                filter: 'drop-shadow(0 0 10px rgba(0,0,0,0.05))'
               }}
             />
           </div>
@@ -139,10 +143,12 @@ export default function LandingPage() {
               width: '100%'
             }}
           >
-            <img 
+            <Image 
               src="/google-signin-official-light.svg" 
               alt="Sign in with Google" 
               className="w-full h-full object-contain"
+              width={200}
+              height={40}
               style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
             />
           </button>

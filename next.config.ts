@@ -23,11 +23,23 @@ const nextConfig: NextConfig = {
   // Webpack optimizations
   webpack: (config, { dev, isServer }) => {
     if (dev) {
-      // Faster rebuilds in development
+      // Use native file watching instead of polling for better performance
       config.watchOptions = {
-        poll: 1000,
+        // Remove polling - use native file system events instead
+        // poll: 1000,  // This was causing high resource usage
         aggregateTimeout: 300,
-        ignored: ['**/node_modules', '**/.next', '**/prisma/dev.db'],
+        ignored: [
+          '**/node_modules', 
+          '**/.next', 
+          '**/prisma/dev.db', 
+          '**/coverage', 
+          '**/.git',
+          '**/.vercel',
+          '**/.swc',
+          '**/.vscode',
+          '**/dist',
+          '**/build'
+        ],
       };
       
       // Reduce memory usage
