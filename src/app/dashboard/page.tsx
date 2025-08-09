@@ -49,9 +49,9 @@ export default function Dashboard() {
             <Image 
               src="/quantro_header.svg" 
               alt="Quantro Logo" 
-              width={48}
-              height={48}
-              className="h-12"
+              width={160}
+              height={160}
+              className="h-40"
               style={{ 
                 userSelect: 'none', 
                 WebkitUserSelect: 'none',

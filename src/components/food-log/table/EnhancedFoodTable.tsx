@@ -356,7 +356,7 @@ function EnhancedSortableTableRow({
       <td
         className="py-2 pl-2 pr-2 min-w-[16rem] w-64"
         style={{
-          cursor: editingEntry === item.id ? 'default' : isDragging ? 'grabbing' : 'grab'
+          cursor: editingEntry === item.id ? 'default' : isDragging ? 'move' : 'move'
         }}
         aria-label={capitalizeWords(item.description)}
         {...((!contextMenuOpen && editingEntry !== item.id) ? { ...listeners, ...attributes } : {})}
@@ -471,7 +471,7 @@ function EnhancedSortableTableRow({
         ) : (
           <div
             className="inline-flex items-center gap-6 justify-center w-full"
-            style={{ cursor: editingEntry === item.id ? 'default' : isDragging ? 'grabbing' : 'grab' }}
+            style={{ cursor: editingEntry === item.id ? 'default' : isDragging ? 'move' : 'move' }}
             {...((!contextMenuOpen && editingEntry !== item.id) ? { ...listeners, ...attributes } : {})}
           >
             <span
@@ -505,7 +505,7 @@ function EnhancedSortableTableRow({
       <td className="py-2 px-8 text-right" style={{ minWidth: 140 }} role="cell">
         <div
           className="flex items-center justify-end space-x-2"
-          style={{ cursor: editingEntry === item.id ? 'default' : isDragging ? 'grabbing' : 'grab' }}
+          style={{ cursor: editingEntry === item.id ? 'default' : isDragging ? 'move' : 'move' }}
           {...((!contextMenuOpen && editingEntry !== item.id) ? { ...listeners, ...attributes } : {})}
         >
           <span style={{fontWeight: 400}}>{formatNumber(item.calories)}</span>
@@ -548,6 +548,39 @@ export default function EnhancedFoodTable({
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  // Add a global effect to handle cursor during drag
+  useEffect(() => {
+    if (activeId) {
+      // Use requestAnimationFrame to ensure DOM is ready
+      const handleCursor = () => {
+        document.body.style.setProperty('cursor', 'move', 'important');
+        document.documentElement.style.setProperty('cursor', 'move', 'important');
+        
+        // Apply to all elements
+        const allElements = document.querySelectorAll('*');
+        allElements.forEach((el) => {
+          (el as HTMLElement).style.setProperty('cursor', 'move', 'important');
+        });
+      };
+      
+      const rafId = requestAnimationFrame(handleCursor);
+      const intervalId = setInterval(handleCursor, 16); // 60fps
+      
+      return () => {
+        cancelAnimationFrame(rafId);
+        clearInterval(intervalId);
+        
+        // Cleanup
+        document.body.style.removeProperty('cursor');
+        document.documentElement.style.removeProperty('cursor');
+        const allElements = document.querySelectorAll('*');
+        allElements.forEach((el) => {
+          (el as HTMLElement).style.removeProperty('cursor');
+        });
+      };
+    }
+  }, [activeId]);
 
   // =====================
   // Effects
@@ -641,6 +674,41 @@ export default function EnhancedFoodTable({
     }
     
     document.body.classList.add('dragging');
+    document.documentElement.classList.add('dragging');
+    // Force cursor style override with maximum specificity
+    document.body.style.cursor = 'move';
+    document.documentElement.style.cursor = 'move';
+    
+    // Create aggressive cursor override
+    const styleElement = document.createElement('style');
+    styleElement.id = 'drag-cursor-override';
+    styleElement.innerHTML = `
+      html, html *, body, body * {
+        cursor: move !important;
+      }
+      html:hover, html:hover *, body:hover, body:hover * {
+        cursor: move !important;
+      }
+      * {
+        cursor: move !important;
+      }
+    `;
+    document.head.appendChild(styleElement);
+    
+    // Add event listener to force cursor on mouse movement
+    const forceCursor = (e: MouseEvent) => {
+      (e.target as HTMLElement)?.style?.setProperty('cursor', 'move', 'important');
+      document.body.style.cursor = 'move';
+      document.documentElement.style.cursor = 'move';
+    };
+    document.addEventListener('mousemove', forceCursor);
+    document.addEventListener('dragover', forceCursor);
+    
+    // Store the cleanup function
+    (window as any).__dragCleanup = () => {
+      document.removeEventListener('mousemove', forceCursor);
+      document.removeEventListener('dragover', forceCursor);
+    };
   }
 
   function handleDragOver(event: DragOverEvent) {
@@ -658,6 +726,22 @@ export default function EnhancedFoodTable({
   function handleDragEnd(event: DragEndEvent) {
     setActiveId(null);
     document.body.classList.remove('dragging');
+    document.documentElement.classList.remove('dragging');
+    
+    // Clean up cursor override
+    document.body.style.cursor = '';
+    document.documentElement.style.cursor = '';
+    const styleElement = document.getElementById('drag-cursor-override');
+    if (styleElement) {
+      document.head.removeChild(styleElement);
+    }
+    
+    // Call cleanup function for event listeners
+    if ((window as any).__dragCleanup) {
+      (window as any).__dragCleanup();
+      delete (window as any).__dragCleanup;
+    }
+    
     // Apply the final order to the parent component
     onReorderEntries(currentEntries);
   }
@@ -690,7 +774,7 @@ export default function EnhancedFoodTable({
   return (
     <div 
       className={`w-full overflow-x-auto ${styles.foodTableContainer} ${activeId ? styles.dragging : ''}`}
-      style={{ cursor: activeId ? 'grabbing' : 'default' }}
+      style={{ cursor: activeId ? 'move' : 'default' }}
     >
       <DndContext 
         sensors={sensors}
