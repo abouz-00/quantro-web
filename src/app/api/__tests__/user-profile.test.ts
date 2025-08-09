@@ -2,7 +2,7 @@
 import './jest-setup.js';
 import { NextRequest } from 'next/server';
 import { GET, PUT } from '../user/profile/route';
-import { getServerSession } from 'next-auth/next';
+import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
 // Mock console.error to prevent noise in tests
@@ -17,7 +17,7 @@ jest.mock('@/lib/auth', () => ({
   },
 }));
 
-const mockGetServerSession = getServerSession as jest.MockedFunction<typeof getServerSession>;
+const mockAuth = auth as jest.MockedFunction<any>;
 
 // Get the mocked prisma instance - using any for complex mocks
 const mockPrisma = prisma as any;
@@ -60,7 +60,7 @@ describe('User Profile API', () => {
 
   describe('GET /api/user/profile', () => {
     it('should return 401 when user is not authenticated', async () => {
-      mockGetServerSession.mockResolvedValue(null);
+      mockAuth.mockResolvedValue(null);
 
       const response = await GET();
       const data = await response.json();
@@ -70,7 +70,7 @@ describe('User Profile API', () => {
     });
 
     it('should return user profile for authenticated user', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       mockFindUnique.mockResolvedValue(mockUser);
 
       const response = await GET();
@@ -97,7 +97,7 @@ describe('User Profile API', () => {
     });
 
     it('should return 404 when user not found', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       mockFindUnique.mockResolvedValue(null);
 
       const response = await GET();
@@ -108,7 +108,7 @@ describe('User Profile API', () => {
     });
 
     it('should handle database errors', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       mockFindUnique.mockRejectedValue(new Error('Database error'));
 
       const response = await GET();
@@ -130,7 +130,7 @@ describe('User Profile API', () => {
     };
 
     it('should return 401 when user is not authenticated', async () => {
-      mockGetServerSession.mockResolvedValue(null);
+      mockAuth.mockResolvedValue(null);
 
       const request = new NextRequest('http://localhost:3000/api/user/profile', {
         method: 'PUT',
@@ -144,7 +144,7 @@ describe('User Profile API', () => {
     });
 
     it('should update user profile successfully', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       const updatedUser = { ...mockUser, ...updateData };
       mockUpdate.mockResolvedValue(updatedUser);
 
@@ -177,7 +177,7 @@ describe('User Profile API', () => {
     });
 
     it('should handle database errors during update', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       mockUpdate.mockRejectedValue(new Error('Database error'));
 
       const request = new NextRequest('http://localhost:3000/api/user/profile', {
@@ -192,7 +192,7 @@ describe('User Profile API', () => {
     });
 
     it('should handle partial updates', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       const partialUpdate = { dailyCalorieGoal: 2500 };
       const updatedUser = { ...mockUser, ...partialUpdate };
       mockUpdate.mockResolvedValue(updatedUser);

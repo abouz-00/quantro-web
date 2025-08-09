@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../../../../lib/auth';
+import { auth } from '../../../../lib/auth';
 
 interface ErrorLog {
   message: string;
@@ -23,7 +22,7 @@ interface ErrorLog {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     const errorLog: ErrorLog = await request.json();
 
     // Add session context

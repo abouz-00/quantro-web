@@ -2,22 +2,17 @@
 import './jest-setup.js';
 import { NextRequest } from 'next/server';
 import { GET, POST, PUT, DELETE } from '../food-logs/route';
-import { getServerSession } from 'next-auth/next';
+import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
 // Mock console.error to prevent noise in tests
 const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
 
 // Mock dependencies
-jest.mock('next-auth/next');
+jest.mock('@/lib/auth');
 jest.mock('@/lib/prisma');
-jest.mock('@/lib/auth', () => ({
-  authOptions: {
-    providers: [],
-  },
-}));
 
-const mockGetServerSession = getServerSession as jest.MockedFunction<typeof getServerSession>;
+const mockAuth = auth as jest.MockedFunction<any>;
 
 // Get the mocked prisma instance - using any for complex mocks
 const mockPrisma = prisma as any;
@@ -49,7 +44,7 @@ describe('Food Logs API', () => {
 
   describe('GET /api/food-logs', () => {
     it('should return 401 when user is not authenticated', async () => {
-      mockGetServerSession.mockResolvedValue(null);
+      mockAuth.mockResolvedValue(null);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs');
       const response = await GET(request);
@@ -60,7 +55,7 @@ describe('Food Logs API', () => {
     });
 
     it('should return food logs for authenticated user', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       const mockFoodLogs = [
         {
           id: 'log-1',
@@ -85,7 +80,7 @@ describe('Food Logs API', () => {
     });
 
     it('should filter food logs by date when date parameter is provided', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       mockFindMany.mockResolvedValue([]);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs?date=2023-12-25');
@@ -105,7 +100,7 @@ describe('Food Logs API', () => {
     });
 
     it('should handle database errors', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       mockFindMany.mockRejectedValue(new Error('Database error'));
 
       const request = new NextRequest('http://localhost:3000/api/food-logs');
@@ -132,7 +127,7 @@ describe('Food Logs API', () => {
     };
 
     it('should return 401 when user is not authenticated', async () => {
-      mockGetServerSession.mockResolvedValue(null);
+      mockAuth.mockResolvedValue(null);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs', {
         method: 'POST',
@@ -146,7 +141,7 @@ describe('Food Logs API', () => {
     });
 
     it('should create food log for authenticated user', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       const createdFoodLog = { id: 'log-1', userId: 'user-123', ...mockFoodEntry };
       mockCreate.mockResolvedValue(createdFoodLog);
 
@@ -168,7 +163,7 @@ describe('Food Logs API', () => {
     });
 
     it('should handle database errors during creation', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       mockCreate.mockRejectedValue(new Error('Database error'));
 
       const request = new NextRequest('http://localhost:3000/api/food-logs', {
@@ -194,7 +189,7 @@ describe('Food Logs API', () => {
     };
 
     it('should return 401 when user is not authenticated', async () => {
-      mockGetServerSession.mockResolvedValue(null);
+      mockAuth.mockResolvedValue(null);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs', {
         method: 'PUT',
@@ -208,7 +203,7 @@ describe('Food Logs API', () => {
     });
 
     it('should return 400 when ID is missing', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs', {
         method: 'PUT',
@@ -222,7 +217,7 @@ describe('Food Logs API', () => {
     });
 
     it('should return 404 when food log not found', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       mockFindFirst.mockResolvedValue(null);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs', {
@@ -237,7 +232,7 @@ describe('Food Logs API', () => {
     });
 
     it('should update food log successfully', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       const existingLog = { id: 'log-1', userId: 'user-123', foodName: 'Banana' };
       const updatedLog = { ...existingLog, ...updateData };
       
@@ -269,7 +264,7 @@ describe('Food Logs API', () => {
 
   describe('DELETE /api/food-logs', () => {
     it('should return 401 when user is not authenticated', async () => {
-      mockGetServerSession.mockResolvedValue(null);
+      mockAuth.mockResolvedValue(null);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs?id=log-1');
       const response = await DELETE(request);
@@ -280,7 +275,7 @@ describe('Food Logs API', () => {
     });
 
     it('should return 400 when ID is missing', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs');
       const response = await DELETE(request);
@@ -291,7 +286,7 @@ describe('Food Logs API', () => {
     });
 
     it('should return 404 when food log not found', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       mockFindFirst.mockResolvedValue(null);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs?id=log-1');
@@ -303,7 +298,7 @@ describe('Food Logs API', () => {
     });
 
     it('should delete food log successfully', async () => {
-      mockGetServerSession.mockResolvedValue(mockSession);
+      mockAuth.mockResolvedValue(mockSession);
       const existingLog = { id: 'log-1', userId: 'user-123', foodName: 'Banana' };
       
       mockFindFirst.mockResolvedValue(existingLog);

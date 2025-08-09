@@ -1,14 +1,18 @@
 // Mock NextAuth to avoid ES module issues
-jest.mock('next-auth/next', () => ({
-  __esModule: true,
-  default: jest.fn(),
-  getServerSession: jest.fn(),
-}));
-
 jest.mock('next-auth', () => ({
   __esModule: true,
   default: jest.fn(),
-  getServerSession: jest.fn(),
+}));
+
+jest.mock('@/lib/auth', () => ({
+  __esModule: true,
+  auth: jest.fn(),
+  signIn: jest.fn(),
+  signOut: jest.fn(),
+  handlers: {
+    GET: jest.fn(),
+    POST: jest.fn(),
+  },
 }));
 
 jest.mock('jose', () => ({
@@ -47,10 +51,12 @@ jest.mock('@/lib/prisma', () => ({
 
 // Mock auth options
 jest.mock('@/lib/auth', () => ({
-  authOptions: {
-    providers: [],
-    session: { strategy: 'jwt' },
-    callbacks: {},
+  auth: jest.fn(),
+  signIn: jest.fn(),
+  signOut: jest.fn(),
+  handlers: {
+    GET: jest.fn(),
+    POST: jest.fn(),
   },
 }));
 
