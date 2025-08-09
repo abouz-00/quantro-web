@@ -5,9 +5,17 @@ import { GET, PUT } from '../user/profile/route';
 import { getServerSession } from 'next-auth/next';
 import { prisma } from '@/lib/prisma';
 
+// Mock console.error to prevent noise in tests
+const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+
 // Mock dependencies
 jest.mock('next-auth/next');
 jest.mock('@/lib/prisma');
+jest.mock('@/lib/auth', () => ({
+  authOptions: {
+    providers: [],
+  },
+}));
 
 const mockGetServerSession = getServerSession as jest.MockedFunction<typeof getServerSession>;
 
@@ -43,10 +51,14 @@ describe('User Profile API', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockConsoleError.mockClear();
   });
 
-  // Temporarily skip these tests until Next.js API testing environment is properly configured
-describe('User Profile API', () => {
+  afterAll(() => {
+    mockConsoleError.mockRestore();
+  });
+
+  describe('GET /api/user/profile', () => {
     it('should return 401 when user is not authenticated', async () => {
       mockGetServerSession.mockResolvedValue(null);
 

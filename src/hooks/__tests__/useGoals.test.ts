@@ -14,6 +14,8 @@ beforeEach(() => {
     writable: true,
   })
   jest.clearAllMocks()
+  // Reset localStorage mock to return null by default
+  mockLocalStorage.getItem.mockReturnValue(null)
 })
 
 describe('useGoals Hook', () => {

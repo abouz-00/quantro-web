@@ -22,6 +22,38 @@ jest.mock('@auth/prisma-adapter', () => ({
   PrismaAdapter: jest.fn(),
 }));
 
+// Mock Prisma client to prevent real database calls
+jest.mock('@/lib/prisma', () => ({
+  prisma: {
+    user: {
+      findUnique: jest.fn(),
+      findMany: jest.fn(),
+      findFirst: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
+    },
+    foodLog: {
+      findMany: jest.fn(),
+      findFirst: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
+    },
+    $connect: jest.fn(),
+    $disconnect: jest.fn(),
+  },
+}));
+
+// Mock auth options
+jest.mock('@/lib/auth', () => ({
+  authOptions: {
+    providers: [],
+    session: { strategy: 'jwt' },
+    callbacks: {},
+  },
+}));
+
 jest.mock('next/server', () => ({
   __esModule: true,
   NextRequest: class MockNextRequest {
