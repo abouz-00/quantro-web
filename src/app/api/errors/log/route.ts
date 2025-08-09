@@ -81,10 +81,7 @@ export async function POST(request: NextRequest) {
     */
 
     // Send to external monitoring services
-    await Promise.allSettled([
-      sendToSlack(enrichedLog),
-      sendToWebhooks(enrichedLog),
-    ]);
+    await sendToWebhooks(enrichedLog);
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -93,63 +90,6 @@ export async function POST(request: NextRequest) {
       { error: 'Failed to process error log' },
       { status: 500 }
     );
-  }
-}
-
-async function sendToSlack(errorLog: ErrorLog) {
-  const webhookUrl = process.env.SLACK_ERROR_WEBHOOK;
-  if (!webhookUrl || process.env.NODE_ENV !== 'production') return;
-
-  const severity = errorLog.context?.severity || 'medium';
-  const emoji = {
-    low: '⚠️',
-    medium: '🚨',
-    high: '🔥',
-    critical: '💀',
-  }[severity] || '⚠️';
-
-  const message = {
-    text: `${emoji} Error in Quantro`,
-    blocks: [
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `*${emoji} Error in Quantro*\n*Severity:* ${severity}\n*Message:* ${errorLog.message}`,
-        },
-      },
-      {
-        type: 'section',
-        fields: [
-          {
-            type: 'mrkdwn',
-            text: `*User:* ${errorLog.context?.userId || 'Anonymous'}`,
-          },
-          {
-            type: 'mrkdwn',
-            text: `*Category:* ${errorLog.context?.category || 'Unknown'}`,
-          },
-          {
-            type: 'mrkdwn',
-            text: `*URL:* ${errorLog.context?.url || 'Unknown'}`,
-          },
-          {
-            type: 'mrkdwn',
-            text: `*Time:* ${new Date(errorLog.context?.timestamp || Date.now()).toISOString()}`,
-          },
-        ],
-      },
-    ],
-  };
-
-  try {
-    await fetch(webhookUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(message),
-    });
-  } catch (error) {
-    console.error('Failed to send error to Slack:', error);
   }
 }
 

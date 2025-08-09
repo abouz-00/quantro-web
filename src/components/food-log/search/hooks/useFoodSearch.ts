@@ -1,5 +1,19 @@
 import { useState, useEffect } from "react";
 
+interface FoodNutrient {
+  nutrientId: number;
+  value: number;
+}
+
+interface ApiFood {
+  fdcId: number;
+  description: string;
+  foodCategory?: string;
+  servingSize?: number;
+  servingSizeUnit?: string;
+  foodNutrients?: FoodNutrient[];
+}
+
 interface FoodSuggestion {
   fdcId: number;
   description: string;
@@ -27,7 +41,7 @@ export function useFoodSearch(query: string, active: boolean) {
     1079: "Fiber, total dietary"
   };
 
-  const transformApiData = (apiFood: any): FoodSuggestion => {
+  const transformApiData = (apiFood: ApiFood): FoodSuggestion => {
     return {
       fdcId: apiFood.fdcId,
       description: apiFood.description,
@@ -35,7 +49,7 @@ export function useFoodSearch(query: string, active: boolean) {
       servingSize: apiFood.servingSize,
       servingSizeUnit: apiFood.servingSizeUnit,
       uniqueId: `${apiFood.fdcId}`,
-      foodNutrients: (apiFood.foodNutrients || []).map((nutrient: any) => ({
+      foodNutrients: (apiFood.foodNutrients || []).map((nutrient: FoodNutrient) => ({
         nutrientName: nutrientMapping[nutrient.nutrientId] || `Nutrient ${nutrient.nutrientId}`,
         value: nutrient.value
       }))
@@ -69,7 +83,7 @@ export function useFoodSearch(query: string, active: boolean) {
       setLoading(false);
       setError("");
     }
-  }, [query, active]);
+  }, [query, active, transformApiData]);
 
   return { suggestions, loading, error };
 }
