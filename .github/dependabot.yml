@@ -44,10 +44,23 @@ updates:
         patterns:
           - "prisma*"
           - "@prisma/*"
+      type-definitions:
+        patterns:
+          - "@types/*"
+        update-types:
+          - "version-update:semver-patch"
+          - "version-update:semver-minor"
+      icons-and-ui:
+        patterns:
+          - "lucide-react"
+          - "react-icons"
+          - "@radix-ui/*"
+          - "@headlessui/*"
     # Ignore specific packages if needed
     ignore:
+      # Keep Node.js types stable unless major updates needed
       - dependency-name: "@types/node"
-        versions: ["24.x"]
+        update-types: ["version-update:semver-major"]
       
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
