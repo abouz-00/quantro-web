@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
   },
   // Webpack optimizations
   webpack: (config, { dev }) => {
+    // Fix for next-auth/react module resolution issue
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'next-auth/react': require.resolve('next-auth/react'),
+    };
+    
     if (dev) {
       // Use native file watching instead of polling for better performance
       config.watchOptions = {
