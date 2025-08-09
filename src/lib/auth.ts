@@ -1,9 +1,8 @@
-import { NextAuthOptions } from "next-auth"
-import GoogleProvider from "next-auth/providers/google"
-import AppleProvider from "next-auth/providers/apple"
+import NextAuth from "next-auth"
+import Google from "next-auth/providers/google"
+import Apple from "next-auth/providers/apple"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/prisma"
-import { Adapter } from "next-auth/adapters"
 
 declare module "next-auth" {
   interface Session {
@@ -16,17 +15,17 @@ declare module "next-auth" {
   }
 }
 
-export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as Adapter,
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  adapter: PrismaAdapter(prisma),
   providers: [
     ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET ? [
-      GoogleProvider({
+      Google({
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       })
     ] : []),
     ...(process.env.APPLE_ID && process.env.APPLE_PRIVATE_KEY ? [
-      AppleProvider({
+      Apple({
         clientId: process.env.APPLE_ID,
         clientSecret: process.env.APPLE_PRIVATE_KEY,
       })
@@ -53,4 +52,4 @@ export const authOptions: NextAuthOptions = {
     signIn: "/",
     error: "/auth/error",
   },
-}
+})

@@ -46,7 +46,7 @@ export default function LandingPage() {
         <div className="mb-8">
           <div className="flex items-center justify-center mb-3">
             <Image 
-              src="/quantro_header_main.svg" 
+              src="/quantro_header_new.svg" 
               alt="Quantro Logo" 
               className="h-32"
               width={128}

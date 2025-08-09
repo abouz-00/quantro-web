@@ -243,6 +243,16 @@ jest.mock('next-auth/react', () => ({
   SessionProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
+jest.mock('@/lib/auth', () => ({
+  auth: jest.fn(),
+  signIn: jest.fn(),
+  signOut: jest.fn(),
+  handlers: {
+    GET: jest.fn(),
+    POST: jest.fn(),
+  },
+}));
+
 // Mock Prisma client to prevent real database calls
 jest.mock('@/lib/prisma', () => ({
   prisma: {

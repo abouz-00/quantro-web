@@ -47,7 +47,7 @@ export default function Dashboard() {
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
             <Image 
-              src="/quantro_header_main.svg" 
+              src="/quantro_header_new.svg" 
               alt="Quantro Logo" 
               width={48}
               height={48}
