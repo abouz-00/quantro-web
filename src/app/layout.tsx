@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import "../styles/dm-sans.css";
 import SessionWrapper from '../components/SessionWrapper';
 import ErrorBoundary from '../components/ErrorBoundary';
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+});
 
 // Simple wrapper that only enables ErrorBoundary in production
 const ErrorWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -25,14 +33,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="apple-mobile-web-app-title" content="Quantro" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet" />
-        <style dangerouslySetInnerHTML={{ __html: `
-          * {
-            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
-          }
-        `}} />
       </head>
-      <body style={{ fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif" }}>
+      <body className={dmSans.className}>
         <SessionWrapper>
           <ErrorWrapper>
             {children}

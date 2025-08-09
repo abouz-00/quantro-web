@@ -21,7 +21,7 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['@dnd-kit/core', '@dnd-kit/sortable', '@radix-ui/react-select', 'lucide-react'],
   },
   // Webpack optimizations
-  webpack: (config, { dev, isServer }) => {
+  webpack: (config, { dev }) => {
     if (dev) {
       // Use native file watching instead of polling for better performance
       config.watchOptions = {
