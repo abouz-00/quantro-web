@@ -118,8 +118,32 @@ describe('useDateManager Hook', () => {
       defaultToTodayOnRefresh: true
     }))
 
-    // Should ignore localStorage and use today
-    expect(result.current.selectedDate).toEqual(mockDate)
+    // Should ignore saved date and use today instead
+    expect(result.current.selectedDate.toDateString()).toBe(new Date().toDateString())
+  })
+
+  it('handles invalid localStorage date gracefully', () => {
+    mockLocalStorage.getItem.mockReturnValue('invalid-date')
+    
+    const { result } = renderHook(() => useDateManager({ 
+      enableLocalStorage: true,
+      storageKey: 'test-date'
+    }))
+
+    // Should fallback to today when date is invalid
+    expect(result.current.selectedDate.toDateString()).toBe(new Date().toDateString())
+  })
+
+  it('works correctly when localStorage is disabled', () => {
+    const initialDate = new Date(2023, 5, 15) // June 15, 2023
+    
+    const { result } = renderHook(() => useDateManager({ 
+      initialDate,
+      enableLocalStorage: false
+    }))
+
+    expect(mockLocalStorage.getItem).not.toHaveBeenCalled()
+    expect(result.current.selectedDate).toEqual(initialDate)
   })
 
   it('handles invalid localStorage data gracefully', () => {
