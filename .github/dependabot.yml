@@ -1,0 +1,62 @@
+version: 2
+updates:
+  # Enable version updates for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "quantrodev"
+    assignees:
+      - "quantrodev"
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "automated"
+    # Group related updates together
+    groups:
+      react-ecosystem:
+        patterns:
+          - "react*"
+          - "@types/react*"
+      testing:
+        patterns:
+          - "@testing-library/*"
+          - "jest*"
+      eslint:
+        patterns:
+          - "eslint*"
+          - "@eslint/*"
+      tailwind:
+        patterns:
+          - "tailwind*"
+          - "@tailwindcss/*"
+      next:
+        patterns:
+          - "next*"
+      prisma:
+        patterns:
+          - "prisma*"
+          - "@prisma/*"
+    # Ignore specific packages if needed
+    ignore:
+      - dependency-name: "@types/node"
+        versions: ["24.x"]
+      
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "github-actions"
+      - "automated"
