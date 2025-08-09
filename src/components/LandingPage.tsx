@@ -54,7 +54,6 @@ export default function LandingPage() {
               style={{ 
                 userSelect: 'none', 
                 WebkitUserSelect: 'none',
-                // Adding subtle drop shadow to make it pop
                 filter: 'drop-shadow(0 0 10px rgba(0,0,0,0.05))'
               }}
             />
