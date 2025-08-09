@@ -17,8 +17,8 @@ describe('useKeyboardShortcuts', () => {
   });
 
   it('should add and remove event listeners', () => {
-    const addEventListenerSpy = jest.spyOn(document, 'addEventListener');
-    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
+    const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
+    const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
 
     const { unmount } = renderHook(() => useKeyboardShortcuts(mockShortcuts));
 
@@ -40,7 +40,7 @@ describe('useKeyboardShortcuts', () => {
       ctrlKey: true,
     });
 
-    document.dispatchEvent(event);
+    window.dispatchEvent(event);
 
     expect(mockShortcuts.onAddFood).toHaveBeenCalled();
   });
@@ -53,7 +53,7 @@ describe('useKeyboardShortcuts', () => {
       metaKey: true,
     });
 
-    document.dispatchEvent(event);
+    window.dispatchEvent(event);
 
     expect(mockShortcuts.onAddFood).toHaveBeenCalled();
   });
@@ -66,7 +66,7 @@ describe('useKeyboardShortcuts', () => {
       ctrlKey: true,
     });
 
-    document.dispatchEvent(event);
+    window.dispatchEvent(event);
 
     expect(mockShortcuts.onNextDay).toHaveBeenCalled();
   });
@@ -79,7 +79,7 @@ describe('useKeyboardShortcuts', () => {
       ctrlKey: true,
     });
 
-    document.dispatchEvent(event);
+    window.dispatchEvent(event);
 
     expect(mockShortcuts.onPreviousDay).toHaveBeenCalled();
   });
@@ -92,7 +92,7 @@ describe('useKeyboardShortcuts', () => {
       ctrlKey: true,
     });
 
-    document.dispatchEvent(event);
+    window.dispatchEvent(event);
 
     expect(mockShortcuts.onGoToToday).toHaveBeenCalled();
   });
@@ -105,7 +105,7 @@ describe('useKeyboardShortcuts', () => {
       ctrlKey: true,
     });
 
-    document.dispatchEvent(event);
+    window.dispatchEvent(event);
 
     expect(mockShortcuts.onCopy).toHaveBeenCalled();
   });
@@ -118,7 +118,7 @@ describe('useKeyboardShortcuts', () => {
       ctrlKey: true,
     });
 
-    document.dispatchEvent(event);
+    window.dispatchEvent(event);
 
     expect(mockShortcuts.onPaste).toHaveBeenCalled();
   });
@@ -130,7 +130,7 @@ describe('useKeyboardShortcuts', () => {
       key: 'Delete',
     });
 
-    document.dispatchEvent(event);
+    window.dispatchEvent(event);
 
     expect(mockShortcuts.onDelete).toHaveBeenCalled();
   });
@@ -152,7 +152,7 @@ describe('useKeyboardShortcuts', () => {
     });
 
     // Should not throw error when optional shortcut is missing
-    expect(() => document.dispatchEvent(event)).not.toThrow();
+    expect(() => window.dispatchEvent(event)).not.toThrow();
   });
 
   it('should not trigger shortcuts when target is input field', () => {
@@ -173,7 +173,7 @@ describe('useKeyboardShortcuts', () => {
       enumerable: true,
     });
 
-    document.dispatchEvent(event);
+    window.dispatchEvent(event);
 
     expect(mockShortcuts.onAddFood).not.toHaveBeenCalled();
 
@@ -196,7 +196,7 @@ describe('useKeyboardShortcuts', () => {
       enumerable: true,
     });
 
-    document.dispatchEvent(event);
+    window.dispatchEvent(event);
 
     expect(mockShortcuts.onAddFood).not.toHaveBeenCalled();
 
@@ -213,7 +213,7 @@ describe('useKeyboardShortcuts', () => {
 
     const preventDefaultSpy = jest.spyOn(event, 'preventDefault');
 
-    document.dispatchEvent(event);
+    window.dispatchEvent(event);
 
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
@@ -235,6 +235,6 @@ describe('useKeyboardShortcuts', () => {
     });
 
     // Should not throw error when optional shortcut is missing
-    expect(() => document.dispatchEvent(event)).not.toThrow();
+    expect(() => window.dispatchEvent(event)).not.toThrow();
   });
 });

@@ -6,16 +6,20 @@ import { FoodEntry } from '../../types/food';
 // Mock dependencies
 jest.mock('../../services/foodLogService');
 jest.mock('../../utils/foodEntryUtils', () => ({
-  calculateTotals: jest.fn((entries) => ({
-    calories: entries.reduce((sum: number, entry: any) => sum + entry.calories, 0),
-    protein: entries.reduce((sum: number, entry: any) => sum + entry.protein, 0),
-    carbs: entries.reduce((sum: number, entry: any) => sum + entry.carbs, 0),
-    fat: entries.reduce((sum: number, entry: any) => sum + entry.fat, 0),
+  calculateTotals: jest.fn((entries: Array<{ calories: number; protein: number; carbs: number; fat: number }>) => ({
+    calories: entries.reduce((sum: number, entry) => sum + entry.calories, 0),
+    protein: entries.reduce((sum: number, entry) => sum + entry.protein, 0),
+    carbs: entries.reduce((sum: number, entry) => sum + entry.carbs, 0),
+    fat: entries.reduce((sum: number, entry) => sum + entry.fat, 0),
   })),
 }));
 jest.mock('../../utils/dateUtils', () => ({
   sameDay: jest.fn((date1, date2) => {
-    return date1.toDateString() === date2.toDateString();
+    return (
+      date1.getUTCFullYear() === date2.getUTCFullYear() &&
+      date1.getUTCMonth() === date2.getUTCMonth() &&
+      date1.getUTCDate() === date2.getUTCDate()
+    );
   }),
 }));
 
@@ -97,13 +101,6 @@ describe('useFoodData', () => {
   });
 
   it('should calculate totals correctly', async () => {
-    const mockEntries = [
-      { id: '1', description: 'Apple', date: '2024-01-01', calories: 95, protein: 0.5, carbs: 25, fat: 0.3 } as FoodEntry,
-      { id: '2', description: 'Banana', date: '2024-01-01', calories: 121, protein: 1.5, carbs: 31, fat: 0.4 } as FoodEntry,
-    ];
-
-    (FoodLogService.loadFoodData as jest.Mock).mockResolvedValue(mockEntries);
-
     const { result } = renderHook(() => useFoodData(mockSelectedDate, mockFormatApiDate));
 
     await waitFor(() => {
@@ -172,20 +169,13 @@ describe('useFoodData', () => {
   });
 
   it('should handle reorder entries', async () => {
-    const mockEntries = [
-      { id: '1', description: 'Apple', date: '2024-01-01', calories: 95, protein: 0.5, carbs: 25, fat: 0.3 } as FoodEntry,
-      { id: '2', description: 'Banana', date: '2024-01-01', calories: 121, protein: 1.5, carbs: 31, fat: 0.4 } as FoodEntry,
-    ];
-
-    (FoodLogService.loadFoodData as jest.Mock).mockResolvedValue(mockEntries);
-
     const { result } = renderHook(() => useFoodData(mockSelectedDate, mockFormatApiDate));
 
     await waitFor(() => {
       expect(result.current.filteredEntries).toHaveLength(2);
     });
 
-    const reorderedEntries = [mockEntries[1], mockEntries[0]];
+    const reorderedEntries = [result.current.filteredEntries[1], result.current.filteredEntries[0]];
 
     await act(async () => {
       result.current.handleReorderEntries(reorderedEntries);

@@ -1,6 +1,6 @@
 // Test to verify drag event handling is robust
 
-import { DragStartEvent, DragOverEvent, DragEndEvent } from '@dnd-kit/core';
+import { DragStartEvent } from '@dnd-kit/core';
 
 // Test cases for drag event handling
 const testDragEvents = {
@@ -36,7 +36,6 @@ function safeDragStartHandler(event: DragStartEvent) {
     return;
   }
   
-  const draggedEntryId = event.active.id as string;
   // ... rest of drag logic
 }
 

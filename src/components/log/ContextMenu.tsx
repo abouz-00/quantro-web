@@ -1,10 +1,10 @@
 import React from 'react';
-import { ContextMenuState } from '../../types/food';
+import { ContextMenuState, FoodEntry } from '../../types/food';
 
 interface ContextMenuProps {
   contextMenu: ContextMenuState;
   selectedEntries: string[];
-  clipboardEntries: any[];
+  clipboardEntries: FoodEntry[];
   onEditEntry: () => void;
   onCopyEntries: () => void;
   onPasteEntries: () => void;

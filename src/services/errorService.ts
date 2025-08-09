@@ -11,7 +11,7 @@ export interface ErrorContext {
   severity?: 'low' | 'medium' | 'high' | 'critical';
   category?: 'network' | 'validation' | 'auth' | 'database' | 'ui' | 'api';
   tags?: Record<string, string>;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface ErrorReport {
@@ -137,7 +137,7 @@ class ErrorService {
   /**
    * Log user interactions for debugging - non-blocking
    */
-  logUserAction(action: string, data?: any, context?: ErrorContext): void {
+  logUserAction(action: string, data?: unknown, context?: ErrorContext): void {
     const actionReport = {
       action,
       data,
@@ -266,7 +266,7 @@ class ErrorService {
   /**
    * Send analytics data
    */
-  private async sendToAnalytics(data: any): Promise<void> {
+  private async sendToAnalytics(data: unknown): Promise<void> {
     if (!this.isProduction) return;
 
     try {

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import './jest-setup.js';
 import { NextRequest } from 'next/server';
 import { GET, POST, PUT, DELETE } from '../food-logs/route';
 import { getServerSession } from 'next-auth/next';
@@ -5,22 +7,20 @@ import { prisma } from '@/lib/prisma';
 
 // Mock dependencies
 jest.mock('next-auth/next');
-jest.mock('@/lib/prisma', () => ({
-  prisma: {
-    foodLog: {
-      findMany: jest.fn(),
-      create: jest.fn(),
-      findFirst: jest.fn(),
-      delete: jest.fn(),
-      update: jest.fn(),
-    },
-  },
-}));
+jest.mock('@/lib/prisma');
 
 const mockGetServerSession = getServerSession as jest.MockedFunction<typeof getServerSession>;
-const mockPrisma = prisma as jest.Mocked<typeof prisma>;
 
-// Temporarily skip these tests until Next.js API testing environment is properly configured
+// Get the mocked prisma instance - using any for complex mocks
+const mockPrisma = prisma as any;
+
+// Add proper typing for mock functions
+const mockFindMany = mockPrisma.foodLog.findMany as jest.MockedFunction<any>;
+const mockCreate = mockPrisma.foodLog.create as jest.MockedFunction<any>;
+const mockFindFirst = mockPrisma.foodLog.findFirst as jest.MockedFunction<any>;
+const mockUpdate = mockPrisma.foodLog.update as jest.MockedFunction<any>;
+const mockDelete = mockPrisma.foodLog.delete as jest.MockedFunction<any>;
+
 describe('Food Logs API', () => {
   const mockSession = {
     user: {
@@ -57,7 +57,7 @@ describe('Food Logs API', () => {
           date: new Date(),
         },
       ];
-      mockPrisma.foodLog.findMany.mockResolvedValue(mockFoodLogs);
+      mockFindMany.mockResolvedValue(mockFoodLogs);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs');
       const response = await GET(request);
@@ -73,7 +73,7 @@ describe('Food Logs API', () => {
 
     it('should filter food logs by date when date parameter is provided', async () => {
       mockGetServerSession.mockResolvedValue(mockSession);
-      mockPrisma.foodLog.findMany.mockResolvedValue([]);
+      mockFindMany.mockResolvedValue([]);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs?date=2023-12-25');
       const response = await GET(request);
@@ -93,7 +93,7 @@ describe('Food Logs API', () => {
 
     it('should handle database errors', async () => {
       mockGetServerSession.mockResolvedValue(mockSession);
-      mockPrisma.foodLog.findMany.mockRejectedValue(new Error('Database error'));
+      mockFindMany.mockRejectedValue(new Error('Database error'));
 
       const request = new NextRequest('http://localhost:3000/api/food-logs');
       const response = await GET(request);
@@ -135,7 +135,7 @@ describe('Food Logs API', () => {
     it('should create food log for authenticated user', async () => {
       mockGetServerSession.mockResolvedValue(mockSession);
       const createdFoodLog = { id: 'log-1', userId: 'user-123', ...mockFoodEntry };
-      mockPrisma.foodLog.create.mockResolvedValue(createdFoodLog);
+      mockCreate.mockResolvedValue(createdFoodLog);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs', {
         method: 'POST',
@@ -156,7 +156,7 @@ describe('Food Logs API', () => {
 
     it('should handle database errors during creation', async () => {
       mockGetServerSession.mockResolvedValue(mockSession);
-      mockPrisma.foodLog.create.mockRejectedValue(new Error('Database error'));
+      mockCreate.mockRejectedValue(new Error('Database error'));
 
       const request = new NextRequest('http://localhost:3000/api/food-logs', {
         method: 'POST',
@@ -210,7 +210,7 @@ describe('Food Logs API', () => {
 
     it('should return 404 when food log not found', async () => {
       mockGetServerSession.mockResolvedValue(mockSession);
-      mockPrisma.foodLog.findFirst.mockResolvedValue(null);
+      mockFindFirst.mockResolvedValue(null);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs', {
         method: 'PUT',
@@ -228,8 +228,8 @@ describe('Food Logs API', () => {
       const existingLog = { id: 'log-1', userId: 'user-123', foodName: 'Banana' };
       const updatedLog = { ...existingLog, ...updateData };
       
-      mockPrisma.foodLog.findFirst.mockResolvedValue(existingLog);
-      mockPrisma.foodLog.update.mockResolvedValue(updatedLog);
+      mockFindFirst.mockResolvedValue(existingLog);
+      mockUpdate.mockResolvedValue(updatedLog);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs', {
         method: 'PUT',
@@ -279,7 +279,7 @@ describe('Food Logs API', () => {
 
     it('should return 404 when food log not found', async () => {
       mockGetServerSession.mockResolvedValue(mockSession);
-      mockPrisma.foodLog.findFirst.mockResolvedValue(null);
+      mockFindFirst.mockResolvedValue(null);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs?id=log-1');
       const response = await DELETE(request);
@@ -293,8 +293,8 @@ describe('Food Logs API', () => {
       mockGetServerSession.mockResolvedValue(mockSession);
       const existingLog = { id: 'log-1', userId: 'user-123', foodName: 'Banana' };
       
-      mockPrisma.foodLog.findFirst.mockResolvedValue(existingLog);
-      mockPrisma.foodLog.delete.mockResolvedValue(existingLog);
+      mockFindFirst.mockResolvedValue(existingLog);
+      mockDelete.mockResolvedValue(existingLog);
 
       const request = new NextRequest('http://localhost:3000/api/food-logs?id=log-1');
       const response = await DELETE(request);

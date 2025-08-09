@@ -45,8 +45,10 @@ describe('useClipboard Hook', () => {
   })
 
   afterEach(() => {
-    jest.runOnlyPendingTimers()
-    jest.useRealTimers()
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+    jest.useRealTimers();
   })
 
   it('copies food entries and shows toast', async () => {

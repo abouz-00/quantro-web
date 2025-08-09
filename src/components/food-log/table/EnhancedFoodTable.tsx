@@ -10,7 +10,6 @@ import {
   DragEndEvent,
   DragStartEvent,
   DragOverEvent,
-  DragOverlay,
   closestCenter,
 } from '@dnd-kit/core';
 import {
@@ -38,7 +37,7 @@ interface EnhancedSortableTableRowProps {
   foodData: FoodEntry[];
   filteredEntries: FoodEntry[];
   selectedEntries: string[];
-  handleEntrySelect: (id: string, index: number, event: React.MouseEvent | any) => void;
+  handleEntrySelect: (id: string, index: number, event: React.MouseEvent | React.KeyboardEvent) => void;
   removeFoodEntry: (id: string) => void;
   updateFoodEntry: (id: string, updated: Partial<FoodEntry>) => void;
   editingEntry: string | null;
@@ -48,7 +47,7 @@ interface EnhancedSortableTableRowProps {
   editUnit: string;
   setEditUnit: (unit: string) => void;
   formatNumber: (n: number) => string;
-  onContextMenu?: (e: React.MouseEvent | any, id: string) => void;
+  onContextMenu?: (e: React.MouseEvent, id: string) => void;
   activeId: string | null;
   contextMenuOpen: boolean;
   setContextMenuOpen: (open: boolean) => void;
@@ -57,10 +56,10 @@ interface EnhancedSortableTableRowProps {
 function EnhancedSortableTableRow({
   item,
   foodData,
-  filteredEntries,
+  filteredEntries: _filteredEntries,
   selectedEntries,
   handleEntrySelect,
-  removeFoodEntry,
+  removeFoodEntry: _removeFoodEntry,
   updateFoodEntry,
   editingEntry,
   setEditingEntry,
@@ -70,7 +69,7 @@ function EnhancedSortableTableRow({
   setEditUnit,
   formatNumber,
   onContextMenu,
-  activeId,
+  activeId: _activeId,
   contextMenuOpen,
   setContextMenuOpen
 }: EnhancedSortableTableRowProps) {
@@ -89,11 +88,11 @@ function EnhancedSortableTableRow({
   }, []);
 
   // Helper to check if drag should be disabled for a pointer or keyboard event
-  const shouldDisableDrag = (e?: PointerEvent | MouseEvent | KeyboardEvent | any) => {
+  const _shouldDisableDrag = (_e?: PointerEvent | MouseEvent | KeyboardEvent) => {
     // Only disable if editing or context menu is open
     if (editingEntry === item.id || contextMenuOpen) return true;
     // Also check global flag for fallback
-    if (typeof window !== 'undefined' && (window as any)._disableDragForRow === item.id) {
+    if (typeof window !== 'undefined' && (window as unknown as { _disableDragForRow?: string })._disableDragForRow === item.id) {
       return true;
     }
     return false;
@@ -134,7 +133,7 @@ function EnhancedSortableTableRow({
   };
 
   const getRowClasses = () => {
-    let classes = [styles.foodTableRow];
+    const classes = [styles.foodTableRow];
     if (isDragging) {
       classes.push(styles.draggingItem);
     } else if (isSelected) {
@@ -143,23 +142,22 @@ function EnhancedSortableTableRow({
     return classes.join(' ');
   };
 
-  const startEditing = (entry: FoodEntry, e: React.MouseEvent | React.KeyboardEvent | any) => {
+  const startEditing = (entry: FoodEntry, e?: React.MouseEvent | React.KeyboardEvent) => {
     if (e) e.stopPropagation();
     
-    // Always ensure the entry is selected before editing
-    let mouseEvent = (e && 'button' in e) ? e : {
-      stopPropagation: () => {},
-      preventDefault: () => {},
+    // Create a synthetic mouse event for handleEntrySelect
+    const syntheticEvent = {
       type: 'click',
       button: 0,
       ctrlKey: false,
       shiftKey: false,
       metaKey: false,
-      ...e
-    };
+      stopPropagation: () => {},
+      preventDefault: () => {}
+    } as React.MouseEvent;
     
     // Ensure this entry is selected (even if already selected, re-select to trigger parent handlers)
-    handleEntrySelect(entry.id, foodData.indexOf(entry), mouseEvent);
+    handleEntrySelect(entry.id, foodData.indexOf(entry), 'button' in (e || {}) ? e as React.MouseEvent : syntheticEvent);
     
     setEditingEntry(entry.id);
     setEditAmount(entry.amount);
@@ -168,7 +166,7 @@ function EnhancedSortableTableRow({
 
   const [editError, setEditError] = useState<string | null>(null);
 
-  const saveEdit = (entry: FoodEntry, e: React.MouseEvent | React.KeyboardEvent | any) => {
+  const saveEdit = (entry: FoodEntry, e?: React.MouseEvent | React.KeyboardEvent | React.FocusEvent) => {
     if (e) e.stopPropagation();
     setEditError(null);
     const originalAmount = parseFloat(entry.amount);
@@ -564,7 +562,8 @@ export default function EnhancedFoodTable({
   // Handlers
   // =====================
   // Selection
-  function handleEntrySelect(id: string, index: number, event: React.MouseEvent | any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function handleEntrySelect(id: string, index: number, event: any) {
     // First, always call the original handler if provided
     // This ensures the parent component's logic is executed
     if (_handleEntrySelect) {

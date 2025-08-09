@@ -15,7 +15,15 @@ const customJestConfig = {
     '**/*.(test|spec).(ts|tsx|js)',
     '**/**/__tests__/**/*.(ts|tsx|js)'
   ],
+  testPathIgnorePatterns: [
+    '<rootDir>/node_modules/',
+    '<rootDir>/.next/',
+    '<rootDir>/src/app/api/__tests__/jest-setup.js'
+  ],
   modulePathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(jose|openid-client|@panva/hkdf|preact-render-to-string|@babel/runtime|uuid|oauth|oidc-token-hash|@auth/prisma-adapter)/)'
+  ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },

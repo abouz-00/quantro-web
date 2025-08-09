@@ -3,7 +3,7 @@
 import React from 'react';
 
 // Lazy import the error service to avoid blocking initial load
-let errorService: any = null;
+let errorService: typeof import('../services/errorService').errorService | null = null;
 
 const getErrorService = async () => {
   if (!errorService) {
@@ -81,7 +81,7 @@ const DefaultErrorFallback: React.FC<{ error: Error; retry: () => void }> = ({ e
         Something went wrong
       </h2>
       <p className="text-gray-600 mb-6">
-        We apologize for the inconvenience. The error has been reported and we're working on a fix.
+        We apologize for the inconvenience. The error has been reported and we&apos;re working on a fix.
       </p>
       <div className="space-y-3">
         <button

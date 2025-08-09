@@ -2,9 +2,14 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { DateNavigation } from '../DateNavigation'
 
+interface MockDatePickerProps {
+  selectedDate: Date;
+  onDateChange: (date: Date) => void;
+}
+
 // Mock the DatePicker component
 jest.mock('../../ui/DatePicker', () => {
-  return function MockDatePicker({ selectedDate, onDateChange }: any) {
+  return function MockDatePicker({ selectedDate, onDateChange }: MockDatePickerProps) {
     return (
       <div data-testid="date-picker">
         <span>Selected: {selectedDate.toISOString().split('T')[0]}</span>

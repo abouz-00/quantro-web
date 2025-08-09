@@ -3,6 +3,21 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ContextMenu } from '../ContextMenu'
 
+// Mock food entry for clipboard tests
+const mockFoodEntry = {
+  id: '1',
+  description: 'Test Food',
+  amount: '100',
+  unit: 'g',
+  date: '2023-12-25',
+  mealType: 'breakfast' as const,
+  calories: 100,
+  protein: 5,
+  carbs: 20,
+  fat: 3,
+  fiber: 2
+}
+
 // Mock data
 const defaultProps = {
   contextMenu: {
@@ -85,7 +100,7 @@ describe('ContextMenu Component', () => {
   it('shows paste option when clipboard has entries', () => {
     const propsWithClipboard = {
       ...defaultProps,
-      clipboardEntries: [{ id: '1' }]
+      clipboardEntries: [mockFoodEntry]
     }
     
     render(<ContextMenu {...propsWithClipboard} />)
@@ -97,7 +112,7 @@ describe('ContextMenu Component', () => {
     const user = userEvent.setup()
     const propsWithClipboard = {
       ...defaultProps,
-      clipboardEntries: [{ id: '1' }]
+      clipboardEntries: [mockFoodEntry]
     }
     
     render(<ContextMenu {...propsWithClipboard} />)
@@ -131,7 +146,7 @@ describe('ContextMenu Component', () => {
   it('enables paste when clipboard has entries', () => {
     const propsWithClipboard = {
       ...defaultProps,
-      clipboardEntries: [{ id: '1' }]
+      clipboardEntries: [mockFoodEntry]
     }
     
     render(<ContextMenu {...propsWithClipboard} />)

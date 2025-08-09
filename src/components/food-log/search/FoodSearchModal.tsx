@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { FaStar, FaRegStar, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import { useFoodSearch } from "./hooks/useFoodSearch";
 import { useFavorites } from "./hooks/useFavorites";
 import { useCustomFoods } from "./hooks/useCustomFoods";
@@ -84,7 +84,7 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
   // Hooks for search, favorites, custom foods
   const { suggestions, loading: searchLoading, error: searchError } = useFoodSearch(localQuery, activeTab === "search");
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
-  const { customFoods, addCustomFood, setCustomFoods } = useCustomFoods();
+  const { customFoods, addCustomFood } = useCustomFoods();
 
   // Custom food form state
   const [customName, setCustomName] = useState("");

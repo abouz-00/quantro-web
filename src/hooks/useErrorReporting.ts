@@ -5,7 +5,7 @@ import { errorService, ErrorContext } from '../services/errorService';
 export interface UseErrorReportingReturn {
   reportError: (error: Error | string, context?: ErrorContext) => Promise<void>;
   reportWarning: (message: string, context?: ErrorContext) => Promise<void>;
-  reportUserAction: (action: string, data?: any, context?: ErrorContext) => Promise<void>;
+  reportUserAction: (action: string, data?: unknown, context?: ErrorContext) => Promise<void>;
   reportPerformance: (metric: string, value: number, context?: ErrorContext) => Promise<void>;
 }
 
@@ -29,7 +29,7 @@ export const useErrorReporting = (): UseErrorReportingReturn => {
     await errorService.logWarning(message, fullContext);
   }, [getBaseContext]);
 
-  const reportUserAction = useCallback(async (action: string, data?: any, context?: ErrorContext) => {
+  const reportUserAction = useCallback(async (action: string, data?: unknown, context?: ErrorContext) => {
     const fullContext = { ...getBaseContext(), ...context };
     await errorService.logUserAction(action, data, fullContext);
   }, [getBaseContext]);
