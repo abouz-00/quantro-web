@@ -269,5 +269,28 @@ describe('foodEntryUtils', () => {
 
       expect(result.fiber).toBe(0);
     });
+
+    it('should handle empty description gracefully', () => {
+      const entryWithEmptyDescription = {
+        ...mockFoodEntry,
+        description: '',
+      };
+
+      const result = transformFoodEntryToApiData(entryWithEmptyDescription);
+
+      expect(result.foodName).toBe('');
+      expect(result.brand).toBe(null);
+    });
+
+    it('should handle non-numeric amount strings', () => {
+      const entryWithNonNumericAmount = {
+        ...mockFoodEntry,
+        amount: 'invalid',
+      };
+
+      const result = transformFoodEntryToApiData(entryWithNonNumericAmount);
+
+      expect(result.quantity).toBeNaN();
+    });
   });
 });

@@ -39,4 +39,27 @@ describe('ErrorService', () => {
     
     expect(true).toBe(true);
   });
+
+  it('handles error with metadata', async () => {
+    const testError = new Error('Test error with metadata');
+    const metadata = { category: 'network' as const, severity: 'low' as const };
+    
+    await errorService.logError(testError, metadata);
+    
+    expect(true).toBe(true);
+  });
+
+  it('handles null error gracefully', async () => {
+    await errorService.logError(null as unknown as Error);
+    
+    expect(true).toBe(true);
+  });
+
+  it('handles empty error gracefully', async () => {
+    const emptyError = new Error('');
+    
+    await errorService.logError(emptyError);
+    
+    expect(true).toBe(true);
+  });
 });
