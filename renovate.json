@@ -1,0 +1,71 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    "schedule:weekends",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":separatePatchReleases"
+  ],
+  "timezone": "America/New_York",
+  "schedule": ["before 10am on monday"],
+  "labels": ["dependencies", "automated"],
+  "assignees": ["quantrodev"],
+  "reviewers": ["quantrodev"],
+  "rangeStrategy": "bump",
+  "semanticCommits": "enabled",
+  "commitMessagePrefix": "chore:",
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 10,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 5am on monday"]
+  },
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["^@types/"],
+      "groupName": "type definitions",
+      "automerge": true,
+      "schedule": ["at any time"]
+    },
+    {
+      "matchPackagePatterns": ["react", "@types/react"],
+      "groupName": "React ecosystem"
+    },
+    {
+      "matchPackagePatterns": ["next"],
+      "groupName": "Next.js"
+    },
+    {
+      "matchPackagePatterns": ["prisma", "@prisma/"],
+      "groupName": "Prisma"
+    },
+    {
+      "matchPackagePatterns": ["tailwind", "@tailwindcss/"],
+      "groupName": "Tailwind CSS"
+    },
+    {
+      "matchPackagePatterns": ["eslint", "@eslint/"],
+      "groupName": "ESLint"
+    },
+    {
+      "matchPackagePatterns": ["jest", "@testing-library/"],
+      "groupName": "Testing tools"
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "automerge": true,
+      "matchUpdateTypes": ["patch", "minor"]
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "addLabels": ["breaking-change"],
+      "schedule": ["at any time"]
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "schedule": ["at any time"]
+  },
+  "osvVulnerabilityAlerts": true
+}
