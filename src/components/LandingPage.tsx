@@ -48,9 +48,9 @@ export default function LandingPage() {
             <Image 
               src="/quantro_header.svg" 
               alt="Quantro Logo" 
-              className="h-32"
-              width={128}
-              height={128}
+              className="h-144"
+              width={576}
+              height={576}
               style={{ 
                 userSelect: 'none', 
                 WebkitUserSelect: 'none',
