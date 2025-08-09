@@ -5,9 +5,17 @@ import { GET, POST, PUT, DELETE } from '../food-logs/route';
 import { getServerSession } from 'next-auth/next';
 import { prisma } from '@/lib/prisma';
 
+// Mock console.error to prevent noise in tests
+const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+
 // Mock dependencies
 jest.mock('next-auth/next');
 jest.mock('@/lib/prisma');
+jest.mock('@/lib/auth', () => ({
+  authOptions: {
+    providers: [],
+  },
+}));
 
 const mockGetServerSession = getServerSession as jest.MockedFunction<typeof getServerSession>;
 
@@ -32,6 +40,11 @@ describe('Food Logs API', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockConsoleError.mockClear();
+  });
+
+  afterAll(() => {
+    mockConsoleError.mockRestore();
   });
 
   describe('GET /api/food-logs', () => {

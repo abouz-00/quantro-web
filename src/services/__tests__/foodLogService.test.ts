@@ -1,6 +1,13 @@
 import { FoodLogService } from '../foodLogService';
 import { FoodEntry } from '../../types/food';
 
+// Mock the errorService to prevent real error logging
+jest.mock('../errorService', () => ({
+  errorService: {
+    logError: jest.fn().mockResolvedValue(undefined),
+  },
+}));
+
 // Mock the fetch function
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
@@ -13,6 +20,9 @@ const mockLocalStorage = {
   clear: jest.fn(),
 };
 Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+
+// Mock console.error to prevent noise in tests
+const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
 
 // Mock the utility functions
 jest.mock('../../utils/foodEntryUtils', () => ({
@@ -63,6 +73,11 @@ describe('FoodLogService', () => {
     mockFetch.mockClear();
     mockLocalStorage.getItem.mockClear();
     mockLocalStorage.setItem.mockClear();
+    mockConsoleError.mockClear();
+  });
+
+  afterAll(() => {
+    mockConsoleError.mockRestore();
   });
 
   describe('loadFoodData', () => {
