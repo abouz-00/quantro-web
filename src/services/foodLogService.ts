@@ -19,7 +19,7 @@ export class FoodLogService {
         return apiData.map(transformApiDataToFoodEntry);
       } else {
         // Fallback to localStorage
-        return this.loadFromLocalStorage(dateParam);
+        return this.loadFromLocalStorage();
       }
     } catch (error) {
       await errorService.logError(error as Error, {
@@ -28,7 +28,7 @@ export class FoodLogService {
         metadata: { operation: 'loadFoodData', dateParam },
       });
       console.error('Error loading food data:', error);
-      return this.loadFromLocalStorage(dateParam);
+      return this.loadFromLocalStorage();
     }
   }
 
@@ -133,7 +133,7 @@ export class FoodLogService {
   }
 
   // Private localStorage methods
-  private static loadFromLocalStorage(dateParam: string): FoodEntry[] {
+  private static loadFromLocalStorage(): FoodEntry[] {
     const savedFoodData = localStorage.getItem('foodData');
     if (savedFoodData) {
       const parsedData = JSON.parse(savedFoodData);
