@@ -28,7 +28,7 @@ export const Header: React.FC<HeaderProps> = ({
           aria-label="Go to Dashboard"
         >
           <img 
-            src="/quantro_header_new.svg" 
+            src="/quantro_header.svg" 
             alt="Quantro Logo" 
             className="h-6.5"
             style={{ 
