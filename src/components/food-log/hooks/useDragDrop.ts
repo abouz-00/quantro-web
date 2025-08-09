@@ -44,6 +44,41 @@ export function useDragDrop(
     // Add visual feedback with strict containment
     requestAnimationFrame(() => {
       document.body.classList.add('dragging');
+      // Force cursor style override with maximum specificity
+      document.body.style.cursor = 'move';
+      document.documentElement.style.cursor = 'move';
+      
+      // Create aggressive cursor override
+      const styleElement = document.createElement('style');
+      styleElement.id = 'drag-cursor-override';
+      styleElement.innerHTML = `
+        html, html *, body, body * {
+          cursor: move !important;
+        }
+        html:hover, html:hover *, body:hover, body:hover * {
+          cursor: move !important;
+        }
+        * {
+          cursor: move !important;
+        }
+      `;
+      document.head.appendChild(styleElement);
+      
+      // Add event listener to force cursor on mouse movement
+      const forceCursor = (e: MouseEvent) => {
+        (e.target as HTMLElement)?.style?.setProperty('cursor', 'move', 'important');
+        document.body.style.cursor = 'move';
+        document.documentElement.style.cursor = 'move';
+      };
+      document.addEventListener('mousemove', forceCursor);
+      document.addEventListener('dragover', forceCursor);
+      
+      // Store the cleanup function
+      (window as any).__dragCleanup = () => {
+        document.removeEventListener('mousemove', forceCursor);
+        document.removeEventListener('dragover', forceCursor);
+      };
+      
       const container = document.querySelector('.food-table-container');
       if (container) {
         container.classList.add('drag-boundary-active');
@@ -112,6 +147,20 @@ export function useDragDrop(
     
     // Cleanup visual feedback with strict containment cleanup
     document.body.classList.remove('dragging');
+    // Clean up cursor override
+    document.body.style.cursor = '';
+    document.documentElement.style.cursor = '';
+    const styleElement = document.getElementById('drag-cursor-override');
+    if (styleElement) {
+      document.head.removeChild(styleElement);
+    }
+    
+    // Call cleanup function for event listeners
+    if ((window as any).__dragCleanup) {
+      (window as any).__dragCleanup();
+      delete (window as any).__dragCleanup;
+    }
+    
     const container = document.querySelector('.food-table-container');
     if (container) {
       container.classList.remove('drag-boundary-active');
@@ -163,6 +212,20 @@ export function useDragDrop(
     
     // Enhanced cleanup with strict containment reset
     document.body.classList.remove('dragging');
+    // Clean up cursor override
+    document.body.style.cursor = '';
+    document.documentElement.style.cursor = '';
+    const styleElement = document.getElementById('drag-cursor-override');
+    if (styleElement) {
+      document.head.removeChild(styleElement);
+    }
+    
+    // Call cleanup function for event listeners
+    if ((window as any).__dragCleanup) {
+      (window as any).__dragCleanup();
+      delete (window as any).__dragCleanup;
+    }
+    
     const container = document.querySelector('.food-table-container');
     if (container) {
       container.classList.remove('drag-boundary-active');

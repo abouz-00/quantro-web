@@ -121,7 +121,7 @@ export default function SearchTab({
   return (
     <div className="h-full flex flex-col">
       <div className="relative mt-10 mb-10">
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 z-30" style={{background: 'rgba(255,0,0,0.1)'}}>
+        <div className="absolute inset-y-0 left-0 flex items-center justify-center z-30 rounded-sm" style={{background: 'rgba(156, 163, 175, 0.15)', width: '36px'}}>
           <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>

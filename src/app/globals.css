@@ -865,4 +865,67 @@ button,
   border-top: 1px solid #e5e7eb !important;
 }
 
+/* Global dragging cursor styles for food table drag operations */
+/* Maximum specificity override for all drag cursors */
+html.dragging,
+html.dragging *,
+html.dragging *:before,
+html.dragging *:after,
+body.dragging,
+body.dragging *,
+body.dragging *:before,
+body.dragging *:after {
+  cursor: move !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+}
+
+/* Override all possible cursor states */
+body.dragging *:hover,
+body.dragging *:active,
+body.dragging *:focus,
+body.dragging *:visited {
+  cursor: move !important;
+}
+
+/* Override dnd-kit default cursor styles */
+body.dragging [data-dnd-kit-draggable],
+body.dragging [data-dnd-kit-draggable] *,
+body.dragging .dndkit-dragging,
+body.dragging .dndkit-dragging *,
+body.dragging [data-cypress="draggable-item"],
+body.dragging [data-cypress="draggable-item"] * {
+  cursor: move !important;
+}
+
+/* Force move cursor on all interactive elements during dragging */
+body.dragging button,
+body.dragging input,
+body.dragging select,
+body.dragging textarea,
+body.dragging a,
+body.dragging [role="button"],
+body.dragging [tabindex],
+body.dragging div,
+body.dragging span,
+body.dragging td,
+body.dragging tr,
+body.dragging table {
+  cursor: move !important;
+}
+
+/* Override any webkit drag cursor */
+body.dragging *::-webkit-any-link,
+body.dragging *::-webkit-drag {
+  cursor: move !important;
+}
+
+/* Universal cursor override during drag */
+body.dragging,
+body.dragging * {
+  cursor: move !important;
+}
+
 

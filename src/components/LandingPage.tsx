@@ -41,14 +41,14 @@ export default function LandingPage() {
 
   return (
     <div className="h-screen w-screen flex items-center justify-center overflow-hidden fixed inset-0" style={{ backgroundColor: '#6e44ff', userSelect: 'none', WebkitUserSelect: 'none' }}>
-      <div className="text-center px-6 py-4 max-w-2xl mx-auto h-full flex flex-col justify-center pb-32">
+      <div className="text-center px-6 py-4 w-full max-w-4xl mx-auto h-full flex flex-col justify-center pb-32">
         {/* Logo/Brand */}
-        <div className="mb-8">
-          <div className="flex items-center justify-center mb-3">
+        <div className="mb-8 flex justify-center">
+          <div className="flex items-center justify-center">
             <Image 
               src="/quantro_header.svg" 
               alt="Quantro Logo" 
-              className="h-144"
+              className="h-32 w-auto mx-auto"
               width={576}
               height={576}
               style={{ 
@@ -61,7 +61,7 @@ export default function LandingPage() {
         </div>
 
         {/* Features Preview */}
-        <div className="grid grid-cols-3 gap-4 mb-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-3 gap-4 mb-8 w-full max-w-4xl mx-auto">
           <div className="backdrop-blur-sm rounded-xl shadow-lg" style={{ backgroundColor: '#EADFCA', userSelect: 'none', WebkitUserSelect: 'none' }}>
             <div className="p-6 h-full flex flex-col items-center text-center">
               <div className="w-12 h-12 bg-violet-500 rounded-full flex items-center justify-center mb-4">
@@ -100,7 +100,7 @@ export default function LandingPage() {
         </div>
 
         {/* Sign In Buttons */}
-        <div className="flex gap-4 justify-center mb-8 max-w-md mx-auto items-center">
+        <div className="flex gap-4 justify-center mb-8 w-full max-w-md mx-auto items-center">
           <button 
             onClick={handleAppleSignIn}
             className="flex-1 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer overflow-hidden flex items-center justify-center"
