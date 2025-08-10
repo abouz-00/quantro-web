@@ -4,7 +4,11 @@
 export { default as FoodTable } from './EnhancedFoodTable';
 export { default as EnhancedFoodTable } from './EnhancedFoodTable';
 
-// Table Row Component (Enhanced with all features)
+// Components
+export * from './components';
+
+// Hooks
+export * from './hooks';
 
 // Table utilities and types
 export * from './types';
