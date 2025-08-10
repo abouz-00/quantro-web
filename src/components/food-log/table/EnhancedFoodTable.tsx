@@ -11,25 +11,134 @@ import {
   DragStartEvent,
   DragOverEvent,
   closestCenter,
+  useDroppable,
 } from '@dnd-kit/core';
 import {
   restrictToVerticalAxis,
-  restrictToParentElement,
 } from '@dnd-kit/modifiers';
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
+  useSortable,
 } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 import { FoodTableProps, FoodEntry } from './types';
-
-// import { Pill } from "lucide-react"; // Replaced by pill.svg
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { capitalizeWords, abbreviateUnit, AVAILABLE_UNITS, convertUnits, normalizeUnit } from './utils';
 import styles from './EnhancedFoodTable.module.css';
+
+// Add meal type order constant
+const MEAL_TYPES: Array<FoodEntry['mealType']> = ['breakfast', 'lunch', 'dinner', 'snack', 'other'];
+
+// Droppable meal section component
+interface MealSectionProps {
+  mealType: FoodEntry['mealType'];
+  entries: FoodEntry[];
+  foodData: FoodEntry[];
+  selectedEntries: string[];
+  handleEntrySelect: (id: string, index: number, event: React.MouseEvent | React.KeyboardEvent) => void;
+  removeFoodEntry: (id: string) => void;
+  updateFoodEntry: (id: string, updated: Partial<FoodEntry>) => void;
+  editingEntry: string | null;
+  setEditingEntry: (id: string | null) => void;
+  editAmount: string;
+  setEditAmount: (amount: string) => void;
+  editUnit: string;
+  setEditUnit: (unit: string) => void;
+  formatNumber: (n: number) => string;
+  onContextMenu?: (e: React.MouseEvent, id: string) => void;
+  activeId: string | null;
+  contextMenuOpen: boolean;
+  setContextMenuOpen: (open: boolean) => void;
+  filteredEntries: FoodEntry[];
+}
+
+function MealSection({
+  mealType,
+  entries,
+  foodData,
+  selectedEntries,
+  handleEntrySelect,
+  removeFoodEntry,
+  updateFoodEntry,
+  editingEntry,
+  setEditingEntry,
+  editAmount,
+  setEditAmount,
+  editUnit,
+  setEditUnit,
+  formatNumber,
+  onContextMenu,
+  activeId,
+  contextMenuOpen,
+  setContextMenuOpen,
+  filteredEntries
+}: MealSectionProps) {
+  // Remove sortable functionality - headings are only drop targets now
+  const { setNodeRef: setDropRef } = useDroppable({
+    id: `drop-${mealType}`,
+    data: { type: 'meal-drop-zone', mealType }
+  });
+
+  const capitalizedMealType = mealType.charAt(0).toUpperCase() + mealType.slice(1);
+
+  return (
+    <div>
+      {/* Meal Type Heading - now only a drop target, not draggable */}
+      <div 
+        ref={setDropRef}
+        className="bg-gray-300 px-4 py-2 text-black font-bold text-sm border border-gray-300 border-b-black cursor-default"
+      >
+        {capitalizedMealType}
+      </div>
+      
+      {/* Entries container - only show if there are entries */}
+      {entries.length > 0 && (
+        <div className="bg-white border-l border-r border-b border-gray-300">
+          <table className="w-full table-fixed">
+            <colgroup>
+              <col className="w-auto" />
+              <col className="w-24" />
+              <col className="w-20" />
+            </colgroup>
+            <tbody>
+              <SortableContext 
+                items={entries.map(item => item.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                {entries.map((item) => (
+                  <EnhancedSortableTableRow
+                    key={item.id}
+                    item={item}
+                    foodData={foodData}
+                    filteredEntries={entries}
+                    selectedEntries={selectedEntries}
+                    handleEntrySelect={handleEntrySelect}
+                    removeFoodEntry={removeFoodEntry}
+                    updateFoodEntry={updateFoodEntry}
+                    editingEntry={editingEntry}
+                    setEditingEntry={setEditingEntry}
+                    editAmount={editAmount}
+                    setEditAmount={setEditAmount}
+                    editUnit={editUnit}
+                    setEditUnit={setEditUnit}
+                    formatNumber={formatNumber}
+                    onContextMenu={onContextMenu}
+                    activeId={activeId}
+                    contextMenuOpen={contextMenuOpen}
+                    setContextMenuOpen={setContextMenuOpen}
+                  />
+                ))}
+              </SortableContext>
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
 
 // --- Begin EnhancedSortableTableRow (inlined, cleaned) ---
 interface EnhancedSortableTableRowProps {
@@ -69,7 +178,7 @@ function EnhancedSortableTableRow({
   setEditUnit,
   formatNumber,
   onContextMenu,
-  activeId: _activeId,
+  activeId,
   contextMenuOpen,
   setContextMenuOpen
 }: EnhancedSortableTableRowProps) {
@@ -115,18 +224,21 @@ function EnhancedSortableTableRow({
     },
   });
 
+  // Check if this item is currently being dragged
+  const isCurrentlyBeingDragged = activeId === item.id;
+
   // Listen for drag events to set/reset drag state
   useEffect(() => {
-    if (isDragging) {
+    if (isCurrentlyBeingDragged) {
       wasDraggingRef.current = true;
     } else {
       // Reset after drag ends
       wasDraggingRef.current = false;
     }
-  }, [isDragging]);
+  }, [isCurrentlyBeingDragged]);
 
   const style = {
-    transform: isDragging ? 'none' : CSS.Transform.toString(transform),
+    transform: isCurrentlyBeingDragged ? 'none' : CSS.Transform.toString(transform),
     transition,
     zIndex: 1,
     opacity: 1,
@@ -134,7 +246,9 @@ function EnhancedSortableTableRow({
 
   const getRowClasses = () => {
     const classes = [styles.foodTableRow];
-    if (isDragging) {
+    // Use activeId comparison instead of isDragging for more reliable state
+    const isCurrentlyBeingDragged = activeId === item.id;
+    if (isCurrentlyBeingDragged) {
       classes.push(styles.draggingItem);
     } else if (isSelected) {
       classes.push(styles.selected);
@@ -713,7 +827,55 @@ export default function EnhancedFoodTable({
 
   function handleDragOver(event: DragOverEvent) {
     const { active, over } = event;
-    if (active.id !== over?.id && over?.id) {
+    if (!active.id || !over?.id || active.id === over.id) {
+      return;
+    }
+
+    const overData = over.data.current;
+    const activeEntry = currentEntries.find(entry => entry.id === active.id);
+    
+    if (!activeEntry) return;
+
+    // Check if dragging over a meal section heading
+    if (overData?.type === 'meal-drop-zone') {
+      const targetMealType = overData.mealType;
+      
+      // If the dragged entry is not already in the target meal type, move it to the top of that section
+      if (activeEntry.mealType !== targetMealType) {
+        const newEntries = [...currentEntries];
+        const activeIndex = newEntries.findIndex(entry => entry.id === active.id);
+        
+        if (activeIndex !== -1) {
+          // Remove the active entry from its current position
+          const [movedEntry] = newEntries.splice(activeIndex, 1);
+          
+          // Update its meal type and find where to insert it (at the top of the target meal section)
+          const updatedEntry = { ...movedEntry, mealType: targetMealType };
+          
+          // Find the first entry of the target meal type to insert before it
+          // If no entries exist for that meal type, it will be inserted at the appropriate position
+          let insertIndex = newEntries.length; // Default to end
+          
+          for (let i = 0; i < newEntries.length; i++) {
+            const currentMealTypeIndex = MEAL_TYPES.indexOf(newEntries[i].mealType);
+            const targetMealTypeIndex = MEAL_TYPES.indexOf(targetMealType);
+            
+            if (currentMealTypeIndex > targetMealTypeIndex) {
+              insertIndex = i;
+              break;
+            } else if (currentMealTypeIndex === targetMealTypeIndex) {
+              insertIndex = i;
+              break;
+            }
+          }
+          
+          // Insert the entry at the beginning of the target meal section
+          newEntries.splice(insertIndex, 0, updatedEntry);
+          setCurrentEntries(newEntries);
+        }
+      }
+    } else {
+      // Regular entry-to-entry reordering
       const oldIndex = currentEntries.findIndex((item: FoodEntry) => item.id === active.id);
       const newIndex = currentEntries.findIndex((item: FoodEntry) => item.id === over.id);
       if (oldIndex !== -1 && newIndex !== -1) {
@@ -741,9 +903,54 @@ export default function EnhancedFoodTable({
       (window as any).__dragCleanup();
       delete (window as any).__dragCleanup;
     }
+
+    const { active, over } = event;
     
-    // Apply the final order to the parent component
-    onReorderEntries(currentEntries);
+    if (!over || active.id === over.id) {
+      return;
+    }
+
+    const overData = over.data.current;
+    
+    // Check if we're dragging a food entry
+    const activeEntry = currentEntries.find(entry => entry.id === active.id);
+    
+    if (activeEntry) {
+      // Dragging a food entry
+      let newEntries = [...currentEntries];
+      
+      if (overData?.type === 'meal-section' || overData?.type === 'meal-drop-zone') {
+        // Dropped on a meal section - the position was already set during dragOver
+        // Just ensure the meal type is updated (it should already be correct from dragOver)
+        const targetMealType = overData.mealType;
+        const currentEntry = newEntries.find(entry => entry.id === active.id);
+        if (currentEntry && currentEntry.mealType !== targetMealType) {
+          newEntries = newEntries.map(entry => 
+            entry.id === active.id 
+              ? { ...entry, mealType: targetMealType }
+              : entry
+          );
+        }
+      } else {
+        // Dropped on another food entry - reorder (this was already handled in dragOver)
+        const overEntry = currentEntries.find(entry => entry.id === over.id);
+        if (overEntry) {
+          const activeEntryInNewOrder = newEntries.find(entry => entry.id === active.id);
+          if (activeEntryInNewOrder) {
+            // Update meal type to match the target entry's meal type
+            newEntries = newEntries.map(entry => 
+              entry.id === active.id 
+                ? { ...entry, mealType: overEntry.mealType }
+                : entry
+            );
+          }
+        }
+      }
+      
+      setCurrentEntries(newEntries);
+      onReorderEntries(newEntries);
+    }
+    // Removed meal section reordering logic since headings are no longer draggable
   }
 
   // Misc
@@ -768,6 +975,15 @@ export default function EnhancedFoodTable({
     }
   }
 
+  // Group entries by meal type
+  const entriesByMealType = MEAL_TYPES.reduce((acc, mealType) => {
+    acc[mealType] = currentEntries.filter(entry => entry.mealType === mealType);
+    return acc;
+  }, {} as Record<FoodEntry['mealType'], FoodEntry[]>);
+
+  // Create unified sortable items array containing only food entries for consistent visual feedback
+  const unifiedSortableItems = currentEntries.map(entry => entry.id);
+
   // =====================
   // Render
   // =====================
@@ -782,47 +998,39 @@ export default function EnhancedFoodTable({
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
-        modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+        modifiers={[restrictToVerticalAxis]}
       >
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100">
-          <table className="w-full table-fixed">
-            <colgroup>
-              <col className="w-auto" />
-              <col className="w-24" />
-              <col className="w-20" />
-            </colgroup>
-            <tbody>
-              <SortableContext 
-                items={currentEntries.map(item => item.id)}
-                strategy={verticalListSortingStrategy}
-              >
-                {currentEntries.map((item) => (
-                  <EnhancedSortableTableRow
-                    key={item.id}
-                    item={item}
-                    foodData={foodData}
-                    filteredEntries={currentEntries}
-                    selectedEntries={selectedEntries}
-                    handleEntrySelect={handleEntrySelect}
-                    removeFoodEntry={removeFoodEntry}
-                    updateFoodEntry={updateFoodEntry}
-                    editingEntry={editingEntry}
-                    setEditingEntry={setEditingEntry}
-                    editAmount={editAmount}
-                    setEditAmount={setEditAmount}
-                    editUnit={editUnit}
-                    setEditUnit={setEditUnit}
-                    formatNumber={formatNumber}
-                    onContextMenu={onContextMenu}
-                    activeId={activeId}
-                    contextMenuOpen={contextMenuOpen}
-                    setContextMenuOpen={setContextMenuOpen}
-                  />
-                ))}
-              </SortableContext>
-            </tbody>
-          </table>
-        </div>
+        <SortableContext 
+          items={unifiedSortableItems}
+          strategy={verticalListSortingStrategy}
+        >
+          <div>
+            {MEAL_TYPES.map((mealType) => (
+              <MealSection
+                key={mealType}
+                mealType={mealType}
+                entries={entriesByMealType[mealType]}
+                foodData={foodData}
+                selectedEntries={selectedEntries}
+                handleEntrySelect={handleEntrySelect}
+                removeFoodEntry={removeFoodEntry}
+                updateFoodEntry={updateFoodEntry}
+                editingEntry={editingEntry}
+                setEditingEntry={setEditingEntry}
+                editAmount={editAmount}
+                setEditAmount={setEditAmount}
+                editUnit={editUnit}
+                setEditUnit={setEditUnit}
+                formatNumber={formatNumber}
+                onContextMenu={onContextMenu}
+                activeId={activeId}
+                contextMenuOpen={contextMenuOpen}
+                setContextMenuOpen={setContextMenuOpen}
+                filteredEntries={entriesByMealType[mealType]}
+              />
+            ))}
+          </div>
+        </SortableContext>
         {/* No DragOverlay - visual feedback handled by .dragging-item class only */}
       </DndContext>
     </div>
