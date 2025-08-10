@@ -170,26 +170,21 @@ export default function LogPage() {
             />
             
             {/* Food entries table */}
-            <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-              {filteredEntries.length > 0 ? (
-                <div className="w-full -mx-4 px-4 sm:mx-0 sm:px-0">
-                  <EnhancedFoodTable
-                    foodData={foodData}
-                    filteredEntries={filteredEntries}
-                    selectedEntries={selectedEntries}
-                    handleEntrySelect={handleEntrySelect}
-                    removeFoodEntry={removeFoodEntry}
-                    updateFoodEntry={updateFoodEntry}
-                    onReorderEntries={handleReorderEntries}
-                    onContextMenu={handleContextMenu}
-                    setSelectedEntries={setSelectedEntries}
-                  />
-                </div>
-              ) : (
-                <div className="text-center py-8 text-gray-500" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
-                  No entries for this date. Add some food to get started!
-                </div>
-              )}
+                        {/* Food Table - always show the table with meal headings */}
+            <div className="mb-6">
+              <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+                <EnhancedFoodTable 
+                  foodData={foodData}
+                  filteredEntries={filteredEntries}
+                  selectedEntries={selectedEntries}
+                  handleEntrySelect={handleEntrySelect}
+                  removeFoodEntry={removeFoodEntry}
+                  updateFoodEntry={updateFoodEntry}
+                  onReorderEntries={handleReorderEntries}
+                  onContextMenu={handleContextMenu}
+                  setSelectedEntries={setSelectedEntries}
+                />
+              </div>
             </div>
             
             {/* Summary */}

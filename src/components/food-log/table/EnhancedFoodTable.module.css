@@ -135,3 +135,35 @@ body.dragging * {
 .foodTableContainer.dragging * {
   cursor: move !important;
 }
+
+/* Drag overlay styles */
+.dragOverlay {
+  z-index: 1000 !important;
+  pointer-events: none;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+  border-radius: 4px !important;
+  background: white !important;
+  border: 1px solid #d1d5db !important;
+  opacity: 0.95 !important;
+  min-width: 300px;
+  font-family: "DM Sans", sans-serif !important;
+}
+
+.dragOverlay table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.dragOverlay td {
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #111827 !important;
+  background: white !important;
+}
+
+.dragOverlay .truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
