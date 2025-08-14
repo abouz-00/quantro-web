@@ -4,6 +4,7 @@ import Apple from "next-auth/providers/apple"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/prisma"
 import { checkBetaAccess, markInviteAsUsed } from "@/lib/betaAccess"
+import jwt from 'jsonwebtoken'
 
 declare module "next-auth" {
   interface Session {
@@ -16,6 +17,27 @@ declare module "next-auth" {
   }
 }
 
+// Function to generate Apple JWT token
+function generateAppleJWT() {
+  if (!process.env.APPLE_PRIVATE_KEY || !process.env.APPLE_TEAM_ID || !process.env.APPLE_PRIVATE_KEY_ID || !process.env.APPLE_ID) {
+    return null;
+  }
+  
+  const now = Math.floor(Date.now() / 1000);
+  const payload = {
+    iss: process.env.APPLE_TEAM_ID,
+    iat: now,
+    exp: now + 15 * 60, // 15 minutes
+    aud: 'https://appleid.apple.com',
+    sub: process.env.APPLE_ID,
+  };
+
+  return jwt.sign(payload, process.env.APPLE_PRIVATE_KEY, {
+    algorithm: 'ES256',
+    keyid: process.env.APPLE_PRIVATE_KEY_ID,
+  });
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -25,15 +47,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       })
     ] : []),
-    ...(process.env.APPLE_ID && process.env.APPLE_PRIVATE_KEY && process.env.APPLE_ID !== 'your-apple-service-id' ? [
+    ...(process.env.APPLE_ID && process.env.APPLE_PRIVATE_KEY && process.env.APPLE_TEAM_ID && process.env.APPLE_PRIVATE_KEY_ID && process.env.APPLE_ID !== 'your-apple-service-id' ? [
       Apple({
         clientId: process.env.APPLE_ID,
-        clientSecret: process.env.APPLE_PRIVATE_KEY,
+        clientSecret: generateAppleJWT() || undefined,
       })
     ] : []),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user }) {
       if (!user.email) return false;
       
       // Check if user has beta access
