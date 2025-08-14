@@ -161,6 +161,8 @@ import { FoodEntry, SortableRowProps, formatNumber } from './table';
 - ✅ **Selection Management** - Multi-select with visual feedback
 - ✅ **Context Menu Support** - Right-click actions
 - ✅ **Keyboard Navigation** - Full accessibility
+- ✅ **Persistent Meal Categories** - Entries maintain their meal type assignment across page refreshes and date changes
+- ✅ **Cross-Meal Dragging** - Drag entries between different meal categories with automatic persistence
 
 ## 🏗️ Architecture
 

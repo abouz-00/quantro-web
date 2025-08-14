@@ -61,6 +61,7 @@ export default function EnhancedFoodTable({
     filteredEntries,
     selectedEntries,
     onReorderEntries,
+    updateFoodEntry,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     handleEntrySelect: (id: string, index: number, event: any) => _handleEntrySelect(id, index, event as React.MouseEvent)
   });
