@@ -1,36 +1,37 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
-import ErrorBoundary from '../components/ErrorBoundary';
+// import dynamic from 'next/dynamic';
+// import ErrorBoundary from '../components/ErrorBoundary';
 import LandingPage from '../components/LandingPage';
 
 // Use dynamic import with SSR disabled for the entire LogPage
-const LogPage = dynamic(() => import('../components/log/LogPage'), {
-  ssr: false
-});
+// const LogPage = dynamic(() => import('../components/log/LogPage'), {
+//   ssr: false
+// });
 
 export default function Home() {
-  const [hasAccess, setHasAccess] = useState(false);
+  // const [hasAccess, setHasAccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Make sure we're in the browser environment before checking localStorage
-    if (typeof window !== 'undefined') {
-      // Only allow access in development environment or with specific keys
-      const isDevEnv = process.env.NODE_ENV === 'development';
-      const accessKey = localStorage.getItem('quantro_access');
-      const urlParams = new URLSearchParams(window.location.search);
-      const urlKey = urlParams.get('key');
-      
-      // Allow access if in dev environment AND they have the key in localStorage or URL
-      if (isDevEnv && (accessKey === 'dev-access' || urlKey === 'dev-access')) {
-        setHasAccess(true);
-        if (urlKey === 'dev-access') {
-          localStorage.setItem('quantro_access', 'dev-access');
-        }
-      }
-    }
+    // Temporarily disabled dev access logic for landing page debugging
+    // if (typeof window !== 'undefined') {
+    //   // Only allow access in development environment or with specific keys
+    //   const isDevEnv = process.env.NODE_ENV === 'development';
+    //   const accessKey = localStorage.getItem('quantro_access');
+    //   const urlParams = new URLSearchParams(window.location.search);
+    //   const urlKey = urlParams.get('key');
+    //   
+    //   // Allow access if in dev environment AND they have the key in localStorage or URL
+    //   if (isDevEnv && (accessKey === 'dev-access' || urlKey === 'dev-access')) {
+    //     setHasAccess(true);
+    //     if (urlKey === 'dev-access') {
+    //       localStorage.setItem('quantro_access', 'dev-access');
+    //     }
+    //   }
+    // }
     // In production, hasAccess stays false (no access to LogPage)
     
     setIsLoading(false);
@@ -48,13 +49,14 @@ export default function Home() {
   }
 
   // Show landing page for public, log page for authorized users (dev only)
-  if (hasAccess) {
-    return (
-      <ErrorBoundary>
-        <LogPage />
-      </ErrorBoundary>
-    );
-  }
+  // Temporarily always show landing page for debugging
+  // if (hasAccess) {
+  //   return (
+  //     <ErrorBoundary>
+  //       <LogPage />
+  //     </ErrorBoundary>
+  //   );
+  // }
 
   return <LandingPage />;
 }

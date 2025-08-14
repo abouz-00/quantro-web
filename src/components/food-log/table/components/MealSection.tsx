@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { FoodEntry } from '../types';
@@ -43,6 +43,9 @@ export function MealSection({
   contextMenuOpen,
   setContextMenuOpen
 }: MealSectionProps) {
+  // State to track if the meal section is collapsed
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   // Remove sortable functionality - headings are only drop targets now
   const { setNodeRef: setDropRef } = useDroppable({
     id: `drop-${mealType}`,
@@ -51,18 +54,47 @@ export function MealSection({
 
   const capitalizedMealType = mealType.charAt(0).toUpperCase() + mealType.slice(1);
 
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
+  // Determine rounded corners based on meal type
+  const getRoundedClasses = () => {
+    if (mealType === 'breakfast') {
+      return 'rounded-t-lg'; // Top rounded corners for breakfast
+    } else if (mealType === 'other') {
+      return 'rounded-b-lg'; // Bottom rounded corners for other
+    }
+    return ''; // No rounded corners for middle sections
+  };
+
   return (
     <div>
       {/* Meal Type Heading - now only a drop target, not draggable */}
       <div 
         ref={setDropRef}
-        className="bg-gray-300 px-4 py-2 text-black font-bold text-sm border border-gray-300 border-b-black cursor-default"
+        className={`px-4 py-2 text-white font-bold text-sm border border-gray-300 border-b-black cursor-default flex items-center justify-between ${getRoundedClasses()}`}
+        style={{ backgroundColor: '#938888' }}
       >
-        {capitalizedMealType}
+        <span>{capitalizedMealType}</span>
+        <button
+          onClick={toggleCollapse}
+          className="ml-2 p-1 hover:bg-black hover:bg-opacity-20 rounded transition-colors"
+          aria-label={isCollapsed ? `Expand ${capitalizedMealType}` : `Collapse ${capitalizedMealType}`}
+        >
+          <svg
+            className={`w-4 h-4 transition-transform duration-200 ${isCollapsed ? '-rotate-90' : 'rotate-0'}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
       </div>
       
-      {/* Entries container - only show if there are entries */}
-      {entries.length > 0 && (
+      {/* Entries container - only show if there are entries and not collapsed */}
+      {entries.length > 0 && !isCollapsed && (
         <div className="bg-white border-l border-r border-b border-gray-300">
           <table className="w-full table-fixed">
             <colgroup>

@@ -17,6 +17,7 @@ interface UseFoodTableDragDropProps {
   filteredEntries: FoodEntry[];
   selectedEntries: string[];
   onReorderEntries: (newOrder: FoodEntry[]) => void;
+  updateFoodEntry?: (id: string, updates: Partial<FoodEntry>) => void;
   handleEntrySelect: (id: string, index: number, event: React.MouseEvent | React.KeyboardEvent | {
     type: string;
     preventDefault: () => void;
@@ -29,6 +30,7 @@ export function useFoodTableDragDrop({
   filteredEntries,
   selectedEntries,
   onReorderEntries,
+  updateFoodEntry,
   handleEntrySelect
 }: UseFoodTableDragDropProps) {
   const [currentEntries, setCurrentEntries] = useState<FoodEntry[]>(filteredEntries);
@@ -179,6 +181,11 @@ export function useFoodTableDragDrop({
           // Insert the entry at the beginning of the target meal section
           newEntries.splice(insertIndex, 0, updatedEntry);
           setCurrentEntries(newEntries);
+          
+          // Persist the meal type change immediately for better UX
+          if (updateFoodEntry) {
+            updateFoodEntry(active.id as string, { mealType: targetMealType });
+          }
         }
       }
     } else {
@@ -187,7 +194,24 @@ export function useFoodTableDragDrop({
       const newIndex = currentEntries.findIndex((item: FoodEntry) => item.id === over.id);
       if (oldIndex !== -1 && newIndex !== -1) {
         const newOrder = arrayMove(currentEntries, oldIndex, newIndex);
-        setCurrentEntries(newOrder);
+        const overEntry = currentEntries.find(entry => entry.id === over.id);
+        
+        // If the dragged entry is being moved to a different meal type, update it
+        if (overEntry && activeEntry.mealType !== overEntry.mealType) {
+          const updatedOrder = newOrder.map(entry => 
+            entry.id === active.id 
+              ? { ...entry, mealType: overEntry.mealType }
+              : entry
+          );
+          setCurrentEntries(updatedOrder);
+          
+          // Persist the meal type change immediately
+          if (updateFoodEntry) {
+            updateFoodEntry(active.id as string, { mealType: overEntry.mealType });
+          }
+        } else {
+          setCurrentEntries(newOrder);
+        }
       }
     }
   }
@@ -225,6 +249,8 @@ export function useFoodTableDragDrop({
     if (activeEntry) {
       // Dragging a food entry
       let newEntries = [...currentEntries];
+      let mealTypeChanged = false;
+      let newMealType: FoodEntry['mealType'] | undefined;
       
       if (overData?.type === 'meal-section' || overData?.type === 'meal-drop-zone') {
         // Dropped on a meal section - the position was already set during dragOver
@@ -237,21 +263,30 @@ export function useFoodTableDragDrop({
               ? { ...entry, mealType: targetMealType }
               : entry
           );
+          mealTypeChanged = true;
+          newMealType = targetMealType;
         }
       } else {
         // Dropped on another food entry - reorder (this was already handled in dragOver)
         const overEntry = currentEntries.find(entry => entry.id === over.id);
         if (overEntry) {
           const activeEntryInNewOrder = newEntries.find(entry => entry.id === active.id);
-          if (activeEntryInNewOrder) {
+          if (activeEntryInNewOrder && activeEntryInNewOrder.mealType !== overEntry.mealType) {
             // Update meal type to match the target entry's meal type
             newEntries = newEntries.map(entry => 
               entry.id === active.id 
                 ? { ...entry, mealType: overEntry.mealType }
                 : entry
             );
+            mealTypeChanged = true;
+            newMealType = overEntry.mealType;
           }
         }
+      }
+      
+      // Persist the meal type change to the database/storage
+      if (mealTypeChanged && newMealType && updateFoodEntry) {
+        updateFoodEntry(active.id as string, { mealType: newMealType });
       }
       
       setCurrentEntries(newEntries);
