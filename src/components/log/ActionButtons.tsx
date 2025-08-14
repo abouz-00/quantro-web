@@ -13,6 +13,8 @@ interface ActionButtonsProps {
   onCopySelectedItems: () => void;
   onPasteEntries: () => void;
   onDeleteSelected: () => void;
+  onCopyToToday?: () => void;
+  isToday: boolean;
 }
 
 export const ActionButtons: React.FC<ActionButtonsProps> = ({
@@ -23,7 +25,9 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   onCopyCurrentDay,
   onCopySelectedItems,
   onPasteEntries,
-  onDeleteSelected
+  onDeleteSelected,
+  onCopyToToday,
+  isToday
 }) => {
   return (
     <div className="flex justify-end items-center mb-6">
@@ -65,6 +69,18 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
                     </button>
                   )}
                 </Menu.Item>
+                {!isToday && filteredEntries.length > 0 && onCopyToToday && (
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${active ? 'bg-gray-100' : ''} w-full text-left px-4 py-2 cursor-pointer hover:bg-gray-100 transition-colors duration-200 rounded-md`}
+                        onClick={onCopyToToday}
+                      >
+                        Copy to Today
+                      </button>
+                    )}
+                  </Menu.Item>
+                )}
                 <Menu.Item>
                   {({ active }) => (
                     <button

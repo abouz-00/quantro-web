@@ -18,13 +18,13 @@ declare module "next-auth" {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
-    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET ? [
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET && process.env.GOOGLE_CLIENT_ID !== 'your-google-client-id' ? [
       Google({
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       })
     ] : []),
-    ...(process.env.APPLE_ID && process.env.APPLE_PRIVATE_KEY ? [
+    ...(process.env.APPLE_ID && process.env.APPLE_PRIVATE_KEY && process.env.APPLE_ID !== 'your-apple-service-id' ? [
       Apple({
         clientId: process.env.APPLE_ID,
         clientSecret: process.env.APPLE_PRIVATE_KEY,
