@@ -172,19 +172,17 @@ export default function LogPage() {
             {/* Food entries table */}
                         {/* Food Table - always show the table with meal headings */}
             <div className="mb-6">
-              <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
-                <EnhancedFoodTable 
-                  foodData={foodData}
-                  filteredEntries={filteredEntries}
-                  selectedEntries={selectedEntries}
-                  handleEntrySelect={handleEntrySelect}
-                  removeFoodEntry={removeFoodEntry}
-                  updateFoodEntry={updateFoodEntry}
-                  onReorderEntries={handleReorderEntries}
-                  onContextMenu={handleContextMenu}
-                  setSelectedEntries={setSelectedEntries}
-                />
-              </div>
+              <EnhancedFoodTable 
+                foodData={foodData}
+                filteredEntries={filteredEntries}
+                selectedEntries={selectedEntries}
+                handleEntrySelect={handleEntrySelect}
+                removeFoodEntry={removeFoodEntry}
+                updateFoodEntry={updateFoodEntry}
+                onReorderEntries={handleReorderEntries}
+                onContextMenu={handleContextMenu}
+                setSelectedEntries={setSelectedEntries}
+              />
             </div>
             
             {/* Summary */}
