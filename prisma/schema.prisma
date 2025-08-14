@@ -46,6 +46,8 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  isApproved    Boolean   @default(false)
+  invitedBy     String?
   accounts      Account[]
   sessions      Session[]
   
@@ -73,6 +75,16 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model BetaInvite {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  code      String   @unique
+  used      Boolean  @default(false)
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+  expiresAt DateTime?
 }
 
 model FoodLog {
