@@ -31,11 +31,12 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
     loadData();
   }, [selectedDate, formatApiDate]);
 
-  const addFoodEntry = useCallback(async (entry: FoodEntry) => {
+  const addFoodEntry = useCallback(async (entry: FoodEntry, overrideDate?: Date) => {
     try {
+      const targetDate = overrideDate || selectedDate;
       const entryWithCorrectDate = {
         ...entry,
-        date: selectedDate.toISOString(),
+        date: targetDate.toISOString(),
       };
 
       const savedEntry = await FoodLogService.addFoodEntry(entryWithCorrectDate);

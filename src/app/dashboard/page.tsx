@@ -71,21 +71,9 @@ export default function Dashboard() {
         {/* User Info Card */}
         <div className="bg-white rounded-xl p-6 shadow-lg mb-8">
           <div className="flex items-center gap-4 mb-4">
-            {displaySession.user?.image && (
-              <Image 
-                src={displaySession.user.image} 
-                alt="Profile" 
-                width={64}
-                height={64}
-                className="w-16 h-16 rounded-full"
-              />
-            )}
             <div>
-              <h2 className={`text-xl font-semibold text-gray-800 ${poppins.className}`}>
-                {displaySession.user?.name || "User"}
-              </h2>
-              <p className={`text-gray-600 ${poppins.className}`}>
-                {displaySession.user?.email}
+              <p className={`text-lg text-gray-800 ${poppins.className}`}>
+                Signed in as: <span className="font-medium">{displaySession.user?.email}</span>
               </p>
             </div>
           </div>

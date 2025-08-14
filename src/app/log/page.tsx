@@ -15,13 +15,16 @@ export default function Page() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
+  // Development bypass - skip auth in development mode
+  const isDevelopment = process.env.NODE_ENV === 'development';
+
   useEffect(() => {
-    if (status === "unauthenticated") {
+    if (!isDevelopment && status === "unauthenticated") {
       router.push("/");
     }
-  }, [status, router]);
+  }, [status, router, isDevelopment]);
 
-  if (status === "loading") {
+  if (!isDevelopment && status === "loading") {
     return (
       <div className="h-screen w-screen flex items-center justify-center" style={{ backgroundColor: '#6e44ff' }}>
         <div className="text-white text-xl">Loading...</div>
@@ -29,7 +32,7 @@ export default function Page() {
     );
   }
 
-  if (!session) {
+  if (!isDevelopment && !session) {
     return null;
   }
 

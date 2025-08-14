@@ -19,6 +19,7 @@ import { ActionButtons } from "./ActionButtons";
 import { ContextMenu } from "./ContextMenu";
 import { CopyToast } from "./CopyToast";
 import { FoodEntry } from "../../types/food";
+import { generateEntryId } from "../../utils/dateUtils";
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
@@ -36,7 +37,8 @@ export default function LogPage() {
     formatApiDate,
     goToToday,
     goToPreviousDay,
-    goToNextDay
+    goToNextDay,
+    isToday
   } = useDateManager({
     enableLocalStorage: true,
     storageKey: 'foodLogSelectedDate',
@@ -104,6 +106,31 @@ export default function LogPage() {
     copyEntries(entriesToCopy);
   };
 
+  const handleCopyToToday = async () => {
+    if (filteredEntries.length === 0) return;
+    
+    const today = new Date();
+    const todayNormalized = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    
+    try {
+      // Copy all entries from current day to today
+      const copyPromises = filteredEntries.map(async (entry) => {
+        const newEntry = {
+          ...entry,
+          id: generateEntryId(), // Generate new unique ID
+          date: todayNormalized.toISOString()
+        };
+        
+        // Use addFoodEntry with override date to copy to today
+        return await addFoodEntry(newEntry, todayNormalized);
+      });
+      
+      await Promise.all(copyPromises);
+    } catch (error) {
+      console.error('Error copying entries to today:', error);
+    }
+  };
+
   const handlePasteEntries = () => {
     pasteEntries(selectedDate, addFoodEntry);
     closeContextMenu();
@@ -167,6 +194,8 @@ export default function LogPage() {
               onCopySelectedItems={handleCopySelectedItems}
               onPasteEntries={handlePasteEntries}
               onDeleteSelected={handleDeleteSelected}
+              onCopyToToday={handleCopyToToday}
+              isToday={isToday}
             />
             
             {/* Food entries table */}
