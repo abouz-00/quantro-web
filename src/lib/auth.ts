@@ -3,6 +3,7 @@ import Google from "next-auth/providers/google"
 import Apple from "next-auth/providers/apple"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/prisma"
+import { checkBetaAccess, markInviteAsUsed } from "@/lib/betaAccess"
 
 declare module "next-auth" {
   interface Session {
@@ -32,6 +33,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     ] : []),
   ],
   callbacks: {
+    async signIn({ user, account, profile }) {
+      if (!user.email) return false;
+      
+      // Check if user has beta access
+      const hasAccess = await checkBetaAccess(user.email);
+      
+      if (!hasAccess) {
+        // Redirect to a "not invited" page
+        return '/auth/not-invited';
+      }
+
+      // Mark invite as used if it exists
+      await markInviteAsUsed(user.email);
+      
+      return true;
+    },
     async session({ session, user }) {
       if (session?.user) {
         session.user.id = user.id;
