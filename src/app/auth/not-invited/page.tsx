@@ -3,10 +3,42 @@
 import { Poppins } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 export default function NotInvitedPage() {
+  const [betaCode, setBetaCode] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const router = useRouter();
+
+  const handleSubmitCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!betaCode.trim()) return;
+
+    setIsSubmitting(true);
+    setError('');
+
+    try {
+      // Validate the beta code
+      const response = await fetch(`/api/beta-invite?code=${betaCode.trim()}`);
+      const data = await response.json();
+
+      if (data.valid) {
+        // Redirect to the beta invite page to accept the invite
+        router.push(`/beta-invite?code=${betaCode.trim()}`);
+      } else {
+        setError(data.error || 'Invalid beta code. Please check your code and try again.');
+      }
+    } catch {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="h-screen w-screen flex items-center justify-center overflow-hidden fixed inset-0" style={{ backgroundColor: '#6e44ff', userSelect: 'none', WebkitUserSelect: 'none' }}>
       <div className="text-center px-6 py-4 w-full max-w-md mx-auto h-full flex flex-col justify-center">
@@ -32,23 +64,61 @@ export default function NotInvitedPage() {
             Beta Access Required
           </h1>
           <p className={`text-gray-600 mb-6 leading-relaxed ${poppins.className}`}>
-            Quantro is currently in private beta. To get access, please join our waitlist and we'll send you an invite soon!
+            Quantro is currently in private beta. Enter your beta access code below or request access.
           </p>
           
-          {/* Action Buttons */}
-          <div className="space-y-4">
-            <a
-              href="https://forms.gle/your-waitlist-form" // Replace with your actual waitlist form
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`block w-full px-6 py-3 bg-violet-500 text-white rounded-lg font-medium hover:bg-violet-600 transition-colors cursor-pointer text-center ${poppins.className}`}
+          {/* Beta Code Form */}
+          <form onSubmit={handleSubmitCode} className="mb-6">
+            <div className="mb-4">
+              <label htmlFor="betaCode" className={`block text-sm font-medium text-gray-700 mb-2 text-left ${poppins.className}`}>
+                Beta Access Code
+              </label>
+              <input
+                type="text"
+                id="betaCode"
+                value={betaCode}
+                onChange={(e) => setBetaCode(e.target.value)}
+                placeholder="Enter your beta code"
+                className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all ${poppins.className}`}
+                disabled={isSubmitting}
+              />
+              {error && (
+                <p className={`text-red-600 text-sm mt-2 text-left ${poppins.className}`}>
+                  {error}
+                </p>
+              )}
+            </div>
+            <button
+              type="submit"
+              disabled={isSubmitting || !betaCode.trim()}
+              className={`w-full px-6 py-3 bg-violet-500 text-white rounded-lg font-medium hover:bg-violet-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors ${poppins.className}`}
             >
-              Join Waitlist
-            </a>
+              {isSubmitting ? 'Checking...' : 'Access Beta'}
+            </button>
+          </form>
+
+          {/* Divider */}
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className={`px-2 bg-white text-gray-500 ${poppins.className}`}>or</span>
+            </div>
+          </div>
+          
+          {/* Action Buttons */}
+          <div className="space-y-3">
+            <Link
+              href="mailto:hello@quantro.fit?subject=Beta Access Request"
+              className={`block w-full px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors cursor-pointer text-center ${poppins.className}`}
+            >
+              Request Beta Access
+            </Link>
             
             <Link
               href="/"
-              className={`block w-full px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors cursor-pointer text-center ${poppins.className}`}
+              className={`block w-full px-6 py-3 bg-gray-50 text-gray-600 rounded-lg font-medium hover:bg-gray-100 transition-colors cursor-pointer text-center ${poppins.className}`}
             >
               Back to Home
             </Link>

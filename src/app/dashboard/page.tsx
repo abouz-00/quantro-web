@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Poppins } from 'next/font/google';
 import Image from 'next/image';
+import InviteHandler from './invite-handler';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
@@ -42,6 +43,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#6e44ff' }}>
+      <InviteHandler />
       <div className="max-w-6xl mx-auto px-6 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
