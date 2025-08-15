@@ -3,7 +3,7 @@ import Google from "next-auth/providers/google"
 import Apple from "next-auth/providers/apple"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/prisma"
-import { checkBetaAccess, markInviteAsUsed } from "@/lib/betaAccess"
+import { checkBetaAccess } from "@/lib/betaAccess"
 import jwt from 'jsonwebtoken'
 
 declare module "next-auth" {
@@ -66,8 +66,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return '/auth/not-invited';
       }
 
-      // Mark invite as used if it exists
-      await markInviteAsUsed(user.email);
+      // Don't mark invite as used here - will be handled by InviteHandler on dashboard
       
       return true;
     },
