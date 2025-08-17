@@ -23,6 +23,19 @@ function generateAppleJWT() {
     return null;
   }
   
+  // Ensure private key is properly formatted
+  let privateKey = process.env.APPLE_PRIVATE_KEY;
+  
+  // Handle both encoded and raw private keys
+  if (privateKey.includes('\\n')) {
+    privateKey = privateKey.replace(/\\n/g, '\n');
+  }
+  
+  // Ensure the key has proper PEM formatting
+  if (!privateKey.includes('-----BEGIN PRIVATE KEY-----')) {
+    return null;
+  }
+  
   const now = Math.floor(Date.now() / 1000);
   const payload = {
     iss: process.env.APPLE_TEAM_ID,
@@ -32,10 +45,15 @@ function generateAppleJWT() {
     sub: process.env.APPLE_ID,
   };
 
-  return jwt.sign(payload, process.env.APPLE_PRIVATE_KEY, {
-    algorithm: 'ES256',
-    keyid: process.env.APPLE_PRIVATE_KEY_ID,
-  });
+  try {
+    return jwt.sign(payload, privateKey, {
+      algorithm: 'ES256',
+      keyid: process.env.APPLE_PRIVATE_KEY_ID,
+    });
+  } catch (error) {
+    console.error('Error signing Apple JWT:', error);
+    return null;
+  }
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -47,12 +65,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       })
     ] : []),
-    ...(process.env.APPLE_ID && process.env.APPLE_PRIVATE_KEY && process.env.APPLE_TEAM_ID && process.env.APPLE_PRIVATE_KEY_ID && process.env.APPLE_ID !== 'your-apple-service-id' ? [
-      Apple({
-        clientId: process.env.APPLE_ID,
-        clientSecret: generateAppleJWT() || undefined,
-      })
-    ] : []),
+    ...(() => {
+      // Generate Apple JWT and only include Apple provider if successful
+      const appleJWT = generateAppleJWT();
+      return (process.env.APPLE_ID && 
+              process.env.APPLE_PRIVATE_KEY && 
+              process.env.APPLE_TEAM_ID && 
+              process.env.APPLE_PRIVATE_KEY_ID && 
+              process.env.APPLE_ID !== 'your-apple-service-id' &&
+              appleJWT) ? [
+        Apple({
+          clientId: process.env.APPLE_ID,
+          clientSecret: appleJWT,
+        })
+      ] : [];
+    })(),
   ],
   callbacks: {
     async signIn({ user }) {
