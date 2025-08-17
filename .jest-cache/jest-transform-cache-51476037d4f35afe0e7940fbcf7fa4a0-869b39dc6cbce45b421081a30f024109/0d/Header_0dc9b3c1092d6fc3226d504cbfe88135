@@ -1,0 +1,772 @@
+492470416933f11ee70367ce82d70e65
+"use strict";
+
+/* istanbul ignore next */
+function cov_1dygjc9c3r() {
+  var path = "/Users/ayman/quantro/src/components/log/Header.tsx";
+  var hash = "ed24b694ab4b7f3dd980fcc24d0b0a8c8390e751";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/ayman/quantro/src/components/log/Header.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 22
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 20
+        },
+        end: {
+          line: 11,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 29
+        },
+        end: {
+          line: 12,
+          column: 71
+        }
+      },
+      "5": {
+        start: {
+          line: 13,
+          column: 20
+        },
+        end: {
+          line: 13,
+          column: 46
+        }
+      },
+      "6": {
+        start: {
+          line: 14,
+          column: 16
+        },
+        end: {
+          line: 14,
+          column: 42
+        }
+      },
+      "7": {
+        start: {
+          line: 15,
+          column: 12
+        },
+        end: {
+          line: 15,
+          column: 37
+        }
+      },
+      "8": {
+        start: {
+          line: 17,
+          column: 4
+        },
+        end: {
+          line: 19,
+          column: 6
+        }
+      },
+      "9": {
+        start: {
+          line: 21,
+          column: 15
+        },
+        end: {
+          line: 122,
+          column: 1
+        }
+      },
+      "10": {
+        start: {
+          line: 22,
+          column: 19
+        },
+        end: {
+          line: 22,
+          column: 47
+        }
+      },
+      "11": {
+        start: {
+          line: 23,
+          column: 4
+        },
+        end: {
+          line: 121,
+          column: 7
+        }
+      },
+      "12": {
+        start: {
+          line: 32,
+          column: 33
+        },
+        end: {
+          line: 32,
+          column: 58
+        }
+      },
+      "13": {
+        start: {
+          line: 53,
+          column: 37
+        },
+        end: {
+          line: 53,
+          column: 71
+        }
+      },
+      "14": {
+        start: {
+          line: 67,
+          column: 45
+        },
+        end: {
+          line: 67,
+          column: 69
+        }
+      },
+      "15": {
+        start: {
+          line: 83,
+          column: 52
+        },
+        end: {
+          line: 83,
+          column: 80
+        }
+      },
+      "16": {
+        start: {
+          line: 84,
+          column: 52
+        },
+        end: {
+          line: 84,
+          column: 77
+        }
+      },
+      "17": {
+        start: {
+          line: 97,
+          column: 52
+        },
+        end: {
+          line: 97,
+          column: 77
+        }
+      },
+      "18": {
+        start: {
+          line: 98,
+          column: 52
+        },
+        end: {
+          line: 101,
+          column: 55
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 16,
+            column: 9
+          },
+          end: {
+            line: 16,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 16,
+            column: 39
+          },
+          end: {
+            line: 20,
+            column: 1
+          }
+        },
+        line: 16
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 21,
+            column: 15
+          },
+          end: {
+            line: 21,
+            column: 16
+          }
+        },
+        loc: {
+          start: {
+            line: 21,
+            column: 79
+          },
+          end: {
+            line: 122,
+            column: 1
+          }
+        },
+        line: 21
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 32,
+            column: 29
+          },
+          end: {
+            line: 32,
+            column: 30
+          }
+        },
+        loc: {
+          start: {
+            line: 32,
+            column: 33
+          },
+          end: {
+            line: 32,
+            column: 58
+          }
+        },
+        line: 32
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 53,
+            column: 33
+          },
+          end: {
+            line: 53,
+            column: 34
+          }
+        },
+        loc: {
+          start: {
+            line: 53,
+            column: 37
+          },
+          end: {
+            line: 53,
+            column: 71
+          }
+        },
+        line: 53
+      },
+      "5": {
+        name: "(anonymous_5)",
+        decl: {
+          start: {
+            line: 67,
+            column: 41
+          },
+          end: {
+            line: 67,
+            column: 42
+          }
+        },
+        loc: {
+          start: {
+            line: 67,
+            column: 45
+          },
+          end: {
+            line: 67,
+            column: 69
+          }
+        },
+        line: 67
+      },
+      "6": {
+        name: "(anonymous_6)",
+        decl: {
+          start: {
+            line: 82,
+            column: 57
+          },
+          end: {
+            line: 82,
+            column: 58
+          }
+        },
+        loc: {
+          start: {
+            line: 82,
+            column: 61
+          },
+          end: {
+            line: 85,
+            column: 49
+          }
+        },
+        line: 82
+      },
+      "7": {
+        name: "(anonymous_7)",
+        decl: {
+          start: {
+            line: 96,
+            column: 57
+          },
+          end: {
+            line: 96,
+            column: 58
+          }
+        },
+        loc: {
+          start: {
+            line: 96,
+            column: 67
+          },
+          end: {
+            line: 102,
+            column: 49
+          }
+        },
+        line: 96
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 17,
+            column: 11
+          },
+          end: {
+            line: 19,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 17,
+            column: 35
+          },
+          end: {
+            line: 17,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 17,
+            column: 41
+          },
+          end: {
+            line: 19,
+            column: 5
+          }
+        }],
+        line: 17
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 17,
+            column: 11
+          },
+          end: {
+            line: 17,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 17,
+            column: 11
+          },
+          end: {
+            line: 17,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 17,
+            column: 18
+          },
+          end: {
+            line: 17,
+            column: 32
+          }
+        }],
+        line: 17
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 55,
+            column: 38
+          },
+          end: {
+            line: 55,
+            column: 91
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 55,
+            column: 55
+          },
+          end: {
+            line: 55,
+            column: 72
+          }
+        }, {
+          start: {
+            line: 55,
+            column: 75
+          },
+          end: {
+            line: 55,
+            column: 91
+          }
+        }],
+        line: 55
+      },
+      "3": {
+        loc: {
+          start: {
+            line: 60,
+            column: 20
+          },
+          end: {
+            line: 117,
+            column: 22
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 60,
+            column: 20
+          },
+          end: {
+            line: 60,
+            column: 34
+          }
+        }, {
+          start: {
+            line: 60,
+            column: 52
+          },
+          end: {
+            line: 117,
+            column: 22
+          }
+        }],
+        line: 60
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0],
+      "3": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/Users/ayman/quantro/src/components/log/Header.tsx"],
+      sourcesContent: ["import React from 'react';\nimport { useRouter } from 'next/navigation';\nimport { signOut } from 'next-auth/react';\nimport { HiMenu } from 'react-icons/hi';\n\ninterface HeaderProps {\n  isMainMenuOpen: boolean;\n  setIsMainMenuOpen: (open: boolean) => void;\n  setIsTargetsModalOpen: (open: boolean) => void;\n}\n\nexport const Header: React.FC<HeaderProps> = ({\n  isMainMenuOpen,\n  setIsMainMenuOpen,\n  setIsTargetsModalOpen\n}) => {\n  const router = useRouter();\n\n  return (\n    <header \n      className=\"w-full h-16 flex items-center justify-between px-6 shadow-sm relative transition-all duration-300 rounded-b-3xl\" \n      style={{ backgroundColor: '#6e44ff' }}\n    >\n      <div className=\"flex items-center\">\n        <button\n          onClick={() => router.push('/dashboard')}\n          className=\"p-1 rounded-lg transition-all duration-200 cursor-pointer\"\n          aria-label=\"Go to Dashboard\"\n        >\n          <img \n            src=\"/quantro_header.svg\" \n            alt=\"Quantro Logo\" \n            className=\"h-10\"\n            style={{ \n              userSelect: 'none', \n              WebkitUserSelect: 'none',\n              filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.1))',\n              maxHeight: '2.5rem',\n              width: 'auto'\n            }}\n          />\n        </button>\n      </div>\n      \n      <div className=\"relative\">\n        <button\n          onClick={() => setIsMainMenuOpen(!isMainMenuOpen)}\n          className=\"p-2 rounded-lg transition-colors duration-200 relative z-[60] cursor-pointer\"\n          aria-label={isMainMenuOpen ? \"Close main menu\" : \"Open main menu\"}\n        >\n          <HiMenu className=\"h-6 w-6 text-white\" />\n        </button>\n        \n        {/* Dropdown Menu */}\n        {isMainMenuOpen && (\n          <>\n            {/* Backdrop */}\n            <div \n              className=\"fixed inset-0 transition-opacity duration-300 z-40\"\n              style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}\n              onClick={() => setIsMainMenuOpen(false)}\n              data-testid=\"menu-backdrop\"\n            />\n            \n            {/* Dropdown Content */}\n            <div \n              className=\"absolute top-12 right-0 bg-white rounded-lg shadow-xl z-50\"\n              style={{ \n                width: '12rem', \n                minWidth: '10rem',\n                animation: 'fadeIn 0.15s ease-out'\n              }}\n            >\n              <div className=\"py-2\">\n                <nav>\n                  <button\n                    onClick={() => {\n                      setIsTargetsModalOpen(true);\n                      setIsMainMenuOpen(false);\n                    }}\n                    className=\"w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer\"\n                  >\n                    <span className=\"font-medium text-base flex items-center gap-2\" style={{ color: '#6e44ff' }}>\n                      \uD83C\uDFAF Set Targets\n                    </span>\n                  </button>\n                  <button\n                    onClick={async () => {\n                      setIsMainMenuOpen(false);\n                      await signOut({ \n                        callbackUrl: '/',\n                        redirect: true \n                      });\n                    }}\n                    className=\"w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer\"\n                  >\n                    <span className=\"font-medium text-base flex items-center gap-2\" style={{ color: '#6e44ff' }}>\n                      \uD83D\uDEAA Sign Out\n                    </span>\n                  </button>\n                </nav>\n              </div>\n            </div>\n          </>\n        )}\n      </div>\n    </header>\n  );\n};\n"],
+      names: ["Header", "isMainMenuOpen", "setIsMainMenuOpen", "setIsTargetsModalOpen", "router", "useRouter", "header", "className", "style", "backgroundColor", "div", "button", "onClick", "push", "aria-label", "img", "src", "alt", "userSelect", "WebkitUserSelect", "filter", "maxHeight", "width", "HiMenu", "data-testid", "minWidth", "animation", "nav", "span", "color", "signOut", "callbackUrl", "redirect"],
+      mappings: ";;;;+BAWaA;;;eAAAA;;;;8DAXK;4BACQ;wBACF;oBACD;;;;;;AAQhB,MAAMA,SAAgC,CAAC,EAC5CC,cAAc,EACdC,iBAAiB,EACjBC,qBAAqB,EACtB;IACC,MAAMC,SAASC,IAAAA,qBAAS;IAExB,qBACE,sBAACC;QACCC,WAAU;QACVC,OAAO;YAAEC,iBAAiB;QAAU;;0BAEpC,qBAACC;gBAAIH,WAAU;0BACb,cAAA,qBAACI;oBACCC,SAAS,IAAMR,OAAOS,IAAI,CAAC;oBAC3BN,WAAU;oBACVO,cAAW;8BAEX,cAAA,qBAACC;wBACCC,KAAI;wBACJC,KAAI;wBACJV,WAAU;wBACVC,OAAO;4BACLU,YAAY;4BACZC,kBAAkB;4BAClBC,QAAQ;4BACRC,WAAW;4BACXC,OAAO;wBACT;;;;0BAKN,sBAACZ;gBAAIH,WAAU;;kCACb,qBAACI;wBACCC,SAAS,IAAMV,kBAAkB,CAACD;wBAClCM,WAAU;wBACVO,cAAYb,iBAAiB,oBAAoB;kCAEjD,cAAA,qBAACsB,UAAM;4BAAChB,WAAU;;;oBAInBN,gCACC;;0CAEE,qBAACS;gCACCH,WAAU;gCACVC,OAAO;oCAAEC,iBAAiB;gCAAsB;gCAChDG,SAAS,IAAMV,kBAAkB;gCACjCsB,eAAY;;0CAId,qBAACd;gCACCH,WAAU;gCACVC,OAAO;oCACLc,OAAO;oCACPG,UAAU;oCACVC,WAAW;gCACb;0CAEA,cAAA,qBAAChB;oCAAIH,WAAU;8CACb,cAAA,sBAACoB;;0DACC,qBAAChB;gDACCC,SAAS;oDACPT,sBAAsB;oDACtBD,kBAAkB;gDACpB;gDACAK,WAAU;0DAEV,cAAA,qBAACqB;oDAAKrB,WAAU;oDAAgDC,OAAO;wDAAEqB,OAAO;oDAAU;8DAAG;;;0DAI/F,qBAAClB;gDACCC,SAAS;oDACPV,kBAAkB;oDAClB,MAAM4B,IAAAA,eAAO,EAAC;wDACZC,aAAa;wDACbC,UAAU;oDACZ;gDACF;gDACAzB,WAAU;0DAEV,cAAA,qBAACqB;oDAAKrB,WAAU;oDAAgDC,OAAO;wDAAEqB,OAAO;oDAAU;8DAAG;;;;;;;;;;;;;AAYjH"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "ed24b694ab4b7f3dd980fcc24d0b0a8c8390e751"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1dygjc9c3r = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1dygjc9c3r();
+cov_1dygjc9c3r().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_1dygjc9c3r().s[1]++;
+Object.defineProperty(exports, "Header", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_1dygjc9c3r().f[0]++;
+    cov_1dygjc9c3r().s[2]++;
+    return Header;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_1dygjc9c3r().s[3]++, require("react/jsx-runtime"));
+const _react =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_1dygjc9c3r().s[4]++, _interop_require_default(require("react")));
+const _navigation =
+/* istanbul ignore next */
+(cov_1dygjc9c3r().s[5]++, require("next/navigation"));
+const _react1 =
+/* istanbul ignore next */
+(cov_1dygjc9c3r().s[6]++, require("next-auth/react"));
+const _hi =
+/* istanbul ignore next */
+(cov_1dygjc9c3r().s[7]++, require("react-icons/hi"));
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_1dygjc9c3r().f[1]++;
+  cov_1dygjc9c3r().s[8]++;
+  return /* istanbul ignore next */(cov_1dygjc9c3r().b[1][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_1dygjc9c3r().b[1][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_1dygjc9c3r().b[0][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_1dygjc9c3r().b[0][1]++, {
+    default: obj
+  });
+}
+/* istanbul ignore next */
+cov_1dygjc9c3r().s[9]++;
+const Header = ({
+  isMainMenuOpen,
+  setIsMainMenuOpen,
+  setIsTargetsModalOpen
+}) => {
+  /* istanbul ignore next */
+  cov_1dygjc9c3r().f[2]++;
+  const router =
+  /* istanbul ignore next */
+  (cov_1dygjc9c3r().s[10]++, (0, _navigation.useRouter)());
+  /* istanbul ignore next */
+  cov_1dygjc9c3r().s[11]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsxs)("header", {
+    className: "w-full h-16 flex items-center justify-between px-6 shadow-sm relative transition-all duration-300 rounded-b-3xl",
+    style: {
+      backgroundColor: '#6e44ff'
+    },
+    children: [/*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+      className: "flex items-center",
+      children: /*#__PURE__*/(0, _jsxruntime.jsx)("button", {
+        onClick: () => {
+          /* istanbul ignore next */
+          cov_1dygjc9c3r().f[3]++;
+          cov_1dygjc9c3r().s[12]++;
+          return router.push('/dashboard');
+        },
+        className: "p-1 rounded-lg transition-all duration-200 cursor-pointer",
+        "aria-label": "Go to Dashboard",
+        children: /*#__PURE__*/(0, _jsxruntime.jsx)("img", {
+          src: "/quantro_header.svg",
+          alt: "Quantro Logo",
+          className: "h-10",
+          style: {
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+            filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.1))',
+            maxHeight: '2.5rem',
+            width: 'auto'
+          }
+        })
+      })
+    }), /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+      className: "relative",
+      children: [/*#__PURE__*/(0, _jsxruntime.jsx)("button", {
+        onClick: () => {
+          /* istanbul ignore next */
+          cov_1dygjc9c3r().f[4]++;
+          cov_1dygjc9c3r().s[13]++;
+          return setIsMainMenuOpen(!isMainMenuOpen);
+        },
+        className: "p-2 rounded-lg transition-colors duration-200 relative z-[60] cursor-pointer",
+        "aria-label": isMainMenuOpen ?
+        /* istanbul ignore next */
+        (cov_1dygjc9c3r().b[2][0]++, "Close main menu") :
+        /* istanbul ignore next */
+        (cov_1dygjc9c3r().b[2][1]++, "Open main menu"),
+        children: /*#__PURE__*/(0, _jsxruntime.jsx)(_hi.HiMenu, {
+          className: "h-6 w-6 text-white"
+        })
+      }),
+      /* istanbul ignore next */
+      (cov_1dygjc9c3r().b[3][0]++, isMainMenuOpen) &&
+      /* istanbul ignore next */
+      (cov_1dygjc9c3r().b[3][1]++, /*#__PURE__*/(0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+          className: "fixed inset-0 transition-opacity duration-300 z-40",
+          style: {
+            backgroundColor: 'rgba(0, 0, 0, 0.15)'
+          },
+          onClick: () => {
+            /* istanbul ignore next */
+            cov_1dygjc9c3r().f[5]++;
+            cov_1dygjc9c3r().s[14]++;
+            return setIsMainMenuOpen(false);
+          },
+          "data-testid": "menu-backdrop"
+        }), /*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+          className: "absolute top-12 right-0 bg-white rounded-lg shadow-xl z-50",
+          style: {
+            width: '12rem',
+            minWidth: '10rem',
+            animation: 'fadeIn 0.15s ease-out'
+          },
+          children: /*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+            className: "py-2",
+            children: /*#__PURE__*/(0, _jsxruntime.jsxs)("nav", {
+              children: [/*#__PURE__*/(0, _jsxruntime.jsx)("button", {
+                onClick: () => {
+                  /* istanbul ignore next */
+                  cov_1dygjc9c3r().f[6]++;
+                  cov_1dygjc9c3r().s[15]++;
+                  setIsTargetsModalOpen(true);
+                  /* istanbul ignore next */
+                  cov_1dygjc9c3r().s[16]++;
+                  setIsMainMenuOpen(false);
+                },
+                className: "w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer",
+                children: /*#__PURE__*/(0, _jsxruntime.jsx)("span", {
+                  className: "font-medium text-base flex items-center gap-2",
+                  style: {
+                    color: '#6e44ff'
+                  },
+                  children: "\uD83C\uDFAF Set Targets"
+                })
+              }), /*#__PURE__*/(0, _jsxruntime.jsx)("button", {
+                onClick: async () => {
+                  /* istanbul ignore next */
+                  cov_1dygjc9c3r().f[7]++;
+                  cov_1dygjc9c3r().s[17]++;
+                  setIsMainMenuOpen(false);
+                  /* istanbul ignore next */
+                  cov_1dygjc9c3r().s[18]++;
+                  await (0, _react1.signOut)({
+                    callbackUrl: '/',
+                    redirect: true
+                  });
+                },
+                className: "w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer",
+                children: /*#__PURE__*/(0, _jsxruntime.jsx)("span", {
+                  className: "font-medium text-base flex items-center gap-2",
+                  style: {
+                    color: '#6e44ff'
+                  },
+                  children: "\uD83D\uDEAA Sign Out"
+                })
+              })]
+            })
+          })
+        })]
+      }))]
+    })]
+  });
+};
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJIZWFkZXIiLCJpc01haW5NZW51T3BlbiIsInNldElzTWFpbk1lbnVPcGVuIiwic2V0SXNUYXJnZXRzTW9kYWxPcGVuIiwiY292XzFkeWdqYzljM3IiLCJmIiwicm91dGVyIiwicyIsIl9uYXZpZ2F0aW9uIiwidXNlUm91dGVyIiwiX2pzeHJ1bnRpbWUiLCJqc3hzIiwiY2xhc3NOYW1lIiwic3R5bGUiLCJiYWNrZ3JvdW5kQ29sb3IiLCJqc3giLCJvbkNsaWNrIiwicHVzaCIsInNyYyIsImFsdCIsInVzZXJTZWxlY3QiLCJXZWJraXRVc2VyU2VsZWN0IiwiZmlsdGVyIiwibWF4SGVpZ2h0Iiwid2lkdGgiLCJiIiwiX2hpIiwiSGlNZW51IiwiRnJhZ21lbnQiLCJtaW5XaWR0aCIsImFuaW1hdGlvbiIsImNvbG9yIiwiX3JlYWN0MSIsInNpZ25PdXQiLCJjYWxsYmFja1VybCIsInJlZGlyZWN0Il0sInNvdXJjZXMiOlsiL1VzZXJzL2F5bWFuL3F1YW50cm8vc3JjL2NvbXBvbmVudHMvbG9nL0hlYWRlci50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IHVzZVJvdXRlciB9IGZyb20gJ25leHQvbmF2aWdhdGlvbic7XG5pbXBvcnQgeyBzaWduT3V0IH0gZnJvbSAnbmV4dC1hdXRoL3JlYWN0JztcbmltcG9ydCB7IEhpTWVudSB9IGZyb20gJ3JlYWN0LWljb25zL2hpJztcblxuaW50ZXJmYWNlIEhlYWRlclByb3BzIHtcbiAgaXNNYWluTWVudU9wZW46IGJvb2xlYW47XG4gIHNldElzTWFpbk1lbnVPcGVuOiAob3BlbjogYm9vbGVhbikgPT4gdm9pZDtcbiAgc2V0SXNUYXJnZXRzTW9kYWxPcGVuOiAob3BlbjogYm9vbGVhbikgPT4gdm9pZDtcbn1cblxuZXhwb3J0IGNvbnN0IEhlYWRlcjogUmVhY3QuRkM8SGVhZGVyUHJvcHM+ID0gKHtcbiAgaXNNYWluTWVudU9wZW4sXG4gIHNldElzTWFpbk1lbnVPcGVuLFxuICBzZXRJc1RhcmdldHNNb2RhbE9wZW5cbn0pID0+IHtcbiAgY29uc3Qgcm91dGVyID0gdXNlUm91dGVyKCk7XG5cbiAgcmV0dXJuIChcbiAgICA8aGVhZGVyIFxuICAgICAgY2xhc3NOYW1lPVwidy1mdWxsIGgtMTYgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1iZXR3ZWVuIHB4LTYgc2hhZG93LXNtIHJlbGF0aXZlIHRyYW5zaXRpb24tYWxsIGR1cmF0aW9uLTMwMCByb3VuZGVkLWItM3hsXCIgXG4gICAgICBzdHlsZT17eyBiYWNrZ3JvdW5kQ29sb3I6ICcjNmU0NGZmJyB9fVxuICAgID5cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleCBpdGVtcy1jZW50ZXJcIj5cbiAgICAgICAgPGJ1dHRvblxuICAgICAgICAgIG9uQ2xpY2s9eygpID0+IHJvdXRlci5wdXNoKCcvZGFzaGJvYXJkJyl9XG4gICAgICAgICAgY2xhc3NOYW1lPVwicC0xIHJvdW5kZWQtbGcgdHJhbnNpdGlvbi1hbGwgZHVyYXRpb24tMjAwIGN1cnNvci1wb2ludGVyXCJcbiAgICAgICAgICBhcmlhLWxhYmVsPVwiR28gdG8gRGFzaGJvYXJkXCJcbiAgICAgICAgPlxuICAgICAgICAgIDxpbWcgXG4gICAgICAgICAgICBzcmM9XCIvcXVhbnRyb19oZWFkZXIuc3ZnXCIgXG4gICAgICAgICAgICBhbHQ9XCJRdWFudHJvIExvZ29cIiBcbiAgICAgICAgICAgIGNsYXNzTmFtZT1cImgtMTBcIlxuICAgICAgICAgICAgc3R5bGU9e3sgXG4gICAgICAgICAgICAgIHVzZXJTZWxlY3Q6ICdub25lJywgXG4gICAgICAgICAgICAgIFdlYmtpdFVzZXJTZWxlY3Q6ICdub25lJyxcbiAgICAgICAgICAgICAgZmlsdGVyOiAnZHJvcC1zaGFkb3coMCAwIDVweCByZ2JhKDAsMCwwLDAuMSkpJyxcbiAgICAgICAgICAgICAgbWF4SGVpZ2h0OiAnMi41cmVtJyxcbiAgICAgICAgICAgICAgd2lkdGg6ICdhdXRvJ1xuICAgICAgICAgICAgfX1cbiAgICAgICAgICAvPlxuICAgICAgICA8L2J1dHRvbj5cbiAgICAgIDwvZGl2PlxuICAgICAgXG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cInJlbGF0aXZlXCI+XG4gICAgICAgIDxidXR0b25cbiAgICAgICAgICBvbkNsaWNrPXsoKSA9PiBzZXRJc01haW5NZW51T3BlbighaXNNYWluTWVudU9wZW4pfVxuICAgICAgICAgIGNsYXNzTmFtZT1cInAtMiByb3VuZGVkLWxnIHRyYW5zaXRpb24tY29sb3JzIGR1cmF0aW9uLTIwMCByZWxhdGl2ZSB6LVs2MF0gY3Vyc29yLXBvaW50ZXJcIlxuICAgICAgICAgIGFyaWEtbGFiZWw9e2lzTWFpbk1lbnVPcGVuID8gXCJDbG9zZSBtYWluIG1lbnVcIiA6IFwiT3BlbiBtYWluIG1lbnVcIn1cbiAgICAgICAgPlxuICAgICAgICAgIDxIaU1lbnUgY2xhc3NOYW1lPVwiaC02IHctNiB0ZXh0LXdoaXRlXCIgLz5cbiAgICAgICAgPC9idXR0b24+XG4gICAgICAgIFxuICAgICAgICB7LyogRHJvcGRvd24gTWVudSAqL31cbiAgICAgICAge2lzTWFpbk1lbnVPcGVuICYmIChcbiAgICAgICAgICA8PlxuICAgICAgICAgICAgey8qIEJhY2tkcm9wICovfVxuICAgICAgICAgICAgPGRpdiBcbiAgICAgICAgICAgICAgY2xhc3NOYW1lPVwiZml4ZWQgaW5zZXQtMCB0cmFuc2l0aW9uLW9wYWNpdHkgZHVyYXRpb24tMzAwIHotNDBcIlxuICAgICAgICAgICAgICBzdHlsZT17eyBiYWNrZ3JvdW5kQ29sb3I6ICdyZ2JhKDAsIDAsIDAsIDAuMTUpJyB9fVxuICAgICAgICAgICAgICBvbkNsaWNrPXsoKSA9PiBzZXRJc01haW5NZW51T3BlbihmYWxzZSl9XG4gICAgICAgICAgICAgIGRhdGEtdGVzdGlkPVwibWVudS1iYWNrZHJvcFwiXG4gICAgICAgICAgICAvPlxuICAgICAgICAgICAgXG4gICAgICAgICAgICB7LyogRHJvcGRvd24gQ29udGVudCAqL31cbiAgICAgICAgICAgIDxkaXYgXG4gICAgICAgICAgICAgIGNsYXNzTmFtZT1cImFic29sdXRlIHRvcC0xMiByaWdodC0wIGJnLXdoaXRlIHJvdW5kZWQtbGcgc2hhZG93LXhsIHotNTBcIlxuICAgICAgICAgICAgICBzdHlsZT17eyBcbiAgICAgICAgICAgICAgICB3aWR0aDogJzEycmVtJywgXG4gICAgICAgICAgICAgICAgbWluV2lkdGg6ICcxMHJlbScsXG4gICAgICAgICAgICAgICAgYW5pbWF0aW9uOiAnZmFkZUluIDAuMTVzIGVhc2Utb3V0J1xuICAgICAgICAgICAgICB9fVxuICAgICAgICAgICAgPlxuICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInB5LTJcIj5cbiAgICAgICAgICAgICAgICA8bmF2PlxuICAgICAgICAgICAgICAgICAgPGJ1dHRvblxuICAgICAgICAgICAgICAgICAgICBvbkNsaWNrPXsoKSA9PiB7XG4gICAgICAgICAgICAgICAgICAgICAgc2V0SXNUYXJnZXRzTW9kYWxPcGVuKHRydWUpO1xuICAgICAgICAgICAgICAgICAgICAgIHNldElzTWFpbk1lbnVPcGVuKGZhbHNlKTtcbiAgICAgICAgICAgICAgICAgICAgfX1cbiAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPVwidy1mdWxsIHRleHQtbGVmdCBweC00IHB5LTMgdHJhbnNpdGlvbi1jb2xvcnMgZHVyYXRpb24tMjAwIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktYmV0d2VlbiBob3ZlcjpiZy1ncmF5LTUwIGN1cnNvci1wb2ludGVyXCJcbiAgICAgICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwiZm9udC1tZWRpdW0gdGV4dC1iYXNlIGZsZXggaXRlbXMtY2VudGVyIGdhcC0yXCIgc3R5bGU9e3sgY29sb3I6ICcjNmU0NGZmJyB9fT5cbiAgICAgICAgICAgICAgICAgICAgICDwn46vIFNldCBUYXJnZXRzXG4gICAgICAgICAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgICAgICAgICAgIDwvYnV0dG9uPlxuICAgICAgICAgICAgICAgICAgPGJ1dHRvblxuICAgICAgICAgICAgICAgICAgICBvbkNsaWNrPXthc3luYyAoKSA9PiB7XG4gICAgICAgICAgICAgICAgICAgICAgc2V0SXNNYWluTWVudU9wZW4oZmFsc2UpO1xuICAgICAgICAgICAgICAgICAgICAgIGF3YWl0IHNpZ25PdXQoeyBcbiAgICAgICAgICAgICAgICAgICAgICAgIGNhbGxiYWNrVXJsOiAnLycsXG4gICAgICAgICAgICAgICAgICAgICAgICByZWRpcmVjdDogdHJ1ZSBcbiAgICAgICAgICAgICAgICAgICAgICB9KTtcbiAgICAgICAgICAgICAgICAgICAgfX1cbiAgICAgICAgICAgICAgICAgICAgY2xhc3NOYW1lPVwidy1mdWxsIHRleHQtbGVmdCBweC00IHB5LTMgdHJhbnNpdGlvbi1jb2xvcnMgZHVyYXRpb24tMjAwIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktYmV0d2VlbiBob3ZlcjpiZy1ncmF5LTUwIGN1cnNvci1wb2ludGVyXCJcbiAgICAgICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwiZm9udC1tZWRpdW0gdGV4dC1iYXNlIGZsZXggaXRlbXMtY2VudGVyIGdhcC0yXCIgc3R5bGU9e3sgY29sb3I6ICcjNmU0NGZmJyB9fT5cbiAgICAgICAgICAgICAgICAgICAgICDwn5qqIFNpZ24gT3V0XG4gICAgICAgICAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgICAgICAgICAgIDwvYnV0dG9uPlxuICAgICAgICAgICAgICAgIDwvbmF2PlxuICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDwvPlxuICAgICAgICApfVxuICAgICAgPC9kaXY+XG4gICAgPC9oZWFkZXI+XG4gICk7XG59O1xuIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7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

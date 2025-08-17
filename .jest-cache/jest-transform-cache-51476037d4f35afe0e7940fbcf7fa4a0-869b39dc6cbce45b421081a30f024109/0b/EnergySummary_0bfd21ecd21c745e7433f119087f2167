@@ -1,0 +1,525 @@
+f0daa4225049b95a5feec17e809ad6b0
+"use client";
+"use strict";
+
+/* istanbul ignore next */
+function cov_4ezt3rx2i() {
+  var path = "/Users/ayman/quantro/src/components/food-log/core/EnergySummary.tsx";
+  var hash = "6da1b42a285d2ddd0a60b244d6e52c8725963497";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/ayman/quantro/src/components/food-log/core/EnergySummary.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 11,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 9,
+          column: 8
+        },
+        end: {
+          line: 9,
+          column: 29
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 12,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 29
+        },
+        end: {
+          line: 13,
+          column: 71
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 16
+        },
+        end: {
+          line: 14,
+          column: 36
+        }
+      },
+      "6": {
+        start: {
+          line: 16,
+          column: 4
+        },
+        end: {
+          line: 18,
+          column: 6
+        }
+      },
+      "7": {
+        start: {
+          line: 21,
+          column: 35
+        },
+        end: {
+          line: 21,
+          column: 57
+        }
+      },
+      "8": {
+        start: {
+          line: 22,
+          column: 18
+        },
+        end: {
+          line: 22,
+          column: 154
+        }
+      },
+      "9": {
+        start: {
+          line: 23,
+          column: 4
+        },
+        end: {
+          line: 68,
+          column: 7
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 8,
+            column: 9
+          },
+          end: {
+            line: 8,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 20
+          },
+          end: {
+            line: 10,
+            column: 5
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 15,
+            column: 9
+          },
+          end: {
+            line: 15,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 15,
+            column: 39
+          },
+          end: {
+            line: 19,
+            column: 1
+          }
+        },
+        line: 15
+      },
+      "2": {
+        name: "EnergySummary",
+        decl: {
+          start: {
+            line: 20,
+            column: 9
+          },
+          end: {
+            line: 20,
+            column: 22
+          }
+        },
+        loc: {
+          start: {
+            line: 20,
+            column: 86
+          },
+          end: {
+            line: 69,
+            column: 1
+          }
+        },
+        line: 20
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 16,
+            column: 11
+          },
+          end: {
+            line: 18,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 16,
+            column: 35
+          },
+          end: {
+            line: 16,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 16,
+            column: 41
+          },
+          end: {
+            line: 18,
+            column: 5
+          }
+        }],
+        line: 16
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 16,
+            column: 11
+          },
+          end: {
+            line: 16,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 16,
+            column: 11
+          },
+          end: {
+            line: 16,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 16,
+            column: 18
+          },
+          end: {
+            line: 16,
+            column: 32
+          }
+        }],
+        line: 16
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 20,
+            column: 46
+          },
+          end: {
+            line: 20,
+            column: 68
+          }
+        },
+        type: "default-arg",
+        locations: [{
+          start: {
+            line: 20,
+            column: 67
+          },
+          end: {
+            line: 20,
+            column: 68
+          }
+        }],
+        line: 20
+      },
+      "3": {
+        loc: {
+          start: {
+            line: 20,
+            column: 70
+          },
+          end: {
+            line: 20,
+            column: 82
+          }
+        },
+        type: "default-arg",
+        locations: [{
+          start: {
+            line: 20,
+            column: 80
+          },
+          end: {
+            line: 20,
+            column: 82
+          }
+        }],
+        line: 20
+      },
+      "4": {
+        loc: {
+          start: {
+            line: 22,
+            column: 18
+          },
+          end: {
+            line: 22,
+            column: 154
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 22,
+            column: 43
+          },
+          end: {
+            line: 22,
+            column: 136
+          }
+        }, {
+          start: {
+            line: 22,
+            column: 139
+          },
+          end: {
+            line: 22,
+            column: 154
+          }
+        }],
+        line: 22
+      },
+      "5": {
+        loc: {
+          start: {
+            line: 22,
+            column: 46
+          },
+          end: {
+            line: 22,
+            column: 110
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 22,
+            column: 73
+          },
+          end: {
+            line: 22,
+            column: 89
+          }
+        }, {
+          start: {
+            line: 22,
+            column: 92
+          },
+          end: {
+            line: 22,
+            column: 110
+          }
+        }],
+        line: 22
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0],
+      "3": [0],
+      "4": [0, 0],
+      "5": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/Users/ayman/quantro/src/components/food-log/core/EnergySummary.tsx"],
+      sourcesContent: ["\"use client\";\n\nimport React from \"react\";\nimport { NutrientDonutChart } from \"../charts\";\n\ninterface Nutrients {\n  calories: number;\n  protein: number;\n  carbs: number;\n  fat: number;\n  fiber?: number;\n}\n\ninterface FoodEntry extends Nutrients {\n  id: string;\n  description: string;\n  amount: string;\n  unit: string;\n  date: string;\n  mealType: \"breakfast\" | \"lunch\" | \"dinner\" | \"snack\" | \"other\";\n}\n\ninterface EnergySummaryProps {\n  totals: Nutrients;\n  customGoals: Nutrients;\n  selectedEntryCount?: number;\n  entries?: FoodEntry[]; // Add entries prop\n}\n\nexport default function EnergySummary({ totals, customGoals, selectedEntryCount = 0, entries = [] }: EnergySummaryProps) {\n  const isShowingSelectedEntry = selectedEntryCount > 0;\n  const title = isShowingSelectedEntry \n    ? `${selectedEntryCount === 1 ? 'Selected Entry' : 'Selected Entries'} (${selectedEntryCount})`\n    : 'Daily Summary';\n  \n  return (\n    <section className=\"bg-gray-100 rounded-lg p-4 md:p-5 shadow-lg select-none\">\n      <h2 className=\"text-lg font-medium mb-3\">{title}</h2>\n      <div className=\"flex flex-row overflow-x-auto no-scrollbar pb-2\">\n        <NutrientDonutChart\n          label=\"Calories\"\n          current={totals.calories}\n          goal={customGoals.calories}\n          unit=\"kcal\"\n          color=\"#F3439B\"\n          entries={entries}\n        />\n        <NutrientDonutChart\n          label=\"Protein\"\n          current={totals.protein}\n          goal={customGoals.protein}\n          unit=\"g\"\n          color=\"#7EE081\"\n          entries={entries}\n        />\n        <NutrientDonutChart\n          label=\"Carbs\"\n          current={totals.carbs}\n          goal={customGoals.carbs}\n          unit=\"g\"\n          color=\"#F0E15B\"\n          entries={entries}\n        />\n        <NutrientDonutChart\n          label=\"Fat\"\n          current={totals.fat}\n          goal={customGoals.fat}\n          unit=\"g\"\n          color=\"#E55640\"\n          entries={entries}\n        />\n      </div>\n    </section>\n  );\n}"],
+      names: ["EnergySummary", "totals", "customGoals", "selectedEntryCount", "entries", "isShowingSelectedEntry", "title", "section", "className", "h2", "div", "NutrientDonutChart", "label", "current", "calories", "goal", "unit", "color", "protein", "carbs", "fat"],
+      mappings: "AAAA;;;;;+BA6BA;;;eAAwBA;;;;8DA3BN;wBACiB;;;;;;AA0BpB,SAASA,cAAc,EAAEC,MAAM,EAAEC,WAAW,EAAEC,qBAAqB,CAAC,EAAEC,UAAU,EAAE,EAAsB;IACrH,MAAMC,yBAAyBF,qBAAqB;IACpD,MAAMG,QAAQD,yBACV,GAAGF,uBAAuB,IAAI,mBAAmB,mBAAmB,EAAE,EAAEA,mBAAmB,CAAC,CAAC,GAC7F;IAEJ,qBACE,sBAACI;QAAQC,WAAU;;0BACjB,qBAACC;gBAAGD,WAAU;0BAA4BF;;0BAC1C,sBAACI;gBAAIF,WAAU;;kCACb,qBAACG,0BAAkB;wBACjBC,OAAM;wBACNC,SAASZ,OAAOa,QAAQ;wBACxBC,MAAMb,YAAYY,QAAQ;wBAC1BE,MAAK;wBACLC,OAAM;wBACNb,SAASA;;kCAEX,qBAACO,0BAAkB;wBACjBC,OAAM;wBACNC,SAASZ,OAAOiB,OAAO;wBACvBH,MAAMb,YAAYgB,OAAO;wBACzBF,MAAK;wBACLC,OAAM;wBACNb,SAASA;;kCAEX,qBAACO,0BAAkB;wBACjBC,OAAM;wBACNC,SAASZ,OAAOkB,KAAK;wBACrBJ,MAAMb,YAAYiB,KAAK;wBACvBH,MAAK;wBACLC,OAAM;wBACNb,SAASA;;kCAEX,qBAACO,0BAAkB;wBACjBC,OAAM;wBACNC,SAASZ,OAAOmB,GAAG;wBACnBL,MAAMb,YAAYkB,GAAG;wBACrBJ,MAAK;wBACLC,OAAM;wBACNb,SAASA;;;;;;AAKnB"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "6da1b42a285d2ddd0a60b244d6e52c8725963497"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_4ezt3rx2i = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_4ezt3rx2i();
+cov_4ezt3rx2i().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_4ezt3rx2i().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_4ezt3rx2i().f[0]++;
+    cov_4ezt3rx2i().s[2]++;
+    return EnergySummary;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_4ezt3rx2i().s[3]++, require("react/jsx-runtime"));
+const _react =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_4ezt3rx2i().s[4]++, _interop_require_default(require("react")));
+const _charts =
+/* istanbul ignore next */
+(cov_4ezt3rx2i().s[5]++, require("../charts"));
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_4ezt3rx2i().f[1]++;
+  cov_4ezt3rx2i().s[6]++;
+  return /* istanbul ignore next */(cov_4ezt3rx2i().b[1][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_4ezt3rx2i().b[1][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_4ezt3rx2i().b[0][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_4ezt3rx2i().b[0][1]++, {
+    default: obj
+  });
+}
+function EnergySummary({
+  totals,
+  customGoals,
+  selectedEntryCount =
+  /* istanbul ignore next */
+  (cov_4ezt3rx2i().b[2][0]++, 0),
+  entries =
+  /* istanbul ignore next */
+  (cov_4ezt3rx2i().b[3][0]++, [])
+}) {
+  /* istanbul ignore next */
+  cov_4ezt3rx2i().f[2]++;
+  const isShowingSelectedEntry =
+  /* istanbul ignore next */
+  (cov_4ezt3rx2i().s[7]++, selectedEntryCount > 0);
+  const title =
+  /* istanbul ignore next */
+  (cov_4ezt3rx2i().s[8]++, isShowingSelectedEntry ?
+  /* istanbul ignore next */
+  (cov_4ezt3rx2i().b[4][0]++, `${selectedEntryCount === 1 ?
+  /* istanbul ignore next */
+  (cov_4ezt3rx2i().b[5][0]++, 'Selected Entry') :
+  /* istanbul ignore next */
+  (cov_4ezt3rx2i().b[5][1]++, 'Selected Entries')} (${selectedEntryCount})`) :
+  /* istanbul ignore next */
+  (cov_4ezt3rx2i().b[4][1]++, 'Daily Summary'));
+  /* istanbul ignore next */
+  cov_4ezt3rx2i().s[9]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsxs)("section", {
+    className: "bg-gray-100 rounded-lg p-4 md:p-5 shadow-lg select-none",
+    children: [/*#__PURE__*/(0, _jsxruntime.jsx)("h2", {
+      className: "text-lg font-medium mb-3",
+      children: title
+    }), /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+      className: "flex flex-row overflow-x-auto no-scrollbar pb-2",
+      children: [/*#__PURE__*/(0, _jsxruntime.jsx)(_charts.NutrientDonutChart, {
+        label: "Calories",
+        current: totals.calories,
+        goal: customGoals.calories,
+        unit: "kcal",
+        color: "#F3439B",
+        entries: entries
+      }), /*#__PURE__*/(0, _jsxruntime.jsx)(_charts.NutrientDonutChart, {
+        label: "Protein",
+        current: totals.protein,
+        goal: customGoals.protein,
+        unit: "g",
+        color: "#7EE081",
+        entries: entries
+      }), /*#__PURE__*/(0, _jsxruntime.jsx)(_charts.NutrientDonutChart, {
+        label: "Carbs",
+        current: totals.carbs,
+        goal: customGoals.carbs,
+        unit: "g",
+        color: "#F0E15B",
+        entries: entries
+      }), /*#__PURE__*/(0, _jsxruntime.jsx)(_charts.NutrientDonutChart, {
+        label: "Fat",
+        current: totals.fat,
+        goal: customGoals.fat,
+        unit: "g",
+        color: "#E55640",
+        entries: entries
+      })]
+    })]
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJFbmVyZ3lTdW1tYXJ5IiwidG90YWxzIiwiY3VzdG9tR29hbHMiLCJzZWxlY3RlZEVudHJ5Q291bnQiLCJjb3ZfNGV6dDNyeDJpIiwiYiIsImVudHJpZXMiLCJmIiwiaXNTaG93aW5nU2VsZWN0ZWRFbnRyeSIsInMiLCJ0aXRsZSIsIl9qc3hydW50aW1lIiwianN4cyIsImNsYXNzTmFtZSIsImpzeCIsIl9jaGFydHMiLCJOdXRyaWVudERvbnV0Q2hhcnQiLCJsYWJlbCIsImN1cnJlbnQiLCJjYWxvcmllcyIsImdvYWwiLCJ1bml0IiwiY29sb3IiLCJwcm90ZWluIiwiY2FyYnMiLCJmYXQiXSwic291cmNlcyI6WyIvVXNlcnMvYXltYW4vcXVhbnRyby9zcmMvY29tcG9uZW50cy9mb29kLWxvZy9jb3JlL0VuZXJneVN1bW1hcnkudHN4Il0sInNvdXJjZXNDb250ZW50IjpbIlwidXNlIGNsaWVudFwiO1xuXG5pbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgeyBOdXRyaWVudERvbnV0Q2hhcnQgfSBmcm9tIFwiLi4vY2hhcnRzXCI7XG5cbmludGVyZmFjZSBOdXRyaWVudHMge1xuICBjYWxvcmllczogbnVtYmVyO1xuICBwcm90ZWluOiBudW1iZXI7XG4gIGNhcmJzOiBudW1iZXI7XG4gIGZhdDogbnVtYmVyO1xuICBmaWJlcj86IG51bWJlcjtcbn1cblxuaW50ZXJmYWNlIEZvb2RFbnRyeSBleHRlbmRzIE51dHJpZW50cyB7XG4gIGlkOiBzdHJpbmc7XG4gIGRlc2NyaXB0aW9uOiBzdHJpbmc7XG4gIGFtb3VudDogc3RyaW5nO1xuICB1bml0OiBzdHJpbmc7XG4gIGRhdGU6IHN0cmluZztcbiAgbWVhbFR5cGU6IFwiYnJlYWtmYXN0XCIgfCBcImx1bmNoXCIgfCBcImRpbm5lclwiIHwgXCJzbmFja1wiIHwgXCJvdGhlclwiO1xufVxuXG5pbnRlcmZhY2UgRW5lcmd5U3VtbWFyeVByb3BzIHtcbiAgdG90YWxzOiBOdXRyaWVudHM7XG4gIGN1c3RvbUdvYWxzOiBOdXRyaWVudHM7XG4gIHNlbGVjdGVkRW50cnlDb3VudD86IG51bWJlcjtcbiAgZW50cmllcz86IEZvb2RFbnRyeVtdOyAvLyBBZGQgZW50cmllcyBwcm9wXG59XG5cbmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIEVuZXJneVN1bW1hcnkoeyB0b3RhbHMsIGN1c3RvbUdvYWxzLCBzZWxlY3RlZEVudHJ5Q291bnQgPSAwLCBlbnRyaWVzID0gW10gfTogRW5lcmd5U3VtbWFyeVByb3BzKSB7XG4gIGNvbnN0IGlzU2hvd2luZ1NlbGVjdGVkRW50cnkgPSBzZWxlY3RlZEVudHJ5Q291bnQgPiAwO1xuICBjb25zdCB0aXRsZSA9IGlzU2hvd2luZ1NlbGVjdGVkRW50cnkgXG4gICAgPyBgJHtzZWxlY3RlZEVudHJ5Q291bnQgPT09IDEgPyAnU2VsZWN0ZWQgRW50cnknIDogJ1NlbGVjdGVkIEVudHJpZXMnfSAoJHtzZWxlY3RlZEVudHJ5Q291bnR9KWBcbiAgICA6ICdEYWlseSBTdW1tYXJ5JztcbiAgXG4gIHJldHVybiAoXG4gICAgPHNlY3Rpb24gY2xhc3NOYW1lPVwiYmctZ3JheS0xMDAgcm91bmRlZC1sZyBwLTQgbWQ6cC01IHNoYWRvdy1sZyBzZWxlY3Qtbm9uZVwiPlxuICAgICAgPGgyIGNsYXNzTmFtZT1cInRleHQtbGcgZm9udC1tZWRpdW0gbWItM1wiPnt0aXRsZX08L2gyPlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGZsZXgtcm93IG92ZXJmbG93LXgtYXV0byBuby1zY3JvbGxiYXIgcGItMlwiPlxuICAgICAgICA8TnV0cmllbnREb251dENoYXJ0XG4gICAgICAgICAgbGFiZWw9XCJDYWxvcmllc1wiXG4gICAgICAgICAgY3VycmVudD17dG90YWxzLmNhbG9yaWVzfVxuICAgICAgICAgIGdvYWw9e2N1c3RvbUdvYWxzLmNhbG9yaWVzfVxuICAgICAgICAgIHVuaXQ9XCJrY2FsXCJcbiAgICAgICAgICBjb2xvcj1cIiNGMzQzOUJcIlxuICAgICAgICAgIGVudHJpZXM9e2VudHJpZXN9XG4gICAgICAgIC8+XG4gICAgICAgIDxOdXRyaWVudERvbnV0Q2hhcnRcbiAgICAgICAgICBsYWJlbD1cIlByb3RlaW5cIlxuICAgICAgICAgIGN1cnJlbnQ9e3RvdGFscy5wcm90ZWlufVxuICAgICAgICAgIGdvYWw9e2N1c3RvbUdvYWxzLnByb3RlaW59XG4gICAgICAgICAgdW5pdD1cImdcIlxuICAgICAgICAgIGNvbG9yPVwiIzdFRTA4MVwiXG4gICAgICAgICAgZW50cmllcz17ZW50cmllc31cbiAgICAgICAgLz5cbiAgICAgICAgPE51dHJpZW50RG9udXRDaGFydFxuICAgICAgICAgIGxhYmVsPVwiQ2FyYnNcIlxuICAgICAgICAgIGN1cnJlbnQ9e3RvdGFscy5jYXJic31cbiAgICAgICAgICBnb2FsPXtjdXN0b21Hb2Fscy5jYXJic31cbiAgICAgICAgICB1bml0PVwiZ1wiXG4gICAgICAgICAgY29sb3I9XCIjRjBFMTVCXCJcbiAgICAgICAgICBlbnRyaWVzPXtlbnRyaWVzfVxuICAgICAgICAvPlxuICAgICAgICA8TnV0cmllbnREb251dENoYXJ0XG4gICAgICAgICAgbGFiZWw9XCJGYXRcIlxuICAgICAgICAgIGN1cnJlbnQ9e3RvdGFscy5mYXR9XG4gICAgICAgICAgZ29hbD17Y3VzdG9tR29hbHMuZmF0fVxuICAgICAgICAgIHVuaXQ9XCJnXCJcbiAgICAgICAgICBjb2xvcj1cIiNFNTU2NDBcIlxuICAgICAgICAgIGVudHJpZXM9e2VudHJpZXN9XG4gICAgICAgIC8+XG4gICAgICA8L2Rpdj5cbiAgICA8L3NlY3Rpb24+XG4gICk7XG59Il0sIm1hcHBpbmdzIjoiQUFBQTs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7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

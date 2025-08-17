@@ -1,4 +1,4 @@
-import nextJest from 'next/jest'
+import nextJest from 'next/jest.js'
 
 /** @type {import('jest').Config} */
 const createJestConfig = nextJest({
@@ -27,6 +27,13 @@ const customJestConfig = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
+  // Performance optimizations
+  maxWorkers: process.env.CI ? 2 : '50%',
+  cache: true,
+  cacheDirectory: '<rootDir>/.jest-cache',
+  clearMocks: true,
+  resetMocks: true,
+  restoreMocks: true,
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.d.ts',
