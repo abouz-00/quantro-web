@@ -50,7 +50,7 @@ Create `.env.local` file with the following variables:
 
 ```bash
 # Database
-DATABASE_URL="file:./dev.db"
+DATABASE_URL="file:./prisma/dev.db"
 
 # NextAuth.js Configuration
 NEXTAUTH_URL="http://localhost:3000"

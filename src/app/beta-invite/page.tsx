@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
@@ -11,7 +11,7 @@ interface InviteData {
   expiresAt: string | null
 }
 
-export default function BetaInvitePage() {
+function BetaInviteContent() {
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
   
@@ -187,5 +187,13 @@ export default function BetaInvitePage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function BetaInvitePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <BetaInviteContent />
+    </Suspense>
   )
 }
