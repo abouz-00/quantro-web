@@ -22,6 +22,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
 }) => {
   if (!contextMenu.visible) return null;
 
+  // Use selectedEntries for accessibility/data attributes without displaying count
+  const hasSelection = selectedEntries.length > 0;
+
   return (
     <div
       className="fixed bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1 min-w-48"
@@ -30,6 +33,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
         top: Math.min(contextMenu.y, window.innerHeight - 200),
       }}
       onClick={(e) => e.stopPropagation()}
+      data-has-selection={hasSelection}
     >
       <button
         onClick={onEditEntry}
@@ -43,7 +47,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
         className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-gray-700 flex items-center space-x-2 transition-colors duration-150"
       >
         <span>📋</span>
-        <span>Copy {selectedEntries.length > 0 ? `Selected (${selectedEntries.length})` : 'Item'}</span>
+        <span>Copy Selected</span>
         <span className="text-xs text-gray-400 ml-auto">Ctrl+C</span>
       </button>
       <button
@@ -65,7 +69,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
         className="w-full text-left px-4 py-2 hover:bg-red-50 text-sm text-red-600 flex items-center space-x-2 transition-colors duration-150"
       >
         <span>🗑️</span>
-        <span>Delete {selectedEntries.length > 0 ? `Selected (${selectedEntries.length})` : 'Item'}</span>
+        <span>Delete Selected</span>
         <span className="text-xs text-red-400 ml-auto">Del</span>
       </button>
     </div>
