@@ -46,6 +46,7 @@ export function FoodTableRow({
 }: FoodTableRowProps) {
   // Track if a drag occurred to distinguish from click
   const wasDraggingRef = useRef(false);
+  const contextMenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isSelected = selectedEntries.includes(item.id);
   
   const isSupplement = useCallback((description: string) => {
@@ -86,6 +87,15 @@ export function FoodTableRow({
       wasDraggingRef.current = false;
     }
   }, [isCurrentlyBeingDragged]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (contextMenuTimeoutRef.current) {
+        clearTimeout(contextMenuTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const style = {
     transform: isCurrentlyBeingDragged ? 'none' : CSS.Transform.toString(transform),
@@ -160,9 +170,19 @@ export function FoodTableRow({
               handleEntrySelect(item.id, foodData.indexOf(item), modifiedEvent);
             }
             
-            // Then handle context menu
+            // Then handle context menu with debounce
             if (typeof onContextMenu === 'function') {
-              setTimeout(() => {
+              // Clear any existing timeout to prevent rapid opening/closing
+              if (contextMenuTimeoutRef.current) {
+                clearTimeout(contextMenuTimeoutRef.current);
+              }
+              
+              // If context menu is already open for this item, don't flicker
+              if (contextMenuOpen) {
+                return;
+              }
+              
+              contextMenuTimeoutRef.current = setTimeout(() => {
                 setContextMenuOpen(true);
                 const syntheticEvent = {
                   ...e,
