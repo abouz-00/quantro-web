@@ -1,6 +1,13 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Initialize Resend lazily to avoid build-time errors
+function getResendInstance() {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey || apiKey === 'your_resend_api_key_here') {
+    throw new Error('RESEND_API_KEY is not configured')
+  }
+  return new Resend(apiKey)
+}
 
 interface BetaInviteEmailProps {
   email: string
@@ -108,6 +115,7 @@ export async function sendBetaInviteEmail({ email, code, expiresAt }: BetaInvite
     </html>
     `
 
+    const resend = getResendInstance()
     const data = await resend.emails.send({
       from: 'Quantro Team <hello@quantro.fit>',
       to: [email],
