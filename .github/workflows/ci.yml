@@ -10,6 +10,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    
     strategy:
       matrix:
         node-version: [18.x, 20.x]
@@ -76,6 +79,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: [test, security]
+    
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     
     steps:
     - name: Checkout code
