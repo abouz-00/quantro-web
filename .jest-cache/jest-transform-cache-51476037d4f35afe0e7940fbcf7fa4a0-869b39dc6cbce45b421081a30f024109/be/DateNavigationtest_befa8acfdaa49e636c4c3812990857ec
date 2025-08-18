@@ -1,0 +1,90 @@
+0625910906f4eaa55e754f4be8a1b83c
+"use strict";
+// Mock the DatePicker component
+jest.mock('../../ui/DatePicker', ()=>{
+    return function MockDatePicker({ selectedDate, onDateChange }) {
+        return /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+            "data-testid": "date-picker",
+            children: [
+                /*#__PURE__*/ (0, _jsxruntime.jsxs)("span", {
+                    children: [
+                        "Selected: ",
+                        selectedDate.toISOString().split('T')[0]
+                    ]
+                }),
+                /*#__PURE__*/ (0, _jsxruntime.jsx)("button", {
+                    onClick: ()=>onDateChange(new Date('2023-12-25')),
+                    children: "Change Date"
+                })
+            ]
+        });
+    };
+});
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = require("@testing-library/react");
+const _userevent = /*#__PURE__*/ _interop_require_default(require("@testing-library/user-event"));
+const _DateNavigation = require("../DateNavigation");
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+describe('DateNavigation Component', ()=>{
+    const mockOnDateChange = jest.fn();
+    const testDate = new Date('2023-01-15');
+    const defaultProps = {
+        selectedDate: testDate,
+        onDateChange: mockOnDateChange
+    };
+    beforeEach(()=>{
+        jest.clearAllMocks();
+    });
+    it('renders the date navigation container', ()=>{
+        (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_DateNavigation.DateNavigation, {
+            ...defaultProps
+        }));
+        expect(_react.screen.getByTestId('date-picker')).toBeInTheDocument();
+    });
+    it('displays the selected date', ()=>{
+        (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_DateNavigation.DateNavigation, {
+            ...defaultProps
+        }));
+        expect(_react.screen.getByText('Selected: 2023-01-15')).toBeInTheDocument();
+    });
+    it('calls onDateChange when date is changed', async ()=>{
+        const user = _userevent.default.setup();
+        (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_DateNavigation.DateNavigation, {
+            ...defaultProps
+        }));
+        const changeButton = _react.screen.getByText('Change Date');
+        await user.click(changeButton);
+        expect(mockOnDateChange).toHaveBeenCalledWith(new Date('2023-12-25'));
+    });
+    it('applies correct styling classes', ()=>{
+        const { container } = (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_DateNavigation.DateNavigation, {
+            selectedDate: testDate,
+            onDateChange: mockOnDateChange
+        }));
+        // Check outer div styling
+        const outerDiv = container.firstElementChild;
+        expect(outerDiv).toHaveClass('flex', 'justify-center', 'mb-8');
+        // Check inner div styling - the second child div with the background styles
+        const innerDiv = outerDiv?.firstElementChild;
+        expect(innerDiv).toHaveClass('flex', 'items-center', 'space-x-2', 'bg-white', 'rounded-full', 'shadow-lg', 'px-3', 'py-2');
+        // Check that inner div has the inline styles
+        expect(innerDiv).toHaveStyle('background-color: #F8F5F0');
+        expect(innerDiv).toHaveStyle('border: 1px solid #EDE6DC');
+    });
+    it('passes props correctly to DatePicker', ()=>{
+        (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_DateNavigation.DateNavigation, {
+            ...defaultProps
+        }));
+        // The mocked DatePicker should receive and display the selectedDate
+        expect(_react.screen.getByText('Selected: 2023-01-15')).toBeInTheDocument();
+    });
+});
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb21wb25lbnRzL2xvZy9fX3Rlc3RzX18vRGF0ZU5hdmlnYXRpb24udGVzdC50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgcmVuZGVyLCBzY3JlZW4gfSBmcm9tICdAdGVzdGluZy1saWJyYXJ5L3JlYWN0J1xuaW1wb3J0IHVzZXJFdmVudCBmcm9tICdAdGVzdGluZy1saWJyYXJ5L3VzZXItZXZlbnQnXG5pbXBvcnQgeyBEYXRlTmF2aWdhdGlvbiB9IGZyb20gJy4uL0RhdGVOYXZpZ2F0aW9uJ1xuXG5pbnRlcmZhY2UgTW9ja0RhdGVQaWNrZXJQcm9wcyB7XG4gIHNlbGVjdGVkRGF0ZTogRGF0ZTtcbiAgb25EYXRlQ2hhbmdlOiAoZGF0ZTogRGF0ZSkgPT4gdm9pZDtcbn1cblxuLy8gTW9jayB0aGUgRGF0ZVBpY2tlciBjb21wb25lbnRcbmplc3QubW9jaygnLi4vLi4vdWkvRGF0ZVBpY2tlcicsICgpID0+IHtcbiAgcmV0dXJuIGZ1bmN0aW9uIE1vY2tEYXRlUGlja2VyKHsgc2VsZWN0ZWREYXRlLCBvbkRhdGVDaGFuZ2UgfTogTW9ja0RhdGVQaWNrZXJQcm9wcykge1xuICAgIHJldHVybiAoXG4gICAgICA8ZGl2IGRhdGEtdGVzdGlkPVwiZGF0ZS1waWNrZXJcIj5cbiAgICAgICAgPHNwYW4+U2VsZWN0ZWQ6IHtzZWxlY3RlZERhdGUudG9JU09TdHJpbmcoKS5zcGxpdCgnVCcpWzBdfTwvc3Bhbj5cbiAgICAgICAgPGJ1dHRvbiBvbkNsaWNrPXsoKSA9PiBvbkRhdGVDaGFuZ2UobmV3IERhdGUoJzIwMjMtMTItMjUnKSl9PlxuICAgICAgICAgIENoYW5nZSBEYXRlXG4gICAgICAgIDwvYnV0dG9uPlxuICAgICAgPC9kaXY+XG4gICAgKVxuICB9XG59KVxuXG5kZXNjcmliZSgnRGF0ZU5hdmlnYXRpb24gQ29tcG9uZW50JywgKCkgPT4ge1xuICBjb25zdCBtb2NrT25EYXRlQ2hhbmdlID0gamVzdC5mbigpXG4gIGNvbnN0IHRlc3REYXRlID0gbmV3IERhdGUoJzIwMjMtMDEtMTUnKVxuXG4gIGNvbnN0IGRlZmF1bHRQcm9wcyA9IHtcbiAgICBzZWxlY3RlZERhdGU6IHRlc3REYXRlLFxuICAgIG9uRGF0ZUNoYW5nZTogbW9ja09uRGF0ZUNoYW5nZSxcbiAgfVxuXG4gIGJlZm9yZUVhY2goKCkgPT4ge1xuICAgIGplc3QuY2xlYXJBbGxNb2NrcygpXG4gIH0pXG5cbiAgaXQoJ3JlbmRlcnMgdGhlIGRhdGUgbmF2aWdhdGlvbiBjb250YWluZXInLCAoKSA9PiB7XG4gICAgcmVuZGVyKDxEYXRlTmF2aWdhdGlvbiB7Li4uZGVmYXVsdFByb3BzfSAvPilcbiAgICBcbiAgICBleHBlY3Qoc2NyZWVuLmdldEJ5VGVzdElkKCdkYXRlLXBpY2tlcicpKS50b0JlSW5UaGVEb2N1bWVudCgpXG4gIH0pXG5cbiAgaXQoJ2Rpc3BsYXlzIHRoZSBzZWxlY3RlZCBkYXRlJywgKCkgPT4ge1xuICAgIHJlbmRlcig8RGF0ZU5hdmlnYXRpb24gey4uLmRlZmF1bHRQcm9wc30gLz4pXG4gICAgXG4gICAgZXhwZWN0KHNjcmVlbi5nZXRCeVRleHQoJ1NlbGVjdGVkOiAyMDIzLTAxLTE1JykpLnRvQmVJblRoZURvY3VtZW50KClcbiAgfSlcblxuICBpdCgnY2FsbHMgb25EYXRlQ2hhbmdlIHdoZW4gZGF0ZSBpcyBjaGFuZ2VkJywgYXN5bmMgKCkgPT4ge1xuICAgIGNvbnN0IHVzZXIgPSB1c2VyRXZlbnQuc2V0dXAoKVxuICAgIHJlbmRlcig8RGF0ZU5hdmlnYXRpb24gey4uLmRlZmF1bHRQcm9wc30gLz4pXG4gICAgXG4gICAgY29uc3QgY2hhbmdlQnV0dG9uID0gc2NyZWVuLmdldEJ5VGV4dCgnQ2hhbmdlIERhdGUnKVxuICAgIGF3YWl0IHVzZXIuY2xpY2soY2hhbmdlQnV0dG9uKVxuICAgIFxuICAgIGV4cGVjdChtb2NrT25EYXRlQ2hhbmdlKS50b0hhdmVCZWVuQ2FsbGVkV2l0aChuZXcgRGF0ZSgnMjAyMy0xMi0yNScpKVxuICB9KVxuXG4gIGl0KCdhcHBsaWVzIGNvcnJlY3Qgc3R5bGluZyBjbGFzc2VzJywgKCkgPT4ge1xuICAgIGNvbnN0IHsgY29udGFpbmVyIH0gPSByZW5kZXIoXG4gICAgICA8RGF0ZU5hdmlnYXRpb24gc2VsZWN0ZWREYXRlPXt0ZXN0RGF0ZX0gb25EYXRlQ2hhbmdlPXttb2NrT25EYXRlQ2hhbmdlfSAvPlxuICAgIClcbiAgICBcbiAgICAvLyBDaGVjayBvdXRlciBkaXYgc3R5bGluZ1xuICAgIGNvbnN0IG91dGVyRGl2ID0gY29udGFpbmVyLmZpcnN0RWxlbWVudENoaWxkXG4gICAgZXhwZWN0KG91dGVyRGl2KS50b0hhdmVDbGFzcygnZmxleCcsICdqdXN0aWZ5LWNlbnRlcicsICdtYi04JylcbiAgICBcbiAgICAvLyBDaGVjayBpbm5lciBkaXYgc3R5bGluZyAtIHRoZSBzZWNvbmQgY2hpbGQgZGl2IHdpdGggdGhlIGJhY2tncm91bmQgc3R5bGVzXG4gICAgY29uc3QgaW5uZXJEaXYgPSBvdXRlckRpdj8uZmlyc3RFbGVtZW50Q2hpbGRcbiAgICBleHBlY3QoaW5uZXJEaXYpLnRvSGF2ZUNsYXNzKCdmbGV4JywgJ2l0ZW1zLWNlbnRlcicsICdzcGFjZS14LTInLCAnYmctd2hpdGUnLCAncm91bmRlZC1mdWxsJywgJ3NoYWRvdy1sZycsICdweC0zJywgJ3B5LTInKVxuICAgIFxuICAgIC8vIENoZWNrIHRoYXQgaW5uZXIgZGl2IGhhcyB0aGUgaW5saW5lIHN0eWxlc1xuICAgIGV4cGVjdChpbm5lckRpdikudG9IYXZlU3R5bGUoJ2JhY2tncm91bmQtY29sb3I6ICNGOEY1RjAnKVxuICAgIGV4cGVjdChpbm5lckRpdikudG9IYXZlU3R5bGUoJ2JvcmRlcjogMXB4IHNvbGlkICNFREU2REMnKVxuICB9KVxuXG4gIGl0KCdwYXNzZXMgcHJvcHMgY29ycmVjdGx5IHRvIERhdGVQaWNrZXInLCAoKSA9PiB7XG4gICAgcmVuZGVyKDxEYXRlTmF2aWdhdGlvbiB7Li4uZGVmYXVsdFByb3BzfSAvPilcbiAgICBcbiAgICAvLyBUaGUgbW9ja2VkIERhdGVQaWNrZXIgc2hvdWxkIHJlY2VpdmUgYW5kIGRpc3BsYXkgdGhlIHNlbGVjdGVkRGF0ZVxuICAgIGV4cGVjdChzY3JlZW4uZ2V0QnlUZXh0KCdTZWxlY3RlZDogMjAyMy0wMS0xNScpKS50b0JlSW5UaGVEb2N1bWVudCgpXG4gIH0pXG59KVxuIl0sIm5hbWVzIjpbImplc3QiLCJtb2NrIiwiTW9ja0RhdGVQaWNrZXIiLCJzZWxlY3RlZERhdGUiLCJvbkRhdGVDaGFuZ2UiLCJkaXYiLCJkYXRhLXRlc3RpZCIsInNwYW4iLCJ0b0lTT1N0cmluZyIsInNwbGl0IiwiYnV0dG9uIiwib25DbGljayIsIkRhdGUiLCJkZXNjcmliZSIsIm1vY2tPbkRhdGVDaGFuZ2UiLCJmbiIsInRlc3REYXRlIiwiZGVmYXVsdFByb3BzIiwiYmVmb3JlRWFjaCIsImNsZWFyQWxsTW9ja3MiLCJpdCIsInJlbmRlciIsIkRhdGVOYXZpZ2F0aW9uIiwiZXhwZWN0Iiwic2NyZWVuIiwiZ2V0QnlUZXN0SWQiLCJ0b0JlSW5UaGVEb2N1bWVudCIsImdldEJ5VGV4dCIsInVzZXIiLCJ1c2VyRXZlbnQiLCJzZXR1cCIsImNoYW5nZUJ1dHRvbiIsImNsaWNrIiwidG9IYXZlQmVlbkNhbGxlZFdpdGgiLCJjb250YWluZXIiLCJvdXRlckRpdiIsImZpcnN0RWxlbWVudENoaWxkIiwidG9IYXZlQ2xhc3MiLCJpbm5lckRpdiIsInRvSGF2ZVN0eWxlIl0sIm1hcHBpbmdzIjoiO0FBU0EsZ0NBQWdDO0FBQ2hDQSxLQUFLQyxJQUFJLENBQUMsdUJBQXVCO0lBQy9CLE9BQU8sU0FBU0MsZUFBZSxFQUFFQyxZQUFZLEVBQUVDLFlBQVksRUFBdUI7UUFDaEYscUJBQ0Usc0JBQUNDO1lBQUlDLGVBQVk7OzhCQUNmLHNCQUFDQzs7d0JBQUs7d0JBQVdKLGFBQWFLLFdBQVcsR0FBR0MsS0FBSyxDQUFDLElBQUksQ0FBQyxFQUFFOzs7OEJBQ3pELHFCQUFDQztvQkFBT0MsU0FBUyxJQUFNUCxhQUFhLElBQUlRLEtBQUs7OEJBQWdCOzs7O0lBS25FO0FBQ0Y7Ozs7O3VCQXJCK0I7a0VBQ1Q7Z0NBQ1M7Ozs7OztBQXFCL0JDLFNBQVMsNEJBQTRCO0lBQ25DLE1BQU1DLG1CQUFtQmQsS0FBS2UsRUFBRTtJQUNoQyxNQUFNQyxXQUFXLElBQUlKLEtBQUs7SUFFMUIsTUFBTUssZUFBZTtRQUNuQmQsY0FBY2E7UUFDZFosY0FBY1U7SUFDaEI7SUFFQUksV0FBVztRQUNUbEIsS0FBS21CLGFBQWE7SUFDcEI7SUFFQUMsR0FBRyx5Q0FBeUM7UUFDMUNDLElBQUFBLGFBQU0sZ0JBQUMscUJBQUNDLDhCQUFjO1lBQUUsR0FBR0wsWUFBWTs7UUFFdkNNLE9BQU9DLGFBQU0sQ0FBQ0MsV0FBVyxDQUFDLGdCQUFnQkMsaUJBQWlCO0lBQzdEO0lBRUFOLEdBQUcsOEJBQThCO1FBQy9CQyxJQUFBQSxhQUFNLGdCQUFDLHFCQUFDQyw4QkFBYztZQUFFLEdBQUdMLFlBQVk7O1FBRXZDTSxPQUFPQyxhQUFNLENBQUNHLFNBQVMsQ0FBQyx5QkFBeUJELGlCQUFpQjtJQUNwRTtJQUVBTixHQUFHLDJDQUEyQztRQUM1QyxNQUFNUSxPQUFPQyxrQkFBUyxDQUFDQyxLQUFLO1FBQzVCVCxJQUFBQSxhQUFNLGdCQUFDLHFCQUFDQyw4QkFBYztZQUFFLEdBQUdMLFlBQVk7O1FBRXZDLE1BQU1jLGVBQWVQLGFBQU0sQ0FBQ0csU0FBUyxDQUFDO1FBQ3RDLE1BQU1DLEtBQUtJLEtBQUssQ0FBQ0Q7UUFFakJSLE9BQU9ULGtCQUFrQm1CLG9CQUFvQixDQUFDLElBQUlyQixLQUFLO0lBQ3pEO0lBRUFRLEdBQUcsbUNBQW1DO1FBQ3BDLE1BQU0sRUFBRWMsU0FBUyxFQUFFLEdBQUdiLElBQUFBLGFBQU0sZ0JBQzFCLHFCQUFDQyw4QkFBYztZQUFDbkIsY0FBY2E7WUFBVVosY0FBY1U7O1FBR3hELDBCQUEwQjtRQUMxQixNQUFNcUIsV0FBV0QsVUFBVUUsaUJBQWlCO1FBQzVDYixPQUFPWSxVQUFVRSxXQUFXLENBQUMsUUFBUSxrQkFBa0I7UUFFdkQsNEVBQTRFO1FBQzVFLE1BQU1DLFdBQVdILFVBQVVDO1FBQzNCYixPQUFPZSxVQUFVRCxXQUFXLENBQUMsUUFBUSxnQkFBZ0IsYUFBYSxZQUFZLGdCQUFnQixhQUFhLFFBQVE7UUFFbkgsNkNBQTZDO1FBQzdDZCxPQUFPZSxVQUFVQyxXQUFXLENBQUM7UUFDN0JoQixPQUFPZSxVQUFVQyxXQUFXLENBQUM7SUFDL0I7SUFFQW5CLEdBQUcsd0NBQXdDO1FBQ3pDQyxJQUFBQSxhQUFNLGdCQUFDLHFCQUFDQyw4QkFBYztZQUFFLEdBQUdMLFlBQVk7O1FBRXZDLG9FQUFvRTtRQUNwRU0sT0FBT0MsYUFBTSxDQUFDRyxTQUFTLENBQUMseUJBQXlCRCxpQkFBaUI7SUFDcEU7QUFDRiJ9

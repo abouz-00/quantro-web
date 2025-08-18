@@ -5,9 +5,142 @@ import Image from 'next/image';
 import { Poppins } from 'next/font/google';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { motion, useAnimation, useInView } from 'framer-motion';
+import { ChartPieIcon, BeakerIcon, CursorArrowRaysIcon } from '@heroicons/react/24/outline';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
+
+// Floating food particles component
+const FloatingFoodParticles = () => {
+  const foodEmojis = useMemo(() => ['🥗', '🍎', '🥑', '🍊', '🥕', '🫐', '🍇', '🥦', '🍌', '🫒'], []);
+  
+  const particles = useMemo(() => 
+    Array.from({ length: 15 }, (_, i) => ({
+      id: i,
+      emoji: foodEmojis[Math.floor(Math.random() * foodEmojis.length)],
+      initialX: Math.random() * 100,
+      initialY: Math.random() * 100,
+      scale: 0.6 + Math.random() * 0.8,
+      duration: 8 + Math.random() * 12,
+      delay: Math.random() * 5,
+    })), [foodEmojis]
+  );
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {particles.map((particle) => (
+        <motion.div
+          key={particle.id}
+          className="absolute text-2xl opacity-30"
+          style={{
+            left: `${particle.initialX}%`,
+            top: `${particle.initialY}%`,
+            scale: particle.scale,
+          }}
+          animate={{
+            y: [-20, 20, -20],
+            x: [-10, 10, -10],
+            rotate: [0, 360],
+            opacity: [0.2, 0.6, 0.2],
+          }}
+          transition={{
+            duration: particle.duration,
+            delay: particle.delay,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          {particle.emoji}
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
+// 3D Feature Card Component
+interface FeatureCardProps {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+  delay?: number;
+}
+
+const FeatureCard: React.FC<FeatureCardProps> = ({ icon: Icon, title, description, delay = 0 }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible");
+    }
+  }, [isInView, controls]);
+
+  return (
+    <motion.div
+      ref={ref}
+      className="group cursor-pointer"
+      initial="hidden"
+      animate={controls}
+      variants={{
+        hidden: { opacity: 0, y: 50, rotateX: -15 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          rotateX: 0,
+          transition: {
+            duration: 0.6,
+            delay: delay,
+            ease: "easeOut"
+          }
+        }
+      }}
+      whileHover={{
+        rotateX: 5,
+        rotateY: 5,
+        scale: 1.02,
+        transition: { duration: 0.3 }
+      }}
+      style={{ perspective: 1000 }}
+    >
+      <div className="backdrop-blur-sm rounded-xl shadow-lg h-full relative overflow-hidden group-hover:shadow-2xl transition-shadow duration-300" 
+           style={{ backgroundColor: '#EADFCA', userSelect: 'none', WebkitUserSelect: 'none' }}>
+        {/* Hover gradient overlay */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-violet-400/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          initial={false}
+        />
+        
+        <div className="p-6 h-full flex flex-col items-center text-center relative z-10">
+          <motion.div
+            className="w-14 h-14 bg-gradient-to-br from-violet-500 to-purple-600 rounded-full flex items-center justify-center mb-4 group-hover:shadow-lg"
+            whileHover={{ rotate: 360, scale: 1.1 }}
+            transition={{ duration: 0.6 }}
+          >
+            <Icon className="w-7 h-7 text-white" />
+          </motion.div>
+          <div>
+            <h3 className={`font-semibold text-gray-800 mb-2 text-lg ${poppins.className} group-hover:text-violet-700 transition-colors duration-300`}>
+              {title}
+            </h3>
+            <p className={`text-gray-600 text-sm leading-relaxed ${poppins.className}`}>
+              {description}
+            </p>
+          </div>
+        </div>
+        
+        {/* Bottom border animation */}
+        <motion.div
+          className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-violet-500 to-purple-600"
+          initial={{ width: "0%" }}
+          whileHover={{ width: "100%" }}
+          transition={{ duration: 0.3 }}
+        />
+      </div>
+    </motion.div>
+  );
+};
 
 export default function LandingPage() {
   const { status } = useSession();
@@ -40,122 +173,137 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center overflow-hidden fixed inset-0" style={{ backgroundColor: '#6e44ff', userSelect: 'none', WebkitUserSelect: 'none' }}>
-      <div className="text-center px-6 py-4 w-full max-w-4xl mx-auto h-full flex flex-col justify-center pb-32">
-        {/* Logo/Brand */}
-        <div className="mb-8 flex justify-center">
-          <div className="flex items-center justify-center">
+    <div className="min-h-screen w-full flex flex-col relative" style={{ backgroundColor: '#6e44ff', userSelect: 'none', WebkitUserSelect: 'none' }}>
+      {/* Floating food particles background */}
+      <FloatingFoodParticles />
+      
+      {/* Animated background gradient */}
+      <motion.div
+        className="absolute inset-0 opacity-20"
+        animate={{
+          background: [
+            "radial-gradient(circle at 20% 50%, rgba(139, 69, 255, 0.3) 0%, transparent 50%)",
+            "radial-gradient(circle at 80% 50%, rgba(139, 69, 255, 0.3) 0%, transparent 50%)",
+            "radial-gradient(circle at 20% 50%, rgba(139, 69, 255, 0.3) 0%, transparent 50%)"
+          ]
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Main content area */}
+      <main className="flex-1 flex flex-col justify-center items-center px-6 py-16 relative z-10">
+        {/* Logo section with enhanced animation */}
+        <motion.div 
+          className="w-full max-w-6xl text-center mb-20"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <div>
             <Image 
-              src="/quantro_header.svg" 
+              src="/header.svg" 
               alt="Quantro Logo" 
-              className="h-32 w-auto mx-auto"
+              className="w-auto mx-auto"
               width={576}
               height={576}
               style={{ 
+                height: '8rem',
                 userSelect: 'none', 
                 WebkitUserSelect: 'none',
-                filter: 'drop-shadow(0 0 10px rgba(0,0,0,0.05))'
+                filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.1))'
               }}
             />
           </div>
-        </div>
-
-        {/* Features Preview */}
-        <div className="grid grid-cols-3 gap-4 mb-8 w-full max-w-4xl mx-auto">
-          <div className="backdrop-blur-sm rounded-xl shadow-lg" style={{ backgroundColor: '#EADFCA', userSelect: 'none', WebkitUserSelect: 'none' }}>
-            <div className="p-6 h-full flex flex-col items-center text-center">
-              <div className="w-12 h-12 bg-violet-500 rounded-full flex items-center justify-center mb-4">
-                <span className="text-white text-2xl">🥗</span>
-              </div>
-              <div>
-                <h3 className={`font-semibold text-gray-800 mb-2 text-lg ${poppins.className}`}>Smart Tracking</h3>
-                <p className={`text-gray-600 text-sm leading-relaxed ${poppins.className}`}>Intelligent food logging with comprehensive nutrition data</p>
-              </div>
-            </div>
-          </div>
           
-          <div className="backdrop-blur-sm rounded-xl shadow-lg" style={{ backgroundColor: '#EADFCA', userSelect: 'none', WebkitUserSelect: 'none' }}>
-            <div className="p-6 h-full flex flex-col items-center text-center">
-              <div className="w-12 h-12 bg-violet-500 rounded-full flex items-center justify-center mb-4">
-                <span className="text-white text-2xl">📊</span>
-              </div>
-              <div>
-                <h3 className={`font-semibold text-gray-800 mb-2 text-lg ${poppins.className}`}>Analytics</h3>
-                <p className={`text-gray-600 text-sm leading-relaxed ${poppins.className}`}>Detailed insights into your nutritional patterns</p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="backdrop-blur-sm rounded-xl shadow-lg" style={{ backgroundColor: '#EADFCA', userSelect: 'none', WebkitUserSelect: 'none' }}>
-            <div className="p-6 h-full flex flex-col items-center text-center">
-              <div className="w-12 h-12 bg-violet-500 rounded-full flex items-center justify-center mb-4">
-                <span className="text-white text-2xl">🎯</span>
-              </div>
-              <div>
-                <h3 className={`font-semibold text-gray-800 mb-2 text-lg ${poppins.className}`}>Goals</h3>
-                <p className={`text-gray-600 text-sm leading-relaxed ${poppins.className}`}>Personalized targets and progress tracking</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Sign In Buttons */}
-        <div className="flex gap-4 justify-center mb-8 w-full max-w-md mx-auto items-center">
-          <button 
-            onClick={handleAppleSignIn}
-            className="flex-1 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 cursor-pointer overflow-hidden flex items-center justify-center"
-            style={{ 
-              borderRadius: '8px',
-              userSelect: 'none', 
-              WebkitUserSelect: 'none',
-              height: '40px',
-              minWidth: '0',
-              width: '100%'
-            }}
+          {/* Animated subtitle */}
+          <motion.p
+            className={`text-white/90 text-xl mt-6 ${poppins.className}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <svg width="100%" height="40" viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full object-contain">
-              <rect x="0" y="0" width="200" height="40" rx="8" ry="8" fill="#000000"/>
-              <g fill="#FFFFFF">
-                {/* Apple Logo */}
-                <g transform="translate(16, 10) scale(0.75)">
-                  <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.037-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09z"/>
-                  <path d="M15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.883-1.454 2.298-1.273 3.649 1.338.104 2.715-.688 3.56-1.637z"/>
-                </g>
-              </g>
-              <text x="110" y="65%" textAnchor="middle" dominantBaseline="alphabetic" fill="#FFFFFF"
-                    fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif"
-                    fontSize="18" letterSpacing="-0.01em" fontWeight="400">
-                Sign in with Apple
-              </text>
-            </svg>
-          </button>
-          
-          <button 
-            onClick={handleGoogleSignIn}
-            className="flex-1 transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-300 cursor-pointer overflow-hidden flex items-center justify-center"
-            style={{ 
-              borderRadius: '20px',
-              userSelect: 'none', 
-              WebkitUserSelect: 'none',
-              height: '40px',
-              minWidth: '0',
-              width: '100%'
-            }}
-          >
-            <Image 
-              src="/google-signin-official-light.svg" 
-              alt="Sign in with Google" 
-              className="w-full h-full object-contain"
-              width={200}
-              height={40}
-              style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+            Smart nutrition tracking, reimagined
+          </motion.p>
+        </motion.div>
+
+        {/* Enhanced Features section with wider spread */}
+        <div className="w-full max-w-7xl mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+            <FeatureCard
+              icon={BeakerIcon}
+              title="Smart Tracking"
+              description="Intelligent food logging with comprehensive nutrition data and AI-powered insights"
+              delay={0.2}
             />
-          </button>
+            
+            <FeatureCard
+              icon={ChartPieIcon}
+              title="Analytics"
+              description="Detailed insights into your nutritional patterns with beautiful visualizations"
+              delay={0.4}
+            />
+            
+            <FeatureCard
+              icon={CursorArrowRaysIcon}
+              title="Goals"
+              description="Personalized targets and progress tracking with smart recommendations"
+              delay={0.6}
+            />
+          </div>
         </div>
-      </div>
+
+        {/* Enhanced Sign-in buttons section */}
+        <motion.div 
+          className="w-full max-w-lg"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+        >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            {/* Apple Sign In Button */}
+            <motion.button 
+              onClick={handleAppleSignIn}
+              className="w-full sm:flex-1 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center gap-3 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-lg hover:shadow-xl"
+              style={{ 
+                backgroundColor: '#000000',
+                userSelect: 'none', 
+                WebkitUserSelect: 'none'
+              }}
+              whileHover={{ scale: 1.02, backgroundColor: '#1f2937' }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+            >
+              {/* Apple Logo SVG */}
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.037-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09z"/>
+                <path d="M15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.883-1.454 2.298-1.273 3.649 1.338.104 2.715-.688 3.56-1.637z"/>
+              </svg>
+              <span className={poppins.className}>Sign in with Apple</span>
+            </motion.button>
+            
+            {/* Google Sign In Button */}
+            <motion.button 
+              onClick={handleGoogleSignIn}
+              className="w-full sm:flex-1 bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-6 rounded-xl flex items-center justify-center gap-3 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-300 shadow-lg hover:shadow-xl border border-gray-200"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+            >
+              {/* Google Logo SVG */}
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+              <span className={poppins.className}>Sign in with Google</span>
+            </motion.button>
+          </div>
+        </motion.div>
+      </main>
 
       {/* Footer */}
-      <footer className="fixed bottom-0 left-0 right-0 px-8 py-8">
+      <footer className="px-8 py-8">
         <div className="max-w-7xl mx-auto flex justify-between items-end">
           <p className={`text-white/70 text-sm ${poppins.className}`}>
             © 2025 Quantro. All rights reserved.

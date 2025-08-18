@@ -27,6 +27,8 @@ const customJestConfig = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
+  // Test environment setup
+  setupFiles: ['<rootDir>/jest.env.js'],
   // Performance optimizations
   maxWorkers: process.env.CI ? 2 : '50%',
   cache: true,
