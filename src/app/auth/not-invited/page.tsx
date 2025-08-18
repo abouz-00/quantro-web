@@ -45,7 +45,7 @@ export default function NotInvitedPage() {
         {/* Logo */}
         <div className="mb-8 flex justify-center">
           <Image 
-            src="/quantro_header.svg" 
+            src="/header.svg" 
             alt="Quantro Logo" 
             className="h-24 w-auto mx-auto"
             width={576}

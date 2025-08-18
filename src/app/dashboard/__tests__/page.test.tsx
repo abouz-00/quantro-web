@@ -105,7 +105,7 @@ describe('Dashboard Page', () => {
     
     const logo = screen.getByAltText('Quantro Logo');
     expect(logo).toBeInTheDocument();
-    expect(logo).toHaveAttribute('src', '/quantro_header.svg');
+    expect(logo).toHaveAttribute('src', '/header.svg');
   });
 
   it('has sign out functionality', () => {

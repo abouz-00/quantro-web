@@ -28,14 +28,14 @@ export const Header: React.FC<HeaderProps> = ({
           aria-label="Go to Dashboard"
         >
           <img 
-            src="/quantro_header.svg" 
+            src="/header.svg" 
             alt="Quantro Logo" 
-            className="h-10"
+            className="h-8"
             style={{ 
               userSelect: 'none', 
               WebkitUserSelect: 'none',
               filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.1))',
-              maxHeight: '2.5rem',
+              maxHeight: '2rem',
               width: 'auto'
             }}
           />
