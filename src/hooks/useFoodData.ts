@@ -106,6 +106,11 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
   // Handle entry selection with multi-select support
   const handleEntrySelect = useCallback((id: string, index: number, event: React.MouseEvent) => {
     setSelectedEntries(prev => {
+      // Fast path for simple deselection - most common case
+      if (!event.ctrlKey && !event.metaKey && !event.shiftKey && prev.length === 1 && prev[0] === id) {
+        return [];
+      }
+      
       if (event.ctrlKey || event.metaKey) {
         // Multi-select with Ctrl/Cmd - toggle selection
         if (prev.includes(id)) {
@@ -138,7 +143,7 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
         // Single click - toggle selection or select new item
         if (prev.includes(id)) {
           // If already selected, deselect it
-          return prev.filter(entryId => entryId !== id);
+          return [];
         } else {
           // If not selected, select only this item (replace any previous selection)
           return [id];

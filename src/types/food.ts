@@ -1,23 +1,11 @@
-export interface Nutrients {
-  calories: number;
-  protein: number;
-  carbs: number;
-  fat: number;
-  fiber?: number;
-}
+// Re-export types from the centralized foodEntry types file
+export type { 
+  MacroNutrients as Nutrients, 
+  MicroNutrients,
+  AllNutrients,
+  FoodEntry, 
+  ContextMenuState,
+  MicronutrientKey
+} from './foodEntry';
 
-export interface FoodEntry extends Nutrients {
-  id: string;
-  description: string;
-  amount: string;
-  unit: string;
-  date: string;
-  mealType: "breakfast" | "lunch" | "dinner" | "snack" | "other";
-}
-
-export interface ContextMenuState {
-  visible: boolean;
-  x: number;
-  y: number;
-  targetEntryId: string | null;
-}
+export { MICRONUTRIENT_DAILY_VALUES, getNutrientValueByLabel } from './foodEntry';

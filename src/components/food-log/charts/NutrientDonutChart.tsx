@@ -17,19 +17,7 @@ ChartJS.register(
   Legend
 );
 
-interface FoodEntry {
-  id: string;
-  description: string;
-  amount: string;
-  unit: string;
-  date: string;
-  calories: number;
-  protein: number;
-  carbs: number;
-  fat: number;
-  fiber?: number;
-  mealType: "breakfast" | "lunch" | "dinner" | "snack" | "other";
-}
+import { FoodEntry, getNutrientValueByLabel as getNutrientValue } from '../../../types/foodEntry';
 
 interface NutrientDonutChartProps {
   label: string;
@@ -42,9 +30,8 @@ interface NutrientDonutChartProps {
 
 export default function NutrientDonutChart({ label, current, goal, unit, color, entries = [] }: NutrientDonutChartProps) {
   const [showPopout, setShowPopout] = useState<boolean>(false);
-  const percentage = Math.min(Math.round((current / goal) * 100), 100);
-  const remaining = Math.max(goal - current, 0);
   const chartContainerRef = useRef<HTMLDivElement>(null);
+  const popoutRef = useRef<HTMLDivElement>(null);
   
   // Add an event handler for clicks as a fallback for touch devices
   useEffect(() => {
@@ -61,17 +48,35 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
     };
   }, [showPopout]);
 
-  // Handle window resize to update popout position
-  useEffect(() => {
-    const handleResize = () => {
-      // Force a re-render when window resizes to update popout position
-      setShowPopout(showPopout);
-    };
+  const [popoutPosition, setPopoutPosition] = useState({ left: '50%', bottom: '50%' });
 
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+  // Update popout position
+  const updatePopoutPosition = () => {
+    if (chartContainerRef.current) {
+      const rect = chartContainerRef.current.getBoundingClientRect();
+      setPopoutPosition({
+        left: `${rect.left + (rect.width / 2) - 160}px`,
+        bottom: `${window.innerHeight - rect.top + 20}px`
+      });
+    }
+  };
+
+  // Handle window resize and scroll to update popout position
+  useEffect(() => {
+    if (showPopout) {
+      updatePopoutPosition();
+      
+      const handleResizeOrScroll = () => {
+        updatePopoutPosition();
+      };
+
+      window.addEventListener('resize', handleResizeOrScroll);
+      window.addEventListener('scroll', handleResizeOrScroll, true);
+      return () => {
+        window.removeEventListener('resize', handleResizeOrScroll);
+        window.removeEventListener('scroll', handleResizeOrScroll, true);
+      };
+    }
   }, [showPopout]);
 
   // Get relevant entries sorted by the nutrient value (descending)
@@ -96,30 +101,22 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
 
   // Helper function to get the appropriate nutrient value based on label
   function getNutrientValueByLabel(entry: FoodEntry, label: string): number {
-    switch (label.toLowerCase()) {
-      case 'calories': return entry.calories;
-      case 'protein': return entry.protein;
-      case 'carbs': return entry.carbs;
-      case 'fat': return entry.fat;
-      default: return 0;
-    }
+    return getNutrientValue(entry, label);
   }
+
+  const remaining = Math.max(0, goal - current);
   
   const data = {
-    labels: [label, 'Remaining'],
+    labels: ['Current', 'Remaining'],
     datasets: [
       {
         data: [current, remaining],
-        backgroundColor: [
-          color,
-          '#E5E7EB' // light gray for remaining
-        ],
+        backgroundColor: [color, '#E5E7EB'],
         borderWidth: 0,
-      },
+        hoverBackgroundColor: [color, '#E5E7EB'], // Prevent color change on hover
+      }
     ],
   };
-
-  const popoutRef = useRef<HTMLDivElement>(null);
 
   const options: ChartOptions<'doughnut'> = {
     responsive: true,
@@ -131,27 +128,19 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
         display: false,
       },
       tooltip: {
-        displayColors: false,
-        callbacks: {
-          title: () => '',
-          label: function(context) {
-            const value = context.raw as number;
-            const isConsumed = context.dataIndex === 0;
-            return isConsumed 
-              ? `${label}: ${Math.round(value)} ${unit} (${percentage}%)` 
-              : `Remaining: ${Math.round(value)} ${unit}`;
-          }
-        }
+        enabled: false, // Disable default tooltip since we're using our own
+      }
+    },
+    elements: {
+      arc: {
+        hoverBorderWidth: 0, // Prevent border on hover
       }
     }
   };
 
   return (
     <div 
-      className="mb-4 select-none flex-1 min-w-[150px] px-2 mx-1 bg-white rounded-lg shadow-sm p-3 relative"
-      onMouseEnter={() => entries && entries.length > 0 && setShowPopout(true)}
-      onMouseLeave={() => setShowPopout(false)}
-      onClick={() => entries && entries.length > 0 && setShowPopout(!showPopout)}
+      className="mb-4 select-none flex-1 min-w-[150px] px-2 mx-1 bg-white rounded-lg p-3 relative"
       ref={chartContainerRef}
     >
       <div className="text-center mb-2">
@@ -159,11 +148,15 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
           {label}
         </span>
       </div>
-      <div className="h-[140px] relative">
+      <div 
+        className="h-[140px] relative"
+        onMouseEnter={() => entries && entries.length > 0 && setShowPopout(true)}
+        onMouseLeave={() => setShowPopout(false)}
+      >
         <div className="h-full w-full cursor-help">
           <Doughnut data={data} options={options} />
         </div>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           <span className="text-2xl font-bold" style={{ color }}>
             {Math.round(current)}
           </span>
@@ -177,13 +170,8 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
       {showPopout && (
         <div 
           ref={popoutRef}
-          className="fixed z-50 w-80 max-h-[350px] overflow-y-auto bg-white rounded-md shadow-2xl border border-gray-300 p-3"
-          style={{ 
-            left: chartContainerRef.current ? 
-              `${chartContainerRef.current.getBoundingClientRect().left + (chartContainerRef.current.offsetWidth / 2) - 160}px` : '50%',
-            bottom: chartContainerRef.current ? 
-              `${window.innerHeight - chartContainerRef.current.getBoundingClientRect().top + 20}px` : '50%'
-          }}
+          className="fixed z-50 w-80 max-h-[400px] overflow-hidden bg-white rounded-md shadow-2xl border border-gray-300 p-3"
+          style={popoutPosition}
         >
           {/* Arrow pointing down to the donut */}
           <div 
@@ -195,12 +183,12 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
               boxShadow: '2px 2px 2px rgba(0,0,0,0.1)'
             }}
           ></div>
-          <h3 className="text-sm font-semibold p-2 border-b border-gray-200 mb-1" style={{ color }}>
+          <h3 className="text-xs font-semibold p-2 border-b border-gray-200 mb-1" style={{ color }}>
             {capitalizeWords(label)} Breakdown
           </h3>
           
           {entries && entries.length > 0 ? (
-            <ul className="divide-y divide-gray-100 overflow-y-auto">
+            <ul className="divide-y divide-gray-100 overflow-hidden">
               {sortedEntries.map((entry) => {
                 const value = getNutrientValueByLabel(entry, label);
                 if (value <= 0) return null; // Skip entries with no contribution
@@ -210,15 +198,15 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
                 return (
                   <li key={entry.id} className="py-2 px-2 flex items-center justify-between hover:bg-gray-50 rounded">
                     <div className="flex-1 truncate mr-2">
-                      <span className="text-sm font-medium text-gray-900 truncate">
+                      <span className="text-xs font-medium text-gray-900 truncate">
                         {capitalizeWords(entry.description)}
                       </span>
                     </div>
                     <div className="flex items-center whitespace-nowrap">
-                      <span className="text-sm font-semibold" style={{ color }}>
+                      <span className="text-xs font-semibold" style={{ color }}>
                         {Math.round(value)} {unit}
                       </span>
-                      <span className="text-xs text-gray-500 ml-1">
+                      <span className="text-[10px] text-gray-500 ml-1">
                         ({contribution}%)
                       </span>
                     </div>
@@ -226,13 +214,13 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
                 );
               })}
               {sortedEntries.filter(entry => getNutrientValueByLabel(entry, label) > 0).length === 0 && (
-                <li className="py-4 text-center text-gray-500 text-sm">
+                <li className="py-4 text-center text-gray-500 text-xs">
                   No Entries Contribute To {capitalizeWords(label)}
                 </li>
               )}
             </ul>
           ) : (
-            <div className="py-4 text-center text-gray-500 text-sm">
+            <div className="py-4 text-center text-gray-500 text-xs">
               No Entries To Display
             </div>
           )}

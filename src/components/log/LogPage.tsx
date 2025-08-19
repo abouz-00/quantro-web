@@ -5,7 +5,7 @@ import { Poppins } from 'next/font/google';
 import { FoodSearchModal } from "../food-log/search";
 import { EditFoodModal, TargetsModal } from "../food-log/modals";
 import { EnhancedFoodTable } from "../food-log";
-import { EnergySummary } from "../food-log/core";
+import { EnergySummary, MicronutrientsSection } from "../food-log/core";
 import { useDateManager } from "../../hooks/useDateManager";
 import { useFoodData } from "../../hooks/useFoodData";
 import { useKeyboardShortcuts } from "../../hooks/useKeyboardShortcuts";
@@ -220,6 +220,15 @@ export default function LogPage() {
                 totals={displayTotals} 
                 customGoals={customGoals} 
                 selectedEntryCount={selectedEntries.length}
+                entries={selectedEntries.length > 0 
+                  ? filteredEntries.filter(entry => selectedEntries.includes(entry.id))
+                  : filteredEntries}
+              />
+            </div>
+
+            {/* Micronutrients */}
+            <div className="mb-6">
+              <MicronutrientsSection 
                 entries={selectedEntries.length > 0 
                   ? filteredEntries.filter(entry => selectedEntries.includes(entry.id))
                   : filteredEntries}

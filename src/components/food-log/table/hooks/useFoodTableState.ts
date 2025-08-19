@@ -5,7 +5,6 @@ export function useFoodTableState() {
   const [editingEntry, setEditingEntry] = useState<string | null>(null);
   const [editAmount, setEditAmount] = useState<string>("");
   const [editUnit, setEditUnit] = useState<string>("");
-  const [contextMenuOpen, setContextMenuOpen] = useState(false);
 
   const startEditing = (entryId: string, amount: string, unit: string) => {
     setEditingEntry(entryId);
@@ -31,8 +30,6 @@ export function useFoodTableState() {
     setEditAmount,
     editUnit,
     setEditUnit,
-    contextMenuOpen,
-    setContextMenuOpen,
     startEditing,
     stopEditing,
     resetEditValues

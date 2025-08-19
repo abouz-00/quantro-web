@@ -1,0 +1,1 @@
+export { isSupplement } from './supplementDetection';

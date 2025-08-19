@@ -34,15 +34,15 @@ export default function EnergySummary({ totals, customGoals, selectedEntryCount 
     : 'Daily Summary';
   
   return (
-    <section className="bg-gray-100 rounded-lg p-4 md:p-5 shadow-lg select-none">
-      <h2 className="text-lg font-medium mb-3">{title}</h2>
+    <section className="bg-white rounded-lg p-4 md:p-5 shadow-lg select-none">
+      <h2 className="text-lg font-bold mb-3">{title}</h2>
       <div className="flex flex-row overflow-x-auto no-scrollbar pb-2">
         <NutrientDonutChart
           label="Calories"
           current={totals.calories}
           goal={customGoals.calories}
           unit="kcal"
-          color="#F3439B"
+          color="#FF44B0"
           entries={entries}
         />
         <NutrientDonutChart
@@ -50,7 +50,7 @@ export default function EnergySummary({ totals, customGoals, selectedEntryCount 
           current={totals.protein}
           goal={customGoals.protein}
           unit="g"
-          color="#7EE081"
+          color="#65FF44"
           entries={entries}
         />
         <NutrientDonutChart
@@ -58,7 +58,7 @@ export default function EnergySummary({ totals, customGoals, selectedEntryCount 
           current={totals.carbs}
           goal={customGoals.carbs}
           unit="g"
-          color="#F0E15B"
+          color="#44FAFF"
           entries={entries}
         />
         <NutrientDonutChart
@@ -66,7 +66,7 @@ export default function EnergySummary({ totals, customGoals, selectedEntryCount 
           current={totals.fat}
           goal={customGoals.fat}
           unit="g"
-          color="#E55640"
+          color="#FFB944"
           entries={entries}
         />
       </div>
