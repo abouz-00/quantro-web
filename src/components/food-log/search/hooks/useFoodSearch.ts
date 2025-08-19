@@ -1,12 +1,47 @@
 import { useState, useEffect, useCallback } from "react";
 
 // Move nutrientMapping outside the component to avoid recreating it on every render
+// Comprehensive USDA nutrient ID mapping for micronutrients
 const nutrientMapping: { [key: number]: string } = {
+  // Macronutrients
   1008: "Energy",
-  1003: "Protein",
+  1003: "Protein", 
   1004: "Total lipid (fat)",
   1005: "Carbohydrate, by difference",
-  1079: "Fiber, total dietary"
+  1079: "Fiber, total dietary",
+  
+  // B Vitamins
+  1165: "Thiamine", // B1
+  1166: "Riboflavin", // B2  
+  1167: "Niacin", // B3
+  1170: "Pantothenic acid", // B5
+  1175: "Vitamin B-6", // B6
+  1178: "Vitamin B-12", // B12
+  1176: "Biotin",
+  1177: "Folate, total", // Folate
+  
+  // Fat-Soluble Vitamins
+  1106: "Vitamin A, RAE", // Vitamin A (Retinol Activity Equivalents)
+  1162: "Vitamin C, total ascorbic acid", // Vitamin C
+  1114: "Vitamin D (D2 + D3)", // Vitamin D
+  1185: "Vitamin K (phylloquinone)", // Vitamin K
+  
+  // Minerals
+  1087: "Calcium, Ca",
+  1098: "Copper, Cu", 
+  1089: "Iron, Fe",
+  1090: "Magnesium, Mg",
+  1101: "Manganese, Mn",
+  1091: "Phosphorus, P",
+  1092: "Potassium, K",
+  1103: "Selenium, Se",
+  1093: "Sodium, Na",
+  1095: "Zinc, Zn",
+  
+  // Essential Fatty Acids
+  1404: "EPA", // Eicosapentaenoic acid
+  1405: "DHA", // Docosahexaenoic acid
+  1456: "ALA", // Alpha-linolenic acid
 };
 
 interface FoodNutrient {

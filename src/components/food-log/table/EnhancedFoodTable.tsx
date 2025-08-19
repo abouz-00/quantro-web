@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useCallback } from "react";
 import {
   DndContext,
   KeyboardSensor,
@@ -27,15 +27,23 @@ import styles from './EnhancedFoodTable.module.css';
 // Add meal type order constant
 const MEAL_TYPES: Array<FoodEntry['mealType']> = ['breakfast', 'lunch', 'dinner', 'snack', 'other'];
 
+/**
+ * Professional EnhancedFoodTable Component
+ * 
+ * Architecture:
+ * - Clean separation of concerns
+ * - Proper event delegation without duplicate logic
+ * - Type-safe event handling
+ * - Professional design patterns
+ */
 export default function EnhancedFoodTable({ 
   foodData, 
   filteredEntries, 
   selectedEntries, 
-  handleEntrySelect: _handleEntrySelect, 
+  handleEntrySelect,
   updateFoodEntry = () => {},
   onReorderEntries = () => {},
-  onContextMenu,
-  setSelectedEntries
+  onContextMenu
 }: FoodTableProps) {
   // =====================
   // Hooks
@@ -46,11 +54,41 @@ export default function EnhancedFoodTable({
     editAmount,
     setEditAmount,
     editUnit,
-    setEditUnit,
-    contextMenuOpen,
-    setContextMenuOpen
+    setEditUnit
   } = useFoodTableState();
 
+  // =====================
+  // Professional Event Adapter Pattern
+  // =====================
+  
+  /**
+   * Clean, type-safe event adapter that bridges the gap between
+   * parent handler (MouseEvent only) and child components (MouseEvent | KeyboardEvent)
+   * 
+   * This follows the Adapter Pattern and avoids any business logic duplication
+   */
+  const adaptedSelectionHandler = useCallback((
+    id: string,
+    index: number, 
+    event: React.MouseEvent | React.KeyboardEvent
+  ) => {
+    // Extract essential modifier keys and create a minimal MouseEvent-compatible object
+    // This is a clean adapter pattern that preserves functionality without duplication
+    const eventAdapter = {
+      ctrlKey: event.ctrlKey,
+      metaKey: event.metaKey,
+      shiftKey: event.shiftKey,
+      preventDefault: event.preventDefault.bind(event),
+      stopPropagation: event.stopPropagation.bind(event),
+    };
+    
+    // Cast to MouseEvent interface - this is safe because we only use modifier keys
+    handleEntrySelect(id, index, eventAdapter as React.MouseEvent);
+  }, [handleEntrySelect]);
+
+  // =====================
+  // Drag & Drop Setup
+  // =====================
   const {
     currentEntries,
     activeId,
@@ -62,14 +100,13 @@ export default function EnhancedFoodTable({
     selectedEntries,
     onReorderEntries,
     updateFoodEntry,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    handleEntrySelect: (id: string, index: number, event: any) => _handleEntrySelect(id, index, event as React.MouseEvent)
+    handleEntrySelect: adaptedSelectionHandler
   });
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8,
+        distance: 3, // Reduced for more responsive drag start
       },
     }),
     useSensor(KeyboardSensor, {
@@ -78,71 +115,20 @@ export default function EnhancedFoodTable({
   );
 
   // =====================
-  // Handlers
+  // Data Processing
   // =====================
-  // Selection
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function handleEntrySelect(id: string, index: number, event: any) {
-    // First, always call the original handler if provided
-    // This ensures the parent component's logic is executed
-    if (_handleEntrySelect) {
-      _handleEntrySelect(id, index, event);
-    }
-    
-    // Then handle our internal selection state if setSelectedEntries is provided
-    if (!setSelectedEntries) return;
-    
-    // Robustly detect modifier keys for multi-select, even if event is synthetic or missing them
-    let isMulti = false;
-    
-    // First try to get modifier keys from the event
-    if (event && typeof event === 'object') {
-      // Check for our special flag for forced multi-select (used for Ctrl+Click)
-      if (event.isMultiSelectForced) {
-        isMulti = true;
-      } else {
-        isMulti = Boolean(event.shiftKey || event.ctrlKey || event.metaKey);
-      }
-    } 
-    
-    // Fallback to window.event if available
-    if (!isMulti && typeof window !== 'undefined') {
-      const winEvent = window.event as MouseEvent | KeyboardEvent | undefined;
-      isMulti = winEvent ? Boolean(winEvent.shiftKey || winEvent.ctrlKey || winEvent.metaKey) : false;
-    }
-    
-    // Debug: log event and selection state
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('[handleEntrySelect]', { id, index, event, isMulti, selectedEntries });
-    }
-    
-    if (isMulti) {
-      // Toggle this entry in the selection for multi-select (Cmd/Ctrl/Shift + click)
-      if (selectedEntries.includes(id)) {
-        setSelectedEntries(selectedEntries.filter(eid => eid !== id));
-      } else {
-        setSelectedEntries([...selectedEntries, id]);
-      }
-    } else {
-      // For single-select mode:
-      // If the entry is already selected, unselect it
-      // Otherwise, select just this entry
-      if (selectedEntries.length === 1 && selectedEntries[0] === id) {
-        setSelectedEntries([]);  // Unselect when clicking the only selected item
-      } else {
-        setSelectedEntries([id]); // Select only this entry
-      }
-    }
-  }
-
+  
   // Group entries by meal type
   const entriesByMealType = MEAL_TYPES.reduce((acc, mealType) => {
     acc[mealType] = currentEntries.filter(entry => entry.mealType === mealType);
     return acc;
   }, {} as Record<FoodEntry['mealType'], FoodEntry[]>);
 
-  // Create unified sortable items array containing only food entries for consistent visual feedback
-  const unifiedSortableItems = currentEntries.map(entry => entry.id);
+  // Create unified sortable items array containing food entries and meal headers for drag feedback
+  const unifiedSortableItems = [
+    ...MEAL_TYPES.map(mealType => `drop-${mealType}`), // Include meal headers as sortable targets
+    ...currentEntries.map(entry => entry.id)
+  ];
 
   // =====================
   // Render
@@ -165,28 +151,38 @@ export default function EnhancedFoodTable({
           strategy={verticalListSortingStrategy}
         >
           <div>
-            {MEAL_TYPES.map((mealType) => (
-              <MealSection
-                key={mealType}
-                mealType={mealType}
-                entries={entriesByMealType[mealType]}
-                foodData={foodData}
-                selectedEntries={selectedEntries}
-                handleEntrySelect={handleEntrySelect}
-                updateFoodEntry={updateFoodEntry}
-                editingEntry={editingEntry}
-                setEditingEntry={setEditingEntry}
-                editAmount={editAmount}
-                setEditAmount={setEditAmount}
-                editUnit={editUnit}
-                setEditUnit={setEditUnit}
-                formatNumber={formatNumber}
-                onContextMenu={onContextMenu}
-                activeId={activeId}
-                contextMenuOpen={contextMenuOpen}
-                setContextMenuOpen={setContextMenuOpen}
-              />
-            ))}
+            {MEAL_TYPES.map((mealType, index) => {
+              // Find the last meal type that has entries
+              const lastMealTypeWithEntries = MEAL_TYPES.slice().reverse().find(
+                type => entriesByMealType[type] && entriesByMealType[type].length > 0
+              );
+              // If no meal types have entries, the last meal type in the array should be considered last
+              const isLastSection = lastMealTypeWithEntries ? 
+                mealType === lastMealTypeWithEntries : 
+                index === MEAL_TYPES.length - 1;
+              
+              return (
+                <MealSection
+                  key={mealType}
+                  mealType={mealType}
+                  entries={entriesByMealType[mealType]}
+                  foodData={foodData}
+                  selectedEntries={selectedEntries}
+                  handleEntrySelect={adaptedSelectionHandler}
+                  updateFoodEntry={updateFoodEntry}
+                  editingEntry={editingEntry}
+                  setEditingEntry={setEditingEntry}
+                  editAmount={editAmount}
+                  setEditAmount={setEditAmount}
+                  editUnit={editUnit}
+                  setEditUnit={setEditUnit}
+                  formatNumber={formatNumber}
+                  onContextMenu={onContextMenu}
+                  activeId={activeId}
+                  isLastSection={isLastSection}
+                />
+              );
+            })}
           </div>
         </SortableContext>
         {/* No DragOverlay - visual feedback handled by .dragging-item class only */}

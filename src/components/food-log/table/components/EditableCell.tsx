@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { FoodEntry } from '../types';
 import { AVAILABLE_UNITS, abbreviateUnit, normalizeUnit, convertUnits } from '../utils';
 
@@ -15,7 +15,7 @@ interface EditableCellProps {
   onStartEditing: (entry: FoodEntry, e?: React.MouseEvent | React.KeyboardEvent) => void;
 }
 
-export function EditableCell({
+export const EditableCell = memo(({
   item,
   editingEntry,
   editAmount,
@@ -26,7 +26,7 @@ export function EditableCell({
   setEditingEntry,
   formatNumber,
   onStartEditing
-}: EditableCellProps) {
+}: EditableCellProps) => {
   const [editError, setEditError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const selectRef = useRef<HTMLSelectElement>(null);
@@ -226,8 +226,10 @@ export function EditableCell({
           if (e.key === 'Enter' || e.key === ' ') onStartEditing(item, e);
         }}
       >
-        <span className="inline-block w-12 text-left text-gray-600" style={{fontWeight: 400}}>{abbreviateUnit(item.unit)}</span>
+        <span className="inline-block w-12 text-left" style={{fontWeight: 400}}>{abbreviateUnit(item.unit)}</span>
       </span>
     </div>
   );
-}
+});
+
+EditableCell.displayName = 'EditableCell';

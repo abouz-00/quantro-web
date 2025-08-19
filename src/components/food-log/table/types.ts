@@ -1,21 +1,8 @@
 // Shared types for food table components
+import type { FoodEntry, MacroNutrients as Nutrients } from '../../../types/foodEntry';
 
-export interface Nutrients {
-  calories: number;
-  protein: number;
-  carbs: number;
-  fat: number;
-  fiber?: number;
-}
-
-export interface FoodEntry extends Nutrients {
-  id: string;
-  description: string;
-  amount: string;
-  unit: string;
-  date: string;
-  mealType: "breakfast" | "lunch" | "dinner" | "snack" | "other";
-}
+// Re-export for backward compatibility
+export type { FoodEntry, Nutrients };
 
 export interface FoodTableProps {
   foodData: FoodEntry[];

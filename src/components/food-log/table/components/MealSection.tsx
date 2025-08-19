@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { FoodEntry } from '../types';
@@ -20,11 +20,10 @@ interface MealSectionProps {
   formatNumber: (n: number) => string;
   onContextMenu?: (e: React.MouseEvent, id: string) => void;
   activeId: string | null;
-  contextMenuOpen: boolean;
-  setContextMenuOpen: (open: boolean) => void;
+  isLastSection?: boolean;
 }
 
-export function MealSection({
+export const MealSection = memo(({
   mealType,
   entries,
   foodData,
@@ -40,13 +39,12 @@ export function MealSection({
   formatNumber,
   onContextMenu,
   activeId,
-  contextMenuOpen,
-  setContextMenuOpen
-}: MealSectionProps) {
+  isLastSection = false
+}: MealSectionProps) => {
   // State to track if the meal section is collapsed
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // Remove sortable functionality - headings are only drop targets now
+  // Drop target for the meal section
   const { setNodeRef: setDropRef } = useDroppable({
     id: `drop-${mealType}`,
     data: { type: 'meal-drop-zone', mealType }
@@ -58,23 +56,25 @@ export function MealSection({
     setIsCollapsed(!isCollapsed);
   };
 
-  // Determine rounded corners based on meal type
+  // Determine rounded corners based on meal type and whether this is the last section
   const getRoundedClasses = () => {
     if (mealType === 'breakfast') {
       return 'rounded-t-lg'; // Top rounded corners for breakfast
-    } else if (mealType === 'other') {
-      return 'rounded-b-lg'; // Bottom rounded corners for other
+    } else if (isLastSection) {
+      // If this is the last section and has entries, don't round the heading bottom
+      // If this is the last section and has no entries, round the heading bottom
+      return entries.length > 0 ? '' : 'rounded-b-lg';
     }
     return ''; // No rounded corners for middle sections
   };
 
   return (
     <div>
-      {/* Meal Type Heading - now only a drop target, not draggable */}
+      {/* Meal Type Heading - drop target */}
       <div 
         ref={setDropRef}
         className={`px-4 py-2 text-white font-bold text-sm border border-gray-300 border-b-black cursor-default flex items-center justify-between ${getRoundedClasses()}`}
-        style={{ backgroundColor: '#938888' }}
+        style={{ backgroundColor: '#2E2E2E' }}
       >
         <span>{capitalizedMealType}</span>
         <button
@@ -95,7 +95,7 @@ export function MealSection({
       
       {/* Entries container - only show if there are entries and not collapsed */}
       {entries.length > 0 && !isCollapsed && (
-        <div className="bg-white border-l border-r border-b border-gray-300">
+        <div className={`bg-white border-l border-r border-b border-gray-300 ${isLastSection ? 'rounded-b-lg' : ''}`}>
           <table className="w-full table-fixed">
             <colgroup>
               <col className="w-auto" />
@@ -107,7 +107,7 @@ export function MealSection({
                 items={entries.map(item => item.id)}
                 strategy={verticalListSortingStrategy}
               >
-                {entries.map((item) => (
+                {entries.map((item, index) => (
                   <FoodTableRow
                     key={item.id}
                     item={item}
@@ -124,8 +124,7 @@ export function MealSection({
                     formatNumber={formatNumber}
                     onContextMenu={onContextMenu}
                     activeId={activeId}
-                    contextMenuOpen={contextMenuOpen}
-                    setContextMenuOpen={setContextMenuOpen}
+                    isLastRow={isLastSection && index === entries.length - 1}
                   />
                 ))}
               </SortableContext>
@@ -135,4 +134,6 @@ export function MealSection({
       )}
     </div>
   );
-}
+});
+
+MealSection.displayName = 'MealSection';
