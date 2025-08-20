@@ -13,16 +13,16 @@ jest.mock('../../services/foodLogService', () => ({
   }
 }));
 jest.mock('../../utils/foodEntryUtils', () => ({
-  calculateTotals: jest.fn((entries: any[]) => {
+  calculateTotals: jest.fn((entries: FoodEntry[]) => {
     console.log('calculateTotals mock called with:', entries.length, 'entries');
     if (entries.length === 0) {
       return { calories: 0, protein: 0, carbs: 0, fat: 0 };
     }
     return {
-      calories: entries.reduce((sum: number, entry: any) => sum + entry.calories, 0),
-      protein: entries.reduce((sum: number, entry: any) => sum + entry.protein, 0),
-      carbs: entries.reduce((sum: number, entry: any) => sum + entry.carbs, 0),
-      fat: entries.reduce((sum: number, entry: any) => sum + entry.fat, 0),
+      calories: entries.reduce((sum: number, entry: FoodEntry) => sum + entry.calories, 0),
+      protein: entries.reduce((sum: number, entry: FoodEntry) => sum + entry.protein, 0),
+      carbs: entries.reduce((sum: number, entry: FoodEntry) => sum + entry.carbs, 0),
+      fat: entries.reduce((sum: number, entry: FoodEntry) => sum + entry.fat, 0),
     };
   }),
 }));
