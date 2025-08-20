@@ -183,6 +183,21 @@ describe('useFoodData', () => {
       } as FoodEntry,
     ];
 
+    // Clear and reset the mock
+    mockCalculateTotals.mockClear();
+    mockCalculateTotals.mockImplementation((entries: FoodEntry[]) => {
+      console.log('calculateTotals mock called with:', entries.length, 'entries');
+      if (entries.length === 0) {
+        return { calories: 0, protein: 0, carbs: 0, fat: 0 };
+      }
+      return {
+        calories: entries.reduce((sum: number, entry: FoodEntry) => sum + entry.calories, 0),
+        protein: entries.reduce((sum: number, entry: FoodEntry) => sum + entry.protein, 0),
+        carbs: entries.reduce((sum: number, entry: FoodEntry) => sum + entry.carbs, 0),
+        fat: entries.reduce((sum: number, entry: FoodEntry) => sum + entry.fat, 0),
+      };
+    });
+
     (FoodLogService.loadFoodData as jest.Mock).mockResolvedValue(mockEntries);
 
     const { result } = renderHook(() => useFoodData(mockSelectedDate, mockFormatApiDate));
