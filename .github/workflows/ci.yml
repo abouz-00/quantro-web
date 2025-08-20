@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 30
     
     env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      DATABASE_URL: "file:./test.db"
     
     strategy:
       matrix:
@@ -44,6 +44,10 @@ jobs:
       
     - name: Set up test database
       run: |
+        echo "Setting up test environment..."
+        export NODE_ENV=test
+        export DATABASE_URL="file:./test.db"
+        
         echo "Generating Prisma client..."
         npx prisma generate || { echo "❌ Prisma generate failed"; exit 1; }
         echo "✅ Prisma client generated successfully"
@@ -65,6 +69,7 @@ jobs:
       env:
         NODE_OPTIONS: '--max-old-space-size=4096'
         JEST_WORKERS: 2
+        DATABASE_URL: "file:./test.db"
         
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
