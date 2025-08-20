@@ -110,6 +110,13 @@ jobs:
     needs: [test, security]
     timeout-minutes: 15
     
+    env:
+      NODE_ENV: production
+      DATABASE_URL: "file:./build.db"
+      NEXTAUTH_URL: "http://localhost:3000"
+      NEXTAUTH_SECRET: "build-secret-key-for-ci"
+      NEXT_TELEMETRY_DISABLED: 1
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -135,18 +142,40 @@ jobs:
           ${{ runner.os }}-prisma-
       
     - name: Generate Prisma client
-      run: npx prisma generate
+      run: |
+        echo "Generating Prisma client..."
+        npx prisma generate || { echo "❌ Prisma generate failed"; exit 1; }
+        echo "✅ Prisma client generated successfully"
+        
+    - name: Set up build database
+      run: |
+        echo "Setting up build database..."
+        npx prisma db push --force-reset || { echo "❌ Database setup failed"; exit 1; }
+        echo "✅ Build database setup complete"
         
     - name: Build application
-      run: npm run build
+      run: |
+        echo "Starting build process..."
+        npm run build || { echo "❌ Build failed"; exit 1; }
+        echo "✅ Build completed successfully"
       
     - name: Verify build output
       run: |
+        echo "Checking build output structure..."
         if [ -d ".next" ]; then
           echo "✅ Build directory exists"
+          echo "Contents of .next/:"
           ls -la .next/
+          echo "Total size:"
+          du -sh .next/
+          echo "Key files check:"
+          [ -f ".next/package.json" ] && echo "✅ package.json found" || echo "❌ package.json missing"
+          [ -d ".next/server" ] && echo "✅ server directory found" || echo "❌ server directory missing"
+          [ -d ".next/static" ] && echo "✅ static directory found" || echo "❌ static directory missing"
         else
           echo "❌ Build directory not found"
+          echo "Current directory contents:"
+          ls -la
           exit 1
         fi
       
@@ -154,9 +183,13 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: build-artifacts
-        path: .next/
+        path: |
+          .next/
+          !.next/cache/
+          !.next/.tsbuildinfo
         retention-days: 7
         if-no-files-found: error
+        compression-level: 6
 
   deploy-staging:
     runs-on: ubuntu-latest
@@ -182,19 +215,29 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: build-artifacts
-        path: .next/
+        path: ./
       continue-on-error: false
         
     - name: Verify artifacts
       run: |
         if [ -d ".next" ]; then
           echo "✅ Build artifacts downloaded successfully"
+          echo "Build directory contents:"
           ls -la .next/
+          echo "Checking key standalone files:"
+          [ -f ".next/package.json" ] && echo "✅ Standalone package.json found" || echo "⚠️  Standalone package.json missing"
+          [ -d ".next/server" ] && echo "✅ Server directory found" || echo "❌ Server directory missing - this may cause deployment issues"
         else
           echo "❌ Build artifacts not found, attempting fresh build"
+          export NODE_ENV=production
+          export DATABASE_URL="file:./deploy.db"
+          export NEXTAUTH_URL="https://quantro-staging.vercel.app"
           npx prisma generate
+          npx prisma db push --force-reset
           npm run build
         fi
+      env:
+        NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
         
     - name: Deploy to Staging (Vercel)
       uses: amondnet/vercel-action@v25
@@ -231,19 +274,29 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: build-artifacts
-        path: .next/
+        path: ./
       continue-on-error: false
         
     - name: Verify artifacts
       run: |
         if [ -d ".next" ]; then
           echo "✅ Build artifacts downloaded successfully"
+          echo "Build directory contents:"
           ls -la .next/
+          echo "Checking key standalone files:"
+          [ -f ".next/package.json" ] && echo "✅ Standalone package.json found" || echo "⚠️  Standalone package.json missing"
+          [ -d ".next/server" ] && echo "✅ Server directory found" || echo "❌ Server directory missing - this may cause deployment issues"
         else
           echo "❌ Build artifacts not found, attempting fresh build"
+          export NODE_ENV=production
+          export DATABASE_URL="file:./deploy.db"
+          export NEXTAUTH_URL="https://quantro.vercel.app"
           npx prisma generate
+          npx prisma db push --force-reset
           npm run build
         fi
+      env:
+        NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
         
     - name: Deploy to Production (Vercel)
       uses: amondnet/vercel-action@v25
