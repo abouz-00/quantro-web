@@ -1,0 +1,954 @@
+8a568dc7aae9c40aaa72c04286c8403b
+"use strict";
+
+/* istanbul ignore next */
+function cov_56k2cv193() {
+  var path = "/Users/ayman/quantro/src/components/food-log/search/hooks/useNutrientCalculator.ts";
+  var hash = "e244397680e3f773dad6ac1d6cd86bfe4a09f95c";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/ayman/quantro/src/components/food-log/search/hooks/useNutrientCalculator.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 37
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 14
+        },
+        end: {
+          line: 11,
+          column: 29
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 24
+        },
+        end: {
+          line: 12,
+          column: 58
+        }
+      },
+      "5": {
+        start: {
+          line: 13,
+          column: 30
+        },
+        end: {
+          line: 88,
+          column: 1
+        }
+      },
+      "6": {
+        start: {
+          line: 14,
+          column: 25
+        },
+        end: {
+          line: 17,
+          column: 5
+        }
+      },
+      "7": {
+        start: {
+          line: 15,
+          column: 25
+        },
+        end: {
+          line: 15,
+          column: 107
+        }
+      },
+      "8": {
+        start: {
+          line: 15,
+          column: 49
+        },
+        end: {
+          line: 15,
+          column: 106
+        }
+      },
+      "9": {
+        start: {
+          line: 16,
+          column: 8
+        },
+        end: {
+          line: 16,
+          column: 45
+        }
+      },
+      "10": {
+        start: {
+          line: 18,
+          column: 31
+        },
+        end: {
+          line: 72,
+          column: 5
+        }
+      },
+      "11": {
+        start: {
+          line: 20,
+          column: 26
+        },
+        end: {
+          line: 53,
+          column: 9
+        }
+      },
+      "12": {
+        start: {
+          line: 55,
+          column: 34
+        },
+        end: {
+          line: 55,
+          column: 101
+        }
+      },
+      "13": {
+        start: {
+          line: 56,
+          column: 8
+        },
+        end: {
+          line: 58,
+          column: 9
+        }
+      },
+      "14": {
+        start: {
+          line: 57,
+          column: 12
+        },
+        end: {
+          line: 57,
+          column: 56
+        }
+      },
+      "15": {
+        start: {
+          line: 60,
+          column: 33
+        },
+        end: {
+          line: 60,
+          column: 58
+        }
+      },
+      "16": {
+        start: {
+          line: 61,
+          column: 8
+        },
+        end: {
+          line: 64,
+          column: 9
+        }
+      },
+      "17": {
+        start: {
+          line: 62,
+          column: 37
+        },
+        end: {
+          line: 62,
+          column: 80
+        }
+      },
+      "18": {
+        start: {
+          line: 63,
+          column: 12
+        },
+        end: {
+          line: 63,
+          column: 71
+        }
+      },
+      "19": {
+        start: {
+          line: 65,
+          column: 34
+        },
+        end: {
+          line: 65,
+          column: 58
+        }
+      },
+      "20": {
+        start: {
+          line: 67,
+          column: 34
+        },
+        end: {
+          line: 67,
+          column: 36
+        }
+      },
+      "21": {
+        start: {
+          line: 68,
+          column: 8
+        },
+        end: {
+          line: 70,
+          column: 11
+        }
+      },
+      "22": {
+        start: {
+          line: 69,
+          column: 12
+        },
+        end: {
+          line: 69,
+          column: 70
+        }
+      },
+      "23": {
+        start: {
+          line: 71,
+          column: 8
+        },
+        end: {
+          line: 71,
+          column: 70
+        }
+      },
+      "24": {
+        start: {
+          line: 73,
+          column: 28
+        },
+        end: {
+          line: 84,
+          column: 5
+        }
+      },
+      "25": {
+        start: {
+          line: 74,
+          column: 26
+        },
+        end: {
+          line: 74,
+          column: 74
+        }
+      },
+      "26": {
+        start: {
+          line: 75,
+          column: 8
+        },
+        end: {
+          line: 83,
+          column: 10
+        }
+      },
+      "27": {
+        start: {
+          line: 85,
+          column: 4
+        },
+        end: {
+          line: 87,
+          column: 6
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 13,
+            column: 30
+          },
+          end: {
+            line: 13,
+            column: 31
+          }
+        },
+        loc: {
+          start: {
+            line: 13,
+            column: 34
+          },
+          end: {
+            line: 88,
+            column: 1
+          }
+        },
+        line: 13
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 14,
+            column: 25
+          },
+          end: {
+            line: 14,
+            column: 26
+          }
+        },
+        loc: {
+          start: {
+            line: 14,
+            column: 48
+          },
+          end: {
+            line: 17,
+            column: 5
+          }
+        },
+        line: 14
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 15,
+            column: 44
+          },
+          end: {
+            line: 15,
+            column: 45
+          }
+        },
+        loc: {
+          start: {
+            line: 15,
+            column: 49
+          },
+          end: {
+            line: 15,
+            column: 106
+          }
+        },
+        line: 15
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 18,
+            column: 31
+          },
+          end: {
+            line: 18,
+            column: 32
+          }
+        },
+        loc: {
+          start: {
+            line: 18,
+            column: 63
+          },
+          end: {
+            line: 72,
+            column: 5
+          }
+        },
+        line: 18
+      },
+      "5": {
+        name: "(anonymous_5)",
+        decl: {
+          start: {
+            line: 68,
+            column: 42
+          },
+          end: {
+            line: 68,
+            column: 43
+          }
+        },
+        loc: {
+          start: {
+            line: 68,
+            column: 58
+          },
+          end: {
+            line: 70,
+            column: 9
+          }
+        },
+        line: 68
+      },
+      "6": {
+        name: "(anonymous_6)",
+        decl: {
+          start: {
+            line: 73,
+            column: 28
+          },
+          end: {
+            line: 73,
+            column: 29
+          }
+        },
+        loc: {
+          start: {
+            line: 73,
+            column: 74
+          },
+          end: {
+            line: 84,
+            column: 5
+          }
+        },
+        line: 73
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 16,
+            column: 15
+          },
+          end: {
+            line: 16,
+            column: 44
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 16,
+            column: 26
+          },
+          end: {
+            line: 16,
+            column: 40
+          }
+        }, {
+          start: {
+            line: 16,
+            column: 43
+          },
+          end: {
+            line: 16,
+            column: 44
+          }
+        }],
+        line: 16
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 56,
+            column: 8
+          },
+          end: {
+            line: 58,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 56,
+            column: 8
+          },
+          end: {
+            line: 58,
+            column: 9
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 56
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 56,
+            column: 12
+          },
+          end: {
+            line: 56,
+            column: 56
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 56,
+            column: 12
+          },
+          end: {
+            line: 56,
+            column: 29
+          }
+        }, {
+          start: {
+            line: 56,
+            column: 33
+          },
+          end: {
+            line: 56,
+            column: 56
+          }
+        }],
+        line: 56
+      },
+      "3": {
+        loc: {
+          start: {
+            line: 60,
+            column: 33
+          },
+          end: {
+            line: 60,
+            column: 58
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 60,
+            column: 33
+          },
+          end: {
+            line: 60,
+            column: 53
+          }
+        }, {
+          start: {
+            line: 60,
+            column: 57
+          },
+          end: {
+            line: 60,
+            column: 58
+          }
+        }],
+        line: 60
+      },
+      "4": {
+        loc: {
+          start: {
+            line: 61,
+            column: 8
+          },
+          end: {
+            line: 64,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 61,
+            column: 8
+          },
+          end: {
+            line: 64,
+            column: 9
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 61
+      },
+      "5": {
+        loc: {
+          start: {
+            line: 62,
+            column: 37
+          },
+          end: {
+            line: 62,
+            column: 80
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 62,
+            column: 37
+          },
+          end: {
+            line: 62,
+            column: 75
+          }
+        }, {
+          start: {
+            line: 62,
+            column: 79
+          },
+          end: {
+            line: 62,
+            column: 80
+          }
+        }],
+        line: 62
+      },
+      "6": {
+        loc: {
+          start: {
+            line: 69,
+            column: 38
+          },
+          end: {
+            line: 69,
+            column: 48
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 69,
+            column: 38
+          },
+          end: {
+            line: 69,
+            column: 43
+          }
+        }, {
+          start: {
+            line: 69,
+            column: 47
+          },
+          end: {
+            line: 69,
+            column: 48
+          }
+        }],
+        line: 69
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0,
+      "20": 0,
+      "21": 0,
+      "22": 0,
+      "23": 0,
+      "24": 0,
+      "25": 0,
+      "26": 0,
+      "27": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0],
+      "3": [0, 0],
+      "4": [0, 0],
+      "5": [0, 0],
+      "6": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/Users/ayman/quantro/src/components/food-log/search/hooks/useNutrientCalculator.ts"],
+      sourcesContent: ["import { v4 as uuidv4 } from \"uuid\";\nimport { FoodEntry } from \"../../../../types/foodEntry\";\nimport { UNIT_CONVERSIONS, roundNutrients, getFallbackNutrients } from \"../utils/nutritionUtils\";\n\ninterface USDAFood {\n  description: string;\n  foodCategory?: string;\n  foodNutrients: { nutrientName: string; value: number }[];\n  servingSize?: number;\n  servingSizeUnit?: string;\n  isFavorite?: boolean;\n  uniqueId?: string;\n}\n\nexport const useNutrientCalculator = () => {\n  const findNutrient = (foodNutrients: { nutrientName: string; value: number }[], name: string): number => {\n    const nutrient = foodNutrients.find(n => \n      n.nutrientName.toLowerCase().includes(name.toLowerCase())\n    );\n    return nutrient ? nutrient.value : 0;\n  };\n\n  const calculateNutrients = (selectedFood: USDAFood, quantity: string, unit: string) => {\n    // Get nutrient values from USDA data\n    const nutrients = {\n      calories: findNutrient(selectedFood.foodNutrients, \"energy\"),\n      protein: findNutrient(selectedFood.foodNutrients, \"protein\"),\n      carbs: findNutrient(selectedFood.foodNutrients, \"carbohydrate\"),\n      fat: findNutrient(selectedFood.foodNutrients, \"total lipid (fat)\"),\n      fiber: findNutrient(selectedFood.foodNutrients, \"fiber\"),\n      \n      // B Vitamins\n      vitaminB1: findNutrient(selectedFood.foodNutrients, \"thiamine\"),\n      vitaminB2: findNutrient(selectedFood.foodNutrients, \"riboflavin\"),\n      vitaminB3: findNutrient(selectedFood.foodNutrients, \"niacin\"),\n      vitaminB5: findNutrient(selectedFood.foodNutrients, \"pantothenic acid\"),\n      vitaminB6: findNutrient(selectedFood.foodNutrients, \"vitamin b-6\"),\n      vitaminB12: findNutrient(selectedFood.foodNutrients, \"vitamin b-12\"),\n      biotin: findNutrient(selectedFood.foodNutrients, \"biotin\"),\n      folate: findNutrient(selectedFood.foodNutrients, \"folate\"),\n      \n      // Fat-Soluble Vitamins\n      vitaminA: findNutrient(selectedFood.foodNutrients, \"vitamin a, rae\"),\n      vitaminC: findNutrient(selectedFood.foodNutrients, \"vitamin c, total ascorbic acid\"),\n      vitaminD: findNutrient(selectedFood.foodNutrients, \"vitamin d (d2 + d3)\"),\n      vitaminK: findNutrient(selectedFood.foodNutrients, \"vitamin k (phylloquinone)\"),\n      \n      // Minerals\n      calcium: findNutrient(selectedFood.foodNutrients, \"calcium\"),\n      copper: findNutrient(selectedFood.foodNutrients, \"copper\"),\n      iron: findNutrient(selectedFood.foodNutrients, \"iron\"),\n      magnesium: findNutrient(selectedFood.foodNutrients, \"magnesium\"),\n      manganese: findNutrient(selectedFood.foodNutrients, \"manganese\"),\n      phosphorus: findNutrient(selectedFood.foodNutrients, \"phosphorus\"),\n      potassium: findNutrient(selectedFood.foodNutrients, \"potassium\"),\n      selenium: findNutrient(selectedFood.foodNutrients, \"selenium\"),\n      sodium: findNutrient(selectedFood.foodNutrients, \"sodium\"),\n      zinc: findNutrient(selectedFood.foodNutrients, \"zinc\"),\n      \n      // Essential Fatty Acids\n      omega3: findNutrient(selectedFood.foodNutrients, \"epa\") + \n              findNutrient(selectedFood.foodNutrients, \"dha\") + \n              findNutrient(selectedFood.foodNutrients, \"ala\"),\n    };\n\n    // Apply fallback nutrients if needed\n    const fallbackNutrients = getFallbackNutrients(selectedFood.description);\n    if (fallbackNutrients && nutrients.calories <= 0) {\n      Object.assign(nutrients, fallbackNutrients);\n    }\n\n    // Calculate serving adjustment with unit conversion\n    let servingSizeInGrams = parseFloat(quantity) || 0;\n    \n    if (unit !== \"Grams\") {\n      const conversionFactor = UNIT_CONVERSIONS[unit as keyof typeof UNIT_CONVERSIONS] || 1;\n      servingSizeInGrams = servingSizeInGrams * conversionFactor;\n    }\n    \n    const servingMultiplier = servingSizeInGrams / 100; // Base is 100g\n    \n    // Apply serving multiplier to all nutrients\n    const adjustedNutrients: Record<string, number> = {};\n    Object.entries(nutrients).forEach(([key, value]) => {\n      adjustedNutrients[key] = (value || 0) * servingMultiplier;\n    });\n\n    return roundNutrients(adjustedNutrients);\n  };\n\n  const createFoodEntry = (\n    selectedFood: USDAFood, \n    quantity: string, \n    unit: string, \n    selectedDate: Date\n  ): FoodEntry => {\n    const nutrients = calculateNutrients(selectedFood, quantity, unit);\n    \n    return {\n      id: uuidv4(),\n      description: selectedFood.description,\n      amount: quantity,\n      unit: unit,\n      date: selectedDate.toISOString(),\n      mealType: \"other\",\n      ...nutrients,\n    } as FoodEntry;\n  };\n\n  return { createFoodEntry };\n};\n"],
+      names: ["useNutrientCalculator", "findNutrient", "foodNutrients", "name", "nutrient", "find", "n", "nutrientName", "toLowerCase", "includes", "value", "calculateNutrients", "selectedFood", "quantity", "unit", "nutrients", "calories", "protein", "carbs", "fat", "fiber", "vitaminB1", "vitaminB2", "vitaminB3", "vitaminB5", "vitaminB6", "vitaminB12", "biotin", "folate", "vitaminA", "vitaminC", "vitaminD", "vitaminK", "calcium", "copper", "iron", "magnesium", "manganese", "phosphorus", "potassium", "selenium", "sodium", "zinc", "omega3", "fallbackNutrients", "getFallbackNutrients", "description", "Object", "assign", "servingSizeInGrams", "parseFloat", "conversionFactor", "UNIT_CONVERSIONS", "servingMultiplier", "adjustedNutrients", "entries", "forEach", "key", "roundNutrients", "createFoodEntry", "selectedDate", "id", "uuidv4", "amount", "date", "toISOString", "mealType"],
+      mappings: "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"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "e244397680e3f773dad6ac1d6cd86bfe4a09f95c"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_56k2cv193 = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_56k2cv193();
+cov_56k2cv193().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_56k2cv193().s[1]++;
+Object.defineProperty(exports, "useNutrientCalculator", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_56k2cv193().f[0]++;
+    cov_56k2cv193().s[2]++;
+    return useNutrientCalculator;
+  }
+});
+const _uuid =
+/* istanbul ignore next */
+(cov_56k2cv193().s[3]++, require("uuid"));
+const _nutritionUtils =
+/* istanbul ignore next */
+(cov_56k2cv193().s[4]++, require("../utils/nutritionUtils"));
+/* istanbul ignore next */
+cov_56k2cv193().s[5]++;
+const useNutrientCalculator = () => {
+  /* istanbul ignore next */
+  cov_56k2cv193().f[1]++;
+  cov_56k2cv193().s[6]++;
+  const findNutrient = (foodNutrients, name) => {
+    /* istanbul ignore next */
+    cov_56k2cv193().f[2]++;
+    const nutrient =
+    /* istanbul ignore next */
+    (cov_56k2cv193().s[7]++, foodNutrients.find(n => {
+      /* istanbul ignore next */
+      cov_56k2cv193().f[3]++;
+      cov_56k2cv193().s[8]++;
+      return n.nutrientName.toLowerCase().includes(name.toLowerCase());
+    }));
+    /* istanbul ignore next */
+    cov_56k2cv193().s[9]++;
+    return nutrient ?
+    /* istanbul ignore next */
+    (cov_56k2cv193().b[0][0]++, nutrient.value) :
+    /* istanbul ignore next */
+    (cov_56k2cv193().b[0][1]++, 0);
+  };
+  /* istanbul ignore next */
+  cov_56k2cv193().s[10]++;
+  const calculateNutrients = (selectedFood, quantity, unit) => {
+    /* istanbul ignore next */
+    cov_56k2cv193().f[4]++;
+    // Get nutrient values from USDA data
+    const nutrients =
+    /* istanbul ignore next */
+    (cov_56k2cv193().s[11]++, {
+      calories: findNutrient(selectedFood.foodNutrients, "energy"),
+      protein: findNutrient(selectedFood.foodNutrients, "protein"),
+      carbs: findNutrient(selectedFood.foodNutrients, "carbohydrate"),
+      fat: findNutrient(selectedFood.foodNutrients, "total lipid (fat)"),
+      fiber: findNutrient(selectedFood.foodNutrients, "fiber"),
+      // B Vitamins
+      vitaminB1: findNutrient(selectedFood.foodNutrients, "thiamine"),
+      vitaminB2: findNutrient(selectedFood.foodNutrients, "riboflavin"),
+      vitaminB3: findNutrient(selectedFood.foodNutrients, "niacin"),
+      vitaminB5: findNutrient(selectedFood.foodNutrients, "pantothenic acid"),
+      vitaminB6: findNutrient(selectedFood.foodNutrients, "vitamin b-6"),
+      vitaminB12: findNutrient(selectedFood.foodNutrients, "vitamin b-12"),
+      biotin: findNutrient(selectedFood.foodNutrients, "biotin"),
+      folate: findNutrient(selectedFood.foodNutrients, "folate"),
+      // Fat-Soluble Vitamins
+      vitaminA: findNutrient(selectedFood.foodNutrients, "vitamin a, rae"),
+      vitaminC: findNutrient(selectedFood.foodNutrients, "vitamin c, total ascorbic acid"),
+      vitaminD: findNutrient(selectedFood.foodNutrients, "vitamin d (d2 + d3)"),
+      vitaminK: findNutrient(selectedFood.foodNutrients, "vitamin k (phylloquinone)"),
+      // Minerals
+      calcium: findNutrient(selectedFood.foodNutrients, "calcium"),
+      copper: findNutrient(selectedFood.foodNutrients, "copper"),
+      iron: findNutrient(selectedFood.foodNutrients, "iron"),
+      magnesium: findNutrient(selectedFood.foodNutrients, "magnesium"),
+      manganese: findNutrient(selectedFood.foodNutrients, "manganese"),
+      phosphorus: findNutrient(selectedFood.foodNutrients, "phosphorus"),
+      potassium: findNutrient(selectedFood.foodNutrients, "potassium"),
+      selenium: findNutrient(selectedFood.foodNutrients, "selenium"),
+      sodium: findNutrient(selectedFood.foodNutrients, "sodium"),
+      zinc: findNutrient(selectedFood.foodNutrients, "zinc"),
+      // Essential Fatty Acids
+      omega3: findNutrient(selectedFood.foodNutrients, "epa") + findNutrient(selectedFood.foodNutrients, "dha") + findNutrient(selectedFood.foodNutrients, "ala")
+    });
+    // Apply fallback nutrients if needed
+    const fallbackNutrients =
+    /* istanbul ignore next */
+    (cov_56k2cv193().s[12]++, (0, _nutritionUtils.getFallbackNutrients)(selectedFood.description));
+    /* istanbul ignore next */
+    cov_56k2cv193().s[13]++;
+    if (
+    /* istanbul ignore next */
+    (cov_56k2cv193().b[2][0]++, fallbackNutrients) &&
+    /* istanbul ignore next */
+    (cov_56k2cv193().b[2][1]++, nutrients.calories <= 0)) {
+      /* istanbul ignore next */
+      cov_56k2cv193().b[1][0]++;
+      cov_56k2cv193().s[14]++;
+      Object.assign(nutrients, fallbackNutrients);
+    } else
+    /* istanbul ignore next */
+    {
+      cov_56k2cv193().b[1][1]++;
+    }
+    // Calculate serving adjustment with unit conversion
+    let servingSizeInGrams =
+    /* istanbul ignore next */
+    (cov_56k2cv193().s[15]++,
+    /* istanbul ignore next */
+    (cov_56k2cv193().b[3][0]++, parseFloat(quantity)) ||
+    /* istanbul ignore next */
+    (cov_56k2cv193().b[3][1]++, 0));
+    /* istanbul ignore next */
+    cov_56k2cv193().s[16]++;
+    if (unit !== "Grams") {
+      /* istanbul ignore next */
+      cov_56k2cv193().b[4][0]++;
+      const conversionFactor =
+      /* istanbul ignore next */
+      (cov_56k2cv193().s[17]++,
+      /* istanbul ignore next */
+      (cov_56k2cv193().b[5][0]++, _nutritionUtils.UNIT_CONVERSIONS[unit]) ||
+      /* istanbul ignore next */
+      (cov_56k2cv193().b[5][1]++, 1));
+      /* istanbul ignore next */
+      cov_56k2cv193().s[18]++;
+      servingSizeInGrams = servingSizeInGrams * conversionFactor;
+    } else
+    /* istanbul ignore next */
+    {
+      cov_56k2cv193().b[4][1]++;
+    }
+    const servingMultiplier =
+    /* istanbul ignore next */
+    (cov_56k2cv193().s[19]++, servingSizeInGrams / 100); // Base is 100g
+    // Apply serving multiplier to all nutrients
+    const adjustedNutrients =
+    /* istanbul ignore next */
+    (cov_56k2cv193().s[20]++, {});
+    /* istanbul ignore next */
+    cov_56k2cv193().s[21]++;
+    Object.entries(nutrients).forEach(([key, value]) => {
+      /* istanbul ignore next */
+      cov_56k2cv193().f[5]++;
+      cov_56k2cv193().s[22]++;
+      adjustedNutrients[key] = (
+      /* istanbul ignore next */
+      (cov_56k2cv193().b[6][0]++, value) ||
+      /* istanbul ignore next */
+      (cov_56k2cv193().b[6][1]++, 0)) * servingMultiplier;
+    });
+    /* istanbul ignore next */
+    cov_56k2cv193().s[23]++;
+    return (0, _nutritionUtils.roundNutrients)(adjustedNutrients);
+  };
+  /* istanbul ignore next */
+  cov_56k2cv193().s[24]++;
+  const createFoodEntry = (selectedFood, quantity, unit, selectedDate) => {
+    /* istanbul ignore next */
+    cov_56k2cv193().f[6]++;
+    const nutrients =
+    /* istanbul ignore next */
+    (cov_56k2cv193().s[25]++, calculateNutrients(selectedFood, quantity, unit));
+    /* istanbul ignore next */
+    cov_56k2cv193().s[26]++;
+    return {
+      id: (0, _uuid.v4)(),
+      description: selectedFood.description,
+      amount: quantity,
+      unit: unit,
+      date: selectedDate.toISOString(),
+      mealType: "other",
+      ...nutrients
+    };
+  };
+  /* istanbul ignore next */
+  cov_56k2cv193().s[27]++;
+  return {
+    createFoodEntry
+  };
+};
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfNTZrMmN2MTkzIiwiYWN0dWFsQ292ZXJhZ2UiLCJzIiwidXNlTnV0cmllbnRDYWxjdWxhdG9yIiwiZiIsImZpbmROdXRyaWVudCIsImZvb2ROdXRyaWVudHMiLCJuYW1lIiwibnV0cmllbnQiLCJmaW5kIiwibiIsIm51dHJpZW50TmFtZSIsInRvTG93ZXJDYXNlIiwiaW5jbHVkZXMiLCJiIiwidmFsdWUiLCJjYWxjdWxhdGVOdXRyaWVudHMiLCJzZWxlY3RlZEZvb2QiLCJxdWFudGl0eSIsInVuaXQiLCJudXRyaWVudHMiLCJjYWxvcmllcyIsInByb3RlaW4iLCJjYXJicyIsImZhdCIsImZpYmVyIiwidml0YW1pbkIxIiwidml0YW1pbkIyIiwidml0YW1pbkIzIiwidml0YW1pbkI1Iiwidml0YW1pbkI2Iiwidml0YW1pbkIxMiIsImJpb3RpbiIsImZvbGF0ZSIsInZpdGFtaW5BIiwidml0YW1pbkMiLCJ2aXRhbWluRCIsInZpdGFtaW5LIiwiY2FsY2l1bSIsImNvcHBlciIsImlyb24iLCJtYWduZXNpdW0iLCJtYW5nYW5lc2UiLCJwaG9zcGhvcnVzIiwicG90YXNzaXVtIiwic2VsZW5pdW0iLCJzb2RpdW0iLCJ6aW5jIiwib21lZ2EzIiwiZmFsbGJhY2tOdXRyaWVudHMiLCJfbnV0cml0aW9uVXRpbHMiLCJnZXRGYWxsYmFja051dHJpZW50cyIsImRlc2NyaXB0aW9uIiwiT2JqZWN0IiwiYXNzaWduIiwic2VydmluZ1NpemVJbkdyYW1zIiwicGFyc2VGbG9hdCIsImNvbnZlcnNpb25GYWN0b3IiLCJVTklUX0NPTlZFUlNJT05TIiwic2VydmluZ011bHRpcGxpZXIiLCJhZGp1c3RlZE51dHJpZW50cyIsImVudHJpZXMiLCJmb3JFYWNoIiwia2V5Iiwicm91bmROdXRyaWVudHMiLCJjcmVhdGVGb29kRW50cnkiLCJzZWxlY3RlZERhdGUiLCJpZCIsIl91dWlkIiwidjQiLCJhbW91bnQiLCJkYXRlIiwidG9JU09TdHJpbmciLCJtZWFsVHlwZSJdLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb21wb25lbnRzL2Zvb2QtbG9nL3NlYXJjaC9ob29rcy91c2VOdXRyaWVudENhbGN1bGF0b3IudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgdjQgYXMgdXVpZHY0IH0gZnJvbSBcInV1aWRcIjtcbmltcG9ydCB7IEZvb2RFbnRyeSB9IGZyb20gXCIuLi8uLi8uLi8uLi90eXBlcy9mb29kRW50cnlcIjtcbmltcG9ydCB7IFVOSVRfQ09OVkVSU0lPTlMsIHJvdW5kTnV0cmllbnRzLCBnZXRGYWxsYmFja051dHJpZW50cyB9IGZyb20gXCIuLi91dGlscy9udXRyaXRpb25VdGlsc1wiO1xuXG5pbnRlcmZhY2UgVVNEQUZvb2Qge1xuICBkZXNjcmlwdGlvbjogc3RyaW5nO1xuICBmb29kQ2F0ZWdvcnk/OiBzdHJpbmc7XG4gIGZvb2ROdXRyaWVudHM6IHsgbnV0cmllbnROYW1lOiBzdHJpbmc7IHZhbHVlOiBudW1iZXIgfVtdO1xuICBzZXJ2aW5nU2l6ZT86IG51bWJlcjtcbiAgc2VydmluZ1NpemVVbml0Pzogc3RyaW5nO1xuICBpc0Zhdm9yaXRlPzogYm9vbGVhbjtcbiAgdW5pcXVlSWQ/OiBzdHJpbmc7XG59XG5cbmV4cG9ydCBjb25zdCB1c2VOdXRyaWVudENhbGN1bGF0b3IgPSAoKSA9PiB7XG4gIGNvbnN0IGZpbmROdXRyaWVudCA9IChmb29kTnV0cmllbnRzOiB7IG51dHJpZW50TmFtZTogc3RyaW5nOyB2YWx1ZTogbnVtYmVyIH1bXSwgbmFtZTogc3RyaW5nKTogbnVtYmVyID0+IHtcbiAgICBjb25zdCBudXRyaWVudCA9IGZvb2ROdXRyaWVudHMuZmluZChuID0+IFxuICAgICAgbi5udXRyaWVudE5hbWUudG9Mb3dlckNhc2UoKS5pbmNsdWRlcyhuYW1lLnRvTG93ZXJDYXNlKCkpXG4gICAgKTtcbiAgICByZXR1cm4gbnV0cmllbnQgPyBudXRyaWVudC52YWx1ZSA6IDA7XG4gIH07XG5cbiAgY29uc3QgY2FsY3VsYXRlTnV0cmllbnRzID0gKHNlbGVjdGVkRm9vZDogVVNEQUZvb2QsIHF1YW50aXR5OiBzdHJpbmcsIHVuaXQ6IHN0cmluZykgPT4ge1xuICAgIC8vIEdldCBudXRyaWVudCB2YWx1ZXMgZnJvbSBVU0RBIGRhdGFcbiAgICBjb25zdCBudXRyaWVudHMgPSB7XG4gICAgICBjYWxvcmllczogZmluZE51dHJpZW50KHNlbGVjdGVkRm9vZC5mb29kTnV0cmllbnRzLCBcImVuZXJneVwiKSxcbiAgICAgIHByb3RlaW46IGZpbmROdXRyaWVudChzZWxlY3RlZEZvb2QuZm9vZE51dHJpZW50cywgXCJwcm90ZWluXCIpLFxuICAgICAgY2FyYnM6IGZpbmROdXRyaWVudChzZWxlY3RlZEZvb2QuZm9vZE51dHJpZW50cywgXCJjYXJib2h5ZHJhdGVcIiksXG4gICAgICBmYXQ6IGZpbmROdXRyaWVudChzZWxlY3RlZEZvb2QuZm9vZE51dHJpZW50cywgXCJ0b3RhbCBsaXBpZCAoZmF0KVwiKSxcbiAgICAgIGZpYmVyOiBmaW5kTnV0cmllbnQoc2VsZWN0ZWRGb29kLmZvb2ROdXRyaWVudHMsIFwiZmliZXJcIiksXG4gICAgICBcbiAgICAgIC8vIEIgVml0YW1pbnNcbiAgICAgIHZpdGFtaW5CMTogZmluZE51dHJpZW50KHNlbGVjdGVkRm9vZC5mb29kTnV0cmllbnRzLCBcInRoaWFtaW5lXCIpLFxuICAgICAgdml0YW1pbkIyOiBmaW5kTnV0cmllbnQoc2VsZWN0ZWRGb29kLmZvb2ROdXRyaWVudHMsIFwicmlib2ZsYXZpblwiKSxcbiAgICAgIHZpdGFtaW5CMzogZmluZE51dHJpZW50KHNlbGVjdGVkRm9vZC5mb29kTnV0cmllbnRzLCBcIm5pYWNpblwiKSxcbiAgICAgIHZpdGFtaW5CNTogZmluZE51dHJpZW50KHNlbGVjdGVkRm9vZC5mb29kTnV0cmllbnRzLCBcInBhbnRvdGhlbmljIGFjaWRcIiksXG4gICAgICB2aXRhbWluQjY6IGZpbmROdXRyaWVudChzZWxlY3RlZEZvb2QuZm9vZE51dHJpZW50cywgXCJ2aXRhbWluIGItNlwiKSxcbiAgICAgIHZpdGFtaW5CMTI6IGZpbmROdXRyaWVudChzZWxlY3RlZEZvb2QuZm9vZE51dHJpZW50cywgXCJ2aXRhbWluIGItMTJcIiksXG4gICAgICBiaW90aW46IGZpbmROdXRyaWVudChzZWxlY3RlZEZvb2QuZm9vZE51dHJpZW50cywgXCJiaW90aW5cIiksXG4gICAgICBmb2xhdGU6IGZpbmROdXRyaWVudChzZWxlY3RlZEZvb2QuZm9vZE51dHJpZW50cywgXCJmb2xhdGVcIiksXG4gICAgICBcbiAgICAgIC8vIEZhdC1Tb2x1YmxlIFZpdGFtaW5zXG4gICAgICB2aXRhbWluQTogZmluZE51dHJpZW50KHNlbGVjdGVkRm9vZC5mb29kTnV0cmllbnRzLCBcInZpdGFtaW4gYSwgcmFlXCIpLFxuICAgICAgdml0YW1pbkM6IGZpbmROdXRyaWVudChzZWxlY3RlZEZvb2QuZm9vZE51dHJpZW50cywgXCJ2aXRhbWluIGMsIHRvdGFsIGFzY29yYmljIGFjaWRcIiksXG4gICAgICB2aXRhbWluRDogZmluZE51dHJpZW50KHNlbGVjdGVkRm9vZC5mb29kTnV0cmllbnRzLCBcInZpdGFtaW4gZCAoZDIgKyBkMylcIiksXG4gICAgICB2aXRhbWluSzogZmluZE51dHJpZW50KHNlbGVjdGVkRm9vZC5mb29kTnV0cmllbnRzLCBcInZpdGFtaW4gayAocGh5bGxvcXVpbm9uZSlcIiksXG4gICAgICBcbiAgICAgIC8vIE1pbmVyYWxzXG4gICAgICBjYWxjaXVtOiBmaW5kTnV0cmllbnQoc2VsZWN0ZWRGb29kLmZvb2ROdXRyaWVudHMsIFwiY2FsY2l1bVwiKSxcbiAgICAgIGNvcHBlcjogZmluZE51dHJpZW50KHNlbGVjdGVkRm9vZC5mb29kTnV0cmllbnRzLCBcImNvcHBlclwiKSxcbiAgICAgIGlyb246IGZpbmROdXRyaWVudChzZWxlY3RlZEZvb2QuZm9vZE51dHJpZW50cywgXCJpcm9uXCIpLFxuICAgICAgbWFnbmVzaXVtOiBmaW5kTnV0cmllbnQoc2VsZWN0ZWRGb29kLmZvb2ROdXRyaWVudHMsIFwibWFnbmVzaXVtXCIpLFxuICAgICAgbWFuZ2FuZXNlOiBmaW5kTnV0cmllbnQoc2VsZWN0ZWRGb29kLmZvb2ROdXRyaWVudHMsIFwibWFuZ2FuZXNlXCIpLFxuICAgICAgcGhvc3Bob3J1czogZmluZE51dHJpZW50KHNlbGVjdGVkRm9vZC5mb29kTnV0cmllbnRzLCBcInBob3NwaG9ydXNcIiksXG4gICAgICBwb3Rhc3NpdW06IGZpbmROdXRyaWVudChzZWxlY3RlZEZvb2QuZm9vZE51dHJpZW50cywgXCJwb3Rhc3NpdW1cIiksXG4gICAgICBzZWxlbml1bTogZmluZE51dHJpZW50KHNlbGVjdGVkRm9vZC5mb29kTnV0cmllbnRzLCBcInNlbGVuaXVtXCIpLFxuICAgICAgc29kaXVtOiBmaW5kTnV0cmllbnQoc2VsZWN0ZWRGb29kLmZvb2ROdXRyaWVudHMsIFwic29kaXVtXCIpLFxuICAgICAgemluYzogZmluZE51dHJpZW50KHNlbGVjdGVkRm9vZC5mb29kTnV0cmllbnRzLCBcInppbmNcIiksXG4gICAgICBcbiAgICAgIC8vIEVzc2VudGlhbCBGYXR0eSBBY2lkc1xuICAgICAgb21lZ2EzOiBmaW5kTnV0cmllbnQoc2VsZWN0ZWRGb29kLmZvb2ROdXRyaWVudHMsIFwiZXBhXCIpICsgXG4gICAgICAgICAgICAgIGZpbmROdXRyaWVudChzZWxlY3RlZEZvb2QuZm9vZE51dHJpZW50cywgXCJkaGFcIikgKyBcbiAgICAgICAgICAgICAgZmluZE51dHJpZW50KHNlbGVjdGVkRm9vZC5mb29kTnV0cmllbnRzLCBcImFsYVwiKSxcbiAgICB9O1xuXG4gICAgLy8gQXBwbHkgZmFsbGJhY2sgbnV0cmllbnRzIGlmIG5lZWRlZFxuICAgIGNvbnN0IGZhbGxiYWNrTnV0cmllbnRzID0gZ2V0RmFsbGJhY2tOdXRyaWVudHMoc2VsZWN0ZWRGb29kLmRlc2NyaXB0aW9uKTtcbiAgICBpZiAoZmFsbGJhY2tOdXRyaWVudHMgJiYgbnV0cmllbnRzLmNhbG9yaWVzIDw9IDApIHtcbiAgICAgIE9iamVjdC5hc3NpZ24obnV0cmllbnRzLCBmYWxsYmFja051dHJpZW50cyk7XG4gICAgfVxuXG4gICAgLy8gQ2FsY3VsYXRlIHNlcnZpbmcgYWRqdXN0bWVudCB3aXRoIHVuaXQgY29udmVyc2lvblxuICAgIGxldCBzZXJ2aW5nU2l6ZUluR3JhbXMgPSBwYXJzZUZsb2F0KHF1YW50aXR5KSB8fCAwO1xuICAgIFxuICAgIGlmICh1bml0ICE9PSBcIkdyYW1zXCIpIHtcbiAgICAgIGNvbnN0IGNvbnZlcnNpb25GYWN0b3IgPSBVTklUX0NPTlZFUlNJT05TW3VuaXQgYXMga2V5b2YgdHlwZW9mIFVOSVRfQ09OVkVSU0lPTlNdIHx8IDE7XG4gICAgICBzZXJ2aW5nU2l6ZUluR3JhbXMgPSBzZXJ2aW5nU2l6ZUluR3JhbXMgKiBjb252ZXJzaW9uRmFjdG9yO1xuICAgIH1cbiAgICBcbiAgICBjb25zdCBzZXJ2aW5nTXVsdGlwbGllciA9IHNlcnZpbmdTaXplSW5HcmFtcyAvIDEwMDsgLy8gQmFzZSBpcyAxMDBnXG4gICAgXG4gICAgLy8gQXBwbHkgc2VydmluZyBtdWx0aXBsaWVyIHRvIGFsbCBudXRyaWVudHNcbiAgICBjb25zdCBhZGp1c3RlZE51dHJpZW50czogUmVjb3JkPHN0cmluZywgbnVtYmVyPiA9IHt9O1xuICAgIE9iamVjdC5lbnRyaWVzKG51dHJpZW50cykuZm9yRWFjaCgoW2tleSwgdmFsdWVdKSA9PiB7XG4gICAgICBhZGp1c3RlZE51dHJpZW50c1trZXldID0gKHZhbHVlIHx8IDApICogc2VydmluZ011bHRpcGxpZXI7XG4gICAgfSk7XG5cbiAgICByZXR1cm4gcm91bmROdXRyaWVudHMoYWRqdXN0ZWROdXRyaWVudHMpO1xuICB9O1xuXG4gIGNvbnN0IGNyZWF0ZUZvb2RFbnRyeSA9IChcbiAgICBzZWxlY3RlZEZvb2Q6IFVTREFGb29kLCBcbiAgICBxdWFudGl0eTogc3RyaW5nLCBcbiAgICB1bml0OiBzdHJpbmcsIFxuICAgIHNlbGVjdGVkRGF0ZTogRGF0ZVxuICApOiBGb29kRW50cnkgPT4ge1xuICAgIGNvbnN0IG51dHJpZW50cyA9IGNhbGN1bGF0ZU51dHJpZW50cyhzZWxlY3RlZEZvb2QsIHF1YW50aXR5LCB1bml0KTtcbiAgICBcbiAgICByZXR1cm4ge1xuICAgICAgaWQ6IHV1aWR2NCgpLFxuICAgICAgZGVzY3JpcHRpb246IHNlbGVjdGVkRm9vZC5kZXNjcmlwdGlvbixcbiAgICAgIGFtb3VudDogcXVhbnRpdHksXG4gICAgICB1bml0OiB1bml0LFxuICAgICAgZGF0ZTogc2VsZWN0ZWREYXRlLnRvSVNPU3RyaW5nKCksXG4gICAgICBtZWFsVHlwZTogXCJvdGhlclwiLFxuICAgICAgLi4ubnV0cmllbnRzLFxuICAgIH0gYXMgRm9vZEVudHJ5O1xuICB9O1xuXG4gIHJldHVybiB7IGNyZWF0ZUZvb2RFbnRyeSB9O1xufTtcbiJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7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

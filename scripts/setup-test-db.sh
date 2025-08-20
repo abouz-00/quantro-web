@@ -22,11 +22,11 @@ sleep 1
 
 # Generate Prisma client for test schema
 echo "⚙️  Generating Prisma test client..."
-timeout 60 npx prisma generate --schema=./prisma/schema.test.prisma
+npx prisma generate --schema=./prisma/schema.test.prisma
 
 # Push the test schema to create the database
 echo "📦 Creating test database schema..."
-timeout 60 npx prisma db push --schema=./prisma/schema.test.prisma --force-reset
+npx prisma db push --schema=./prisma/schema.test.prisma --force-reset
 
 echo "✅ Test database setup complete!"
 echo "📍 Database location: ./test.db"

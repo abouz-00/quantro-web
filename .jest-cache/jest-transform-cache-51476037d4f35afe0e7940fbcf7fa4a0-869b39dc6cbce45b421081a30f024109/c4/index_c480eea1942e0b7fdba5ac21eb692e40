@@ -1,0 +1,645 @@
+c5870dc4001a835ab217984c20c2923a
+// Table components for food log - Clean and Modular
+// Main Table Component (Enhanced with solid boundaries)
+"use strict";
+
+/* istanbul ignore next */
+function cov_2qpkvukeit() {
+  var path = "/Users/ayman/quantro/src/components/food-log/table/index.ts";
+  var hash = "5fc4edc21b965225e94b628b3677351420961d15";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/ayman/quantro/src/components/food-log/table/index.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 4,
+          column: 0
+        },
+        end: {
+          line: 6,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 8,
+          column: 4
+        },
+        end: {
+          line: 11,
+          column: 7
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 24
+        },
+        end: {
+          line: 11,
+          column: 7
+        }
+      },
+      "3": {
+        start: {
+          line: 13,
+          column: 0
+        },
+        end: {
+          line: 20,
+          column: 3
+        }
+      },
+      "4": {
+        start: {
+          line: 15,
+          column: 8
+        },
+        end: {
+          line: 15,
+          column: 42
+        }
+      },
+      "5": {
+        start: {
+          line: 18,
+          column: 8
+        },
+        end: {
+          line: 18,
+          column: 42
+        }
+      },
+      "6": {
+        start: {
+          line: 21,
+          column: 41
+        },
+        end: {
+          line: 21,
+          column: 97
+        }
+      },
+      "7": {
+        start: {
+          line: 22,
+          column: 0
+        },
+        end: {
+          line: 22,
+          column: 47
+        }
+      },
+      "8": {
+        start: {
+          line: 23,
+          column: 0
+        },
+        end: {
+          line: 23,
+          column: 42
+        }
+      },
+      "9": {
+        start: {
+          line: 24,
+          column: 0
+        },
+        end: {
+          line: 24,
+          column: 42
+        }
+      },
+      "10": {
+        start: {
+          line: 25,
+          column: 0
+        },
+        end: {
+          line: 25,
+          column: 42
+        }
+      },
+      "11": {
+        start: {
+          line: 27,
+          column: 4
+        },
+        end: {
+          line: 36,
+          column: 7
+        }
+      },
+      "12": {
+        start: {
+          line: 28,
+          column: 8
+        },
+        end: {
+          line: 35,
+          column: 9
+        }
+      },
+      "13": {
+        start: {
+          line: 29,
+          column: 12
+        },
+        end: {
+          line: 34,
+          column: 15
+        }
+      },
+      "14": {
+        start: {
+          line: 32,
+          column: 20
+        },
+        end: {
+          line: 32,
+          column: 35
+        }
+      },
+      "15": {
+        start: {
+          line: 37,
+          column: 4
+        },
+        end: {
+          line: 37,
+          column: 16
+        }
+      },
+      "16": {
+        start: {
+          line: 40,
+          column: 4
+        },
+        end: {
+          line: 42,
+          column: 6
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "_export",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 16
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 30
+          },
+          end: {
+            line: 12,
+            column: 1
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 14,
+            column: 4
+          },
+          end: {
+            line: 14,
+            column: 5
+          }
+        },
+        loc: {
+          start: {
+            line: 14,
+            column: 29
+          },
+          end: {
+            line: 16,
+            column: 5
+          }
+        },
+        line: 14
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 17,
+            column: 4
+          },
+          end: {
+            line: 17,
+            column: 5
+          }
+        },
+        loc: {
+          start: {
+            line: 17,
+            column: 21
+          },
+          end: {
+            line: 19,
+            column: 5
+          }
+        },
+        line: 17
+      },
+      "3": {
+        name: "_export_star",
+        decl: {
+          start: {
+            line: 26,
+            column: 9
+          },
+          end: {
+            line: 26,
+            column: 21
+          }
+        },
+        loc: {
+          start: {
+            line: 26,
+            column: 32
+          },
+          end: {
+            line: 38,
+            column: 1
+          }
+        },
+        line: 26
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 27,
+            column: 30
+          },
+          end: {
+            line: 27,
+            column: 31
+          }
+        },
+        loc: {
+          start: {
+            line: 27,
+            column: 42
+          },
+          end: {
+            line: 36,
+            column: 5
+          }
+        },
+        line: 27
+      },
+      "5": {
+        name: "(anonymous_5)",
+        decl: {
+          start: {
+            line: 31,
+            column: 21
+          },
+          end: {
+            line: 31,
+            column: 22
+          }
+        },
+        loc: {
+          start: {
+            line: 31,
+            column: 32
+          },
+          end: {
+            line: 33,
+            column: 17
+          }
+        },
+        line: 31
+      },
+      "6": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 39,
+            column: 9
+          },
+          end: {
+            line: 39,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 39,
+            column: 39
+          },
+          end: {
+            line: 43,
+            column: 1
+          }
+        },
+        line: 39
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 28,
+            column: 8
+          },
+          end: {
+            line: 35,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 28,
+            column: 8
+          },
+          end: {
+            line: 35,
+            column: 9
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 28
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 28,
+            column: 12
+          },
+          end: {
+            line: 28,
+            column: 75
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 28,
+            column: 12
+          },
+          end: {
+            line: 28,
+            column: 27
+          }
+        }, {
+          start: {
+            line: 28,
+            column: 31
+          },
+          end: {
+            line: 28,
+            column: 75
+          }
+        }],
+        line: 28
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 40,
+            column: 11
+          },
+          end: {
+            line: 42,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 40,
+            column: 35
+          },
+          end: {
+            line: 40,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 40,
+            column: 41
+          },
+          end: {
+            line: 42,
+            column: 5
+          }
+        }],
+        line: 40
+      },
+      "3": {
+        loc: {
+          start: {
+            line: 40,
+            column: 11
+          },
+          end: {
+            line: 40,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 40,
+            column: 11
+          },
+          end: {
+            line: 40,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 40,
+            column: 18
+          },
+          end: {
+            line: 40,
+            column: 32
+          }
+        }],
+        line: 40
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0],
+      "3": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/Users/ayman/quantro/src/components/food-log/table/index.ts"],
+      sourcesContent: ["// Table components for food log - Clean and Modular\n\n// Main Table Component (Enhanced with solid boundaries)\nexport { default as FoodTable } from './EnhancedFoodTable';\nexport { default as EnhancedFoodTable } from './EnhancedFoodTable';\n\n// Components\nexport * from './components';\n\n// Hooks\nexport * from './hooks';\n\n// Table utilities and types\nexport * from './types';\nexport * from './utils';\n"],
+      names: ["EnhancedFoodTable", "FoodTable"],
+      mappings: "AAAA,oDAAoD;AAEpD,wDAAwD;;;;;;;;;;;;QAEpCA;eAAAA,0BAAiB;;QADjBC;eAAAA,0BAAS;;;0EAAQ;qBAIvB;qBAGA;qBAGA;qBACA"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "5fc4edc21b965225e94b628b3677351420961d15"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_2qpkvukeit = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_2qpkvukeit();
+cov_2qpkvukeit().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function _export(target, all) {
+  /* istanbul ignore next */
+  cov_2qpkvukeit().f[0]++;
+  cov_2qpkvukeit().s[1]++;
+  for (var name in all) {
+    /* istanbul ignore next */
+    cov_2qpkvukeit().s[2]++;
+    Object.defineProperty(target, name, {
+      enumerable: true,
+      get: Object.getOwnPropertyDescriptor(all, name).get
+    });
+  }
+}
+/* istanbul ignore next */
+cov_2qpkvukeit().s[3]++;
+_export(exports, {
+  get EnhancedFoodTable() {
+    /* istanbul ignore next */
+    cov_2qpkvukeit().f[1]++;
+    cov_2qpkvukeit().s[4]++;
+    return _EnhancedFoodTable.default;
+  },
+  get FoodTable() {
+    /* istanbul ignore next */
+    cov_2qpkvukeit().f[2]++;
+    cov_2qpkvukeit().s[5]++;
+    return _EnhancedFoodTable.default;
+  }
+});
+const _EnhancedFoodTable =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_2qpkvukeit().s[6]++, _interop_require_default(require("./EnhancedFoodTable")));
+/* istanbul ignore next */
+cov_2qpkvukeit().s[7]++;
+_export_star(require("./components"), exports);
+/* istanbul ignore next */
+cov_2qpkvukeit().s[8]++;
+_export_star(require("./hooks"), exports);
+/* istanbul ignore next */
+cov_2qpkvukeit().s[9]++;
+_export_star(require("./types"), exports);
+/* istanbul ignore next */
+cov_2qpkvukeit().s[10]++;
+_export_star(require("./utils"), exports);
+function _export_star(from, to) {
+  /* istanbul ignore next */
+  cov_2qpkvukeit().f[3]++;
+  cov_2qpkvukeit().s[11]++;
+  Object.keys(from).forEach(function (k) {
+    /* istanbul ignore next */
+    cov_2qpkvukeit().f[4]++;
+    cov_2qpkvukeit().s[12]++;
+    if (
+    /* istanbul ignore next */
+    (cov_2qpkvukeit().b[1][0]++, k !== "default") &&
+    /* istanbul ignore next */
+    (cov_2qpkvukeit().b[1][1]++, !Object.prototype.hasOwnProperty.call(to, k))) {
+      /* istanbul ignore next */
+      cov_2qpkvukeit().b[0][0]++;
+      cov_2qpkvukeit().s[13]++;
+      Object.defineProperty(to, k, {
+        enumerable: true,
+        get: function () {
+          /* istanbul ignore next */
+          cov_2qpkvukeit().f[5]++;
+          cov_2qpkvukeit().s[14]++;
+          return from[k];
+        }
+      });
+    } else
+    /* istanbul ignore next */
+    {
+      cov_2qpkvukeit().b[0][1]++;
+    }
+  });
+  /* istanbul ignore next */
+  cov_2qpkvukeit().s[15]++;
+  return from;
+}
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_2qpkvukeit().f[6]++;
+  cov_2qpkvukeit().s[16]++;
+  return /* istanbul ignore next */(cov_2qpkvukeit().b[3][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_2qpkvukeit().b[3][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_2qpkvukeit().b[2][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_2qpkvukeit().b[2][1]++, {
+    default: obj
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJFbmhhbmNlZEZvb2RUYWJsZSIsImNvdl8ycXBrdnVrZWl0IiwiZiIsInMiLCJfRW5oYW5jZWRGb29kVGFibGUiLCJkZWZhdWx0IiwiRm9vZFRhYmxlIiwiZXhwb3J0cyJdLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb21wb25lbnRzL2Zvb2QtbG9nL3RhYmxlL2luZGV4LnRzIl0sInNvdXJjZXNDb250ZW50IjpbIi8vIFRhYmxlIGNvbXBvbmVudHMgZm9yIGZvb2QgbG9nIC0gQ2xlYW4gYW5kIE1vZHVsYXJcblxuLy8gTWFpbiBUYWJsZSBDb21wb25lbnQgKEVuaGFuY2VkIHdpdGggc29saWQgYm91bmRhcmllcylcbmV4cG9ydCB7IGRlZmF1bHQgYXMgRm9vZFRhYmxlIH0gZnJvbSAnLi9FbmhhbmNlZEZvb2RUYWJsZSc7XG5leHBvcnQgeyBkZWZhdWx0IGFzIEVuaGFuY2VkRm9vZFRhYmxlIH0gZnJvbSAnLi9FbmhhbmNlZEZvb2RUYWJsZSc7XG5cbi8vIENvbXBvbmVudHNcbmV4cG9ydCAqIGZyb20gJy4vY29tcG9uZW50cyc7XG5cbi8vIEhvb2tzXG5leHBvcnQgKiBmcm9tICcuL2hvb2tzJztcblxuLy8gVGFibGUgdXRpbGl0aWVzIGFuZCB0eXBlc1xuZXhwb3J0ICogZnJvbSAnLi90eXBlcyc7XG5leHBvcnQgKiBmcm9tICcuL3V0aWxzJztcbiJdLCJtYXBwaW5ncyI6IkFBQUE7QUFFQTs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztNQUVvQkEsa0JBQUE7SUFBQTtJQUFBQyxjQUFBLEdBQUFDLENBQUE7SUFBQUQsY0FBQSxHQUFBRSxDQUFBO1dBQUFDLGtCQUFBLENBQUFDLE9BQWlCOztNQURqQkMsVUFBQTtJQUFBO0lBQUFMLGNBQUEsR0FBQUMsQ0FBQTtJQUFBRCxjQUFBLEdBQUFFLENBQUE7V0FBQUMsa0JBQUEsQ0FBQUMsT0FBUzs7Ozs7d0VBQVE7QUFBQTtBQUFBSixjQUFBLEdBQUFFLENBQUE7cUJBSXZCLGlCQUFBSSxPQUFBO0FBQUE7QUFBQU4sY0FBQSxHQUFBRSxDQUFBO3FCQUdBLFlBQUFJLE9BQUE7QUFBQTtBQUFBTixjQUFBLEdBQUFFLENBQUE7cUJBR0EsWUFBQUksT0FBQTtBQUFBO0FBQUFOLGNBQUEsR0FBQUUsQ0FBQTtxQkFDQSxZQUFBSSxPQUFBIiwiaWdub3JlTGlzdCI6W119

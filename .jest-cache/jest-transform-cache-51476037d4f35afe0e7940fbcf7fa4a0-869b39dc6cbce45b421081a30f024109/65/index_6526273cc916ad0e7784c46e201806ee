@@ -1,0 +1,249 @@
+548ad0bf790867509212f55f028ea9bb
+// Food log hooks
+"use strict";
+
+/* istanbul ignore next */
+function cov_21j3hya54c() {
+  var path = "/Users/ayman/quantro/src/components/food-log/hooks/index.ts";
+  var hash = "0113b68b7739ed183cb0420b7978be352105d241";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/ayman/quantro/src/components/food-log/hooks/index.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 7,
+          column: 4
+        },
+        end: {
+          line: 10,
+          column: 7
+        }
+      },
+      "2": {
+        start: {
+          line: 7,
+          column: 24
+        },
+        end: {
+          line: 10,
+          column: 7
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 0
+        },
+        end: {
+          line: 19,
+          column: 3
+        }
+      },
+      "4": {
+        start: {
+          line: 14,
+          column: 8
+        },
+        end: {
+          line: 14,
+          column: 40
+        }
+      },
+      "5": {
+        start: {
+          line: 17,
+          column: 8
+        },
+        end: {
+          line: 17,
+          column: 42
+        }
+      },
+      "6": {
+        start: {
+          line: 20,
+          column: 22
+        },
+        end: {
+          line: 20,
+          column: 47
+        }
+      },
+      "7": {
+        start: {
+          line: 21,
+          column: 21
+        },
+        end: {
+          line: 21,
+          column: 45
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "_export",
+        decl: {
+          start: {
+            line: 6,
+            column: 9
+          },
+          end: {
+            line: 6,
+            column: 16
+          }
+        },
+        loc: {
+          start: {
+            line: 6,
+            column: 30
+          },
+          end: {
+            line: 11,
+            column: 1
+          }
+        },
+        line: 6
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 13,
+            column: 4
+          },
+          end: {
+            line: 13,
+            column: 5
+          }
+        },
+        loc: {
+          start: {
+            line: 13,
+            column: 23
+          },
+          end: {
+            line: 15,
+            column: 5
+          }
+        },
+        line: 13
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 16,
+            column: 4
+          },
+          end: {
+            line: 16,
+            column: 5
+          }
+        },
+        loc: {
+          start: {
+            line: 16,
+            column: 24
+          },
+          end: {
+            line: 18,
+            column: 5
+          }
+        },
+        line: 16
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/Users/ayman/quantro/src/components/food-log/hooks/index.ts"],
+      sourcesContent: ["// Food log hooks\nexport { useFoodTable } from './useFoodTable';\nexport { useDragDrop } from './useDragDrop';\nexport type { \n  UseFoodTableState, \n  UseFoodTableActions\n} from './useFoodTable';\nexport type { \n  UseDragDropState, \n  UseDragDropActions \n} from './useDragDrop';\n"],
+      names: ["useDragDrop", "useFoodTable"],
+      mappings: "AAAA,iBAAiB;;;;;;;;;;;;QAERA;eAAAA,wBAAW;;QADXC;eAAAA,0BAAY;;;8BAAQ;6BACD"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "0113b68b7739ed183cb0420b7978be352105d241"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_21j3hya54c = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_21j3hya54c();
+cov_21j3hya54c().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function _export(target, all) {
+  /* istanbul ignore next */
+  cov_21j3hya54c().f[0]++;
+  cov_21j3hya54c().s[1]++;
+  for (var name in all) {
+    /* istanbul ignore next */
+    cov_21j3hya54c().s[2]++;
+    Object.defineProperty(target, name, {
+      enumerable: true,
+      get: Object.getOwnPropertyDescriptor(all, name).get
+    });
+  }
+}
+/* istanbul ignore next */
+cov_21j3hya54c().s[3]++;
+_export(exports, {
+  get useDragDrop() {
+    /* istanbul ignore next */
+    cov_21j3hya54c().f[1]++;
+    cov_21j3hya54c().s[4]++;
+    return _useDragDrop.useDragDrop;
+  },
+  get useFoodTable() {
+    /* istanbul ignore next */
+    cov_21j3hya54c().f[2]++;
+    cov_21j3hya54c().s[5]++;
+    return _useFoodTable.useFoodTable;
+  }
+});
+const _useFoodTable =
+/* istanbul ignore next */
+(cov_21j3hya54c().s[6]++, require("./useFoodTable"));
+const _useDragDrop =
+/* istanbul ignore next */
+(cov_21j3hya54c().s[7]++, require("./useDragDrop"));
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMjFqM2h5YTU0YyIsImFjdHVhbENvdmVyYWdlIiwicyIsInVzZURyYWdEcm9wIiwiZiIsIl91c2VEcmFnRHJvcCIsInVzZUZvb2RUYWJsZSIsIl91c2VGb29kVGFibGUiXSwic291cmNlcyI6WyIvVXNlcnMvYXltYW4vcXVhbnRyby9zcmMvY29tcG9uZW50cy9mb29kLWxvZy9ob29rcy9pbmRleC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBGb29kIGxvZyBob29rc1xuZXhwb3J0IHsgdXNlRm9vZFRhYmxlIH0gZnJvbSAnLi91c2VGb29kVGFibGUnO1xuZXhwb3J0IHsgdXNlRHJhZ0Ryb3AgfSBmcm9tICcuL3VzZURyYWdEcm9wJztcbmV4cG9ydCB0eXBlIHsgXG4gIFVzZUZvb2RUYWJsZVN0YXRlLCBcbiAgVXNlRm9vZFRhYmxlQWN0aW9uc1xufSBmcm9tICcuL3VzZUZvb2RUYWJsZSc7XG5leHBvcnQgdHlwZSB7IFxuICBVc2VEcmFnRHJvcFN0YXRlLCBcbiAgVXNlRHJhZ0Ryb3BBY3Rpb25zIFxufSBmcm9tICcuL3VzZURyYWdEcm9wJztcbiJdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0lBQ1M7SUFBQUEsY0FBQSxZQUFBQSxDQUFBO01BQUEsT0FBQUMsY0FBQTtJQUFBO0VBQUE7RUFBQSxPQUFBQSxjQUFBO0FBQUE7QUFBQUQsY0FBQTtBQUFBQSxjQUFBLEdBQUFFLENBQUE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O01BQ0FDLFlBQUE7SUFBQTtJQUFBSCxjQUFBLEdBQUFJLENBQUE7SUFBQUosY0FBQSxHQUFBRSxDQUFBO1dBQUFHLFlBQUEsQ0FBQUYsV0FBVzs7TUFEWEcsYUFBQTtJQUFBO0lBQUFOLGNBQUEsR0FBQUksQ0FBQTtJQUFBSixjQUFBLEdBQUFFLENBQUE7V0FBQUssYUFBQSxDQUFBRCxZQUFZOzs7OztrQ0FBUTs7O2tDQUNEIiwiaWdub3JlTGlzdCI6W119

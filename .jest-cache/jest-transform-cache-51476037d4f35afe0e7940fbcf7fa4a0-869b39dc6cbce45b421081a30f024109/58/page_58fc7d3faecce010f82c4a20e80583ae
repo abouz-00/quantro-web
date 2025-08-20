@@ -1,0 +1,377 @@
+cd994b859a206595dbd1097c65c8b9e4
+"use client";
+"use strict";
+
+/* istanbul ignore next */
+function cov_vrl4691qq() {
+  var path = "/Users/ayman/quantro/src/app/debug/page.tsx";
+  var hash = "74fc89eab0d4bfb863f83412404b4dfb6e95db22";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/ayman/quantro/src/app/debug/page.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 11,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 9,
+          column: 8
+        },
+        end: {
+          line: 9,
+          column: 25
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 12,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 15
+        },
+        end: {
+          line: 13,
+          column: 41
+        }
+      },
+      "5": {
+        start: {
+          line: 15,
+          column: 38
+        },
+        end: {
+          line: 15,
+          column: 62
+        }
+      },
+      "6": {
+        start: {
+          line: 16,
+          column: 4
+        },
+        end: {
+          line: 113,
+          column: 7
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 8,
+            column: 9
+          },
+          end: {
+            line: 8,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 20
+          },
+          end: {
+            line: 10,
+            column: 5
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "DebugPage",
+        decl: {
+          start: {
+            line: 14,
+            column: 9
+          },
+          end: {
+            line: 14,
+            column: 18
+          }
+        },
+        loc: {
+          start: {
+            line: 14,
+            column: 21
+          },
+          end: {
+            line: 114,
+            column: 1
+          }
+        },
+        line: 14
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 67,
+            column: 28
+          },
+          end: {
+            line: 67,
+            column: 50
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 67,
+            column: 38
+          },
+          end: {
+            line: 67,
+            column: 43
+          }
+        }, {
+          start: {
+            line: 67,
+            column: 46
+          },
+          end: {
+            line: 67,
+            column: 50
+          }
+        }],
+        line: 67
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 76,
+            column: 28
+          },
+          end: {
+            line: 76,
+            column: 56
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 76,
+            column: 44
+          },
+          end: {
+            line: 76,
+            column: 49
+          }
+        }, {
+          start: {
+            line: 76,
+            column: 52
+          },
+          end: {
+            line: 76,
+            column: 56
+          }
+        }],
+        line: 76
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 79,
+            column: 20
+          },
+          end: {
+            line: 109,
+            column: 22
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 79,
+            column: 20
+          },
+          end: {
+            line: 79,
+            column: 33
+          }
+        }, {
+          start: {
+            line: 79,
+            column: 51
+          },
+          end: {
+            line: 109,
+            column: 22
+          }
+        }],
+        line: 79
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/Users/ayman/quantro/src/app/debug/page.tsx"],
+      sourcesContent: ["\"use client\";\n\nimport { useSession } from \"next-auth/react\";\n\nexport default function DebugPage() {\n  const { data: session, status } = useSession();\n\n  return (\n    <div className=\"p-8 bg-gray-100 min-h-screen\">\n      <h1 className=\"text-2xl font-bold mb-4\">Debug Session Info</h1>\n      \n      <div className=\"bg-white p-4 rounded-lg shadow mb-4\">\n        <h2 className=\"text-lg font-semibold mb-2\">Session Status</h2>\n        <p><strong>Status:</strong> {status}</p>\n      </div>\n\n      <div className=\"bg-white p-4 rounded-lg shadow mb-4\">\n        <h2 className=\"text-lg font-semibold mb-2\">Session Data</h2>\n        <pre className=\"bg-gray-100 p-2 rounded text-sm overflow-auto\">\n          {JSON.stringify(session, null, 2)}\n        </pre>\n      </div>\n\n      <div className=\"bg-white p-4 rounded-lg shadow\">\n        <h2 className=\"text-lg font-semibold mb-2\">Raw Session Object</h2>\n        <p><strong>Session exists:</strong> {session ? \"Yes\" : \"No\"}</p>\n        <p><strong>User exists:</strong> {session?.user ? \"Yes\" : \"No\"}</p>\n        {session?.user && (\n          <>\n            <p><strong>User ID:</strong> {session.user.id}</p>\n            <p><strong>User Name:</strong> {session.user.name}</p>\n            <p><strong>User Email:</strong> {session.user.email}</p>\n          </>\n        )}\n      </div>\n    </div>\n  );\n}\n"],
+      names: ["DebugPage", "data", "session", "status", "useSession", "div", "className", "h1", "h2", "p", "strong", "pre", "JSON", "stringify", "user", "id", "name", "email"],
+      mappings: "AAAA;;;;;+BAIA;;;eAAwBA;;;;uBAFG;AAEZ,SAASA;IACtB,MAAM,EAAEC,MAAMC,OAAO,EAAEC,MAAM,EAAE,GAAGC,IAAAA,iBAAU;IAE5C,qBACE,sBAACC;QAAIC,WAAU;;0BACb,qBAACC;gBAAGD,WAAU;0BAA0B;;0BAExC,sBAACD;gBAAIC,WAAU;;kCACb,qBAACE;wBAAGF,WAAU;kCAA6B;;kCAC3C,sBAACG;;0CAAE,qBAACC;0CAAO;;4BAAgB;4BAAEP;;;;;0BAG/B,sBAACE;gBAAIC,WAAU;;kCACb,qBAACE;wBAAGF,WAAU;kCAA6B;;kCAC3C,qBAACK;wBAAIL,WAAU;kCACZM,KAAKC,SAAS,CAACX,SAAS,MAAM;;;;0BAInC,sBAACG;gBAAIC,WAAU;;kCACb,qBAACE;wBAAGF,WAAU;kCAA6B;;kCAC3C,sBAACG;;0CAAE,qBAACC;0CAAO;;4BAAwB;4BAAER,UAAU,QAAQ;;;kCACvD,sBAACO;;0CAAE,qBAACC;0CAAO;;4BAAqB;4BAAER,SAASY,OAAO,QAAQ;;;oBACzDZ,SAASY,sBACR;;0CACE,sBAACL;;kDAAE,qBAACC;kDAAO;;oCAAiB;oCAAER,QAAQY,IAAI,CAACC,EAAE;;;0CAC7C,sBAACN;;kDAAE,qBAACC;kDAAO;;oCAAmB;oCAAER,QAAQY,IAAI,CAACE,IAAI;;;0CACjD,sBAACP;;kDAAE,qBAACC;kDAAO;;oCAAoB;oCAAER,QAAQY,IAAI,CAACG,KAAK;;;;;;;;;AAM/D"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "74fc89eab0d4bfb863f83412404b4dfb6e95db22"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_vrl4691qq = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_vrl4691qq();
+cov_vrl4691qq().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_vrl4691qq().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_vrl4691qq().f[0]++;
+    cov_vrl4691qq().s[2]++;
+    return DebugPage;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_vrl4691qq().s[3]++, require("react/jsx-runtime"));
+const _react =
+/* istanbul ignore next */
+(cov_vrl4691qq().s[4]++, require("next-auth/react"));
+function DebugPage() {
+  /* istanbul ignore next */
+  cov_vrl4691qq().f[1]++;
+  const {
+    data: session,
+    status
+  } =
+  /* istanbul ignore next */
+  (cov_vrl4691qq().s[5]++, (0, _react.useSession)());
+  /* istanbul ignore next */
+  cov_vrl4691qq().s[6]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+    className: "p-8 bg-gray-100 min-h-screen",
+    children: [/*#__PURE__*/(0, _jsxruntime.jsx)("h1", {
+      className: "text-2xl font-bold mb-4",
+      children: "Debug Session Info"
+    }), /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+      className: "bg-white p-4 rounded-lg shadow mb-4",
+      children: [/*#__PURE__*/(0, _jsxruntime.jsx)("h2", {
+        className: "text-lg font-semibold mb-2",
+        children: "Session Status"
+      }), /*#__PURE__*/(0, _jsxruntime.jsxs)("p", {
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)("strong", {
+          children: "Status:"
+        }), " ", status]
+      })]
+    }), /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+      className: "bg-white p-4 rounded-lg shadow mb-4",
+      children: [/*#__PURE__*/(0, _jsxruntime.jsx)("h2", {
+        className: "text-lg font-semibold mb-2",
+        children: "Session Data"
+      }), /*#__PURE__*/(0, _jsxruntime.jsx)("pre", {
+        className: "bg-gray-100 p-2 rounded text-sm overflow-auto",
+        children: JSON.stringify(session, null, 2)
+      })]
+    }), /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+      className: "bg-white p-4 rounded-lg shadow",
+      children: [/*#__PURE__*/(0, _jsxruntime.jsx)("h2", {
+        className: "text-lg font-semibold mb-2",
+        children: "Raw Session Object"
+      }), /*#__PURE__*/(0, _jsxruntime.jsxs)("p", {
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)("strong", {
+          children: "Session exists:"
+        }), " ", session ?
+        /* istanbul ignore next */
+        (cov_vrl4691qq().b[0][0]++, "Yes") :
+        /* istanbul ignore next */
+        (cov_vrl4691qq().b[0][1]++, "No")]
+      }), /*#__PURE__*/(0, _jsxruntime.jsxs)("p", {
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)("strong", {
+          children: "User exists:"
+        }), " ", session?.user ?
+        /* istanbul ignore next */
+        (cov_vrl4691qq().b[1][0]++, "Yes") :
+        /* istanbul ignore next */
+        (cov_vrl4691qq().b[1][1]++, "No")]
+      }),
+      /* istanbul ignore next */
+      (cov_vrl4691qq().b[2][0]++, session?.user) &&
+      /* istanbul ignore next */
+      (cov_vrl4691qq().b[2][1]++, /*#__PURE__*/(0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
+        children: [/*#__PURE__*/(0, _jsxruntime.jsxs)("p", {
+          children: [/*#__PURE__*/(0, _jsxruntime.jsx)("strong", {
+            children: "User ID:"
+          }), " ", session.user.id]
+        }), /*#__PURE__*/(0, _jsxruntime.jsxs)("p", {
+          children: [/*#__PURE__*/(0, _jsxruntime.jsx)("strong", {
+            children: "User Name:"
+          }), " ", session.user.name]
+        }), /*#__PURE__*/(0, _jsxruntime.jsxs)("p", {
+          children: [/*#__PURE__*/(0, _jsxruntime.jsx)("strong", {
+            children: "User Email:"
+          }), " ", session.user.email]
+        })]
+      }))]
+    })]
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfdnJsNDY5MXFxIiwiYWN0dWFsQ292ZXJhZ2UiLCJzIiwiRGVidWdQYWdlIiwiZiIsImRhdGEiLCJzZXNzaW9uIiwic3RhdHVzIiwiX3JlYWN0IiwidXNlU2Vzc2lvbiIsIl9qc3hydW50aW1lIiwianN4cyIsImNsYXNzTmFtZSIsImpzeCIsIkpTT04iLCJzdHJpbmdpZnkiLCJiIiwidXNlciIsIkZyYWdtZW50IiwiaWQiLCJuYW1lIiwiZW1haWwiXSwic291cmNlcyI6WyIvVXNlcnMvYXltYW4vcXVhbnRyby9zcmMvYXBwL2RlYnVnL3BhZ2UudHN4Il0sInNvdXJjZXNDb250ZW50IjpbIlwidXNlIGNsaWVudFwiO1xuXG5pbXBvcnQgeyB1c2VTZXNzaW9uIH0gZnJvbSBcIm5leHQtYXV0aC9yZWFjdFwiO1xuXG5leHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBEZWJ1Z1BhZ2UoKSB7XG4gIGNvbnN0IHsgZGF0YTogc2Vzc2lvbiwgc3RhdHVzIH0gPSB1c2VTZXNzaW9uKCk7XG5cbiAgcmV0dXJuIChcbiAgICA8ZGl2IGNsYXNzTmFtZT1cInAtOCBiZy1ncmF5LTEwMCBtaW4taC1zY3JlZW5cIj5cbiAgICAgIDxoMSBjbGFzc05hbWU9XCJ0ZXh0LTJ4bCBmb250LWJvbGQgbWItNFwiPkRlYnVnIFNlc3Npb24gSW5mbzwvaDE+XG4gICAgICBcbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYmctd2hpdGUgcC00IHJvdW5kZWQtbGcgc2hhZG93IG1iLTRcIj5cbiAgICAgICAgPGgyIGNsYXNzTmFtZT1cInRleHQtbGcgZm9udC1zZW1pYm9sZCBtYi0yXCI+U2Vzc2lvbiBTdGF0dXM8L2gyPlxuICAgICAgICA8cD48c3Ryb25nPlN0YXR1czo8L3N0cm9uZz4ge3N0YXR1c308L3A+XG4gICAgICA8L2Rpdj5cblxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJiZy13aGl0ZSBwLTQgcm91bmRlZC1sZyBzaGFkb3cgbWItNFwiPlxuICAgICAgICA8aDIgY2xhc3NOYW1lPVwidGV4dC1sZyBmb250LXNlbWlib2xkIG1iLTJcIj5TZXNzaW9uIERhdGE8L2gyPlxuICAgICAgICA8cHJlIGNsYXNzTmFtZT1cImJnLWdyYXktMTAwIHAtMiByb3VuZGVkIHRleHQtc20gb3ZlcmZsb3ctYXV0b1wiPlxuICAgICAgICAgIHtKU09OLnN0cmluZ2lmeShzZXNzaW9uLCBudWxsLCAyKX1cbiAgICAgICAgPC9wcmU+XG4gICAgICA8L2Rpdj5cblxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJiZy13aGl0ZSBwLTQgcm91bmRlZC1sZyBzaGFkb3dcIj5cbiAgICAgICAgPGgyIGNsYXNzTmFtZT1cInRleHQtbGcgZm9udC1zZW1pYm9sZCBtYi0yXCI+UmF3IFNlc3Npb24gT2JqZWN0PC9oMj5cbiAgICAgICAgPHA+PHN0cm9uZz5TZXNzaW9uIGV4aXN0czo8L3N0cm9uZz4ge3Nlc3Npb24gPyBcIlllc1wiIDogXCJOb1wifTwvcD5cbiAgICAgICAgPHA+PHN0cm9uZz5Vc2VyIGV4aXN0czo8L3N0cm9uZz4ge3Nlc3Npb24/LnVzZXIgPyBcIlllc1wiIDogXCJOb1wifTwvcD5cbiAgICAgICAge3Nlc3Npb24/LnVzZXIgJiYgKFxuICAgICAgICAgIDw+XG4gICAgICAgICAgICA8cD48c3Ryb25nPlVzZXIgSUQ6PC9zdHJvbmc+IHtzZXNzaW9uLnVzZXIuaWR9PC9wPlxuICAgICAgICAgICAgPHA+PHN0cm9uZz5Vc2VyIE5hbWU6PC9zdHJvbmc+IHtzZXNzaW9uLnVzZXIubmFtZX08L3A+XG4gICAgICAgICAgICA8cD48c3Ryb25nPlVzZXIgRW1haWw6PC9zdHJvbmc+IHtzZXNzaW9uLnVzZXIuZW1haWx9PC9wPlxuICAgICAgICAgIDwvPlxuICAgICAgICApfVxuICAgICAgPC9kaXY+XG4gICAgPC9kaXY+XG4gICk7XG59XG4iXSwibWFwcGluZ3MiOiJBQUFBOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0lBT0U7SUFBQUEsYUFBQSxZQUFBQSxDQUFBO01BQUEsT0FBQUMsY0FBQTtJQUFBO0VBQUE7RUFBQSxPQUFBQSxjQUFBO0FBQUE7QUFBQUQsYUFBQTtBQUFBQSxhQUFBLEdBQUFFLENBQUE7Ozs7OzsrQkFIRjs7Ozs7O1dBQXdCQyxTQUFBOzs7Ozs7OztpQ0FGRztBQUVaLFNBQVNBLFVBQUE7RUFBQTtFQUFBSCxhQUFBLEdBQUFJLENBQUE7RUFDdEIsTUFBTTtJQUFFQyxJQUFBLEVBQU1DLE9BQU87SUFBRUM7RUFBTSxDQUFFO0VBQUE7RUFBQSxDQUFBUCxhQUFBLEdBQUFFLENBQUEsT0FBRyxJQUFBTSxNQUFBLENBQUFDLFVBQVU7RUFBQTtFQUFBVCxhQUFBLEdBQUFFLENBQUE7RUFFNUMsb0JBQ0UsSUFBQVEsV0FBQSxDQUFBQyxJQUFBLEVBQUM7SUFBSUMsU0FBQSxFQUFVOzRCQUNiLElBQUFGLFdBQUEsQ0FBQUcsR0FBQSxFQUFDO01BQUdELFNBQUEsRUFBVTtnQkFBMEI7cUJBRXhDLElBQUFGLFdBQUEsQ0FBQUMsSUFBQSxFQUFDO01BQUlDLFNBQUEsRUFBVTs4QkFDYixJQUFBRixXQUFBLENBQUFHLEdBQUEsRUFBQztRQUFHRCxTQUFBLEVBQVU7a0JBQTZCO3VCQUMzQyxJQUFBRixXQUFBLENBQUFDLElBQUEsRUFBQztnQ0FBRSxJQUFBRCxXQUFBLENBQUFHLEdBQUEsRUFBQztvQkFBTztZQUFnQixLQUFFTixNQUFBOztxQkFHL0IsSUFBQUcsV0FBQSxDQUFBQyxJQUFBLEVBQUM7TUFBSUMsU0FBQSxFQUFVOzhCQUNiLElBQUFGLFdBQUEsQ0FBQUcsR0FBQSxFQUFDO1FBQUdELFNBQUEsRUFBVTtrQkFBNkI7dUJBQzNDLElBQUFGLFdBQUEsQ0FBQUcsR0FBQSxFQUFDO1FBQUlELFNBQUEsRUFBVTtrQkFDWkUsSUFBQSxDQUFLQyxTQUFTLENBQUNULE9BQUEsRUFBUyxNQUFNOztxQkFJbkMsSUFBQUksV0FBQSxDQUFBQyxJQUFBLEVBQUM7TUFBSUMsU0FBQSxFQUFVOzhCQUNiLElBQUFGLFdBQUEsQ0FBQUcsR0FBQSxFQUFDO1FBQUdELFNBQUEsRUFBVTtrQkFBNkI7dUJBQzNDLElBQUFGLFdBQUEsQ0FBQUMsSUFBQSxFQUFDO2dDQUFFLElBQUFELFdBQUEsQ0FBQUcsR0FBQSxFQUFDO29CQUFPO1lBQXdCLEtBQUVQLE9BQUE7UUFBQTtRQUFBLENBQUFOLGFBQUEsR0FBQWdCLENBQUEsVUFBVTtRQUFBO1FBQUEsQ0FBQWhCLGFBQUEsR0FBQWdCLENBQUEsVUFBUTt1QkFDdkQsSUFBQU4sV0FBQSxDQUFBQyxJQUFBLEVBQUM7Z0NBQUUsSUFBQUQsV0FBQSxDQUFBRyxHQUFBLEVBQUM7b0JBQU87WUFBcUIsS0FBRVAsT0FBQSxFQUFTVyxJQUFBO1FBQUE7UUFBQSxDQUFBakIsYUFBQSxHQUFBZ0IsQ0FBQSxVQUFPO1FBQUE7UUFBQSxDQUFBaEIsYUFBQSxHQUFBZ0IsQ0FBQSxVQUFROztNQUN6RDtNQUFBLENBQUFoQixhQUFBLEdBQUFnQixDQUFBLFVBQUFWLE9BQUEsRUFBU1csSUFBQTtNQUFBO01BQUEsQ0FBQWpCLGFBQUEsR0FBQWdCLENBQUEsdUJBQ1IsSUFBQU4sV0FBQSxDQUFBQyxJQUFBLEVBQUFELFdBQUEsQ0FBQVEsUUFBQTtnQ0FDRSxJQUFBUixXQUFBLENBQUFDLElBQUEsRUFBQztrQ0FBRSxJQUFBRCxXQUFBLENBQUFHLEdBQUEsRUFBQztzQkFBTztjQUFpQixLQUFFUCxPQUFBLENBQVFXLElBQUksQ0FBQ0UsRUFBRTt5QkFDN0MsSUFBQVQsV0FBQSxDQUFBQyxJQUFBLEVBQUM7a0NBQUUsSUFBQUQsV0FBQSxDQUFBRyxHQUFBLEVBQUM7c0JBQU87Y0FBbUIsS0FBRVAsT0FBQSxDQUFRVyxJQUFJLENBQUNHLElBQUk7eUJBQ2pELElBQUFWLFdBQUEsQ0FBQUMsSUFBQSxFQUFDO2tDQUFFLElBQUFELFdBQUEsQ0FBQUcsR0FBQSxFQUFDO3NCQUFPO2NBQW9CLEtBQUVQLE9BQUEsQ0FBUVcsSUFBSSxDQUFDSSxLQUFLOzs7OztBQU0vRCIsImlnbm9yZUxpc3QiOltdfQ==
