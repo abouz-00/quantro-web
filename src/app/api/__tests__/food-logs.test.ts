@@ -75,7 +75,10 @@ describe('Food Logs API', () => {
       expect(data).toEqual(mockFoodLogs);
       expect(mockPrisma.foodLog.findMany).toHaveBeenCalledWith({
         where: { userId: 'user-123' },
-        orderBy: { date: 'desc' },
+        orderBy: [
+          { orderIndex: 'asc' },
+          { createdAt: 'asc' }
+        ],
       });
     });
 
@@ -95,7 +98,10 @@ describe('Food Logs API', () => {
             lte: expect.any(Date),
           },
         },
-        orderBy: { date: 'desc' },
+        orderBy: [
+          { orderIndex: 'asc' },
+          { createdAt: 'asc' }
+        ],
       });
     });
 

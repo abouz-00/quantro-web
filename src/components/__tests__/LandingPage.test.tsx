@@ -1,12 +1,49 @@
+// Mock next-auth FIRST
+jest.mock('next-auth/react', () => ({
+  useSession: jest.fn(() => ({ data: null, status: 'unauthenticated' })),
+  signIn: jest.fn(),
+}));
+
+// Mock Next.js dependencies
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(() => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    back: jest.fn(),
+  })),
+}));
+
+jest.mock('next/image', () => ({
+  __esModule: true,
+  default: jest.fn(({ src, alt, ...props }: any) => <img src={src} alt={alt} {...props} />),
+}));
+
+jest.mock('next/font/google', () => ({
+  Poppins: jest.fn(() => ({ className: 'poppins-mock' })),
+}));
+
+// Mock framer-motion
+jest.mock('framer-motion', () => ({
+  motion: {
+    div: jest.fn(({ children, ...props }: any) => <div {...props}>{children}</div>),
+    img: jest.fn(({ children, ...props }: any) => <img {...props}>{children}</img>),
+  },
+  useAnimation: jest.fn(() => ({ start: jest.fn() })),
+  useInView: jest.fn(() => true),
+}));
+
+// Mock Heroicons
+jest.mock('@heroicons/react/24/outline', () => ({
+  ChartPieIcon: jest.fn((props: any) => <div data-testid="chart-pie-icon" {...props} />),
+  BeakerIcon: jest.fn((props: any) => <div data-testid="beaker-icon" {...props} />),
+  CursorArrowRaysIcon: jest.fn((props: any) => <div data-testid="cursor-arrow-rays-icon" {...props} />),
+}));
+
 import { render, screen } from '@testing-library/react';
+import { useSession } from 'next-auth/react';
 import LandingPage from '../LandingPage';
 
-// Mock next/font/google
-jest.mock('next/font/google', () => ({
-  Poppins: () => ({
-    className: 'mocked-poppins',
-  }),
-}));
+const mockUseSession = useSession as jest.MockedFunction<typeof useSession>;
 
 // Mock next/image
 jest.mock('next/image', () => {
@@ -17,31 +54,70 @@ jest.mock('next/image', () => {
 });
 
 describe('LandingPage Component', () => {
-  it('renders the landing page', () => {
-    render(<LandingPage />);
-    
-    // Check for content that actually exists
-    expect(screen.getByText('Smart Tracking')).toBeInTheDocument();
+  beforeEach(() => {
+    mockUseSession.mockReturnValue({
+      data: null,
+      status: 'unauthenticated',
+      update: jest.fn(),
+    });
   });
 
-  it('displays Quantro logo', () => {
+  it('renders the landing page', () => {
+    // Mock an unauthenticated session
+    mockUseSession.mockReturnValue({ 
+      data: null, 
+      status: 'unauthenticated',
+      update: jest.fn()
+    });
+
     render(<LandingPage />);
     
-    const logo = screen.getByAltText('Quantro Logo');
-    expect(logo).toBeInTheDocument();
-    expect(logo).toHaveAttribute('src', '/header.svg');
+    // Check for content that actually exists (footer)
+    expect(screen.getByText('© 2025 Quantro. All rights reserved.')).toBeInTheDocument();
+  });
+
+  it('displays social media links', () => {
+    mockUseSession.mockReturnValue({ 
+      data: null, 
+      status: 'unauthenticated',
+      update: jest.fn()
+    });
+
+    render(<LandingPage />);
+    
+    // Check for social media links
+    expect(screen.getByLabelText('Follow Quantro on X (Twitter)')).toBeInTheDocument();
+    expect(screen.getByLabelText('Follow Quantro on Instagram')).toBeInTheDocument();
+    expect(screen.getByLabelText('Follow Quantro on TikTok')).toBeInTheDocument();
   });
 
   it('has proper styling', () => {
+    mockUseSession.mockReturnValue({ 
+      data: null, 
+      status: 'unauthenticated',
+      update: jest.fn()
+    });
+
     const { container } = render(<LandingPage />);
     
-    expect(container.firstChild).toHaveClass('h-screen');
+    // Check the actual class that exists
+    expect(container.firstChild).toHaveClass('min-h-screen');
   });
 
-  it('displays feature cards', () => {
+  it('displays main layout structure', () => {
+    mockUseSession.mockReturnValue({ 
+      data: null, 
+      status: 'unauthenticated',
+      update: jest.fn()
+    });
+
     render(<LandingPage />);
     
-    expect(screen.getByText('Analytics')).toBeInTheDocument();
-    expect(screen.getByText('Goals')).toBeInTheDocument();
+    // Check for the main structure elements
+    const mainElement = document.querySelector('main');
+    const footerElement = document.querySelector('footer');
+    
+    expect(mainElement).toBeInTheDocument();
+    expect(footerElement).toBeInTheDocument();
   });
 });

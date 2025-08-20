@@ -1,5 +1,8 @@
-import { FoodLogService } from '../foodLogService';
-import { FoodEntry } from '../../types/food';
+// Mock utility functions FIRST (hoisting requirement)
+jest.mock('../../utils/foodEntryUtils', () => ({
+  transformApiDataToFoodEntry: jest.fn(),
+  transformFoodEntryToApiData: jest.fn(),
+}));
 
 // Mock the errorService to prevent real error logging
 jest.mock('../errorService', () => ({
@@ -7,6 +10,14 @@ jest.mock('../errorService', () => ({
     logError: jest.fn().mockResolvedValue(undefined),
   },
 }));
+
+import { FoodLogService } from '../foodLogService';
+import { FoodEntry } from '../../types/food';
+import { transformApiDataToFoodEntry, transformFoodEntryToApiData } from '../../utils/foodEntryUtils';
+
+// Cast mocked functions
+const mockTransformApiDataToFoodEntry = transformApiDataToFoodEntry as jest.MockedFunction<typeof transformApiDataToFoodEntry>;
+const mockTransformFoodEntryToApiData = transformFoodEntryToApiData as jest.MockedFunction<typeof transformFoodEntryToApiData>;
 
 // Mock the fetch function
 const mockFetch = jest.fn();
@@ -23,35 +34,6 @@ Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
 
 // Mock console.error to prevent noise in tests
 const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-// Mock the utility functions
-jest.mock('../../utils/foodEntryUtils', () => ({
-  transformApiDataToFoodEntry: jest.fn((data) => ({
-    id: data.id,
-    description: `${data.foodName} ${data.brand ? `(${data.brand})` : ''}`,
-    amount: data.quantity.toString(),
-    unit: data.unit,
-    calories: data.calories,
-    protein: data.protein,
-    carbs: data.carbs,
-    fat: data.fat,
-    fiber: data.fiber || 0,
-    date: data.date || new Date().toISOString(),
-    mealType: data.mealType || 'breakfast',
-  })),
-  transformFoodEntryToApiData: jest.fn((entry) => ({
-    foodName: entry.description.split(' (')[0],
-    brand: entry.description.includes(' (') ? entry.description.split(' (')[1].replace(')', '') : null,
-    quantity: parseFloat(entry.amount),
-    unit: entry.unit,
-    mealType: entry.mealType,
-    calories: entry.calories,
-    protein: entry.protein,
-    carbs: entry.carbs,
-    fat: entry.fat,
-    fiber: entry.fiber || 0,
-  })),
-}));
 
 describe('FoodLogService', () => {
   const mockFoodEntry: FoodEntry = {
@@ -74,6 +56,34 @@ describe('FoodLogService', () => {
     mockLocalStorage.getItem.mockClear();
     mockLocalStorage.setItem.mockClear();
     mockConsoleError.mockClear();
+    
+    // Set up transform function mocks
+    mockTransformApiDataToFoodEntry.mockImplementation((data) => ({
+      id: data.id,
+      description: data.foodName && data.brand ? `${data.foodName} (${data.brand})` : data.foodName,
+      amount: data.quantity?.toString() || '1',
+      unit: data.unit || 'serving',
+      calories: data.calories || 0,
+      protein: data.protein || 0,
+      carbs: data.carbs || 0,
+      fat: data.fat || 0,
+      fiber: data.fiber || 0,
+      date: data.date || new Date().toISOString(),
+      mealType: data.mealType || 'breakfast',
+    }));
+    
+    mockTransformFoodEntryToApiData.mockImplementation((entry) => ({
+      foodName: entry.description.split(' (')[0],
+      brand: entry.description.includes(' (') ? entry.description.split(' (')[1].replace(')', '') : null,
+      quantity: parseFloat(entry.amount),
+      unit: entry.unit,
+      mealType: entry.mealType,
+      calories: entry.calories,
+      protein: entry.protein,
+      carbs: entry.carbs,
+      fat: entry.fat,
+      fiber: entry.fiber || 0,
+    }));
   });
 
   afterAll(() => {

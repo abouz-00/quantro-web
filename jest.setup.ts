@@ -20,7 +20,11 @@ jest.mock('next/navigation', () => ({
     prefetch: jest.fn(),
   }),
   usePathname: () => '/',
-  useSearchParams: () => new URLSearchParams(),
+  useSearchParams: () => ({
+    get: jest.fn(() => null),
+    has: jest.fn(() => false),
+    toString: jest.fn(() => ''),
+  }),
 }));
 
 // Mock Next.js server session
