@@ -1,0 +1,589 @@
+f4cd77c1692c17c29095a720ba51ec04
+"use strict";
+
+/* istanbul ignore next */
+function cov_1d0w98rvcc() {
+  var path = "/Users/ayman/quantro/src/components/food-log/search/components/FoodSelectionSection.tsx";
+  var hash = "816b9123585f658ef60e25c0c9a63d7c3aab9cf0";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/ayman/quantro/src/components/food-log/search/components/FoodSelectionSection.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 36
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 20
+        },
+        end: {
+          line: 11,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 29
+        },
+        end: {
+          line: 12,
+          column: 71
+        }
+      },
+      "5": {
+        start: {
+          line: 13,
+          column: 24
+        },
+        end: {
+          line: 13,
+          column: 58
+        }
+      },
+      "6": {
+        start: {
+          line: 15,
+          column: 4
+        },
+        end: {
+          line: 17,
+          column: 6
+        }
+      },
+      "7": {
+        start: {
+          line: 19,
+          column: 29
+        },
+        end: {
+          line: 100,
+          column: 1
+        }
+      },
+      "8": {
+        start: {
+          line: 20,
+          column: 26
+        },
+        end: {
+          line: 24,
+          column: 5
+        }
+      },
+      "9": {
+        start: {
+          line: 21,
+          column: 8
+        },
+        end: {
+          line: 23,
+          column: 9
+        }
+      },
+      "10": {
+        start: {
+          line: 22,
+          column: 12
+        },
+        end: {
+          line: 22,
+          column: 24
+        }
+      },
+      "11": {
+        start: {
+          line: 25,
+          column: 4
+        },
+        end: {
+          line: 99,
+          column: 7
+        }
+      },
+      "12": {
+        start: {
+          line: 48,
+          column: 47
+        },
+        end: {
+          line: 48,
+          column: 74
+        }
+      },
+      "13": {
+        start: {
+          line: 63,
+          column: 47
+        },
+        end: {
+          line: 63,
+          column: 70
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 14,
+            column: 9
+          },
+          end: {
+            line: 14,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 14,
+            column: 39
+          },
+          end: {
+            line: 18,
+            column: 1
+          }
+        },
+        line: 14
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 19,
+            column: 29
+          },
+          end: {
+            line: 19,
+            column: 30
+          }
+        },
+        loc: {
+          start: {
+            line: 19,
+            column: 98
+          },
+          end: {
+            line: 100,
+            column: 1
+          }
+        },
+        line: 19
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 20,
+            column: 26
+          },
+          end: {
+            line: 20,
+            column: 27
+          }
+        },
+        loc: {
+          start: {
+            line: 20,
+            column: 31
+          },
+          end: {
+            line: 24,
+            column: 5
+          }
+        },
+        line: 20
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 48,
+            column: 42
+          },
+          end: {
+            line: 48,
+            column: 43
+          }
+        },
+        loc: {
+          start: {
+            line: 48,
+            column: 47
+          },
+          end: {
+            line: 48,
+            column: 74
+          }
+        },
+        line: 48
+      },
+      "5": {
+        name: "(anonymous_5)",
+        decl: {
+          start: {
+            line: 63,
+            column: 42
+          },
+          end: {
+            line: 63,
+            column: 43
+          }
+        },
+        loc: {
+          start: {
+            line: 63,
+            column: 47
+          },
+          end: {
+            line: 63,
+            column: 70
+          }
+        },
+        line: 63
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 15,
+            column: 11
+          },
+          end: {
+            line: 17,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 15,
+            column: 35
+          },
+          end: {
+            line: 15,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 15,
+            column: 41
+          },
+          end: {
+            line: 17,
+            column: 5
+          }
+        }],
+        line: 15
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 15,
+            column: 11
+          },
+          end: {
+            line: 15,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 15,
+            column: 11
+          },
+          end: {
+            line: 15,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 15,
+            column: 18
+          },
+          end: {
+            line: 15,
+            column: 32
+          }
+        }],
+        line: 15
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 21,
+            column: 8
+          },
+          end: {
+            line: 23,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 21,
+            column: 8
+          },
+          end: {
+            line: 23,
+            column: 9
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 21
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/Users/ayman/quantro/src/components/food-log/search/components/FoodSelectionSection.tsx"],
+      sourcesContent: ["import React from \"react\";\nimport { capitalizeWords } from \"../utils/nutritionUtils\";\n\ninterface USDAFood {\n  description: string;\n  foodCategory?: string;\n  foodNutrients: { nutrientName: string; value: number }[];\n  servingSize?: number;\n  servingSizeUnit?: string;\n  isFavorite?: boolean;\n  uniqueId?: string;\n}\n\ninterface FoodSelectionSectionProps {\n  selectedFood: USDAFood;\n  quantity: string;\n  setQuantity: (value: string) => void;\n  unit: string;\n  setUnit: (value: string) => void;\n  onAddFood: () => void;\n}\n\nexport const FoodSelectionSection: React.FC<FoodSelectionSectionProps> = ({\n  selectedFood,\n  quantity,\n  setQuantity,\n  unit,\n  setUnit,\n  onAddFood\n}) => {\n  const handleKeyDown = (e: React.KeyboardEvent) => {\n    if (e.key === 'Enter') {\n      onAddFood();\n    }\n  };\n\n  return (\n    <div className=\"p-4 border-t border-gray-200 bg-gray-50 flex-shrink-0\">\n      <div className=\"mb-4\">\n        <div className=\"font-bold\">{capitalizeWords(selectedFood.description)}</div>\n      </div>\n      <div className=\"flex space-x-4 mb-4\">\n        <div className=\"flex-1\">\n          <label className=\"block text-sm font-medium mb-1\">Quantity</label>\n          <input\n            type=\"number\"\n            value={quantity}\n            onChange={(e) => setQuantity(e.target.value)}\n            onKeyDown={handleKeyDown}\n            className=\"w-full p-2 border border-gray-300 rounded-sm\"\n          />\n        </div>\n        <div className=\"flex-1\">\n          <label className=\"block text-sm font-medium mb-1\">Unit</label>\n          <select\n            value={unit}\n            onChange={(e) => setUnit(e.target.value)}\n            onKeyDown={handleKeyDown}\n            className=\"w-full p-2 border border-gray-300 rounded-sm\"\n          >\n            <option value=\"Grams\">Grams</option>\n            <option value=\"Ounces\">Ounces</option>\n            <option value=\"Cup\">Cup</option>\n            <option value=\"Tablespoon\">Tablespoon</option>\n            <option value=\"Teaspoon\">Teaspoon</option>\n          </select>\n        </div>\n      </div>\n      <button\n        onClick={onAddFood}\n        className=\"w-full bg-violet-500 text-white py-2 px-4 rounded-sm hover:bg-violet-600 cursor-pointer transition-colors duration-200\"\n      >\n        Add to Log\n      </button>\n    </div>\n  );\n};\n"],
+      names: ["FoodSelectionSection", "selectedFood", "quantity", "setQuantity", "unit", "setUnit", "onAddFood", "handleKeyDown", "e", "key", "div", "className", "capitalizeWords", "description", "label", "input", "type", "value", "onChange", "target", "onKeyDown", "select", "option", "button", "onClick"],
+      mappings: ";;;;+BAsBaA;;;eAAAA;;;;8DAtBK;gCACc;;;;;;AAqBzB,MAAMA,uBAA4D,CAAC,EACxEC,YAAY,EACZC,QAAQ,EACRC,WAAW,EACXC,IAAI,EACJC,OAAO,EACPC,SAAS,EACV;IACC,MAAMC,gBAAgB,CAACC;QACrB,IAAIA,EAAEC,GAAG,KAAK,SAAS;YACrBH;QACF;IACF;IAEA,qBACE,sBAACI;QAAIC,WAAU;;0BACb,qBAACD;gBAAIC,WAAU;0BACb,cAAA,qBAACD;oBAAIC,WAAU;8BAAaC,IAAAA,+BAAe,EAACX,aAAaY,WAAW;;;0BAEtE,sBAACH;gBAAIC,WAAU;;kCACb,sBAACD;wBAAIC,WAAU;;0CACb,qBAACG;gCAAMH,WAAU;0CAAiC;;0CAClD,qBAACI;gCACCC,MAAK;gCACLC,OAAOf;gCACPgB,UAAU,CAACV,IAAML,YAAYK,EAAEW,MAAM,CAACF,KAAK;gCAC3CG,WAAWb;gCACXI,WAAU;;;;kCAGd,sBAACD;wBAAIC,WAAU;;0CACb,qBAACG;gCAAMH,WAAU;0CAAiC;;0CAClD,sBAACU;gCACCJ,OAAOb;gCACPc,UAAU,CAACV,IAAMH,QAAQG,EAAEW,MAAM,CAACF,KAAK;gCACvCG,WAAWb;gCACXI,WAAU;;kDAEV,qBAACW;wCAAOL,OAAM;kDAAQ;;kDACtB,qBAACK;wCAAOL,OAAM;kDAAS;;kDACvB,qBAACK;wCAAOL,OAAM;kDAAM;;kDACpB,qBAACK;wCAAOL,OAAM;kDAAa;;kDAC3B,qBAACK;wCAAOL,OAAM;kDAAW;;;;;;;;0BAI/B,qBAACM;gBACCC,SAASlB;gBACTK,WAAU;0BACX;;;;AAKP"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "816b9123585f658ef60e25c0c9a63d7c3aab9cf0"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1d0w98rvcc = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1d0w98rvcc();
+cov_1d0w98rvcc().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_1d0w98rvcc().s[1]++;
+Object.defineProperty(exports, "FoodSelectionSection", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_1d0w98rvcc().f[0]++;
+    cov_1d0w98rvcc().s[2]++;
+    return FoodSelectionSection;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_1d0w98rvcc().s[3]++, require("react/jsx-runtime"));
+const _react =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_1d0w98rvcc().s[4]++, _interop_require_default(require("react")));
+const _nutritionUtils =
+/* istanbul ignore next */
+(cov_1d0w98rvcc().s[5]++, require("../utils/nutritionUtils"));
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_1d0w98rvcc().f[1]++;
+  cov_1d0w98rvcc().s[6]++;
+  return /* istanbul ignore next */(cov_1d0w98rvcc().b[1][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_1d0w98rvcc().b[1][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_1d0w98rvcc().b[0][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_1d0w98rvcc().b[0][1]++, {
+    default: obj
+  });
+}
+/* istanbul ignore next */
+cov_1d0w98rvcc().s[7]++;
+const FoodSelectionSection = ({
+  selectedFood,
+  quantity,
+  setQuantity,
+  unit,
+  setUnit,
+  onAddFood
+}) => {
+  /* istanbul ignore next */
+  cov_1d0w98rvcc().f[2]++;
+  cov_1d0w98rvcc().s[8]++;
+  const handleKeyDown = e => {
+    /* istanbul ignore next */
+    cov_1d0w98rvcc().f[3]++;
+    cov_1d0w98rvcc().s[9]++;
+    if (e.key === 'Enter') {
+      /* istanbul ignore next */
+      cov_1d0w98rvcc().b[2][0]++;
+      cov_1d0w98rvcc().s[10]++;
+      onAddFood();
+    } else
+    /* istanbul ignore next */
+    {
+      cov_1d0w98rvcc().b[2][1]++;
+    }
+  };
+  /* istanbul ignore next */
+  cov_1d0w98rvcc().s[11]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+    className: "p-4 border-t border-gray-200 bg-gray-50 flex-shrink-0",
+    children: [/*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+      className: "mb-4",
+      children: /*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+        className: "font-bold",
+        children: (0, _nutritionUtils.capitalizeWords)(selectedFood.description)
+      })
+    }), /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+      className: "flex space-x-4 mb-4",
+      children: [/*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+        className: "flex-1",
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)("label", {
+          className: "block text-sm font-medium mb-1",
+          children: "Quantity"
+        }), /*#__PURE__*/(0, _jsxruntime.jsx)("input", {
+          type: "number",
+          value: quantity,
+          onChange: e => {
+            /* istanbul ignore next */
+            cov_1d0w98rvcc().f[4]++;
+            cov_1d0w98rvcc().s[12]++;
+            return setQuantity(e.target.value);
+          },
+          onKeyDown: handleKeyDown,
+          className: "w-full p-2 border border-gray-300 rounded-sm"
+        })]
+      }), /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+        className: "flex-1",
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)("label", {
+          className: "block text-sm font-medium mb-1",
+          children: "Unit"
+        }), /*#__PURE__*/(0, _jsxruntime.jsxs)("select", {
+          value: unit,
+          onChange: e => {
+            /* istanbul ignore next */
+            cov_1d0w98rvcc().f[5]++;
+            cov_1d0w98rvcc().s[13]++;
+            return setUnit(e.target.value);
+          },
+          onKeyDown: handleKeyDown,
+          className: "w-full p-2 border border-gray-300 rounded-sm",
+          children: [/*#__PURE__*/(0, _jsxruntime.jsx)("option", {
+            value: "Grams",
+            children: "Grams"
+          }), /*#__PURE__*/(0, _jsxruntime.jsx)("option", {
+            value: "Ounces",
+            children: "Ounces"
+          }), /*#__PURE__*/(0, _jsxruntime.jsx)("option", {
+            value: "Cup",
+            children: "Cup"
+          }), /*#__PURE__*/(0, _jsxruntime.jsx)("option", {
+            value: "Tablespoon",
+            children: "Tablespoon"
+          }), /*#__PURE__*/(0, _jsxruntime.jsx)("option", {
+            value: "Teaspoon",
+            children: "Teaspoon"
+          })]
+        })]
+      })]
+    }), /*#__PURE__*/(0, _jsxruntime.jsx)("button", {
+      onClick: onAddFood,
+      className: "w-full bg-violet-500 text-white py-2 px-4 rounded-sm hover:bg-violet-600 cursor-pointer transition-colors duration-200",
+      children: "Add to Log"
+    })]
+  });
+};
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJGb29kU2VsZWN0aW9uU2VjdGlvbiIsInNlbGVjdGVkRm9vZCIsInF1YW50aXR5Iiwic2V0UXVhbnRpdHkiLCJ1bml0Iiwic2V0VW5pdCIsIm9uQWRkRm9vZCIsImNvdl8xZDB3OThydmNjIiwiZiIsInMiLCJoYW5kbGVLZXlEb3duIiwiZSIsImtleSIsImIiLCJfanN4cnVudGltZSIsImpzeHMiLCJjbGFzc05hbWUiLCJqc3giLCJfbnV0cml0aW9uVXRpbHMiLCJjYXBpdGFsaXplV29yZHMiLCJkZXNjcmlwdGlvbiIsInR5cGUiLCJ2YWx1ZSIsIm9uQ2hhbmdlIiwidGFyZ2V0Iiwib25LZXlEb3duIiwib25DbGljayJdLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb21wb25lbnRzL2Zvb2QtbG9nL3NlYXJjaC9jb21wb25lbnRzL0Zvb2RTZWxlY3Rpb25TZWN0aW9uLnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgeyBjYXBpdGFsaXplV29yZHMgfSBmcm9tIFwiLi4vdXRpbHMvbnV0cml0aW9uVXRpbHNcIjtcblxuaW50ZXJmYWNlIFVTREFGb29kIHtcbiAgZGVzY3JpcHRpb246IHN0cmluZztcbiAgZm9vZENhdGVnb3J5Pzogc3RyaW5nO1xuICBmb29kTnV0cmllbnRzOiB7IG51dHJpZW50TmFtZTogc3RyaW5nOyB2YWx1ZTogbnVtYmVyIH1bXTtcbiAgc2VydmluZ1NpemU/OiBudW1iZXI7XG4gIHNlcnZpbmdTaXplVW5pdD86IHN0cmluZztcbiAgaXNGYXZvcml0ZT86IGJvb2xlYW47XG4gIHVuaXF1ZUlkPzogc3RyaW5nO1xufVxuXG5pbnRlcmZhY2UgRm9vZFNlbGVjdGlvblNlY3Rpb25Qcm9wcyB7XG4gIHNlbGVjdGVkRm9vZDogVVNEQUZvb2Q7XG4gIHF1YW50aXR5OiBzdHJpbmc7XG4gIHNldFF1YW50aXR5OiAodmFsdWU6IHN0cmluZykgPT4gdm9pZDtcbiAgdW5pdDogc3RyaW5nO1xuICBzZXRVbml0OiAodmFsdWU6IHN0cmluZykgPT4gdm9pZDtcbiAgb25BZGRGb29kOiAoKSA9PiB2b2lkO1xufVxuXG5leHBvcnQgY29uc3QgRm9vZFNlbGVjdGlvblNlY3Rpb246IFJlYWN0LkZDPEZvb2RTZWxlY3Rpb25TZWN0aW9uUHJvcHM+ID0gKHtcbiAgc2VsZWN0ZWRGb29kLFxuICBxdWFudGl0eSxcbiAgc2V0UXVhbnRpdHksXG4gIHVuaXQsXG4gIHNldFVuaXQsXG4gIG9uQWRkRm9vZFxufSkgPT4ge1xuICBjb25zdCBoYW5kbGVLZXlEb3duID0gKGU6IFJlYWN0LktleWJvYXJkRXZlbnQpID0+IHtcbiAgICBpZiAoZS5rZXkgPT09ICdFbnRlcicpIHtcbiAgICAgIG9uQWRkRm9vZCgpO1xuICAgIH1cbiAgfTtcblxuICByZXR1cm4gKFxuICAgIDxkaXYgY2xhc3NOYW1lPVwicC00IGJvcmRlci10IGJvcmRlci1ncmF5LTIwMCBiZy1ncmF5LTUwIGZsZXgtc2hyaW5rLTBcIj5cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwibWItNFwiPlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZvbnQtYm9sZFwiPntjYXBpdGFsaXplV29yZHMoc2VsZWN0ZWRGb29kLmRlc2NyaXB0aW9uKX08L2Rpdj5cbiAgICAgIDwvZGl2PlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IHNwYWNlLXgtNCBtYi00XCI+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleC0xXCI+XG4gICAgICAgICAgPGxhYmVsIGNsYXNzTmFtZT1cImJsb2NrIHRleHQtc20gZm9udC1tZWRpdW0gbWItMVwiPlF1YW50aXR5PC9sYWJlbD5cbiAgICAgICAgICA8aW5wdXRcbiAgICAgICAgICAgIHR5cGU9XCJudW1iZXJcIlxuICAgICAgICAgICAgdmFsdWU9e3F1YW50aXR5fVxuICAgICAgICAgICAgb25DaGFuZ2U9eyhlKSA9PiBzZXRRdWFudGl0eShlLnRhcmdldC52YWx1ZSl9XG4gICAgICAgICAgICBvbktleURvd249e2hhbmRsZUtleURvd259XG4gICAgICAgICAgICBjbGFzc05hbWU9XCJ3LWZ1bGwgcC0yIGJvcmRlciBib3JkZXItZ3JheS0zMDAgcm91bmRlZC1zbVwiXG4gICAgICAgICAgLz5cbiAgICAgICAgPC9kaXY+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleC0xXCI+XG4gICAgICAgICAgPGxhYmVsIGNsYXNzTmFtZT1cImJsb2NrIHRleHQtc20gZm9udC1tZWRpdW0gbWItMVwiPlVuaXQ8L2xhYmVsPlxuICAgICAgICAgIDxzZWxlY3RcbiAgICAgICAgICAgIHZhbHVlPXt1bml0fVxuICAgICAgICAgICAgb25DaGFuZ2U9eyhlKSA9PiBzZXRVbml0KGUudGFyZ2V0LnZhbHVlKX1cbiAgICAgICAgICAgIG9uS2V5RG93bj17aGFuZGxlS2V5RG93bn1cbiAgICAgICAgICAgIGNsYXNzTmFtZT1cInctZnVsbCBwLTIgYm9yZGVyIGJvcmRlci1ncmF5LTMwMCByb3VuZGVkLXNtXCJcbiAgICAgICAgICA+XG4gICAgICAgICAgICA8b3B0aW9uIHZhbHVlPVwiR3JhbXNcIj5HcmFtczwvb3B0aW9uPlxuICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT1cIk91bmNlc1wiPk91bmNlczwvb3B0aW9uPlxuICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT1cIkN1cFwiPkN1cDwvb3B0aW9uPlxuICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT1cIlRhYmxlc3Bvb25cIj5UYWJsZXNwb29uPC9vcHRpb24+XG4gICAgICAgICAgICA8b3B0aW9uIHZhbHVlPVwiVGVhc3Bvb25cIj5UZWFzcG9vbjwvb3B0aW9uPlxuICAgICAgICAgIDwvc2VsZWN0PlxuICAgICAgICA8L2Rpdj5cbiAgICAgIDwvZGl2PlxuICAgICAgPGJ1dHRvblxuICAgICAgICBvbkNsaWNrPXtvbkFkZEZvb2R9XG4gICAgICAgIGNsYXNzTmFtZT1cInctZnVsbCBiZy12aW9sZXQtNTAwIHRleHQtd2hpdGUgcHktMiBweC00IHJvdW5kZWQtc20gaG92ZXI6YmctdmlvbGV0LTYwMCBjdXJzb3ItcG9pbnRlciB0cmFuc2l0aW9uLWNvbG9ycyBkdXJhdGlvbi0yMDBcIlxuICAgICAgPlxuICAgICAgICBBZGQgdG8gTG9nXG4gICAgICA8L2J1dHRvbj5cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG4iXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OytCQXNCYTs7Ozs7O1dBQUFBLG9CQUFBOzs7Ozs7Ozt3RUF0Qks7OztrQ0FDYzs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFxQnpCLE1BQU1BLG9CQUFBLEdBQTREQSxDQUFDO0VBQ3hFQyxZQUFZO0VBQ1pDLFFBQVE7RUFDUkMsV0FBVztFQUNYQyxJQUFJO0VBQ0pDLE9BQU87RUFDUEM7QUFBUyxDQUNWO0VBQUE7RUFBQUMsY0FBQSxHQUFBQyxDQUFBO0VBQUFELGNBQUEsR0FBQUUsQ0FBQTtFQUNDLE1BQU1DLGFBQUEsR0FBaUJDLENBQUE7SUFBQTtJQUFBSixjQUFBLEdBQUFDLENBQUE7SUFBQUQsY0FB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

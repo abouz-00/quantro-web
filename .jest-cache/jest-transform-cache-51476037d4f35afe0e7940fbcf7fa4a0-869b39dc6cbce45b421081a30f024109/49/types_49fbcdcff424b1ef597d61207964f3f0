@@ -1,0 +1,60 @@
+ba63e7cd10f7952e84f306378ebabf5b
+// Shared types for food table components
+"use strict";
+
+/* istanbul ignore next */
+function cov_2kn8fwujtk() {
+  var path = "/Users/ayman/quantro/src/components/food-log/table/types.ts";
+  var hash = "6a048142e96e71fe413556d310fd3bf0dcd76789";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/ayman/quantro/src/components/food-log/table/types.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      }
+    },
+    fnMap: {},
+    branchMap: {},
+    s: {
+      "0": 0
+    },
+    f: {},
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/Users/ayman/quantro/src/components/food-log/table/types.ts"],
+      sourcesContent: ["// Shared types for food table components\nimport type { FoodEntry, MacroNutrients as Nutrients } from '../../../types/foodEntry';\n\n// Re-export for backward compatibility\nexport type { FoodEntry, Nutrients };\n\nexport interface FoodTableProps {\n  foodData: FoodEntry[];\n  filteredEntries: FoodEntry[];\n  selectedEntries: string[];\n  handleEntrySelect: (id: string, index: number, event: React.MouseEvent) => void;\n  removeFoodEntry: (id: string) => void;\n  updateFoodEntry?: (id: string, updates: Partial<FoodEntry>) => void;\n  onReorderEntries?: (newOrder: FoodEntry[]) => void;\n  onContextMenu?: (e: React.MouseEvent, entryId: string) => void;\n  setSelectedEntries?: (entries: string[]) => void;\n}\n\nexport interface SortableRowProps {\n  item: FoodEntry;\n  foodData: FoodEntry[];\n  filteredEntries: FoodEntry[];\n  selectedEntries: string[];\n  handleEntrySelect: (id: string, index: number, event: React.MouseEvent) => void;\n  removeFoodEntry: (id: string) => void;\n  updateFoodEntry: (id: string, updates: Partial<FoodEntry>) => void;\n  editingEntry: string | null;\n  setEditingEntry: (id: string | null) => void;\n  editAmount: string;\n  setEditAmount: (amount: string) => void;\n  editUnit: string;\n  setEditUnit: (unit: string) => void;\n  formatNumber: (num: number) => string;\n  onContextMenu?: (e: React.MouseEvent, entryId: string) => void;\n  activeId?: string | null; // Add activeId to detect when any item is being dragged\n}\n"],
+      names: [],
+      mappings: "AAAA,yCAAyC"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "6a048142e96e71fe413556d310fd3bf0dcd76789"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_2kn8fwujtk = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_2kn8fwujtk();
+cov_2kn8fwujtk().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sInNvdXJjZXMiOlsiL1VzZXJzL2F5bWFuL3F1YW50cm8vc3JjL2NvbXBvbmVudHMvZm9vZC1sb2cvdGFibGUvdHlwZXMudHMiXSwic291cmNlc0NvbnRlbnQiOlsiLy8gU2hhcmVkIHR5cGVzIGZvciBmb29kIHRhYmxlIGNvbXBvbmVudHNcbmltcG9ydCB0eXBlIHsgRm9vZEVudHJ5LCBNYWNyb051dHJpZW50cyBhcyBOdXRyaWVudHMgfSBmcm9tICcuLi8uLi8uLi90eXBlcy9mb29kRW50cnknO1xuXG4vLyBSZS1leHBvcnQgZm9yIGJhY2t3YXJkIGNvbXBhdGliaWxpdHlcbmV4cG9ydCB0eXBlIHsgRm9vZEVudHJ5LCBOdXRyaWVudHMgfTtcblxuZXhwb3J0IGludGVyZmFjZSBGb29kVGFibGVQcm9wcyB7XG4gIGZvb2REYXRhOiBGb29kRW50cnlbXTtcbiAgZmlsdGVyZWRFbnRyaWVzOiBGb29kRW50cnlbXTtcbiAgc2VsZWN0ZWRFbnRyaWVzOiBzdHJpbmdbXTtcbiAgaGFuZGxlRW50cnlTZWxlY3Q6IChpZDogc3RyaW5nLCBpbmRleDogbnVtYmVyLCBldmVudDogUmVhY3QuTW91c2VFdmVudCkgPT4gdm9pZDtcbiAgcmVtb3ZlRm9vZEVudHJ5OiAoaWQ6IHN0cmluZykgPT4gdm9pZDtcbiAgdXBkYXRlRm9vZEVudHJ5PzogKGlkOiBzdHJpbmcsIHVwZGF0ZXM6IFBhcnRpYWw8Rm9vZEVudHJ5PikgPT4gdm9pZDtcbiAgb25SZW9yZGVyRW50cmllcz86IChuZXdPcmRlcjogRm9vZEVudHJ5W10pID0+IHZvaWQ7XG4gIG9uQ29udGV4dE1lbnU/OiAoZTogUmVhY3QuTW91c2VFdmVudCwgZW50cnlJZDogc3RyaW5nKSA9PiB2b2lkO1xuICBzZXRTZWxlY3RlZEVudHJpZXM/OiAoZW50cmllczogc3RyaW5nW10pID0+IHZvaWQ7XG59XG5cbmV4cG9ydCBpbnRlcmZhY2UgU29ydGFibGVSb3dQcm9wcyB7XG4gIGl0ZW06IEZvb2RFbnRyeTtcbiAgZm9vZERhdGE6IEZvb2RFbnRyeVtdO1xuICBmaWx0ZXJlZEVudHJpZXM6IEZvb2RFbnRyeVtdO1xuICBzZWxlY3RlZEVudHJpZXM6IHN0cmluZ1tdO1xuICBoYW5kbGVFbnRyeVNlbGVjdDogKGlkOiBzdHJpbmcsIGluZGV4OiBudW1iZXIsIGV2ZW50OiBSZWFjdC5Nb3VzZUV2ZW50KSA9PiB2b2lkO1xuICByZW1vdmVGb29kRW50cnk6IChpZDogc3RyaW5nKSA9PiB2b2lkO1xuICB1cGRhdGVGb29kRW50cnk6IChpZDogc3RyaW5nLCB1cGRhdGVzOiBQYXJ0aWFsPEZvb2RFbnRyeT4pID0+IHZvaWQ7XG4gIGVkaXRpbmdFbnRyeTogc3RyaW5nIHwgbnVsbDtcbiAgc2V0RWRpdGluZ0VudHJ5OiAoaWQ6IHN0cmluZyB8IG51bGwpID0+IHZvaWQ7XG4gIGVkaXRBbW91bnQ6IHN0cmluZztcbiAgc2V0RWRpdEFtb3VudDogKGFtb3VudDogc3RyaW5nKSA9PiB2b2lkO1xuICBlZGl0VW5pdDogc3RyaW5nO1xuICBzZXRFZGl0VW5pdDogKHVuaXQ6IHN0cmluZykgPT4gdm9pZDtcbiAgZm9ybWF0TnVtYmVyOiAobnVtOiBudW1iZXIpID0+IHN0cmluZztcbiAgb25Db250ZXh0TWVudT86IChlOiBSZWFjdC5Nb3VzZUV2ZW50LCBlbnRyeUlkOiBzdHJpbmcpID0+IHZvaWQ7XG4gIGFjdGl2ZUlkPzogc3RyaW5nIHwgbnVsbDsgLy8gQWRkIGFjdGl2ZUlkIHRvIGRldGVjdCB3aGVuIGFueSBpdGVtIGlzIGJlaW5nIGRyYWdnZWRcbn1cbiJdLCJtYXBwaW5ncyI6IkFBQUEiLCJpZ25vcmVMaXN0IjpbXX0=

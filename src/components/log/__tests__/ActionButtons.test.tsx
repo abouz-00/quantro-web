@@ -18,6 +18,33 @@ jest.mock('../../ui/button', () => ({
   )
 }))
 
+// Mock Headless UI Menu
+jest.mock('@headlessui/react', () => {
+  const MockMenu = ({ children }: { children: React.ReactNode }) => <div role="menu">{children}</div>
+  MockMenu.displayName = 'MockMenu'
+  
+  const MockMenuButton = ({ children, ...props }: { children: React.ReactNode; [key: string]: unknown }) => (
+    <button role="button" {...props}>{children}</button>
+  )
+  MockMenuButton.displayName = 'MockMenuButton'
+  MockMenu.Button = MockMenuButton
+  
+  const MockMenuItems = ({ children }: { children: React.ReactNode }) => <div role="menuitem">{children}</div>
+  MockMenuItems.displayName = 'MockMenuItems'
+  MockMenu.Items = MockMenuItems
+  
+  const MockMenuItem = ({ children }: { children: React.ReactNode | ((props: { active: boolean }) => React.ReactNode) }) => {
+    const content = typeof children === 'function' ? children({ active: false }) : children
+    return <div>{content}</div>
+  }
+  MockMenuItem.displayName = 'MockMenuItem'
+  MockMenu.Item = MockMenuItem
+  
+  return {
+    Menu: MockMenu,
+  }
+})
+
 describe('ActionButtons Component', () => {
   const mockFoodEntry: FoodEntry = {
     id: 'test-1',

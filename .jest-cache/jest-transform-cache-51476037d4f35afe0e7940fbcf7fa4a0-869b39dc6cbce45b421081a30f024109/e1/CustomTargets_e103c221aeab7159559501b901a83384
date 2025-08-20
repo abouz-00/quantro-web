@@ -1,0 +1,558 @@
+75d15dbce3f50d125f7bf330e5e19680
+"use client";
+"use strict";
+
+/* istanbul ignore next */
+function cov_2brvyc984e() {
+  var path = "/Users/ayman/quantro/src/components/food-log/core/CustomTargets.tsx";
+  var hash = "2c525ce613ca849de243df9d1b3fb7906c6ee1e5";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/ayman/quantro/src/components/food-log/core/CustomTargets.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 11,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 9,
+          column: 8
+        },
+        end: {
+          line: 9,
+          column: 29
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 12,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 29
+        },
+        end: {
+          line: 13,
+          column: 71
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 16
+        },
+        end: {
+          line: 14,
+          column: 42
+        }
+      },
+      "6": {
+        start: {
+          line: 16,
+          column: 4
+        },
+        end: {
+          line: 18,
+          column: 6
+        }
+      },
+      "7": {
+        start: {
+          line: 21,
+          column: 4
+        },
+        end: {
+          line: 105,
+          column: 7
+        }
+      },
+      "8": {
+        start: {
+          line: 35,
+          column: 43
+        },
+        end: {
+          line: 35,
+          column: 96
+        }
+      },
+      "9": {
+        start: {
+          line: 53,
+          column: 43
+        },
+        end: {
+          line: 53,
+          column: 95
+        }
+      },
+      "10": {
+        start: {
+          line: 71,
+          column: 43
+        },
+        end: {
+          line: 71,
+          column: 93
+        }
+      },
+      "11": {
+        start: {
+          line: 89,
+          column: 43
+        },
+        end: {
+          line: 89,
+          column: 91
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 8,
+            column: 9
+          },
+          end: {
+            line: 8,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 20
+          },
+          end: {
+            line: 10,
+            column: 5
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 15,
+            column: 9
+          },
+          end: {
+            line: 15,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 15,
+            column: 39
+          },
+          end: {
+            line: 19,
+            column: 1
+          }
+        },
+        line: 15
+      },
+      "2": {
+        name: "CustomTargets",
+        decl: {
+          start: {
+            line: 20,
+            column: 9
+          },
+          end: {
+            line: 20,
+            column: 22
+          }
+        },
+        loc: {
+          start: {
+            line: 20,
+            column: 78
+          },
+          end: {
+            line: 106,
+            column: 1
+          }
+        },
+        line: 20
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 35,
+            column: 38
+          },
+          end: {
+            line: 35,
+            column: 39
+          }
+        },
+        loc: {
+          start: {
+            line: 35,
+            column: 43
+          },
+          end: {
+            line: 35,
+            column: 96
+          }
+        },
+        line: 35
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 53,
+            column: 38
+          },
+          end: {
+            line: 53,
+            column: 39
+          }
+        },
+        loc: {
+          start: {
+            line: 53,
+            column: 43
+          },
+          end: {
+            line: 53,
+            column: 95
+          }
+        },
+        line: 53
+      },
+      "5": {
+        name: "(anonymous_5)",
+        decl: {
+          start: {
+            line: 71,
+            column: 38
+          },
+          end: {
+            line: 71,
+            column: 39
+          }
+        },
+        loc: {
+          start: {
+            line: 71,
+            column: 43
+          },
+          end: {
+            line: 71,
+            column: 93
+          }
+        },
+        line: 71
+      },
+      "6": {
+        name: "(anonymous_6)",
+        decl: {
+          start: {
+            line: 89,
+            column: 38
+          },
+          end: {
+            line: 89,
+            column: 39
+          }
+        },
+        loc: {
+          start: {
+            line: 89,
+            column: 43
+          },
+          end: {
+            line: 89,
+            column: 91
+          }
+        },
+        line: 89
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 16,
+            column: 11
+          },
+          end: {
+            line: 18,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 16,
+            column: 35
+          },
+          end: {
+            line: 16,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 16,
+            column: 41
+          },
+          end: {
+            line: 18,
+            column: 5
+          }
+        }],
+        line: 16
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 16,
+            column: 11
+          },
+          end: {
+            line: 16,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 16,
+            column: 11
+          },
+          end: {
+            line: 16,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 16,
+            column: 18
+          },
+          end: {
+            line: 16,
+            column: 32
+          }
+        }],
+        line: 16
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/Users/ayman/quantro/src/components/food-log/core/CustomTargets.tsx"],
+      sourcesContent: ["\"use client\";\nimport React from \"react\";\nimport { Button } from \"../../ui/button\";\n\ninterface Nutrients {\n  calories: number;\n  protein: number;\n  carbs: number;\n  fat: number;\n  fiber?: number;\n}\n\ninterface CustomTargetsProps {\n  targetInput: Nutrients;\n  handleInputChange: (field: keyof Nutrients, value: number) => void;\n  handleSaveTargets: () => void;\n}\n\nexport default function CustomTargets({ \n  targetInput, \n  handleInputChange, \n  handleSaveTargets \n}: CustomTargetsProps) {\n  return (\n    <section className=\"select-none\">\n      <div className=\"grid grid-cols-1 gap-4\">\n        <div>\n          <label className=\"block text-sm font-medium text-white\">Calories</label>\n          <input\n            type=\"number\"\n            value={targetInput.calories}\n            onChange={(e) => handleInputChange(\"calories\", Number(e.target.value))}\n            className=\"mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white\"\n            style={{ userSelect: 'text', WebkitUserSelect: 'text' }}\n          />\n        </div>\n        <div>\n          <label className=\"block text-sm font-medium text-white\">Protein (g)</label>\n          <input\n            type=\"number\"\n            value={targetInput.protein}\n            onChange={(e) => handleInputChange(\"protein\", Number(e.target.value))}\n            className=\"mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white\"\n            style={{ userSelect: 'text', WebkitUserSelect: 'text' }}\n          />\n        </div>\n        <div>\n          <label className=\"block text-sm font-medium text-white\">Carbs (g)</label>\n          <input\n            type=\"number\"\n            value={targetInput.carbs}\n            onChange={(e) => handleInputChange(\"carbs\", Number(e.target.value))}\n            className=\"mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white\"\n            style={{ userSelect: 'text', WebkitUserSelect: 'text' }}\n          />\n        </div>\n        <div>\n          <label className=\"block text-sm font-medium text-white\">Fat (g)</label>\n          <input\n            type=\"number\"\n            value={targetInput.fat}\n            onChange={(e) => handleInputChange(\"fat\", Number(e.target.value))}\n            className=\"mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white\"\n            style={{ userSelect: 'text', WebkitUserSelect: 'text' }}\n          />\n        </div>\n        <Button \n          onClick={handleSaveTargets} \n          className=\"w-full text-white bg-white bg-opacity-20 hover:bg-opacity-30 border border-white border-opacity-30\"\n        >\n          Save Targets\n        </Button>\n      </div>\n    </section>\n  );\n}"],
+      names: ["CustomTargets", "targetInput", "handleInputChange", "handleSaveTargets", "section", "className", "div", "label", "input", "type", "value", "calories", "onChange", "e", "Number", "target", "style", "userSelect", "WebkitUserSelect", "protein", "carbs", "fat", "Button", "onClick"],
+      mappings: "AAAA;;;;;+BAkBA;;;eAAwBA;;;;8DAjBN;wBACK;;;;;;AAgBR,SAASA,cAAc,EACpCC,WAAW,EACXC,iBAAiB,EACjBC,iBAAiB,EACE;IACnB,qBACE,qBAACC;QAAQC,WAAU;kBACjB,cAAA,sBAACC;YAAID,WAAU;;8BACb,sBAACC;;sCACC,qBAACC;4BAAMF,WAAU;sCAAuC;;sCACxD,qBAACG;4BACCC,MAAK;4BACLC,OAAOT,YAAYU,QAAQ;4BAC3BC,UAAU,CAACC,IAAMX,kBAAkB,YAAYY,OAAOD,EAAEE,MAAM,CAACL,KAAK;4BACpEL,WAAU;4BACVW,OAAO;gCAAEC,YAAY;gCAAQC,kBAAkB;4BAAO;;;;8BAG1D,sBAACZ;;sCACC,qBAACC;4BAAMF,WAAU;sCAAuC;;sCACxD,qBAACG;4BACCC,MAAK;4BACLC,OAAOT,YAAYkB,OAAO;4BAC1BP,UAAU,CAACC,IAAMX,kBAAkB,WAAWY,OAAOD,EAAEE,MAAM,CAACL,KAAK;4BACnEL,WAAU;4BACVW,OAAO;gCAAEC,YAAY;gCAAQC,kBAAkB;4BAAO;;;;8BAG1D,sBAACZ;;sCACC,qBAACC;4BAAMF,WAAU;sCAAuC;;sCACxD,qBAACG;4BACCC,MAAK;4BACLC,OAAOT,YAAYmB,KAAK;4BACxBR,UAAU,CAACC,IAAMX,kBAAkB,SAASY,OAAOD,EAAEE,MAAM,CAACL,KAAK;4BACjEL,WAAU;4BACVW,OAAO;gCAAEC,YAAY;gCAAQC,kBAAkB;4BAAO;;;;8BAG1D,sBAACZ;;sCACC,qBAACC;4BAAMF,WAAU;sCAAuC;;sCACxD,qBAACG;4BACCC,MAAK;4BACLC,OAAOT,YAAYoB,GAAG;4BACtBT,UAAU,CAACC,IAAMX,kBAAkB,OAAOY,OAAOD,EAAEE,MAAM,CAACL,KAAK;4BAC/DL,WAAU;4BACVW,OAAO;gCAAEC,YAAY;gCAAQC,kBAAkB;4BAAO;;;;8BAG1D,qBAACI,cAAM;oBACLC,SAASpB;oBACTE,WAAU;8BACX;;;;;AAMT"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "2c525ce613ca849de243df9d1b3fb7906c6ee1e5"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_2brvyc984e = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_2brvyc984e();
+cov_2brvyc984e().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_2brvyc984e().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_2brvyc984e().f[0]++;
+    cov_2brvyc984e().s[2]++;
+    return CustomTargets;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_2brvyc984e().s[3]++, require("react/jsx-runtime"));
+const _react =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_2brvyc984e().s[4]++, _interop_require_default(require("react")));
+const _button =
+/* istanbul ignore next */
+(cov_2brvyc984e().s[5]++, require("../../ui/button"));
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_2brvyc984e().f[1]++;
+  cov_2brvyc984e().s[6]++;
+  return /* istanbul ignore next */(cov_2brvyc984e().b[1][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_2brvyc984e().b[1][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_2brvyc984e().b[0][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_2brvyc984e().b[0][1]++, {
+    default: obj
+  });
+}
+function CustomTargets({
+  targetInput,
+  handleInputChange,
+  handleSaveTargets
+}) {
+  /* istanbul ignore next */
+  cov_2brvyc984e().f[2]++;
+  cov_2brvyc984e().s[7]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsx)("section", {
+    className: "select-none",
+    children: /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+      className: "grid grid-cols-1 gap-4",
+      children: [/*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)("label", {
+          className: "block text-sm font-medium text-white",
+          children: "Calories"
+        }), /*#__PURE__*/(0, _jsxruntime.jsx)("input", {
+          type: "number",
+          value: targetInput.calories,
+          onChange: e => {
+            /* istanbul ignore next */
+            cov_2brvyc984e().f[3]++;
+            cov_2brvyc984e().s[8]++;
+            return handleInputChange("calories", Number(e.target.value));
+          },
+          className: "mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white",
+          style: {
+            userSelect: 'text',
+            WebkitUserSelect: 'text'
+          }
+        })]
+      }), /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)("label", {
+          className: "block text-sm font-medium text-white",
+          children: "Protein (g)"
+        }), /*#__PURE__*/(0, _jsxruntime.jsx)("input", {
+          type: "number",
+          value: targetInput.protein,
+          onChange: e => {
+            /* istanbul ignore next */
+            cov_2brvyc984e().f[4]++;
+            cov_2brvyc984e().s[9]++;
+            return handleInputChange("protein", Number(e.target.value));
+          },
+          className: "mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white",
+          style: {
+            userSelect: 'text',
+            WebkitUserSelect: 'text'
+          }
+        })]
+      }), /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)("label", {
+          className: "block text-sm font-medium text-white",
+          children: "Carbs (g)"
+        }), /*#__PURE__*/(0, _jsxruntime.jsx)("input", {
+          type: "number",
+          value: targetInput.carbs,
+          onChange: e => {
+            /* istanbul ignore next */
+            cov_2brvyc984e().f[5]++;
+            cov_2brvyc984e().s[10]++;
+            return handleInputChange("carbs", Number(e.target.value));
+          },
+          className: "mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white",
+          style: {
+            userSelect: 'text',
+            WebkitUserSelect: 'text'
+          }
+        })]
+      }), /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)("label", {
+          className: "block text-sm font-medium text-white",
+          children: "Fat (g)"
+        }), /*#__PURE__*/(0, _jsxruntime.jsx)("input", {
+          type: "number",
+          value: targetInput.fat,
+          onChange: e => {
+            /* istanbul ignore next */
+            cov_2brvyc984e().f[6]++;
+            cov_2brvyc984e().s[11]++;
+            return handleInputChange("fat", Number(e.target.value));
+          },
+          className: "mt-1 block w-full border border-gray-300 rounded-md p-2 bg-white",
+          style: {
+            userSelect: 'text',
+            WebkitUserSelect: 'text'
+          }
+        })]
+      }), /*#__PURE__*/(0, _jsxruntime.jsx)(_button.Button, {
+        onClick: handleSaveTargets,
+        className: "w-full text-white bg-white bg-opacity-20 hover:bg-opacity-30 border border-white border-opacity-30",
+        children: "Save Targets"
+      })]
+    })
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJDdXN0b21UYXJnZXRzIiwidGFyZ2V0SW5wdXQiLCJoYW5kbGVJbnB1dENoYW5nZSIsImhhbmRsZVNhdmVUYXJnZXRzIiwiY292XzJicnZ5Yzk4NGUiLCJmIiwicyIsIl9qc3hydW50aW1lIiwianN4IiwiY2xhc3NOYW1lIiwianN4cyIsInR5cGUiLCJ2YWx1ZSIsImNhbG9yaWVzIiwib25DaGFuZ2UiLCJlIiwiTnVtYmVyIiwidGFyZ2V0Iiwic3R5bGUiLCJ1c2VyU2VsZWN0IiwiV2Via2l0VXNlclNlbGVjdCIsInByb3RlaW4iLCJjYXJicyIsImZhdCIsIl9idXR0b24iLCJCdXR0b24iLCJvbkNsaWNrIl0sInNvdXJjZXMiOlsiL1VzZXJzL2F5bWFuL3F1YW50cm8vc3JjL2NvbXBvbmVudHMvZm9vZC1sb2cvY29yZS9DdXN0b21UYXJnZXRzLnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJcInVzZSBjbGllbnRcIjtcbmltcG9ydCBSZWFjdCBmcm9tIFwicmVhY3RcIjtcbmltcG9ydCB7IEJ1dHRvbiB9IGZyb20gXCIuLi8uLi91aS9idXR0b25cIjtcblxuaW50ZXJmYWNlIE51dHJpZW50cyB7XG4gIGNhbG9yaWVzOiBudW1iZXI7XG4gIHByb3RlaW46IG51bWJlcjtcbiAgY2FyYnM6IG51bWJlcjtcbiAgZmF0OiBudW1iZXI7XG4gIGZpYmVyPzogbnVtYmVyO1xufVxuXG5pbnRlcmZhY2UgQ3VzdG9tVGFyZ2V0c1Byb3BzIHtcbiAgdGFyZ2V0SW5wdXQ6IE51dHJpZW50cztcbiAgaGFuZGxlSW5wdXRDaGFuZ2U6IChmaWVsZDoga2V5b2YgTnV0cmllbnRzLCB2YWx1ZTogbnVtYmVyKSA9PiB2b2lkO1xuICBoYW5kbGVTYXZlVGFyZ2V0czogKCkgPT4gdm9pZDtcbn1cblxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gQ3VzdG9tVGFyZ2V0cyh7IFxuICB0YXJnZXRJbnB1dCwgXG4gIGhhbmRsZUlucHV0Q2hhbmdlLCBcbiAgaGFuZGxlU2F2ZVRhcmdldHMgXG59OiBDdXN0b21UYXJnZXRzUHJvcHMpIHtcbiAgcmV0dXJuIChcbiAgICA8c2VjdGlvbiBjbGFzc05hbWU9XCJzZWxlY3Qtbm9uZVwiPlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJncmlkIGdyaWQtY29scy0xIGdhcC00XCI+XG4gICAgICAgIDxkaXY+XG4gICAgICAgICAgPGxhYmVsIGNsYXNzTmFtZT1cImJsb2NrIHRleHQtc20gZm9udC1tZWRpdW0gdGV4dC13aGl0ZVwiPkNhbG9yaWVzPC9sYWJlbD5cbiAgICAgICAgICA8aW5wdXRcbiAgICAgICAgICAgIHR5cGU9XCJudW1iZXJcIlxuICAgICAgICAgICAgdmFsdWU9e3RhcmdldElucHV0LmNhbG9yaWVzfVxuICAgICAgICAgICAgb25DaGFuZ2U9eyhlKSA9PiBoYW5kbGVJbnB1dENoYW5nZShcImNhbG9yaWVzXCIsIE51bWJlcihlLnRhcmdldC52YWx1ZSkpfVxuICAgICAgICAgICAgY2xhc3NOYW1lPVwibXQtMSBibG9jayB3LWZ1bGwgYm9yZGVyIGJvcmRlci1ncmF5LTMwMCByb3VuZGVkLW1kIHAtMiBiZy13aGl0ZVwiXG4gICAgICAgICAgICBzdHlsZT17eyB1c2VyU2VsZWN0OiAndGV4dCcsIFdlYmtpdFVzZXJTZWxlY3Q6ICd0ZXh0JyB9fVxuICAgICAgICAgIC8+XG4gICAgICAgIDwvZGl2PlxuICAgICAgICA8ZGl2PlxuICAgICAgICAgIDxsYWJlbCBjbGFzc05hbWU9XCJibG9jayB0ZXh0LXNtIGZvbnQtbWVkaXVtIHRleHQtd2hpdGVcIj5Qcm90ZWluIChnKTwvbGFiZWw+XG4gICAgICAgICAgPGlucHV0XG4gICAgICAgICAgICB0eXBlPVwibnVtYmVyXCJcbiAgICAgICAgICAgIHZhbHVlPXt0YXJnZXRJbnB1dC5wcm90ZWlufVxuICAgICAgICAgICAgb25DaGFuZ2U9eyhlKSA9PiBoYW5kbGVJbnB1dENoYW5nZShcInByb3RlaW5cIiwgTnVtYmVyKGUudGFyZ2V0LnZhbHVlKSl9XG4gICAgICAgICAgICBjbGFzc05hbWU9XCJtdC0xIGJsb2NrIHctZnVsbCBib3JkZXIgYm9yZGVyLWdyYXktMzAwIHJvdW5kZWQtbWQgcC0yIGJnLXdoaXRlXCJcbiAgICAgICAgICAgIHN0eWxlPXt7IHVzZXJTZWxlY3Q6ICd0ZXh0JywgV2Via2l0VXNlclNlbGVjdDogJ3RleHQnIH19XG4gICAgICAgICAgLz5cbiAgICAgICAgPC9kaXY+XG4gICAgICAgIDxkaXY+XG4gICAgICAgICAgPGxhYmVsIGNsYXNzTmFtZT1cImJsb2NrIHRleHQtc20gZm9udC1tZWRpdW0gdGV4dC13aGl0ZVwiPkNhcmJzIChnKTwvbGFiZWw+XG4gICAgICAgICAgPGlucHV0XG4gICAgICAgICAgICB0eXBlPVwibnVtYmVyXCJcbiAgICAgICAgICAgIHZhbHVlPXt0YXJnZXRJbnB1dC5jYXJic31cbiAgICAgICAgICAgIG9uQ2hhbmdlPXsoZSkgPT4gaGFuZGxlSW5wdXRDaGFuZ2UoXCJjYXJic1wiLCBOdW1iZXIoZS50YXJnZXQudmFsdWUpKX1cbiAgICAgICAgICAgIGNsYXNzTmFtZT1cIm10LTEgYmxvY2sgdy1mdWxsIGJvcmRlciBib3JkZXItZ3JheS0zMDAgcm91bmRlZC1tZCBwLTIgYmctd2hpdGVcIlxuICAgICAgICAgICAgc3R5bGU9e3sgdXNlclNlbGVjdDogJ3RleHQnLCBXZWJraXRVc2VyU2VsZWN0OiAndGV4dCcgfX1cbiAgICAgICAgICAvPlxuICAgICAgICA8L2Rpdj5cbiAgICAgICAgPGRpdj5cbiAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPVwiYmxvY2sgdGV4dC1zbSBmb250LW1lZGl1bSB0ZXh0LXdoaXRlXCI+RmF0IChnKTwvbGFiZWw+XG4gICAgICAgICAgPGlucHV0XG4gICAgICAgICAgICB0eXBlPVwibnVtYmVyXCJcbiAgICAgICAgICAgIHZhbHVlPXt0YXJnZXRJbnB1dC5mYXR9XG4gICAgICAgICAgICBvbkNoYW5nZT17KGUpID0+IGhhbmRsZUlucHV0Q2hhbmdlKFwiZmF0XCIsIE51bWJlcihlLnRhcmdldC52YWx1ZSkpfVxuICAgICAgICAgICAgY2xhc3NOYW1lPVwibXQtMSBibG9jayB3LWZ1bGwgYm9yZGVyIGJvcmRlci1ncmF5LTMwMCByb3VuZGVkLW1kIHAtMiBiZy13aGl0ZVwiXG4gICAgICAgICAgICBzdHlsZT17eyB1c2VyU2VsZWN0OiAndGV4dCcsIFdlYmtpdFVzZXJTZWxlY3Q6ICd0ZXh0JyB9fVxuICAgICAgICAgIC8+XG4gICAgICAgIDwvZGl2PlxuICAgICAgICA8QnV0dG9uIFxuICAgICAgICAgIG9uQ2xpY2s9e2hhbmRsZVNhdmVUYXJnZXRzfSBcbiAgICAgICAgICBjbGFzc05hbWU9XCJ3LWZ1bGwgdGV4dC13aGl0ZSBiZy13aGl0ZSBiZy1vcGFjaXR5LTIwIGhvdmVyOmJnLW9wYWNpdHktMzAgYm9yZGVyIGJvcmRlci13aGl0ZSBib3JkZXItb3BhY2l0eS0zMFwiXG4gICAgICAgID5cbiAgICAgICAgICBTYXZlIFRhcmdldHNcbiAgICAgICAgPC9CdXR0b24+XG4gICAgICA8L2Rpdj5cbiAgICA8L3NlY3Rpb24+XG4gICk7XG59Il0sIm1hcHBpbmdzIjoiQUFBQTs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7K0JBa0JBOzs7Ozs7V0FBd0JBLGFBQUE7Ozs7Ozs7O3dFQWpCTjs7O2tDQUNLOzs7Ozs7Ozs7Ozs7Ozs7QUFnQlIsU0FBU0EsY0FBYztFQUNwQ0MsV0FBVztFQUNYQyxpQkFBaUI7RUFDakJDO0FBQWlCLENBQ0U7RUFBQTtFQUFBQyxjQUFBLEdBQUFDLENBQUE7RUFBQUQsY0FBQSxHQUFBRSxDQUFBO0VBQ25CLG9CQUNFLElBQUFDLFdBQUEsQ0FBQUMsR0FBQSxFQUFDO0lBQVFDLFNBQUEsRUFBVTtjQUNqQixpQkFBQUYsV0FBQSxDQUFBRyxJQUFBLEVBQUM7TUFBSUQsU0FBQSxFQUFVOzhCQUNiLElBQUFGLFdBQUEsQ0FBQUcsSUFBQSxFQUFDO2dDQUNDLElBQUFILFdBQUEsQ0FBQUMsR0FBQSxFQUFDO1VBQU1DLFNBQUEsRUFBVTtvQkFBdUM7eUJBQ3hELElBQUFGLFdBQUEsQ0FBQUMsR0FBQSxFQUFDO1VBQ0NHLElBQUEsRUFBSztVQUNMQyxLQUFBLEVBQU9YLFdBQUEsQ0FBWVksUUFBUTtVQUMzQkMsUUFBQSxFQUFXQyxDQUFBLElBQU07WUFBQTtZQUFBWCxjQUFBLEdBQUFDLENBQUE7WUFBQUQsY0FBQSxHQUFBRSxDQUFBO1lBQUEsT0FBQUosaUJBQUEsQ0FBa0IsWUFBWWMsTUFBQSxDQUFPRCxDQUFBLENBQUVFLE1BQU0sQ0FBQ0wsS0FBSztVQUFBO1VBQ3BFSCxTQUFBLEVBQVU7VUFDVlMsS0FBQSxFQUFPO1lBQUVDLFVBQUEsRUFBWTtZQUFRQyxnQkFBQSxFQUFrQjtVQUFPOzt1QkFHMUQsSUFBQWIsV0FBQSxDQUFBRyxJQUFBLEVBQUM7Z0NBQ0MsSUFBQUgsV0FBQSxDQUFBQyxHQUFBLEVBQUM7VUFBTUMsU0FBQSxFQUFVO29CQUF1Qzt5QkFDeEQsSUFBQUYsV0FBQSxDQUFBQyxHQUFBLEVBQUM7VUFDQ0csSUFBQSxFQUFLO1VBQ0xDLEtBQUEsRUFBT1gsV0FBQSxDQUFZb0IsT0FBTztVQUMxQlAsUUFBQSxFQUFXQyxDQUFBLElBQU07WUFBQTtZQUFBWCxjQUFBLEdBQUFDLENBQUE7WUFBQUQsY0FBQSxHQUFBRSxDQUFBO1lBQUEsT0FBQUosaUJBQUEsQ0FBa0IsV0FBV2MsTUFBQSxDQUFPRCxDQUFBLENBQUVFLE1BQU0sQ0FBQ0wsS0FBSztVQUFBO1VBQ25FSCxTQUFBLEVBQVU7VUFDVlMsS0FBQSxFQUFPO1lBQUVDLFVBQUEsRUFBWTtZQUFRQyxnQkFBQSxFQUFrQjtVQUFPOzt1QkFHMUQsSUFBQWIsV0FBQSxDQUFBRyxJQUFBLEVBQUM7Z0NBQ0MsSUFBQUgsV0FBQSxDQUFBQyxHQUFBLEVBQUM7VUFBTUMsU0FBQSxFQUFVO29CQUF1Qzt5QkFDeEQsSUFBQUYsV0FBQSxDQUFBQyxHQUFBLEVBQUM7VUFDQ0csSUFBQSxFQUFLO1VBQ0xDLEtBQUEsRUFBT1gsV0FBQSxDQUFZcUIsS0FBSztVQUN4QlIsUUFBQSxFQUFXQyxDQUFBLElBQU07WUFBQTtZQUFBWCxjQUFBLEdBQUFDLENBQUE7WUFBQUQsY0FBQSxHQUFBRSxDQUFBO1lBQUEsT0FBQUosaUJBQUEsQ0FBa0IsU0FBU2MsTUFBQSxDQUFPRCxDQUFBLENBQUVFLE1BQU0sQ0FBQ0wsS0FBSztVQUFBO1VBQ2pFSCxTQUFBLEVBQVU7VUFDVlMsS0FBQSxFQUFPO1lBQUVDLFVBQUEsRUFBWTtZQUFRQyxnQkFBQSxFQUFrQjtVQUFPOzt1QkFHMUQsSUFBQWIsV0FBQSxDQUFBRyxJQUFBLEVBQUM7Z0NBQ0MsSUFBQUgsV0FBQSxDQUFBQyxHQUFBLEVBQUM7VUFBTUMsU0FBQSxFQUFVO29CQUF1Qzt5QkFDeEQsSUFBQUYsV0FBQSxDQUFBQyxHQUFBLEVBQUM7VUFDQ0csSUFBQSxFQUFLO1VBQ0xDLEtBQUEsRUFBT1gsV0FBQSxDQUFZc0IsR0FBRztVQUN0QlQsUUFBQSxFQUFXQyxDQUFBLElBQU07WUFBQTtZQUFBWCxjQUFBLEdBQUFDLENBQUE7WUFBQUQsY0FBQSxHQUFBRSxDQUFBO1lBQUEsT0FBQUosaUJBQUEsQ0FBa0IsT0FBT2MsTUFBQSxDQUFPRCxDQUFBLENBQUVFLE1BQU0sQ0FBQ0wsS0FBSztVQUFBO1VBQy9ESCxTQUFBLEVBQVU7VUFDVlMsS0FBQSxFQUFPO1lBQUVDLFVBQUEsRUFBWTtZQUFRQyxnQkFBQSxFQUFrQjtVQUFPOzt1QkFHMUQsSUFBQWIsV0FBQSxDQUFBQyxHQUFBLEVBQUNnQixPQUFBLENBQUFDLE1BQU07UUFDTEMsT0FBQSxFQUFTdkIsaUJBQUE7UUFDVE0sU0FBQSxFQUFVO2tCQUNYOzs7O0FBTVQiLCJpZ25vcmVMaXN0IjpbXX0=
