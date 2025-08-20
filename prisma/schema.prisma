@@ -1,12 +1,12 @@
-// Production Prisma schema file for PostgreSQL
-// Use this schema for production deployments with PostgreSQL/Supabase
+// Development Prisma schema file for SQLite
+// Use this schema for local development with SQLite
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -91,6 +91,7 @@ model FoodLog {
   userId      String
   date        DateTime @default(now())
   mealType    String   // "breakfast", "lunch", "dinner", "snack"
+  orderIndex  Int?     // For drag and drop ordering within a day
   
   // Food details
   foodName    String

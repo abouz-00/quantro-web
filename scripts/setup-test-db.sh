@@ -16,13 +16,17 @@ echo "🧹 Cleaning up existing test database..."
 rm -f ./test.db
 rm -f ./prisma/test.db
 
+# Kill any existing processes that might lock the database
+pkill -f "test.db" || true
+sleep 1
+
 # Generate Prisma client for test schema
 echo "⚙️  Generating Prisma test client..."
-npx prisma generate --schema=./prisma/schema.test.prisma
+timeout 60 npx prisma generate --schema=./prisma/schema.test.prisma
 
 # Push the test schema to create the database
 echo "📦 Creating test database schema..."
-npx prisma db push --schema=./prisma/schema.test.prisma
+timeout 60 npx prisma db push --schema=./prisma/schema.test.prisma --force-reset
 
 echo "✅ Test database setup complete!"
 echo "📍 Database location: ./test.db"
