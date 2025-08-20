@@ -44,8 +44,13 @@ jobs:
       
     - name: Set up test database
       run: |
-        timeout 300 npx prisma generate
-        timeout 300 npx prisma db push --force-reset
+        echo "Generating Prisma client..."
+        npx prisma generate || { echo "❌ Prisma generate failed"; exit 1; }
+        echo "✅ Prisma client generated successfully"
+        
+        echo "Setting up test database..."
+        npx prisma db push --force-reset || { echo "❌ Database push failed"; exit 1; }
+        echo "✅ Test database setup complete"
       timeout-minutes: 8
         
     - name: Run linting
@@ -100,9 +105,6 @@ jobs:
     needs: [test, security]
     timeout-minutes: 15
     
-    env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -127,10 +129,8 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-prisma-
       
-    - name: Set up build database
-      run: |
-        npx prisma generate
-        npx prisma db push --force-reset
+    - name: Generate Prisma client
+      run: npx prisma generate
         
     - name: Build application
       run: npm run build
