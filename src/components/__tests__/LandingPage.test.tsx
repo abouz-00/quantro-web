@@ -15,7 +15,8 @@ jest.mock('next/navigation', () => ({
 
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: jest.fn(({ src, alt, ...props }: any) => <img src={src} alt={alt} {...props} />),
+  // eslint-disable-next-line @next/next/no-img-element
+  default: jest.fn(({ src, alt, ...props }: { src: string; alt: string; [key: string]: unknown }) => <img src={src} alt={alt} {...props} />),
 }));
 
 jest.mock('next/font/google', () => ({
@@ -25,8 +26,9 @@ jest.mock('next/font/google', () => ({
 // Mock framer-motion
 jest.mock('framer-motion', () => ({
   motion: {
-    div: jest.fn(({ children, ...props }: any) => <div {...props}>{children}</div>),
-    img: jest.fn(({ children, ...props }: any) => <img {...props}>{children}</img>),
+    div: jest.fn(({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => <div {...props}>{children}</div>),
+    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+    img: jest.fn(({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => <img {...props}>{children}</img>),
   },
   useAnimation: jest.fn(() => ({ start: jest.fn() })),
   useInView: jest.fn(() => true),
@@ -34,9 +36,9 @@ jest.mock('framer-motion', () => ({
 
 // Mock Heroicons
 jest.mock('@heroicons/react/24/outline', () => ({
-  ChartPieIcon: jest.fn((props: any) => <div data-testid="chart-pie-icon" {...props} />),
-  BeakerIcon: jest.fn((props: any) => <div data-testid="beaker-icon" {...props} />),
-  CursorArrowRaysIcon: jest.fn((props: any) => <div data-testid="cursor-arrow-rays-icon" {...props} />),
+  ChartPieIcon: jest.fn((props: { [key: string]: unknown }) => <div data-testid="chart-pie-icon" {...props} />),
+  BeakerIcon: jest.fn((props: { [key: string]: unknown }) => <div data-testid="beaker-icon" {...props} />),
+  CursorArrowRaysIcon: jest.fn((props: { [key: string]: unknown }) => <div data-testid="cursor-arrow-rays-icon" {...props} />),
 }));
 
 import { render, screen } from '@testing-library/react';
