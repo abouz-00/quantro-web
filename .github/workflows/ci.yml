@@ -140,12 +140,23 @@ jobs:
     - name: Build application
       run: npm run build
       
+    - name: Verify build output
+      run: |
+        if [ -d ".next" ]; then
+          echo "✅ Build directory exists"
+          ls -la .next/
+        else
+          echo "❌ Build directory not found"
+          exit 1
+        fi
+      
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: build-artifacts
         path: .next/
         retention-days: 7
+        if-no-files-found: error
 
   deploy-staging:
     runs-on: ubuntu-latest
@@ -172,6 +183,18 @@ jobs:
       with:
         name: build-artifacts
         path: .next/
+      continue-on-error: false
+        
+    - name: Verify artifacts
+      run: |
+        if [ -d ".next" ]; then
+          echo "✅ Build artifacts downloaded successfully"
+          ls -la .next/
+        else
+          echo "❌ Build artifacts not found, attempting fresh build"
+          npx prisma generate
+          npm run build
+        fi
         
     - name: Deploy to Staging (Vercel)
       uses: amondnet/vercel-action@v25
@@ -209,6 +232,18 @@ jobs:
       with:
         name: build-artifacts
         path: .next/
+      continue-on-error: false
+        
+    - name: Verify artifacts
+      run: |
+        if [ -d ".next" ]; then
+          echo "✅ Build artifacts downloaded successfully"
+          ls -la .next/
+        else
+          echo "❌ Build artifacts not found, attempting fresh build"
+          npx prisma generate
+          npm run build
+        fi
         
     - name: Deploy to Production (Vercel)
       uses: amondnet/vercel-action@v25
