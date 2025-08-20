@@ -1,9 +1,12 @@
 #!/bin/bash
 
-# Test Database Setup Script
-# This script sets up a local SQLite database for testing
+# Optimized Test Database Setup Script
+# This script sets up a local SQLite database for testing with better error handling
 
 set -e
+
+# Run pre-test cleanup first
+./scripts/pre-test-cleanup.sh
 
 echo "🗄️  Setting up test database..."
 
@@ -11,22 +14,57 @@ echo "🗄️  Setting up test database..."
 export NODE_ENV=test
 export DATABASE_URL="file:./test.db"
 
-# Clean up any existing test database
+# Function to clean up on exit
+cleanup() {
+    echo "🧹 Cleaning up on exit..."
+    # Remove any temporary files
+    rm -f ./test.db.tmp 2>/dev/null || true
+}
+
+# Set up trap for cleanup
+trap cleanup EXIT
+
+# Clean up any existing test database more safely
 echo "🧹 Cleaning up existing test database..."
-rm -f ./test.db
-rm -f ./prisma/test.db
+if [ -f "./test.db" ]; then
+    rm -f ./test.db
+fi
+if [ -f "./prisma/test.db" ]; then
+    rm -f ./prisma/test.db
+fi
 
-# Kill any existing processes that might lock the database
-pkill -f "test.db" || true
-sleep 1
+# Kill any existing processes that might lock the database (safer approach)
+if pgrep -f "test.db" > /dev/null 2>&1; then
+    echo "⚠️  Stopping processes using test.db..."
+    pkill -f "test.db" || true
+    sleep 2
+fi
 
-# Generate Prisma client for test schema
+# Check if Prisma is available
+if ! command -v npx > /dev/null 2>&1; then
+    echo "❌ npx not found. Please install Node.js"
+    exit 1
+fi
+
+# Generate Prisma client for test schema with timeout
 echo "⚙️  Generating Prisma test client..."
-npx prisma generate --schema=./prisma/schema.test.prisma
+timeout 60s npx prisma generate --schema=./prisma/schema.test.prisma || {
+    echo "❌ Prisma client generation failed or timed out"
+    exit 1
+}
 
-# Push the test schema to create the database
+# Push the test schema to create the database with timeout
 echo "📦 Creating test database schema..."
-npx prisma db push --schema=./prisma/schema.test.prisma --force-reset
+timeout 60s npx prisma db push --schema=./prisma/schema.test.prisma --force-reset --skip-generate || {
+    echo "❌ Database schema creation failed or timed out"
+    exit 1
+}
+
+# Verify database was created
+if [ ! -f "./test.db" ]; then
+    echo "❌ Test database was not created successfully"
+    exit 1
+fi
 
 echo "✅ Test database setup complete!"
 echo "📍 Database location: ./test.db"

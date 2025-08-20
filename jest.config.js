@@ -36,8 +36,12 @@ const customJestConfig = {
   clearMocks: true,
   resetMocks: true,
   restoreMocks: true,
-  // Add test timeout
-  testTimeout: 30000, // 30 seconds per test
+  // Optimized test timeout and memory settings
+  testTimeout: process.env.CI ? 45000 : 30000, // 45s for CI, 30s locally
+  maxConcurrency: 5, // Limit concurrent tests to prevent memory issues
+  // Bail settings for faster feedback in CI
+  bail: process.env.CI ? 1 : false, // Stop on first failure in CI
+  verbose: false, // Reduce verbose output to speed up tests
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.d.ts',
