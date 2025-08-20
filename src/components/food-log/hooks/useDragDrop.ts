@@ -74,7 +74,8 @@ export function useDragDrop(
       document.addEventListener('dragover', forceCursor);
       
       // Store the cleanup function
-      (window as any).__dragCleanup = () => {
+      const windowWithCleanup = window as Window & { __dragCleanup?: () => void };
+      windowWithCleanup.__dragCleanup = () => {
         document.removeEventListener('mousemove', forceCursor);
         document.removeEventListener('dragover', forceCursor);
       };
@@ -156,9 +157,10 @@ export function useDragDrop(
     }
     
     // Call cleanup function for event listeners
-    if ((window as any).__dragCleanup) {
-      (window as any).__dragCleanup();
-      delete (window as any).__dragCleanup;
+    const windowWithCleanup = window as Window & { __dragCleanup?: () => void };
+    if (windowWithCleanup.__dragCleanup) {
+      windowWithCleanup.__dragCleanup();
+      delete windowWithCleanup.__dragCleanup;
     }
     
     const container = document.querySelector('.food-table-container');
@@ -221,9 +223,10 @@ export function useDragDrop(
     }
     
     // Call cleanup function for event listeners
-    if ((window as any).__dragCleanup) {
-      (window as any).__dragCleanup();
-      delete (window as any).__dragCleanup;
+    const windowWithCleanup = window as Window & { __dragCleanup?: () => void };
+    if (windowWithCleanup.__dragCleanup) {
+      windowWithCleanup.__dragCleanup();
+      delete windowWithCleanup.__dragCleanup;
     }
     
     const container = document.querySelector('.food-table-container');

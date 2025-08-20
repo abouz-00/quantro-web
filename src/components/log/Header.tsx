@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import { HiMenu } from 'react-icons/hi';
+import Image from 'next/image';
 
 interface HeaderProps {
   isMainMenuOpen: boolean;
@@ -27,16 +28,17 @@ export const Header: React.FC<HeaderProps> = ({
           className="p-1 rounded-lg transition-all duration-200 cursor-pointer"
           aria-label="Go to Dashboard"
         >
-          <img 
+          <Image 
             src="/header.svg" 
             alt="Quantro Logo" 
-            className="h-8"
+            width={32}
+            height={32}
+            className="h-8 w-auto"
             style={{ 
               userSelect: 'none', 
               WebkitUserSelect: 'none',
               filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.1))',
-              maxHeight: '2rem',
-              width: 'auto'
+              maxHeight: '2rem'
             }}
           />
         </button>

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 export async function GET() {
@@ -31,8 +31,8 @@ export async function GET() {
   } catch (error) {
     console.error('API Test Error:', error);
     return NextResponse.json({ 
-      error: error.message,
-      stack: error.stack
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
+      stack: error instanceof Error ? error.stack : undefined
     }, { status: 500 });
   }
 }

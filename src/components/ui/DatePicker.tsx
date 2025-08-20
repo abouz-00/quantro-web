@@ -4,7 +4,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../../styles/react-calendar.css";
-import { HiChevronLeft, HiChevronRight, HiCalendar, HiX } from "react-icons/hi";
+import { HiChevronLeft, HiChevronRight, HiCalendar } from "react-icons/hi";
 import { dateHelpers } from "../../hooks/useDateManager";
 
 type ValuePiece = Date | null;

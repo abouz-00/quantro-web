@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { Poppins } from 'next/font/google';
 import { FoodSearchModal } from "../food-log/search";
 import { EditFoodModal, TargetsModal } from "../food-log/modals";
 import { EnhancedFoodTable } from "../food-log";
@@ -20,8 +19,6 @@ import { ContextMenu } from "./ContextMenu";
 import { CopyToast } from "./CopyToast";
 import { FoodEntry } from "../../types/food";
 import { generateEntryId } from "../../utils/dateUtils";
-
-const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 export default function LogPage() {
   // Modal states

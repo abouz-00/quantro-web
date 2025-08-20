@@ -267,7 +267,7 @@ describe('useFoodData', () => {
   });
 
   it('should reload data when selected date changes', async () => {
-    const { result, rerender } = renderHook(
+    const { rerender } = renderHook(
       ({ date, formatFn }) => useFoodData(date, formatFn),
       {
         initialProps: {
