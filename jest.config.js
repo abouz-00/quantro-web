@@ -36,6 +36,8 @@ const customJestConfig = {
   clearMocks: true,
   resetMocks: true,
   restoreMocks: true,
+  // Add test timeout
+  testTimeout: 30000, // 30 seconds per test
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.d.ts',

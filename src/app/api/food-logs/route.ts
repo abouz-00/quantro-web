@@ -31,7 +31,10 @@ export async function GET(request: NextRequest) {
 
     const foodLogs = await prisma.foodLog.findMany({
       where: whereClause,
-      orderBy: { date: 'desc' },
+      orderBy: [
+        { orderIndex: 'asc' },
+        { createdAt: 'asc' }
+      ],
     });
 
     return NextResponse.json(foodLogs);

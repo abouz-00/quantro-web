@@ -92,7 +92,8 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
 
   const displayTotals = selectedEntries.length > 0 ? selectedEntriesTotals : totals;
 
-  const handleReorderEntries = useCallback((newOrder: FoodEntry[]) => {
+  const handleReorderEntries = useCallback(async (newOrder: FoodEntry[]) => {
+    // Update local state immediately for responsive UI
     setFoodData(prevFoodData => {
       const otherEntries = prevFoodData.filter((entry: FoodEntry) => {
         const entryDate = new Date(entry.date);
@@ -101,6 +102,28 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
       
       return [...otherEntries, ...newOrder];
     });
+
+    // Persist the order to the database
+    try {
+      const entryIds = newOrder.map(entry => entry.id);
+      const response = await fetch('/api/food-logs/reorder', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ entryIds }),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to persist entry order:', response.statusText);
+        // Optionally show a toast notification to the user
+      } else {
+        console.log('Entry order persisted successfully');
+      }
+    } catch (error) {
+      console.error('Error persisting entry order:', error);
+      // Optionally show a toast notification to the user
+    }
   }, [selectedDate]);
 
   // Handle entry selection with multi-select support
