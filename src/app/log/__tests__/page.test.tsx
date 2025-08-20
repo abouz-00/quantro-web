@@ -8,6 +8,8 @@ jest.mock('next-auth/react', () => ({
   useSession: jest.fn(),
 }));
 
+const mockUseSession = useSession as jest.MockedFunction<typeof useSession>;
+
 // Mock next/navigation
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
@@ -29,7 +31,6 @@ jest.mock('../../../components/ErrorBoundary', () => {
   };
 });
 
-const mockUseSession = useSession as jest.MockedFunction<typeof useSession>;
 const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
 describe('Log Page', () => {
@@ -45,6 +46,13 @@ describe('Log Page', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockUseRouter.mockReturnValue(mockRouter as unknown as ReturnType<typeof useRouter>);
+    
+    // Default mock for useSession
+    mockUseSession.mockReturnValue({
+      data: null,
+      status: 'unauthenticated',
+      update: jest.fn(),
+    });
   });
 
   it('redirects to home when user is unauthenticated', () => {

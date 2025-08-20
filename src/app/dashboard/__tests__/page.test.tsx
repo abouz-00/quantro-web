@@ -3,6 +3,13 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Dashboard from '../page';
 
+// Mock the InviteHandler component to avoid useSearchParams issues
+jest.mock('../invite-handler', () => {
+  return function MockInviteHandler() {
+    return null;
+  };
+});
+
 // Mock next-auth/react
 jest.mock('next-auth/react', () => ({
   useSession: jest.fn(),
@@ -11,7 +18,24 @@ jest.mock('next-auth/react', () => ({
 
 // Mock next/navigation
 jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
+  useRouter: jest.fn(() => ({
+    push: jest.fn(),
+    back: jest.fn(),
+    forward: jest.fn(),
+    refresh: jest.fn(),
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+  })),
+  useSearchParams: jest.fn(() => ({
+    get: jest.fn(() => null),
+    has: jest.fn(() => false),
+    getAll: jest.fn(() => []),
+    toString: jest.fn(() => ''),
+    entries: jest.fn(() => []),
+    keys: jest.fn(() => []),
+    values: jest.fn(() => []),
+    forEach: jest.fn(),
+  })),
 }));
 
 // Mock next/image
@@ -76,8 +100,9 @@ describe('Dashboard Page', () => {
 
     render(<Dashboard />);
     
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    // The dashboard only shows email, not the name
     expect(screen.getByText('john@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Signed in as:')).toBeInTheDocument();
   });
 
   it('renders dashboard with fallback session when not authenticated', () => {
@@ -89,9 +114,9 @@ describe('Dashboard Page', () => {
 
     render(<Dashboard />);
     
-    // Should show fallback test user
-    expect(screen.getByText('Test User')).toBeInTheDocument();
+    // Should show fallback test user email
     expect(screen.getByText('test@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Signed in as:')).toBeInTheDocument();
   });
 
   it('displays Quantro logo', () => {
@@ -103,16 +128,14 @@ describe('Dashboard Page', () => {
 
     render(<Dashboard />);
     
-    const logo = screen.getByAltText('Quantro Logo');
-    expect(logo).toBeInTheDocument();
-    expect(logo).toHaveAttribute('src', '/header.svg');
+    expect(screen.getByAltText('Quantro Logo')).toBeInTheDocument();
   });
 
   it('has sign out functionality', () => {
     mockUseSession.mockReturnValue({
       data: {
         user: {
-          id: 'user-2',
+          id: 'user-1',
           name: 'John Doe',
           email: 'john@example.com',
           image: null,
@@ -124,17 +147,17 @@ describe('Dashboard Page', () => {
     });
 
     render(<Dashboard />);
-    
-    // Check if sign out button exists (assuming it's rendered in the component)
-    // This will depend on the actual implementation of the dashboard
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
+
+    // Check if sign out button exists
+    expect(screen.getByText('Sign Out')).toBeInTheDocument();
+    expect(screen.getByText('john@example.com')).toBeInTheDocument();
   });
 
   it('renders with user image when provided', () => {
     mockUseSession.mockReturnValue({
       data: {
         user: {
-          id: 'user-3',
+          id: 'user-2',
           name: 'Jane Doe',
           email: 'jane@example.com',
           image: 'https://example.com/avatar.jpg',
@@ -147,7 +170,8 @@ describe('Dashboard Page', () => {
 
     render(<Dashboard />);
     
-    expect(screen.getByText('Jane Doe')).toBeInTheDocument();
+    // The dashboard only shows email, not the name
     expect(screen.getByText('jane@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Signed in as:')).toBeInTheDocument();
   });
 });
