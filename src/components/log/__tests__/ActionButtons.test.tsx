@@ -41,6 +41,7 @@ describe('ActionButtons Component', () => {
     onCopySelectedItems: jest.fn(),
     onPasteEntries: jest.fn(),
     onDeleteSelected: jest.fn(),
+    isToday: true,
   }
 
   beforeEach(() => {
@@ -223,5 +224,51 @@ describe('ActionButtons Component', () => {
     
     const pasteButton = screen.getByText('Paste')
     expect(pasteButton).toHaveClass('opacity-50', 'cursor-not-allowed')
+  })
+
+  it('shows Copy to Today button when isToday is false', async () => {
+    const user = userEvent.setup()
+    const propsNotToday = {
+      ...defaultProps,
+      isToday: false,
+      onCopyToToday: jest.fn()
+    }
+    
+    render(<ActionButtons {...propsNotToday} />)
+    
+    const menuButton = screen.getByRole('button', { name: '' })
+    await user.click(menuButton)
+    
+    expect(screen.getByText('Copy to Today')).toBeInTheDocument()
+  })
+
+  it('does not show Copy to Today button when isToday is true', async () => {
+    const user = userEvent.setup()
+    render(<ActionButtons {...defaultProps} />)
+    
+    const menuButton = screen.getByRole('button', { name: '' })
+    await user.click(menuButton)
+    
+    expect(screen.queryByText('Copy to Today')).not.toBeInTheDocument()
+  })
+
+  it('calls onCopyToToday when Copy to Today is clicked', async () => {
+    const user = userEvent.setup()
+    const mockOnCopyToToday = jest.fn()
+    const propsNotToday = {
+      ...defaultProps,
+      isToday: false,
+      onCopyToToday: mockOnCopyToToday
+    }
+    
+    render(<ActionButtons {...propsNotToday} />)
+    
+    const menuButton = screen.getByRole('button', { name: '' })
+    await user.click(menuButton)
+    
+    const copyToTodayButton = screen.getByText('Copy to Today')
+    await user.click(copyToTodayButton)
+    
+    expect(mockOnCopyToToday).toHaveBeenCalledTimes(1)
   })
 })
