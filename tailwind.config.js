@@ -13,7 +13,31 @@ const config = {
         success: '#7EE081',
         danger: '#E55640',
         warning: '#F0E15B',
-        accent: '#F3439B',
+        accent: {
+          DEFAULT: '#F3439B',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        // Custom color variables
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        border: 'hsl(var(--border))',
+        ring: 'hsl(var(--ring))',
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
       },
       keyframes: {
         modalIn: {
