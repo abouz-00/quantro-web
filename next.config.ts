@@ -29,6 +29,9 @@ const nextConfig: NextConfig = {
     };
     
     if (dev) {
+      // Disable webpack caching in development to prevent corrupted cache issues
+      config.cache = false;
+      
       // Use native file watching instead of polling for better performance
       config.watchOptions = {
         // Remove polling - use native file system events instead

@@ -1,6 +1,31 @@
 import '@testing-library/jest-dom'
 
-// Extend Jest matchers
+// Type definitions for mocks
+interface MockHeaders {
+  get(name: string): string | null
+  set(name: string, value: string): void
+  has(name: string): boolean
+  forEach(callback: (value: string, name: string) => void): void
+  entries(): IterableIterator<[string, string]>
+  keys(): IterableIterator<string>
+  values(): IterableIterator<string>
+  append(name: string, value: string): void
+  delete(name: string): void
+}
+
+interface MockResponseInit {
+  status?: number
+  headers?: Record<string, string>
+}
+
+interface MockRequestInit {
+  method?: string
+  headers?: Record<string, string>
+  body?: string
+}
+
+/* eslint-disable @typescript-eslint/no-namespace */
+// Extend Jest matchers with global declaration
 declare global {
   namespace jest {
     interface Matchers<R> {
@@ -8,6 +33,7 @@ declare global {
     }
   }
 }
+/* eslint-enable @typescript-eslint/no-namespace */
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
@@ -33,7 +59,7 @@ jest.mock('next-auth', () => ({
 }));
 
 // Mock web globals for Next.js API routes
-const mockHeaders = () => {
+const mockHeaders = (): MockHeaders => {
   const headers: Record<string, string> = {};
   return {
     get: (name: string) => headers[name.toLowerCase()] || null,
@@ -51,18 +77,18 @@ const mockHeaders = () => {
 };
 
 // Mock NextResponse
-(global as any).NextResponse = class MockNextResponse {
-  private _body: any;
+class MockNextResponse {
+  private _body: unknown;
   private _status: number;
-  private _headers: any;
+  private _headers: MockHeaders;
 
-  constructor(body?: any, init?: { status?: number; headers?: any }) {
+  constructor(body?: unknown, init?: MockResponseInit) {
     this._body = body;
     this._status = init?.status || 200;
     this._headers = mockHeaders();
     if (init?.headers) {
       Object.entries(init.headers).forEach(([key, value]) => {
-        this._headers.set(key, value as string);
+        this._headers.set(key, value);
       });
     }
   }
@@ -79,24 +105,26 @@ const mockHeaders = () => {
     return typeof this._body === 'string' ? this._body : JSON.stringify(this._body);
   }
 
-  static json(data: any, init?: any) {
+  static json(data: unknown, init?: MockResponseInit) {
     return new this(data, init);
   }
-};
+}
+
+(globalThis as typeof globalThis & { NextResponse: typeof MockNextResponse }).NextResponse = MockNextResponse;
 
 // Mock Response for global scope
-(global as any).Response = class MockResponse {
-  private _body: any;
+class MockResponse {
+  private _body: unknown;
   private _status: number;
-  private _headers: any;
+  private _headers: MockHeaders;
 
-  constructor(body?: any, init?: { status?: number; headers?: any }) {
+  constructor(body?: unknown, init?: MockResponseInit) {
     this._body = body;
     this._status = init?.status || 200;
     this._headers = mockHeaders();
     if (init?.headers) {
       Object.entries(init.headers).forEach(([key, value]) => {
-        this._headers.set(key, value as string);
+        this._headers.set(key, value);
       });
     }
   }
@@ -113,30 +141,32 @@ const mockHeaders = () => {
     return typeof this._body === 'string' ? this._body : JSON.stringify(this._body);
   }
 
-  static json(data: any, init?: any) {
+  static json(data: unknown, init?: MockResponseInit) {
     return new this(JSON.stringify(data), {
       ...init,
       headers: { 'content-type': 'application/json', ...(init?.headers || {}) }
     });
   }
-};
+}
+
+(globalThis as unknown as { Response: typeof MockResponse }).Response = MockResponse;
 
 // Mock Request for global scope  
-(global as any).Request = class MockRequest {
-  _url: string;
+class MockRequest {
+  private _url: string;
   method: string;
-  headers: any;
-  body: any;
+  headers: MockHeaders;
+  body: string | null;
 
-  constructor(input: string | Request, init?: RequestInit) {
+  constructor(input: string | Request, init?: MockRequestInit) {
     this._url = typeof input === 'string' ? input : input.url;
     this.method = init?.method || 'GET';
     this.headers = mockHeaders();
-    this.body = init?.body;
+    this.body = init?.body || null;
     
     if (init?.headers) {
       Object.entries(init.headers).forEach(([key, value]) => {
-        this.headers.set(key, value as string);
+        this.headers.set(key, value);
       });
     }
   }
@@ -152,10 +182,12 @@ const mockHeaders = () => {
   async text() {
     return this.body || '';
   }
-};
+}
+
+(globalThis as unknown as { Request: typeof MockRequest }).Request = MockRequest;
 
 // Mock Headers for global scope
-(global as any).Headers = class MockHeaders {
+class MockHeadersClass implements MockHeaders {
   private headers: Record<string, string> = {};
 
   constructor(init?: HeadersInit) {
@@ -165,7 +197,10 @@ const mockHeaders = () => {
           this.headers[key.toLowerCase()] = value;
         });
       } else if (init instanceof Headers) {
-        // Handle Headers instance
+        // Handle Headers instance - iterate through entries
+        init.forEach((value, key) => {
+          this.headers[key.toLowerCase()] = value;
+        });
       } else {
         Object.entries(init).forEach(([key, value]) => {
           this.headers[key.toLowerCase()] = value;
@@ -209,7 +244,9 @@ const mockHeaders = () => {
   delete(name: string) {
     delete this.headers[name.toLowerCase()];
   }
-};
+}
+
+(globalThis as unknown as { Headers: typeof MockHeadersClass }).Headers = MockHeadersClass;
 
 // Mock localStorage
 const localStorageMock = {

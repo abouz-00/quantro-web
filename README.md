@@ -1,7 +1,9 @@
 # 📱 Quantro
 
 **Track what fuels you.**  
-Quantro is a fast, focused nutrition t## 🌐 Live Site
+Quantro is a fast, focused nutrition tracking app for people who log their food seriously. Built with modern tools like Next.js 15, React 19, TypeScript, Tailwind CSS, Prisma ORM, and the USDA FoodData Central API.
+
+## 🌐 Live Site
 
 👉 [https://quantro.fit](https://quantro.fit)
 
@@ -14,7 +16,9 @@ Quantro is currently in beta with a curated invite system. Features include:
 - **Access Control** - Secure beta access validation
 - **User Onboarding** - Streamlined sign-up process for beta users
 
-*Interested in joining the beta? Follow our social media for updates on invite availability.*king app for people who log their food seriously. Built with modern tools like Next.js 15, React 19, TypeScript, Tailwind CSS, Prisma ORM, and the USDA FoodData Central API.
+*Interested in joining the beta? Follow our social media for updates on invite availability.*
+
+> **🚀 Currently in Beta** - Join the beta to get early access to the most focused nutrition tracking experience.
 
 > **🚀 Currently in Beta** - Join the beta to get early access to the most focused nutrition tracking experience.
 
@@ -61,7 +65,7 @@ Quantro is currently in beta with a curated invite system. Features include:
 
 ---
 
-## �️ Project Architecture
+## 🏛️ Project Architecture
 
 Quantro follows modern React/Next.js best practices with:
 
@@ -88,12 +92,6 @@ src/
 ├── types/              # TypeScript type definitions
 └── utils/              # Helper functions
 ```
-
----
-
-## �🌐 Live Site
-
-👉 [https://quantro.fit](https://quantro.fit)
 
 ---
 
@@ -190,10 +188,6 @@ src/
 
 ## 🛠️ Development Setup
 
----
-
-## �️ Development Setup
-
 ### **Quick Start**
 
 ```bash
@@ -235,7 +229,7 @@ npm run dev
 
 ---
 
-## �📬 Contact
+## 📬 Contact
 
 For questions, feedback, or support:
 

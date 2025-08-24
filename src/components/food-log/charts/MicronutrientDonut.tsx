@@ -168,7 +168,7 @@ export default function MicronutrientDonut({ label, current, goal, unit, color, 
       {showPopout && (
         <div 
           ref={popoutRef}
-          className="fixed z-50 w-80 max-h-[400px] overflow-hidden bg-white rounded-md shadow-2xl border border-gray-300 p-3"
+          className="fixed z-50 w-80 max-h-[400px] overflow-hidden bg-white rounded-md shadow-2xl border border-gray-300"
           style={popoutPosition}
         >
           {/* Arrow pointing down to the donut */}
@@ -182,40 +182,41 @@ export default function MicronutrientDonut({ label, current, goal, unit, color, 
             }}
           />
           
-          <h3 className="font-semibold text-xs mb-2 text-gray-800">
+          <h3 className="font-bold text-xs text-white px-3 py-2 rounded-t-md" style={{backgroundColor: '#2E2E2E'}}>
             {capitalizeWords(label)} Breakdown
           </h3>
           
           {entries && entries.length > 0 ? (
-            <ul className="divide-y divide-gray-100 overflow-hidden">
-              {sortedEntries.map((entry) => {
-                const value = getNutrientValueByLabel(entry, label);
-                if (value <= 0) return null; // Skip entries with no contribution
-                
-                return (
-                  <li key={entry.id} className="py-2 flex justify-between items-center">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-medium text-gray-900 truncate">
-                        {capitalizeWords(entry.description)}
-                      </p>
-                      <p className="text-[10px] text-gray-500">
-                        {entry.amount} {entry.unit}
-                      </p>
-                    </div>
-                    <div className="text-right ml-2">
-                      <p className="text-xs font-medium text-gray-900">
-                        {value.toFixed(1)} {unit}
-                      </p>
-                      <p className="text-[10px] text-gray-500">
-                        {((value / goal) * 100).toFixed(0)}%
-                      </p>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
+            <div className="p-3">
+              <ul className="divide-y divide-gray-100 overflow-hidden">
+                {sortedEntries.map((entry, index) => {
+                  const value = getNutrientValueByLabel(entry, label);
+                  if (value <= 0) return null; // Skip entries with no contribution
+                  
+                  return (
+                    <li key={entry.id} className={`py-2 flex justify-between items-center ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-medium text-gray-900 truncate">
+                          {capitalizeWords(entry.description)}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-3 ml-2">
+                        <span className="text-xs font-medium text-gray-900">
+                          {value.toFixed(1)} {unit}
+                        </span>
+                        <span className="text-xs text-gray-500 w-8 text-right">
+                          {((value / goal) * 100).toFixed(0)}%
+                        </span>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           ) : (
-            <p className="text-xs text-gray-500 italic">No entries found for this nutrient.</p>
+            <div className="p-3">
+              <p className="text-xs text-gray-500 italic">No entries found for this nutrient.</p>
+            </div>
           )}
         </div>
       )}
