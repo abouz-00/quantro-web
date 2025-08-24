@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { FoodEntry } from '../types';
@@ -20,6 +20,7 @@ interface MealSectionProps {
   formatNumber: (n: number) => string;
   onContextMenu?: (e: React.MouseEvent, id: string) => void;
   activeId: string | null;
+  dragOverTarget: string | null;
   isLastSection?: boolean;
 }
 
@@ -39,10 +40,18 @@ export const MealSection = memo(({
   formatNumber,
   onContextMenu,
   activeId,
+  dragOverTarget,
   isLastSection = false
 }: MealSectionProps) => {
   // State to track if the meal section is collapsed
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  // Auto-expand when being dragged over
+  useEffect(() => {
+    if (dragOverTarget === `drop-${mealType}` && isCollapsed) {
+      setIsCollapsed(false);
+    }
+  }, [dragOverTarget, mealType, isCollapsed]);
 
   // Drop target for the meal section
   const { setNodeRef: setDropRef } = useDroppable({

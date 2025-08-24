@@ -54,7 +54,7 @@ export default function MicronutrientDonut({ label, current, goal, unit, color, 
     if (chartContainerRef.current) {
       const rect = chartContainerRef.current.getBoundingClientRect();
       setPopoutPosition({
-        left: `${rect.left + (rect.width / 2) - 160}px`,
+        left: `${rect.left + (rect.width / 2) - 128}px`, // Updated for w-64 (256px / 2 = 128px)
         bottom: `${window.innerHeight - rect.top + 20}px`
       });
     }
@@ -147,7 +147,7 @@ export default function MicronutrientDonut({ label, current, goal, unit, color, 
       {/* Chart container */}
       <div 
         className="h-[80px] w-[80px] mx-auto relative"
-        onMouseEnter={() => entries && entries.length > 0 && setShowPopout(true)}
+        onMouseEnter={() => setShowPopout(true)}
         onMouseLeave={() => setShowPopout(false)}
       >
         <div className="h-full w-full cursor-help">
@@ -168,7 +168,7 @@ export default function MicronutrientDonut({ label, current, goal, unit, color, 
       {showPopout && (
         <div 
           ref={popoutRef}
-          className="fixed z-50 w-80 max-h-[400px] overflow-hidden bg-white rounded-md shadow-2xl border border-gray-300"
+          className="fixed z-50 w-64 max-h-[400px] overflow-hidden bg-white rounded-md shadow-2xl border border-gray-300"
           style={popoutPosition}
         >
           {/* Arrow pointing down to the donut */}
@@ -211,11 +211,16 @@ export default function MicronutrientDonut({ label, current, goal, unit, color, 
                     </li>
                   );
                 })}
+                {sortedEntries.filter(entry => getNutrientValueByLabel(entry, label) > 0).length === 0 && (
+                  <li className="py-4 text-center text-gray-500 text-xs">
+                    No Entries Contribute To {capitalizeWords(label)}
+                  </li>
+                )}
               </ul>
             </div>
           ) : (
-            <div className="p-3">
-              <p className="text-xs text-gray-500 italic">No entries found for this nutrient.</p>
+            <div className="py-4 text-center text-gray-500 text-xs">
+              No Entries Contribute To {capitalizeWords(label)}
             </div>
           )}
         </div>
