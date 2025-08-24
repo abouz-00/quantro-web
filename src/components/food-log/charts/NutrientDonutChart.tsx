@@ -144,7 +144,7 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
       ref={chartContainerRef}
     >
       <div className="text-center mb-2">
-        <span className="font-medium text-lg" style={{ color }}>
+        <span className="font-medium text-lg" style={{ color: '#2E2E2E' }}>
           {label}
         </span>
       </div>
@@ -183,20 +183,20 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
               boxShadow: '2px 2px 2px rgba(0,0,0,0.1)'
             }}
           ></div>
-          <h3 className="text-xs font-semibold p-2 border-b border-gray-200 mb-1" style={{ color }}>
+          <h3 className="text-xs font-bold p-2 mb-1 text-white" style={{ backgroundColor: '#2E2E2E' }}>
             {capitalizeWords(label)} Breakdown
           </h3>
           
           {entries && entries.length > 0 ? (
-            <ul className="divide-y divide-gray-100 overflow-hidden">
-              {sortedEntries.map((entry) => {
+            <ul className="overflow-hidden">
+              {sortedEntries.map((entry, index) => {
                 const value = getNutrientValueByLabel(entry, label);
                 if (value <= 0) return null; // Skip entries with no contribution
                 
                 const contribution = Math.round((value / (current || 1)) * 100); // Avoid division by zero
                 
                 return (
-                  <li key={entry.id} className="py-2 px-2 flex items-center justify-between hover:bg-gray-50 rounded">
+                  <li key={entry.id} className={`py-2 px-2 flex items-center justify-between rounded ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100`}>
                     <div className="flex-1 truncate mr-2">
                       <span className="text-xs font-medium text-gray-900 truncate">
                         {capitalizeWords(entry.description)}

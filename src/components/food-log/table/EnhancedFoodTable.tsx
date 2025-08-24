@@ -70,16 +70,16 @@ export default function EnhancedFoodTable({
   const adaptedSelectionHandler = useCallback((
     id: string,
     index: number, 
-    event: React.MouseEvent | React.KeyboardEvent
+    event?: React.MouseEvent | React.KeyboardEvent | null
   ) => {
     // Extract essential modifier keys and create a minimal MouseEvent-compatible object
     // This is a clean adapter pattern that preserves functionality without duplication
     const eventAdapter = {
-      ctrlKey: event.ctrlKey,
-      metaKey: event.metaKey,
-      shiftKey: event.shiftKey,
-      preventDefault: event.preventDefault.bind(event),
-      stopPropagation: event.stopPropagation.bind(event),
+      ctrlKey: event?.ctrlKey || false,
+      metaKey: event?.metaKey || false,
+      shiftKey: event?.shiftKey || false,
+      preventDefault: event?.preventDefault ? event.preventDefault.bind(event) : () => {},
+      stopPropagation: event?.stopPropagation ? event.stopPropagation.bind(event) : () => {},
     };
     
     // Cast to MouseEvent interface - this is safe because we only use modifier keys
