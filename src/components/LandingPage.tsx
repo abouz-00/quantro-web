@@ -404,45 +404,45 @@ export default function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="px-8 py-8">
-        <div className="max-w-7xl mx-auto flex justify-between items-end">
+      <footer className="px-8 py-6">
+        {/* Social media icons moved up */}
+        <div className="flex justify-center items-center mb-6">
+          <div className="flex items-center justify-center gap-6">
+            <a 
+              href="https://x.com/quantroapp" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="Follow Quantro on X (Twitter)"
+              className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-center"
+            >
+              <XIcon />
+            </a>
+            <a
+              href="https://instagram.com/quantro_app"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow Quantro on Instagram"
+              className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-center"
+            >
+              <InstagramIcon />
+            </a>
+            <a
+              href="https://tiktok.com/@quantro_app"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow Quantro on TikTok"
+              className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-center"
+            >
+              <TikTokIcon />
+            </a>
+          </div>
+        </div>
+        
+        {/* Copyright notice */}
+        <div className="max-w-7xl mx-auto text-center">
           <p className={`text-white/70 text-sm ${poppins.className}`}>
             © 2025 Quantro. All rights reserved.
           </p>
-          
-          <div className="absolute left-1/2 transform -translate-x-1/2">
-            <div className="flex items-end justify-center gap-6">
-              <a 
-                href="https://x.com/quantroapp" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                aria-label="Follow Quantro on X (Twitter)"
-                className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-end"
-              >
-                <XIcon />
-              </a>
-              <a
-                href="https://instagram.com/quantro_app"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Follow Quantro on Instagram"
-                className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-end"
-              >
-                <InstagramIcon />
-              </a>
-              <a
-                href="https://tiktok.com/@quantro_app"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Follow Quantro on TikTok"
-                className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-end"
-              >
-                <TikTokIcon />
-              </a>
-            </div>
-          </div>
-          
-          <div className="w-20"></div> {/* Spacer for balance */}
         </div>
       </footer>
     </div>

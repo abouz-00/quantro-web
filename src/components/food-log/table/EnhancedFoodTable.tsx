@@ -78,8 +78,12 @@ export default function EnhancedFoodTable({
       ctrlKey: event?.ctrlKey || false,
       metaKey: event?.metaKey || false,
       shiftKey: event?.shiftKey || false,
-      preventDefault: event?.preventDefault ? event.preventDefault.bind(event) : () => {},
-      stopPropagation: event?.stopPropagation ? event.stopPropagation.bind(event) : () => {},
+      preventDefault: event?.preventDefault ? 
+        (typeof event.preventDefault === 'function' ? 
+          (() => event.preventDefault()) : () => {}) : () => {},
+      stopPropagation: event?.stopPropagation ? 
+        (typeof event.stopPropagation === 'function' ? 
+          (() => event.stopPropagation()) : () => {}) : () => {},
     };
     
     // Cast to MouseEvent interface - this is safe because we only use modifier keys
@@ -92,6 +96,7 @@ export default function EnhancedFoodTable({
   const {
     currentEntries,
     activeId,
+    dragOverTarget,
     handleDragStart,
     handleDragOver,
     handleDragEnd
@@ -179,6 +184,7 @@ export default function EnhancedFoodTable({
                   formatNumber={formatNumber}
                   onContextMenu={onContextMenu}
                   activeId={activeId}
+                  dragOverTarget={dragOverTarget}
                   isLastSection={isLastSection}
                 />
               );
