@@ -7,8 +7,8 @@ This directory contains all components related to food logging functionality, or
 ```text
 src/components/food-log/
 ├── core/                     # Core functionality components
-│   ├── CustomTargets.tsx     # Custom target setting component
 │   ├── EnergySummary.tsx     # Energy and macro summary component
+│   ├── MicronutrientsSection.tsx  # Micronutrients display component
 │   └── index.ts              # Core exports
 ├── charts/                   # Chart and visualization components
 │   ├── MacroChart.tsx        # Macro distribution chart
@@ -43,7 +43,7 @@ src/components/food-log/
 ```tsx
 import { 
   EnergySummary, 
-  CustomTargets,
+  MicronutrientsSection,
   MacroChart,
   ProgressBar,
   FoodSearchModal,
@@ -56,7 +56,7 @@ import {
 
 ```tsx
 // Core components
-import { EnergySummary, CustomTargets } from '@/components/food-log/core';
+import { EnergySummary, MicronutrientsSection } from '@/components/food-log/core';
 
 // Charts
 import { MacroChart, ProgressBar } from '@/components/food-log/charts';
@@ -76,7 +76,7 @@ import { useFoodTable, useDragDrop } from '@/components/food-log/hooks';
 ### Core Components
 
 - **EnergySummary**: Displays energy and macro summaries
-- **CustomTargets**: Allows users to set custom nutritional targets
+- **MicronutrientsSection**: Displays micronutrient information
 
 ### Chart Components
 

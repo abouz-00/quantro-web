@@ -27,6 +27,26 @@ export default function TargetsModal({
 }: TargetsModalProps) {
   if (!isOpen) return null;
 
+  // Calculate total calories from macronutrients
+  const calculateMacroCalories = () => {
+    const proteinCalories = targetInput.protein * 4; // 4 kcal per gram
+    const carbCalories = targetInput.carbs * 4; // 4 kcal per gram
+    const fatCalories = targetInput.fat * 9; // 9 kcal per gram
+    return proteinCalories + carbCalories + fatCalories;
+  };
+
+  const macroCalories = calculateMacroCalories();
+  const caloriesMismatch = Math.abs(macroCalories - targetInput.calories) > 1; // Allow 1 calorie tolerance
+
+  const handleInputChange = (field: keyof Nutrients, value: string) => {
+    // Handle empty string by setting to 0, otherwise parse the number
+    const numValue = value === '' ? 0 : parseFloat(value);
+    // Only update if it's a valid number (including 0 for empty strings)
+    if (!isNaN(numValue) && numValue >= 0) {
+      onInputChange(field, numValue);
+    }
+  };
+
   const handleSave = () => {
     onSave();
     onClose();
@@ -56,13 +76,21 @@ export default function TargetsModal({
           </button>
         </div>
         
+        {caloriesMismatch && (
+          <div id="macro-mismatch-error" className="p-3 bg-red-50 border border-red-200 rounded-md mb-4">
+            <p className="text-red-700 text-sm">
+              ⚠️ Target totals don&apos;t match: Macronutrients equal {macroCalories} calories, but calorie target is {targetInput.calories}.
+            </p>
+          </div>
+        )}
+        
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Calories</label>
             <input
               type="number"
-              value={targetInput.calories}
-              onChange={(e) => onInputChange("calories", Number(e.target.value))}
+              value={targetInput.calories || ''}
+              onChange={(e) => handleInputChange("calories", e.target.value)}
               className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
               style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
             />
@@ -71,30 +99,33 @@ export default function TargetsModal({
             <label className="block text-sm font-medium text-gray-700">Protein (g)</label>
             <input
               type="number"
-              value={targetInput.protein}
-              onChange={(e) => onInputChange("protein", Number(e.target.value))}
+              value={targetInput.protein || ''}
+              onChange={(e) => handleInputChange("protein", e.target.value)}
               className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
               style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
+              aria-describedby={caloriesMismatch ? 'macro-mismatch-error' : undefined}
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Carbs (g)</label>
             <input
               type="number"
-              value={targetInput.carbs}
-              onChange={(e) => onInputChange("carbs", Number(e.target.value))}
+              value={targetInput.carbs || ''}
+              onChange={(e) => handleInputChange("carbs", e.target.value)}
               className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
               style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
+              aria-describedby={caloriesMismatch ? 'macro-mismatch-error' : undefined}
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Fat (g)</label>
             <input
               type="number"
-              value={targetInput.fat}
-              onChange={(e) => onInputChange("fat", Number(e.target.value))}
+              value={targetInput.fat || ''}
+              onChange={(e) => handleInputChange("fat", e.target.value)}
               className="mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent"
               style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
+              aria-describedby={caloriesMismatch ? 'macro-mismatch-error' : undefined}
             />
           </div>
         </div>
