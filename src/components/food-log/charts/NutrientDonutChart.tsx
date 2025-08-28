@@ -30,7 +30,9 @@ interface NutrientDonutChartProps {
 
 export default function NutrientDonutChart({ label, current, goal, unit, color, entries = [] }: NutrientDonutChartProps) {
   const [showPopout, setShowPopout] = useState<boolean>(false);
+  const [popoutOnRight, setPopoutOnRight] = useState<boolean>(true);
   const chartContainerRef = useRef<HTMLDivElement>(null);
+  const chartAreaRef = useRef<HTMLDivElement>(null); // New ref for the actual chart area
   const popoutRef = useRef<HTMLDivElement>(null);
   
   // Add an event handler for clicks as a fallback for touch devices
@@ -48,16 +50,33 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
     };
   }, [showPopout]);
 
-  const [popoutPosition, setPopoutPosition] = useState({ left: '50%', bottom: '50%' });
+  const [popoutPosition, setPopoutPosition] = useState({ left: '50%', top: '50%' });
 
   // Update popout position
   const updatePopoutPosition = () => {
-    if (chartContainerRef.current) {
-      const rect = chartContainerRef.current.getBoundingClientRect();
-      setPopoutPosition({
-        left: `${rect.left + (rect.width / 2) - 160}px`,
-        bottom: `${window.innerHeight - rect.top + 20}px`
-      });
+    if (chartAreaRef.current) {
+      const rect = chartAreaRef.current.getBoundingClientRect();
+      const popoutWidth = 256; // w-64 = 256px
+      const screenWidth = window.innerWidth;
+      
+      // Check if popout would go off-screen to the right
+      const wouldOverflow = rect.right - 10 + popoutWidth > screenWidth;
+      
+      if (wouldOverflow) {
+        // Position to the left of the donut - overlap slightly
+        setPopoutPosition({
+          left: `${rect.left - popoutWidth + 10}px`,
+          top: `${rect.top + (rect.height / 2) - 120}px`
+        });
+        setPopoutOnRight(false);
+      } else {
+        // Position to the right of the donut - overlap slightly
+        setPopoutPosition({
+          left: `${rect.right - 10}px`,
+          top: `${rect.top + (rect.height / 2) - 120}px`
+        });
+        setPopoutOnRight(true);
+      }
     }
   };
 
@@ -150,6 +169,7 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
       </div>
       <div 
         className="h-[140px] relative"
+        ref={chartAreaRef}
         onMouseEnter={() => entries && entries.length > 0 && setShowPopout(true)}
         onMouseLeave={() => setShowPopout(false)}
       >
@@ -170,58 +190,64 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
       {showPopout && (
         <div 
           ref={popoutRef}
-          className="fixed z-50 w-80 max-h-[400px] overflow-hidden bg-white rounded-md shadow-2xl border border-gray-300 p-3"
+          className="fixed z-50 w-64 max-h-[400px] overflow-hidden bg-white rounded-md shadow-2xl border border-gray-300"
           style={popoutPosition}
         >
-          {/* Arrow pointing down to the donut */}
+          {/* Arrow pointing to the donut */}
           <div 
-            className="absolute w-4 h-4 bg-white border-r border-b border-gray-300 transform rotate-45"
-            style={{ 
-              bottom: '-8px', 
-              left: '50%', 
-              marginLeft: '-8px',
-              boxShadow: '2px 2px 2px rgba(0,0,0,0.1)'
+            className={`absolute top-1/2 transform -translate-y-1/2 w-0 h-0 ${popoutOnRight ? '-left-1' : '-right-1'}`}
+            style={popoutOnRight ? {
+              borderTop: '8px solid transparent',
+              borderBottom: '8px solid transparent',
+              borderRight: '8px solid white',
+              filter: 'drop-shadow(-2px 0 1px rgba(0,0,0,0.1))'
+            } : {
+              borderTop: '8px solid transparent',
+              borderBottom: '8px solid transparent',
+              borderLeft: '8px solid white',
+              filter: 'drop-shadow(2px 0 1px rgba(0,0,0,0.1))'
             }}
-          ></div>
-          <h3 className="text-xs font-bold p-2 mb-1 text-white" style={{ backgroundColor: '#2E2E2E' }}>
+          />
+          
+          <h3 className="font-bold text-xs text-white px-3 py-2 rounded-t-md" style={{backgroundColor: '#2E2E2E'}}>
             {capitalizeWords(label)} Breakdown
           </h3>
           
           {entries && entries.length > 0 ? (
-            <ul className="overflow-hidden">
-              {sortedEntries.map((entry, index) => {
-                const value = getNutrientValueByLabel(entry, label);
-                if (value <= 0) return null; // Skip entries with no contribution
-                
-                const contribution = Math.round((value / (current || 1)) * 100); // Avoid division by zero
-                
-                return (
-                  <li key={entry.id} className={`py-2 px-2 flex items-center justify-between rounded ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100`}>
-                    <div className="flex-1 truncate mr-2">
-                      <span className="text-xs font-medium text-gray-900 truncate">
-                        {capitalizeWords(entry.description)}
-                      </span>
-                    </div>
-                    <div className="flex items-center whitespace-nowrap">
-                      <span className="text-xs font-semibold" style={{ color }}>
-                        {Math.round(value)} {unit}
-                      </span>
-                      <span className="text-[10px] text-gray-500 ml-1">
-                        ({contribution}%)
-                      </span>
-                    </div>
+            <div className="p-3">
+              <ul className="divide-y divide-gray-100 overflow-hidden">
+                {sortedEntries.map((entry, index) => {
+                  const value = getNutrientValueByLabel(entry, label);
+                  if (value <= 0) return null; // Skip entries with no contribution
+                  
+                  return (
+                    <li key={entry.id} className={`py-2 flex justify-between items-center ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-medium text-gray-900 truncate">
+                          {capitalizeWords(entry.description)}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-3 ml-2">
+                        <span className="text-xs font-medium text-gray-900">
+                          {value.toFixed(1)} {unit}
+                        </span>
+                        <span className="text-xs text-gray-500 w-8 text-right">
+                          {((value / goal) * 100).toFixed(0)}%
+                        </span>
+                      </div>
+                    </li>
+                  );
+                })}
+                {sortedEntries.filter(entry => getNutrientValueByLabel(entry, label) > 0).length === 0 && (
+                  <li className="py-4 text-center text-gray-500 text-xs">
+                    No Entries Contribute To {capitalizeWords(label)}
                   </li>
-                );
-              })}
-              {sortedEntries.filter(entry => getNutrientValueByLabel(entry, label) > 0).length === 0 && (
-                <li className="py-4 text-center text-gray-500 text-xs">
-                  No Entries Contribute To {capitalizeWords(label)}
-                </li>
-              )}
-            </ul>
+                )}
+              </ul>
+            </div>
           ) : (
             <div className="py-4 text-center text-gray-500 text-xs">
-              No Entries To Display
+              No Entries Contribute To {capitalizeWords(label)}
             </div>
           )}
         </div>

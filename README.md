@@ -234,7 +234,7 @@ npm run dev
 For questions, feedback, or support:
 
 - 📧 **Email:** [hello@quantro.fit](mailto:hello@quantro.fit)
-- 🐦 **X/Twitter:** [@quantroapp](https://x.com/quantroapp)
+- 🐦 **X/Twitter:** [@quantro_app](https://x.com/quantro_app)
 - 📸 **Instagram:** [@quantro_app](https://instagram.com/quantro_app)
 - 📱 **TikTok:** [@quantro_app](https://tiktok.com/@quantro_app)
 
