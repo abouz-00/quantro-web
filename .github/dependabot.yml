@@ -61,6 +61,8 @@ updates:
       # Keep Node.js types stable unless major updates needed
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
+      # Ignore Tailwind CSS updates
+      - dependency-name: "tailwindcss"
       
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"

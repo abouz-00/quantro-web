@@ -20,7 +20,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
@@ -72,9 +72,9 @@ jobs:
         DATABASE_URL: "file:./test.db"
         
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       with:
-        file: ./coverage/lcov.info
+        files: ./coverage/lcov.info
         flags: unittests
         name: codecov-umbrella
         fail_ci_if_error: false
@@ -85,7 +85,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -127,7 +127,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -258,7 +258,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -270,7 +270,7 @@ jobs:
       run: npm ci
       
     - name: Download build artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: build-artifacts
         path: ./
@@ -278,7 +278,7 @@ jobs:
         
     - name: Download standalone build (fallback)
       if: failure()
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: standalone-build
         path: ./
@@ -325,7 +325,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -337,7 +337,7 @@ jobs:
       run: npm ci
       
     - name: Download build artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: build-artifacts
         path: ./
@@ -345,7 +345,7 @@ jobs:
         
     - name: Download standalone build (fallback)
       if: failure()
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: standalone-build
         path: ./
