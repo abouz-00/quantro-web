@@ -409,7 +409,7 @@ export default function LandingPage() {
         <div className="flex justify-center items-center mb-6">
           <div className="flex items-center justify-center gap-6">
             <a 
-              href="https://x.com/quantroapp" 
+              href="https://x.com/quantro_app" 
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="Follow Quantro on X (Twitter)"
