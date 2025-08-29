@@ -234,7 +234,7 @@ describe('CustomTab', () => {
   it('displays empty state when no custom foods', () => {
     render(<CustomTab {...defaultProps} />);
     
-    expect(screen.getByText('No custom foods yet.')).toBeInTheDocument();
-    expect(screen.getByText('Create one above to get started!')).toBeInTheDocument();
+    expect(screen.getByText(/No custom foods yet/)).toBeInTheDocument();
+    expect(screen.getByText(/Create one above to get started/)).toBeInTheDocument();
   });
 });
