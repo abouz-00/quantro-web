@@ -375,14 +375,14 @@ export default function LandingPage() {
             {/* Apple Sign In Button */}
             <motion.button 
               onClick={handleAppleSignIn}
-              className="w-full sm:flex-1 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center gap-3 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-lg hover:shadow-xl"
+              className="w-full sm:flex-1 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center gap-3 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-lg hover:shadow-xl"
               style={{ 
                 backgroundColor: COLORS.black,
                 ...NO_SELECT_STYLES
               }}
-              whileHover={{ scale: 1.02, backgroundColor: COLORS.hover }}
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.15 }}
             >
               <AppleIcon />
               <span className={poppins.className}>Sign in with Apple</span>
@@ -391,10 +391,10 @@ export default function LandingPage() {
             {/* Google Sign In Button */}
             <motion.button 
               onClick={handleGoogleSignIn}
-              className="w-full sm:flex-1 bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-6 rounded-xl flex items-center justify-center gap-3 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-300 shadow-lg hover:shadow-xl border border-gray-200"
+              className="w-full sm:flex-1 bg-white text-gray-700 font-medium py-3 px-6 rounded-xl flex items-center justify-center gap-3 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-gray-300 shadow-lg hover:shadow-xl border border-gray-200"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.15 }}
             >
               <GoogleIcon />
               <span className={poppins.className}>Sign in with Google</span>
@@ -404,16 +404,17 @@ export default function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="px-8 py-6">
+      <footer className="px-8 py-6 relative z-20">
         {/* Social media icons moved up */}
-        <div className="flex justify-center items-center mb-6">
+        <div className="flex justify-center items-center mb-6 relative z-20">
           <div className="flex items-center justify-center gap-6">
             <a 
               href="https://x.com/quantro_app" 
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="Follow Quantro on X (Twitter)"
-              className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-center"
+              className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-center hover:scale-110 transition-transform duration-200 cursor-pointer"
+              style={{ pointerEvents: 'auto' }}
             >
               <XIcon />
             </a>
@@ -422,7 +423,8 @@ export default function LandingPage() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Follow Quantro on Instagram"
-              className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-center"
+              className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-center hover:scale-110 transition-transform duration-200 cursor-pointer"
+              style={{ pointerEvents: 'auto' }}
             >
               <InstagramIcon />
             </a>
@@ -431,7 +433,8 @@ export default function LandingPage() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Follow Quantro on TikTok"
-              className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-center"
+              className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-center hover:scale-110 transition-transform duration-200 cursor-pointer"
+              style={{ pointerEvents: 'auto' }}
             >
               <TikTokIcon />
             </a>

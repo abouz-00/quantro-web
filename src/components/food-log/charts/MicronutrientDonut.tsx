@@ -54,7 +54,7 @@ export default function MicronutrientDonut({ label, current, goal, unit, color, 
     if (chartContainerRef.current) {
       const rect = chartContainerRef.current.getBoundingClientRect();
       setPopoutPosition({
-        left: `${rect.left + (rect.width / 2) - 128}px`, // Updated for w-64 (256px / 2 = 128px)
+        left: `${rect.left + (rect.width / 2) - 160}px`, // Updated for w-80 (320px / 2 = 160px)
         bottom: `${window.innerHeight - rect.top + 20}px`
       });
     }
@@ -168,7 +168,7 @@ export default function MicronutrientDonut({ label, current, goal, unit, color, 
       {showPopout && (
         <div 
           ref={popoutRef}
-          className="fixed z-50 w-64 max-h-[400px] overflow-hidden bg-white rounded-md shadow-2xl border border-gray-300"
+          className="fixed z-50 w-80 max-h-[500px] overflow-hidden bg-white rounded-md shadow-2xl border border-gray-300"
           style={popoutPosition}
         >
           {/* Arrow pointing down to the donut */}
@@ -182,7 +182,7 @@ export default function MicronutrientDonut({ label, current, goal, unit, color, 
             }}
           />
           
-          <h3 className="font-bold text-xs text-white px-3 py-2 rounded-t-md" style={{backgroundColor: '#2E2E2E'}}>
+          <h3 className="font-bold text-xs text-white px-3 py-2 rounded-t-md" style={{backgroundColor: color}}>
             {capitalizeWords(label)} Breakdown
           </h3>
           
@@ -201,7 +201,7 @@ export default function MicronutrientDonut({ label, current, goal, unit, color, 
                         </p>
                       </div>
                       <div className="flex items-center gap-3 ml-2">
-                        <span className="text-xs font-medium text-gray-900">
+                        <span className="text-xs font-medium" style={{color: color}}>
                           {value.toFixed(1)} {unit}
                         </span>
                         <span className="text-xs text-gray-500 w-8 text-right">

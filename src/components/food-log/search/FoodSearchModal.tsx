@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useFoodSearch } from "./hooks/useFoodSearch";
 import { useFavorites } from "./hooks/useFavorites";
-import { useCustomFoods } from "./hooks/useCustomFoods";
+import { useCustomFoods } from "../../../hooks";
 import { useNutrientCalculator } from "./hooks/useNutrientCalculator";
 import { useFoodSearchStyles } from "./hooks/useFoodSearchStyles";
 import { FoodEntry } from "../../../types/foodEntry";
@@ -21,7 +21,6 @@ interface Nutrients {
   protein: number;
   carbs: number;
   fat: number;
-  fiber?: number;
 }
 
 interface USDAFood {
@@ -37,7 +36,6 @@ interface USDAFood {
 interface CustomFood extends Nutrients {
   id: string;
   name: string;
-  fiber?: number;
 }
 
 interface FoodSearchModalProps {
@@ -73,7 +71,6 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
   const [customProtein, setCustomProtein] = useState("");
   const [customCarbs, setCustomCarbs] = useState("");
   const [customFat, setCustomFat] = useState("");
-  const [customFiber, setCustomFiber] = useState("");
 
   const handleSelectFood = (food: USDAFood, index: number) => {
     // Create a unique identifier for the food item to avoid multiple selections of same-named foods
@@ -90,7 +87,6 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
       protein: parseFloat(customProtein) || 0,
       carbs: parseFloat(customCarbs) || 0,
       fat: parseFloat(customFat) || 0,
-      fiber: parseFloat(customFiber) || 0,
     };
     addCustomFood(newCustomFood);
     // Reset form
@@ -99,7 +95,6 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
     setCustomProtein("");
     setCustomCarbs("");
     setCustomFat("");
-    setCustomFiber("");
     // Add to food log
     const entry: FoodEntry = {
       id: uuidv4(),
@@ -201,8 +196,6 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
           setCustomCarbs={setCustomCarbs}
           customFat={customFat}
           setCustomFat={setCustomFat}
-          customFiber={customFiber}
-          setCustomFiber={setCustomFiber}
           handleAddCustomFood={handleAddCustomFood}
           customFoods={customFoods}
           handleAddFromCustomList={handleAddFromCustomList}
