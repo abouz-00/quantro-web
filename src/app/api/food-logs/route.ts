@@ -39,7 +39,12 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(foodLogs);
   } catch (error) {
-    console.error('Error fetching food logs:', error);
+    console.error('Error fetching food logs:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      operation: 'GET /api/food-logs',
+      timestamp: new Date().toISOString()
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -88,7 +93,12 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(foodLog, { status: 201 });
   } catch (error) {
-    console.error('Error creating food log:', error);
+    console.error('Error creating food log:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      operation: 'POST /api/food-logs',
+      timestamp: new Date().toISOString()
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -126,7 +136,12 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({ message: 'Food log deleted successfully' });
   } catch (error) {
-    console.error('Error deleting food log:', error);
+    console.error('Error deleting food log:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      operation: 'DELETE /api/food-logs',
+      timestamp: new Date().toISOString()
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -172,7 +187,12 @@ export async function PUT(request: NextRequest) {
 
     return NextResponse.json(updatedFoodLog);
   } catch (error) {
-    console.error('Error updating food log:', error);
+    console.error('Error updating food log:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      operation: 'PUT /api/food-logs',
+      timestamp: new Date().toISOString()
+    });
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

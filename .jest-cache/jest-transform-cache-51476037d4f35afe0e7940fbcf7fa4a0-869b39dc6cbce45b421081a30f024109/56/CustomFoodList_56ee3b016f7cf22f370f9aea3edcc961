@@ -1,0 +1,154 @@
+8d6edc562f857b92bb39fc0d505f29b0
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "CustomFoodList", {
+    enumerable: true,
+    get: function() {
+        return CustomFoodList;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = /*#__PURE__*/ _interop_require_wildcard(require("react"));
+const _image = /*#__PURE__*/ _interop_require_default(require("next/image"));
+const _useKeyboardNavigation = require("./hooks/useKeyboardNavigation");
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+function _getRequireWildcardCache(nodeInterop) {
+    if (typeof WeakMap !== "function") return null;
+    var cacheBabelInterop = new WeakMap();
+    var cacheNodeInterop = new WeakMap();
+    return (_getRequireWildcardCache = function(nodeInterop) {
+        return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
+    })(nodeInterop);
+}
+function _interop_require_wildcard(obj, nodeInterop) {
+    if (!nodeInterop && obj && obj.__esModule) {
+        return obj;
+    }
+    if (obj === null || typeof obj !== "object" && typeof obj !== "function") {
+        return {
+            default: obj
+        };
+    }
+    var cache = _getRequireWildcardCache(nodeInterop);
+    if (cache && cache.has(obj)) {
+        return cache.get(obj);
+    }
+    var newObj = {
+        __proto__: null
+    };
+    var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+    for(var key in obj){
+        if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
+            var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+            if (desc && (desc.get || desc.set)) {
+                Object.defineProperty(newObj, key, desc);
+            } else {
+                newObj[key] = obj[key];
+            }
+        }
+    }
+    newObj.default = obj;
+    if (cache) {
+        cache.set(obj, newObj);
+    }
+    return newObj;
+}
+const CustomFoodList = ({ customFoods, onAddFromCustomList, isLoading = false })=>{
+    const memoizedCustomFoods = (0, _react.useMemo)(()=>customFoods, [
+        customFoods
+    ]);
+    const { highlightedIdx, setHighlightedIdx, handleKeyDown, setRowRef } = (0, _useKeyboardNavigation.useKeyboardNavigation)(memoizedCustomFoods, onAddFromCustomList, isLoading);
+    if (memoizedCustomFoods.length === 0) {
+        return null;
+    }
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+        className: "flex-1 overflow-y-auto",
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("h3", {
+                className: "font-medium mb-3",
+                children: "Your Custom Foods"
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                className: "bg-white rounded-sm shadow-sm border border-gray-100",
+                children: /*#__PURE__*/ (0, _jsxruntime.jsxs)("table", {
+                    className: "w-full table-fixed",
+                    role: "listbox",
+                    "aria-label": "Custom foods",
+                    tabIndex: 0,
+                    onKeyDown: handleKeyDown,
+                    children: [
+                        /*#__PURE__*/ (0, _jsxruntime.jsx)("colgroup", {
+                            children: /*#__PURE__*/ (0, _jsxruntime.jsx)("col", {
+                                className: "w-auto"
+                            })
+                        }),
+                        /*#__PURE__*/ (0, _jsxruntime.jsx)("tbody", {
+                            children: memoizedCustomFoods.map((food, idx)=>/*#__PURE__*/ (0, _jsxruntime.jsx)("tr", {
+                                    ref: setRowRef(idx),
+                                    onClick: ()=>{
+                                        if (!isLoading) {
+                                            onAddFromCustomList(food);
+                                        }
+                                    },
+                                    className: `food-table-row border-b border-gray-200 last:border-0 transition-colors duration-150 ${isLoading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-gray-50'} ${highlightedIdx === idx ? "ring-2 ring-violet-400" : ""}`,
+                                    role: "option",
+                                    "aria-selected": highlightedIdx === idx,
+                                    tabIndex: -1,
+                                    onMouseEnter: ()=>{
+                                        if (!isLoading) {
+                                            setHighlightedIdx(idx);
+                                        }
+                                    },
+                                    children: /*#__PURE__*/ (0, _jsxruntime.jsx)("td", {
+                                        className: "py-2 pl-2 pr-2",
+                                        children: /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                            className: "flex items-center space-x-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, _jsxruntime.jsx)(_image.default, {
+                                                    src: "/toast.svg",
+                                                    alt: "toast",
+                                                    className: "w-6 h-6 flex-shrink-0",
+                                                    width: 24,
+                                                    height: 24
+                                                }),
+                                                /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                                    className: "flex-1",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                                                            className: "font-medium",
+                                                            children: food.name
+                                                        }),
+                                                        /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                                            className: "text-sm text-gray-500",
+                                                            children: [
+                                                                food.calories,
+                                                                " kcal • ",
+                                                                food.protein,
+                                                                "g protein • ",
+                                                                food.carbs,
+                                                                "g carbs • ",
+                                                                food.fat,
+                                                                "g fat"
+                                                            ]
+                                                        })
+                                                    ]
+                                                })
+                                            ]
+                                        })
+                                    })
+                                }, food.id))
+                        })
+                    ]
+                })
+            })
+        ]
+    });
+};
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb21wb25lbnRzL2Zvb2QtbG9nL3NlYXJjaC9jb21wb25lbnRzL2N1c3RvbS10YWIvQ3VzdG9tRm9vZExpc3QudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCwgeyB1c2VNZW1vIH0gZnJvbSAncmVhY3QnO1xuaW1wb3J0IEltYWdlIGZyb20gJ25leHQvaW1hZ2UnO1xuaW1wb3J0IHsgQ3VzdG9tRm9vZCB9IGZyb20gJy4vdHlwZXMnO1xuaW1wb3J0IHsgdXNlS2V5Ym9hcmROYXZpZ2F0aW9uIH0gZnJvbSAnLi9ob29rcy91c2VLZXlib2FyZE5hdmlnYXRpb24nO1xuXG5pbnRlcmZhY2UgQ3VzdG9tRm9vZExpc3RQcm9wcyB7XG4gIGN1c3RvbUZvb2RzOiBDdXN0b21Gb29kW107XG4gIG9uQWRkRnJvbUN1c3RvbUxpc3Q6IChmb29kOiBDdXN0b21Gb29kKSA9PiB2b2lkO1xuICBpc0xvYWRpbmc/OiBib29sZWFuO1xufVxuXG5leHBvcnQgY29uc3QgQ3VzdG9tRm9vZExpc3Q6IFJlYWN0LkZDPEN1c3RvbUZvb2RMaXN0UHJvcHM+ID0gKHtcbiAgY3VzdG9tRm9vZHMsXG4gIG9uQWRkRnJvbUN1c3RvbUxpc3QsXG4gIGlzTG9hZGluZyA9IGZhbHNlLFxufSkgPT4ge1xuICBjb25zdCBtZW1vaXplZEN1c3RvbUZvb2RzID0gdXNlTWVtbygoKSA9PiBjdXN0b21Gb29kcywgW2N1c3RvbUZvb2RzXSk7XG4gIFxuICBjb25zdCB7XG4gICAgaGlnaGxpZ2h0ZWRJZHgsXG4gICAgc2V0SGlnaGxpZ2h0ZWRJZHgsXG4gICAgaGFuZGxlS2V5RG93bixcbiAgICBzZXRSb3dSZWYsXG4gIH0gPSB1c2VLZXlib2FyZE5hdmlnYXRpb24obWVtb2l6ZWRDdXN0b21Gb29kcywgb25BZGRGcm9tQ3VzdG9tTGlzdCwgaXNMb2FkaW5nKTtcblxuICBpZiAobWVtb2l6ZWRDdXN0b21Gb29kcy5sZW5ndGggPT09IDApIHtcbiAgICByZXR1cm4gbnVsbDtcbiAgfVxuXG4gIHJldHVybiAoXG4gICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4LTEgb3ZlcmZsb3cteS1hdXRvXCI+XG4gICAgICA8aDMgY2xhc3NOYW1lPVwiZm9udC1tZWRpdW0gbWItM1wiPllvdXIgQ3VzdG9tIEZvb2RzPC9oMz5cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYmctd2hpdGUgcm91bmRlZC1zbSBzaGFkb3ctc20gYm9yZGVyIGJvcmRlci1ncmF5LTEwMFwiPlxuICAgICAgICA8dGFibGVcbiAgICAgICAgICBjbGFzc05hbWU9XCJ3LWZ1bGwgdGFibGUtZml4ZWRcIlxuICAgICAgICAgIHJvbGU9XCJsaXN0Ym94XCJcbiAgICAgICAgICBhcmlhLWxhYmVsPVwiQ3VzdG9tIGZvb2RzXCJcbiAgICAgICAgICB0YWJJbmRleD17MH1cbiAgICAgICAgICBvbktleURvd249e2hhbmRsZUtleURvd259XG4gICAgICAgID5cbiAgICAgICAgICA8Y29sZ3JvdXA+XG4gICAgICAgICAgICA8Y29sIGNsYXNzTmFtZT1cInctYXV0b1wiIC8+XG4gICAgICAgICAgPC9jb2xncm91cD5cbiAgICAgICAgICA8dGJvZHk+XG4gICAgICAgICAgICB7bWVtb2l6ZWRDdXN0b21Gb29kcy5tYXAoKGZvb2QsIGlkeCkgPT4gKFxuICAgICAgICAgICAgICA8dHJcbiAgICAgICAgICAgICAgICBrZXk9e2Zvb2QuaWR9XG4gICAgICAgICAgICAgICAgcmVmPXtzZXRSb3dSZWYoaWR4KX1cbiAgICAgICAgICAgICAgICBvbkNsaWNrPXsoKSA9PiB7XG4gICAgICAgICAgICAgICAgICBpZiAoIWlzTG9hZGluZykge1xuICAgICAgICAgICAgICAgICAgICBvbkFkZEZyb21DdXN0b21MaXN0KGZvb2QpO1xuICAgICAgICAgICAgICAgICAgfVxuICAgICAgICAgICAgICAgIH19XG4gICAgICAgICAgICAgICAgY2xhc3NOYW1lPXtgZm9vZC10YWJsZS1yb3cgYm9yZGVyLWIgYm9yZGVyLWdyYXktMjAwIGxhc3Q6Ym9yZGVyLTAgdHJhbnNpdGlvbi1jb2xvcnMgZHVyYXRpb24tMTUwICR7XG4gICAgICAgICAgICAgICAgICBpc0xvYWRpbmcgPyAnY3Vyc29yLW5vdC1hbGxvd2VkIG9wYWNpdHktNTAnIDogJ2N1cnNvci1wb2ludGVyIGhvdmVyOmJnLWdyYXktNTAnXG4gICAgICAgICAgICAgICAgfSAke2hpZ2hsaWdodGVkSWR4ID09PSBpZHggPyBcInJpbmctMiByaW5nLXZpb2xldC00MDBcIiA6IFwiXCJ9YH1cbiAgICAgICAgICAgICAgICByb2xlPVwib3B0aW9uXCJcbiAgICAgICAgICAgICAgICBhcmlhLXNlbGVjdGVkPXtoaWdobGlnaHRlZElkeCA9PT0gaWR4fVxuICAgICAgICAgICAgICAgIHRhYkluZGV4PXstMX1cbiAgICAgICAgICAgICAgICBvbk1vdXNlRW50ZXI9eygpID0+IHtcbiAgICAgICAgICAgICAgICAgIGlmICghaXNMb2FkaW5nKSB7XG4gICAgICAgICAgICAgICAgICAgIHNldEhpZ2hsaWdodGVkSWR4KGlkeCk7XG4gICAgICAgICAgICAgICAgICB9XG4gICAgICAgICAgICAgICAgfX1cbiAgICAgICAgICAgICAgPlxuICAgICAgICAgICAgICAgIDx0ZCBjbGFzc05hbWU9XCJweS0yIHBsLTIgcHItMlwiPlxuICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLWNlbnRlciBzcGFjZS14LTJcIj5cbiAgICAgICAgICAgICAgICAgICAgPEltYWdlIFxuICAgICAgICAgICAgICAgICAgICAgIHNyYz1cIi90b2FzdC5zdmdcIiBcbiAgICAgICAgICAgICAgICAgICAgICBhbHQ9XCJ0b2FzdFwiIFxuICAgICAgICAgICAgICAgICAgICAgIGNsYXNzTmFtZT1cInctNiBoLTYgZmxleC1zaHJpbmstMFwiIFxuICAgICAgICAgICAgICAgICAgICAgIHdpZHRoPXsyNH0gXG4gICAgICAgICAgICAgICAgICAgICAgaGVpZ2h0PXsyNH0gXG4gICAgICAgICAgICAgICAgICAgIC8+XG4gICAgICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleC0xXCI+XG4gICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmb250LW1lZGl1bVwiPntmb29kLm5hbWV9PC9kaXY+XG4gICAgICAgICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0ZXh0LXNtIHRleHQtZ3JheS01MDBcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgIHtmb29kLmNhbG9yaWVzfSBrY2FsIOKAoiB7Zm9vZC5wcm90ZWlufWcgcHJvdGVpbiDigKIge2Zvb2QuY2FyYnN9ZyBjYXJicyDigKIge2Zvb2QuZmF0fWcgZmF0XG4gICAgICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgPC90ZD5cbiAgICAgICAgICAgICAgPC90cj5cbiAgICAgICAgICAgICkpfVxuICAgICAgICAgIDwvdGJvZHk+XG4gICAgICAgIDwvdGFibGU+XG4gICAgICA8L2Rpdj5cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG4iXSwibmFtZXMiOlsiQ3VzdG9tRm9vZExpc3QiLCJjdXN0b21Gb29kcyIsIm9uQWRkRnJvbUN1c3RvbUxpc3QiLCJpc0xvYWRpbmciLCJtZW1vaXplZEN1c3RvbUZvb2RzIiwidXNlTWVtbyIsImhpZ2hsaWdodGVkSWR4Iiwic2V0SGlnaGxpZ2h0ZWRJZHgiLCJoYW5kbGVLZXlEb3duIiwic2V0Um93UmVmIiwidXNlS2V5Ym9hcmROYXZpZ2F0aW9uIiwibGVuZ3RoIiwiZGl2IiwiY2xhc3NOYW1lIiwiaDMiLCJ0YWJsZSIsInJvbGUiLCJhcmlhLWxhYmVsIiwidGFiSW5kZXgiLCJvbktleURvd24iLCJjb2xncm91cCIsImNvbCIsInRib2R5IiwibWFwIiwiZm9vZCIsImlkeCIsInRyIiwicmVmIiwib25DbGljayIsImFyaWEtc2VsZWN0ZWQiLCJvbk1vdXNlRW50ZXIiLCJ0ZCIsIkltYWdlIiwic3JjIiwiYWx0Iiwid2lkdGgiLCJoZWlnaHQiLCJuYW1lIiwiY2Fsb3JpZXMiLCJwcm90ZWluIiwiY2FyYnMiLCJmYXQiLCJpZCJdLCJtYXBwaW5ncyI6Ijs7OzsrQkFXYUE7OztlQUFBQTs7OzsrREFYa0I7OERBQ2I7dUNBRW9COzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQVEvQixNQUFNQSxpQkFBZ0QsQ0FBQyxFQUM1REMsV0FBVyxFQUNYQyxtQkFBbUIsRUFDbkJDLFlBQVksS0FBSyxFQUNsQjtJQUNDLE1BQU1DLHNCQUFzQkMsSUFBQUEsY0FBTyxFQUFDLElBQU1KLGFBQWE7UUFBQ0E7S0FBWTtJQUVwRSxNQUFNLEVBQ0pLLGNBQWMsRUFDZEMsaUJBQWlCLEVBQ2pCQyxhQUFhLEVBQ2JDLFNBQVMsRUFDVixHQUFHQyxJQUFBQSw0Q0FBcUIsRUFBQ04scUJBQXFCRixxQkFBcUJDO0lBRXBFLElBQUlDLG9CQUFvQk8sTUFBTSxLQUFLLEdBQUc7UUFDcEMsT0FBTztJQUNUO0lBRUEscUJBQ0Usc0JBQUNDO1FBQUlDLFdBQVU7OzBCQUNiLHFCQUFDQztnQkFBR0QsV0FBVTswQkFBbUI7OzBCQUNqQyxxQkFBQ0Q7Z0JBQUlDLFdBQVU7MEJBQ2IsY0FBQSxzQkFBQ0U7b0JBQ0NGLFdBQVU7b0JBQ1ZHLE1BQUs7b0JBQ0xDLGNBQVc7b0JBQ1hDLFVBQVU7b0JBQ1ZDLFdBQVdYOztzQ0FFWCxxQkFBQ1k7c0NBQ0MsY0FBQSxxQkFBQ0M7Z0NBQUlSLFdBQVU7OztzQ0FFakIscUJBQUNTO3NDQUNFbEIsb0JBQW9CbUIsR0FBRyxDQUFDLENBQUNDLE1BQU1DLG9CQUM5QixxQkFBQ0M7b0NBRUNDLEtBQUtsQixVQUFVZ0I7b0NBQ2ZHLFNBQVM7d0NBQ1AsSUFBSSxDQUFDekIsV0FBVzs0Q0FDZEQsb0JBQW9Cc0I7d0NBQ3RCO29DQUNGO29DQUNBWCxXQUFXLENBQUMscUZBQXFGLEVBQy9GVixZQUFZLGtDQUFrQyxrQ0FDL0MsQ0FBQyxFQUFFRyxtQkFBbUJtQixNQUFNLDJCQUEyQixJQUFJO29DQUM1RFQsTUFBSztvQ0FDTGEsaUJBQWV2QixtQkFBbUJtQjtvQ0FDbENQLFVBQVUsQ0FBQztvQ0FDWFksY0FBYzt3Q0FDWixJQUFJLENBQUMzQixXQUFXOzRDQUNkSSxrQkFBa0JrQjt3Q0FDcEI7b0NBQ0Y7OENBRUEsY0FBQSxxQkFBQ007d0NBQUdsQixXQUFVO2tEQUNaLGNBQUEsc0JBQUNEOzRDQUFJQyxXQUFVOzs4REFDYixxQkFBQ21CLGNBQUs7b0RBQ0pDLEtBQUk7b0RBQ0pDLEtBQUk7b0RBQ0pyQixXQUFVO29EQUNWc0IsT0FBTztvREFDUEMsUUFBUTs7OERBRVYsc0JBQUN4QjtvREFBSUMsV0FBVTs7c0VBQ2IscUJBQUNEOzREQUFJQyxXQUFVO3NFQUFlVyxLQUFLYSxJQUFJOztzRUFDdkMsc0JBQUN6Qjs0REFBSUMsV0FBVTs7Z0VBQ1pXLEtBQUtjLFFBQVE7Z0VBQUM7Z0VBQVNkLEtBQUtlLE9BQU87Z0VBQUM7Z0VBQWFmLEtBQUtnQixLQUFLO2dFQUFDO2dFQUFXaEIsS0FBS2lCLEdBQUc7Z0VBQUM7Ozs7Ozs7O21DQS9CcEZqQixLQUFLa0IsRUFBRTs7Ozs7OztBQTJDNUIifQ==

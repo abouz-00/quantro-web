@@ -18,6 +18,14 @@ export class FoodLogService {
         const apiData = await response.json();
         return apiData.map(transformApiDataToFoodEntry);
       } else {
+        const errorText = await response.text();
+        console.error('API response error:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: errorText,
+          operation: 'loadFoodData',
+          dateParam
+        });
         // Fallback to localStorage
         return this.loadFromLocalStorage();
       }
@@ -27,7 +35,12 @@ export class FoodLogService {
         category: 'network',
         metadata: { operation: 'loadFoodData', dateParam },
       });
-      console.error('Error loading food data:', error);
+      console.error('Network error loading food data:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        operation: 'loadFoodData',
+        dateParam
+      });
       return this.loadFromLocalStorage();
     }
   }
@@ -49,6 +62,14 @@ export class FoodLogService {
         const savedEntry = await response.json();
         return transformApiDataToFoodEntry(savedEntry);
       } else {
+        const errorText = await response.text();
+        console.error('API response error:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: errorText,
+          operation: 'addFoodEntry',
+          entryId: entry.id
+        });
         // Fallback to localStorage
         this.saveToLocalStorage(entry);
         return entry;
@@ -59,7 +80,12 @@ export class FoodLogService {
         category: 'network',
         metadata: { operation: 'addFoodEntry', entryId: entry.id },
       });
-      console.error('Error saving food entry:', error);
+      console.error('Network error saving food entry:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        operation: 'addFoodEntry',
+        entryId: entry.id
+      });
       this.saveToLocalStorage(entry);
       return entry;
     }
@@ -77,6 +103,14 @@ export class FoodLogService {
       if (response.ok) {
         return true;
       } else {
+        const errorText = await response.text();
+        console.error('API response error:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: errorText,
+          operation: 'removeFoodEntry',
+          entryId: id
+        });
         // Fallback to localStorage
         this.removeFromLocalStorage(id);
         return true;
@@ -87,7 +121,12 @@ export class FoodLogService {
         category: 'network',
         metadata: { operation: 'removeFoodEntry', entryId: id },
       });
-      console.error('Error deleting food entry:', error);
+      console.error('Network error deleting food entry:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        operation: 'removeFoodEntry',
+        entryId: id
+      });
       this.removeFromLocalStorage(id);
       return true;
     }
@@ -116,6 +155,15 @@ export class FoodLogService {
       if (response.ok) {
         return true;
       } else {
+        const errorText = await response.text();
+        console.error('API response error:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: errorText,
+          operation: 'updateFoodEntry',
+          entryId: id,
+          updates
+        });
         // Fallback to localStorage
         this.updateInLocalStorage(id, updates);
         return true;
@@ -126,7 +174,13 @@ export class FoodLogService {
         category: 'network',
         metadata: { operation: 'updateFoodEntry', entryId: id, updates },
       });
-      console.error('Error updating food entry:', error);
+      console.error('Network error updating food entry:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        operation: 'updateFoodEntry',
+        entryId: id,
+        updates
+      });
       this.updateInLocalStorage(id, updates);
       return true;
     }

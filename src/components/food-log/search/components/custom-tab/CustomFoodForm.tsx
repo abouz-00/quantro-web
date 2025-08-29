@@ -6,6 +6,8 @@ interface CustomFoodFormProps {
   onFormDataChange: (field: keyof CustomFoodFormData, value: string) => void;
   onSubmit: () => void;
   isLoading?: boolean;
+  getFieldError?: (field: string) => string | undefined;
+  hasFieldError?: (field: string) => boolean;
 }
 
 export const CustomFoodForm: React.FC<CustomFoodFormProps> = ({
@@ -13,11 +15,29 @@ export const CustomFoodForm: React.FC<CustomFoodFormProps> = ({
   onFormDataChange,
   onSubmit,
   isLoading = false,
+  getFieldError,
+  hasFieldError,
 }) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && formData.name.trim()) {
       onSubmit();
     }
+  };
+
+  // Helper function to get error class for input fields
+  const getInputErrorClass = (field: string) => {
+    const hasError = hasFieldError && hasFieldError(field);
+    return hasError 
+      ? 'w-full p-2 border rounded-sm border-red-500 bg-red-50'
+      : 'w-full p-2 border rounded-sm border-gray-300';
+  };
+
+  // Helper function to get number input error class
+  const getNumberInputErrorClass = (field: string) => {
+    const hasError = hasFieldError && hasFieldError(field);
+    return hasError 
+      ? 'w-full p-2 border rounded-sm border-red-500 bg-red-50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+      : 'w-full p-2 border rounded-sm border-gray-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none';
   };
 
   return (
@@ -31,11 +51,14 @@ export const CustomFoodForm: React.FC<CustomFoodFormProps> = ({
             value={formData.name}
             onChange={(e) => onFormDataChange('name', e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full p-2 border rounded-sm border-gray-300"
+            className={getInputErrorClass('name')}
             placeholder="e.g., Homemade Pizza"
             aria-label="Custom food name"
             disabled={isLoading}
           />
+          {getFieldError && getFieldError('name') && (
+            <p className="text-red-500 text-sm mt-1">{getFieldError('name')}</p>
+          )}
         </div>
 
         <div>
@@ -46,11 +69,14 @@ export const CustomFoodForm: React.FC<CustomFoodFormProps> = ({
             step="0.1"
             value={formData.calories}
             onChange={(e) => onFormDataChange('calories', e.target.value)}
-            className="w-full p-2 border rounded-sm border-gray-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className={getNumberInputErrorClass('calories')}
             placeholder="0"
             aria-label="Calories per 100g"
             disabled={isLoading}
           />
+          {getFieldError && getFieldError('calories') && (
+            <p className="text-red-500 text-sm mt-1">{getFieldError('calories')}</p>
+          )}
         </div>
 
         <div>
@@ -61,11 +87,14 @@ export const CustomFoodForm: React.FC<CustomFoodFormProps> = ({
             step="0.1"
             value={formData.protein}
             onChange={(e) => onFormDataChange('protein', e.target.value)}
-            className="w-full p-2 border rounded-sm border-gray-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className={getNumberInputErrorClass('protein')}
             placeholder="0"
             aria-label="Protein in grams"
             disabled={isLoading}
           />
+          {getFieldError && getFieldError('protein') && (
+            <p className="text-red-500 text-sm mt-1">{getFieldError('protein')}</p>
+          )}
         </div>
 
         <div>
@@ -76,11 +105,14 @@ export const CustomFoodForm: React.FC<CustomFoodFormProps> = ({
             step="0.1"
             value={formData.carbs}
             onChange={(e) => onFormDataChange('carbs', e.target.value)}
-            className="w-full p-2 border rounded-sm border-gray-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className={getNumberInputErrorClass('carbs')}
             placeholder="0"
             aria-label="Carbohydrates in grams"
             disabled={isLoading}
           />
+          {getFieldError && getFieldError('carbs') && (
+            <p className="text-red-500 text-sm mt-1">{getFieldError('carbs')}</p>
+          )}
         </div>
 
         <div>
@@ -91,17 +123,20 @@ export const CustomFoodForm: React.FC<CustomFoodFormProps> = ({
             step="0.1"
             value={formData.fat}
             onChange={(e) => onFormDataChange('fat', e.target.value)}
-            className="w-full p-2 border rounded-sm border-gray-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className={getNumberInputErrorClass('fat')}
             placeholder="0"
             aria-label="Fat in grams"
             disabled={isLoading}
           />
+          {getFieldError && getFieldError('fat') && (
+            <p className="text-red-500 text-sm mt-1">{getFieldError('fat')}</p>
+          )}
         </div>
       </div>
 
       <button
         onClick={onSubmit}
-        disabled={!formData.name.trim() || isLoading}
+        disabled={isLoading}
         className="mt-4 w-full bg-violet-500 text-white py-2 px-4 rounded-sm hover:bg-violet-600 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors duration-200 flex items-center justify-center"
       >
         {isLoading ? (

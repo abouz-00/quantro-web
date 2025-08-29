@@ -90,6 +90,13 @@ describe('useFoodData', () => {
     mockSameDay.mockClear();
     mockSameDay.mockReturnValue(true);
     mockCalculateTotals.mockClear();
+    
+    // Mock fetch for reorder API calls
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      statusText: 'OK',
+      json: () => Promise.resolve({}),
+    });
   });
 
   it('should initialize with empty state and load data', async () => {
