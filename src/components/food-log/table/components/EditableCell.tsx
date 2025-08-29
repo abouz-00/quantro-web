@@ -167,7 +167,7 @@ export const EditableCell = memo(({
           onKeyDown={e => handleKeyDown(e, false)}
           onBlur={handleBlur}
           className={
-            "w-16 p-1 pr-2 border rounded text-right focus:ring-2 focus:ring-blue-500 focus:border-blue-500 " +
+            "w-16 p-1 pr-2 border rounded text-right focus:outline-none " +
             (editError ? "border-red-500" : "border-gray-300")
           }
           autoFocus

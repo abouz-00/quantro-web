@@ -9,7 +9,7 @@ interface MicronutrientsSectionProps {
 }
 
 // Colors to cycle through for the donuts
-const COLORS = ['#F4FF7B', '#7FDFFF', '#7BFF9C', '#FF7B99', '#D27BFF'];
+const COLORS = ['#FFBF7B', '#7FDFFF', '#7BFF9C', '#FF7B99', '#D27BFF'];
 
 export default function MicronutrientsSection({ entries = [] }: MicronutrientsSectionProps) {
   
