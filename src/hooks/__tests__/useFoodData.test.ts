@@ -94,8 +94,10 @@ describe('useFoodData', () => {
     // Mock fetch for reorder API calls
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
+      status: 200,
       statusText: 'OK',
       json: () => Promise.resolve({}),
+      text: () => Promise.resolve('{}'),
     });
   });
 
