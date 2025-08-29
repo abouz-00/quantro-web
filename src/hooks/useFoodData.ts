@@ -114,7 +114,10 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
         body: JSON.stringify({ entryIds }),
       });
 
-      if (!response.ok) {
+      if (!response) {
+        console.error('Failed to persist entry order: No response received');
+        // Optionally show a toast notification to the user
+      } else if (!response.ok) {
         console.error('Failed to persist entry order:', response.statusText);
         // Optionally show a toast notification to the user
       } else {

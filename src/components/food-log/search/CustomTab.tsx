@@ -8,6 +8,7 @@ import {
   LoadingState,
   EmptyState
 } from './components/custom-tab';
+import { useCustomFoodValidation } from './components/custom-tab/hooks/useCustomFoodValidation';
 
 interface CustomTabProps {
   customName: string;
@@ -44,6 +45,14 @@ export default function CustomTab({
   isLoading = false,
   error = null,
 }: CustomTabProps) {
+  // Initialize validation hook
+  const {
+    getFieldError,
+    hasFieldError,
+    clearFieldError,
+    validateAndSetErrors,
+  } = useCustomFoodValidation();
+
   // Prepare form data for the form component
   const formData: CustomFoodFormData = {
     name: customName,
@@ -53,8 +62,11 @@ export default function CustomTab({
     fat: customFat,
   };
 
-  // Handle form data changes
+  // Handle form data changes with validation clearing
   const handleFormDataChange = (field: keyof CustomFoodFormData, value: string) => {
+    // Clear validation error for this field when user starts typing
+    clearFieldError(field);
+    
     switch (field) {
       case 'name':
         setCustomName(value);
@@ -74,6 +86,14 @@ export default function CustomTab({
     }
   };
 
+  // Handle form submission with validation
+  const handleFormSubmit = () => {
+    const isValid = validateAndSetErrors(formData);
+    if (isValid) {
+      handleAddCustomFood();
+    }
+  };
+
   return (
     <div className="h-full flex flex-col">
       <ErrorDisplay error={error} />
@@ -81,8 +101,10 @@ export default function CustomTab({
       <CustomFoodForm
         formData={formData}
         onFormDataChange={handleFormDataChange}
-        onSubmit={handleAddCustomFood}
+        onSubmit={handleFormSubmit}
         isLoading={isLoading}
+        getFieldError={getFieldError}
+        hasFieldError={hasFieldError}
       />
 
       <LoadingState isLoading={isLoading} hasCustomFoods={customFoods.length > 0} />

@@ -1,0 +1,197 @@
+1f04fe6225a35c8af4d304bf9ff17217
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "CustomFoodForm", {
+    enumerable: true,
+    get: function() {
+        return CustomFoodForm;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = /*#__PURE__*/ _interop_require_default(require("react"));
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+const CustomFoodForm = ({ formData, onFormDataChange, onSubmit, isLoading = false, validationErrors = [], getFieldError, hasFieldError })=>{
+    const handleKeyDown = (e)=>{
+        if (e.key === 'Enter' && formData.name.trim()) {
+            onSubmit();
+        }
+    };
+    // Helper function to get error class for input fields
+    const getInputErrorClass = (field)=>{
+        const hasError = hasFieldError && hasFieldError(field);
+        return hasError ? 'w-full p-2 border rounded-sm border-red-500 bg-red-50' : 'w-full p-2 border rounded-sm border-gray-300';
+    };
+    // Helper function to get number input error class
+    const getNumberInputErrorClass = (field)=>{
+        const hasError = hasFieldError && hasFieldError(field);
+        return hasError ? 'w-full p-2 border rounded-sm border-red-500 bg-red-50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none' : 'w-full p-2 border rounded-sm border-gray-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none';
+    };
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+        className: "mb-6",
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("h3", {
+                className: "font-medium mb-3",
+                children: "Create Custom Food"
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        className: "md:col-span-2",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("label", {
+                                className: "block text-sm font-medium mb-1",
+                                children: "Food Name"
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("input", {
+                                type: "text",
+                                value: formData.name,
+                                onChange: (e)=>onFormDataChange('name', e.target.value),
+                                onKeyDown: handleKeyDown,
+                                className: getInputErrorClass('name'),
+                                placeholder: "e.g., Homemade Pizza",
+                                "aria-label": "Custom food name",
+                                disabled: isLoading
+                            }),
+                            getFieldError && getFieldError('name') && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                                className: "text-red-500 text-sm mt-1",
+                                children: getFieldError('name')
+                            })
+                        ]
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("label", {
+                                className: "block text-sm font-medium mb-1",
+                                children: "Calories (per 100g)"
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("input", {
+                                type: "number",
+                                min: "0",
+                                step: "0.1",
+                                value: formData.calories,
+                                onChange: (e)=>onFormDataChange('calories', e.target.value),
+                                className: getNumberInputErrorClass('calories'),
+                                placeholder: "0",
+                                "aria-label": "Calories per 100g",
+                                disabled: isLoading
+                            }),
+                            getFieldError && getFieldError('calories') && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                                className: "text-red-500 text-sm mt-1",
+                                children: getFieldError('calories')
+                            })
+                        ]
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("label", {
+                                className: "block text-sm font-medium mb-1",
+                                children: "Protein (g)"
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("input", {
+                                type: "number",
+                                min: "0",
+                                step: "0.1",
+                                value: formData.protein,
+                                onChange: (e)=>onFormDataChange('protein', e.target.value),
+                                className: getNumberInputErrorClass('protein'),
+                                placeholder: "0",
+                                "aria-label": "Protein in grams",
+                                disabled: isLoading
+                            }),
+                            getFieldError && getFieldError('protein') && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                                className: "text-red-500 text-sm mt-1",
+                                children: getFieldError('protein')
+                            })
+                        ]
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("label", {
+                                className: "block text-sm font-medium mb-1",
+                                children: "Carbs (g)"
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("input", {
+                                type: "number",
+                                min: "0",
+                                step: "0.1",
+                                value: formData.carbs,
+                                onChange: (e)=>onFormDataChange('carbs', e.target.value),
+                                className: getNumberInputErrorClass('carbs'),
+                                placeholder: "0",
+                                "aria-label": "Carbohydrates in grams",
+                                disabled: isLoading
+                            }),
+                            getFieldError && getFieldError('carbs') && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                                className: "text-red-500 text-sm mt-1",
+                                children: getFieldError('carbs')
+                            })
+                        ]
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("label", {
+                                className: "block text-sm font-medium mb-1",
+                                children: "Fat (g)"
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("input", {
+                                type: "number",
+                                min: "0",
+                                step: "0.1",
+                                value: formData.fat,
+                                onChange: (e)=>onFormDataChange('fat', e.target.value),
+                                className: getNumberInputErrorClass('fat'),
+                                placeholder: "0",
+                                "aria-label": "Fat in grams",
+                                disabled: isLoading
+                            }),
+                            getFieldError && getFieldError('fat') && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                                className: "text-red-500 text-sm mt-1",
+                                children: getFieldError('fat')
+                            })
+                        ]
+                    })
+                ]
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("button", {
+                onClick: onSubmit,
+                disabled: isLoading,
+                className: "mt-4 w-full bg-violet-500 text-white py-2 px-4 rounded-sm hover:bg-violet-600 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors duration-200 flex items-center justify-center",
+                children: isLoading ? /*#__PURE__*/ (0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
+                    children: [
+                        /*#__PURE__*/ (0, _jsxruntime.jsxs)("svg", {
+                            className: "animate-spin -ml-1 mr-3 h-5 w-5 text-white",
+                            xmlns: "http://www.w3.org/2000/svg",
+                            fill: "none",
+                            viewBox: "0 0 24 24",
+                            children: [
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("circle", {
+                                    className: "opacity-25",
+                                    cx: "12",
+                                    cy: "12",
+                                    r: "10",
+                                    stroke: "currentColor",
+                                    strokeWidth: "4"
+                                }),
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("path", {
+                                    className: "opacity-75",
+                                    fill: "currentColor",
+                                    d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                })
+                            ]
+                        }),
+                        "Adding..."
+                    ]
+                }) : 'Add Custom Food'
+            })
+        ]
+    });
+};
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb21wb25lbnRzL2Zvb2QtbG9nL3NlYXJjaC9jb21wb25lbnRzL2N1c3RvbS10YWIvQ3VzdG9tRm9vZEZvcm0udHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XG5pbXBvcnQgeyBDdXN0b21Gb29kRm9ybURhdGEsIFZhbGlkYXRpb25FcnJvciB9IGZyb20gJy4vdHlwZXMnO1xuXG5pbnRlcmZhY2UgQ3VzdG9tRm9vZEZvcm1Qcm9wcyB7XG4gIGZvcm1EYXRhOiBDdXN0b21Gb29kRm9ybURhdGE7XG4gIG9uRm9ybURhdGFDaGFuZ2U6IChmaWVsZDoga2V5b2YgQ3VzdG9tRm9vZEZvcm1EYXRhLCB2YWx1ZTogc3RyaW5nKSA9PiB2b2lkO1xuICBvblN1Ym1pdDogKCkgPT4gdm9pZDtcbiAgaXNMb2FkaW5nPzogYm9vbGVhbjtcbiAgdmFsaWRhdGlvbkVycm9ycz86IFZhbGlkYXRpb25FcnJvcltdO1xuICBnZXRGaWVsZEVycm9yPzogKGZpZWxkOiBzdHJpbmcpID0+IHN0cmluZyB8IHVuZGVmaW5lZDtcbiAgaGFzRmllbGRFcnJvcj86IChmaWVsZDogc3RyaW5nKSA9PiBib29sZWFuO1xufVxuXG5leHBvcnQgY29uc3QgQ3VzdG9tRm9vZEZvcm06IFJlYWN0LkZDPEN1c3RvbUZvb2RGb3JtUHJvcHM+ID0gKHtcbiAgZm9ybURhdGEsXG4gIG9uRm9ybURhdGFDaGFuZ2UsXG4gIG9uU3VibWl0LFxuICBpc0xvYWRpbmcgPSBmYWxzZSxcbiAgdmFsaWRhdGlvbkVycm9ycyA9IFtdLFxuICBnZXRGaWVsZEVycm9yLFxuICBoYXNGaWVsZEVycm9yLFxufSkgPT4ge1xuICBjb25zdCBoYW5kbGVLZXlEb3duID0gKGU6IFJlYWN0LktleWJvYXJkRXZlbnQ8SFRNTElucHV0RWxlbWVudD4pID0+IHtcbiAgICBpZiAoZS5rZXkgPT09ICdFbnRlcicgJiYgZm9ybURhdGEubmFtZS50cmltKCkpIHtcbiAgICAgIG9uU3VibWl0KCk7XG4gICAgfVxuICB9O1xuXG4gIC8vIEhlbHBlciBmdW5jdGlvbiB0byBnZXQgZXJyb3IgY2xhc3MgZm9yIGlucHV0IGZpZWxkc1xuICBjb25zdCBnZXRJbnB1dEVycm9yQ2xhc3MgPSAoZmllbGQ6IHN0cmluZykgPT4ge1xuICAgIGNvbnN0IGhhc0Vycm9yID0gaGFzRmllbGRFcnJvciAmJiBoYXNGaWVsZEVycm9yKGZpZWxkKTtcbiAgICByZXR1cm4gaGFzRXJyb3IgXG4gICAgICA/ICd3LWZ1bGwgcC0yIGJvcmRlciByb3VuZGVkLXNtIGJvcmRlci1yZWQtNTAwIGJnLXJlZC01MCdcbiAgICAgIDogJ3ctZnVsbCBwLTIgYm9yZGVyIHJvdW5kZWQtc20gYm9yZGVyLWdyYXktMzAwJztcbiAgfTtcblxuICAvLyBIZWxwZXIgZnVuY3Rpb24gdG8gZ2V0IG51bWJlciBpbnB1dCBlcnJvciBjbGFzc1xuICBjb25zdCBnZXROdW1iZXJJbnB1dEVycm9yQ2xhc3MgPSAoZmllbGQ6IHN0cmluZykgPT4ge1xuICAgIGNvbnN0IGhhc0Vycm9yID0gaGFzRmllbGRFcnJvciAmJiBoYXNGaWVsZEVycm9yKGZpZWxkKTtcbiAgICByZXR1cm4gaGFzRXJyb3IgXG4gICAgICA/ICd3LWZ1bGwgcC0yIGJvcmRlciByb3VuZGVkLXNtIGJvcmRlci1yZWQtNTAwIGJnLXJlZC01MCBbYXBwZWFyYW5jZTp0ZXh0ZmllbGRdIFsmOjotd2Via2l0LW91dGVyLXNwaW4tYnV0dG9uXTphcHBlYXJhbmNlLW5vbmUgWyY6Oi13ZWJraXQtaW5uZXItc3Bpbi1idXR0b25dOmFwcGVhcmFuY2Utbm9uZSdcbiAgICAgIDogJ3ctZnVsbCBwLTIgYm9yZGVyIHJvdW5kZWQtc20gYm9yZGVyLWdyYXktMzAwIFthcHBlYXJhbmNlOnRleHRmaWVsZF0gWyY6Oi13ZWJraXQtb3V0ZXItc3Bpbi1idXR0b25dOmFwcGVhcmFuY2Utbm9uZSBbJjo6LXdlYmtpdC1pbm5lci1zcGluLWJ1dHRvbl06YXBwZWFyYW5jZS1ub25lJztcbiAgfTtcblxuICByZXR1cm4gKFxuICAgIDxkaXYgY2xhc3NOYW1lPVwibWItNlwiPlxuICAgICAgPGgzIGNsYXNzTmFtZT1cImZvbnQtbWVkaXVtIG1iLTNcIj5DcmVhdGUgQ3VzdG9tIEZvb2Q8L2gzPlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJncmlkIGdyaWQtY29scy0xIG1kOmdyaWQtY29scy0yIGdhcC00XCI+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibWQ6Y29sLXNwYW4tMlwiPlxuICAgICAgICAgIDxsYWJlbCBjbGFzc05hbWU9XCJibG9jayB0ZXh0LXNtIGZvbnQtbWVkaXVtIG1iLTFcIj5Gb29kIE5hbWU8L2xhYmVsPlxuICAgICAgICAgIDxpbnB1dFxuICAgICAgICAgICAgdHlwZT1cInRleHRcIlxuICAgICAgICAgICAgdmFsdWU9e2Zvcm1EYXRhLm5hbWV9XG4gICAgICAgICAgICBvbkNoYW5nZT17KGUpID0+IG9uRm9ybURhdGFDaGFuZ2UoJ25hbWUnLCBlLnRhcmdldC52YWx1ZSl9XG4gICAgICAgICAgICBvbktleURvd249e2hhbmRsZUtleURvd259XG4gICAgICAgICAgICBjbGFzc05hbWU9e2dldElucHV0RXJyb3JDbGFzcygnbmFtZScpfVxuICAgICAgICAgICAgcGxhY2Vob2xkZXI9XCJlLmcuLCBIb21lbWFkZSBQaXp6YVwiXG4gICAgICAgICAgICBhcmlhLWxhYmVsPVwiQ3VzdG9tIGZvb2QgbmFtZVwiXG4gICAgICAgICAgICBkaXNhYmxlZD17aXNMb2FkaW5nfVxuICAgICAgICAgIC8+XG4gICAgICAgICAge2dldEZpZWxkRXJyb3IgJiYgZ2V0RmllbGRFcnJvcignbmFtZScpICYmIChcbiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cInRleHQtcmVkLTUwMCB0ZXh0LXNtIG10LTFcIj57Z2V0RmllbGRFcnJvcignbmFtZScpfTwvcD5cbiAgICAgICAgICApfVxuICAgICAgICA8L2Rpdj5cblxuICAgICAgICA8ZGl2PlxuICAgICAgICAgIDxsYWJlbCBjbGFzc05hbWU9XCJibG9jayB0ZXh0LXNtIGZvbnQtbWVkaXVtIG1iLTFcIj5DYWxvcmllcyAocGVyIDEwMGcpPC9sYWJlbD5cbiAgICAgICAgICA8aW5wdXRcbiAgICAgICAgICAgIHR5cGU9XCJudW1iZXJcIlxuICAgICAgICAgICAgbWluPVwiMFwiXG4gICAgICAgICAgICBzdGVwPVwiMC4xXCJcbiAgICAgICAgICAgIHZhbHVlPXtmb3JtRGF0YS5jYWxvcmllc31cbiAgICAgICAgICAgIG9uQ2hhbmdlPXsoZSkgPT4gb25Gb3JtRGF0YUNoYW5nZSgnY2Fsb3JpZXMnLCBlLnRhcmdldC52YWx1ZSl9XG4gICAgICAgICAgICBjbGFzc05hbWU9e2dldE51bWJlcklucHV0RXJyb3JDbGFzcygnY2Fsb3JpZXMnKX1cbiAgICAgICAgICAgIHBsYWNlaG9sZGVyPVwiMFwiXG4gICAgICAgICAgICBhcmlhLWxhYmVsPVwiQ2Fsb3JpZXMgcGVyIDEwMGdcIlxuICAgICAgICAgICAgZGlzYWJsZWQ9e2lzTG9hZGluZ31cbiAgICAgICAgICAvPlxuICAgICAgICAgIHtnZXRGaWVsZEVycm9yICYmIGdldEZpZWxkRXJyb3IoJ2NhbG9yaWVzJykgJiYgKFxuICAgICAgICAgICAgPHAgY2xhc3NOYW1lPVwidGV4dC1yZWQtNTAwIHRleHQtc20gbXQtMVwiPntnZXRGaWVsZEVycm9yKCdjYWxvcmllcycpfTwvcD5cbiAgICAgICAgICApfVxuICAgICAgICA8L2Rpdj5cblxuICAgICAgICA8ZGl2PlxuICAgICAgICAgIDxsYWJlbCBjbGFzc05hbWU9XCJibG9jayB0ZXh0LXNtIGZvbnQtbWVkaXVtIG1iLTFcIj5Qcm90ZWluIChnKTwvbGFiZWw+XG4gICAgICAgICAgPGlucHV0XG4gICAgICAgICAgICB0eXBlPVwibnVtYmVyXCJcbiAgICAgICAgICAgIG1pbj1cIjBcIlxuICAgICAgICAgICAgc3RlcD1cIjAuMVwiXG4gICAgICAgICAgICB2YWx1ZT17Zm9ybURhdGEucHJvdGVpbn1cbiAgICAgICAgICAgIG9uQ2hhbmdlPXsoZSkgPT4gb25Gb3JtRGF0YUNoYW5nZSgncHJvdGVpbicsIGUudGFyZ2V0LnZhbHVlKX1cbiAgICAgICAgICAgIGNsYXNzTmFtZT17Z2V0TnVtYmVySW5wdXRFcnJvckNsYXNzKCdwcm90ZWluJyl9XG4gICAgICAgICAgICBwbGFjZWhvbGRlcj1cIjBcIlxuICAgICAgICAgICAgYXJpYS1sYWJlbD1cIlByb3RlaW4gaW4gZ3JhbXNcIlxuICAgICAgICAgICAgZGlzYWJsZWQ9e2lzTG9hZGluZ31cbiAgICAgICAgICAvPlxuICAgICAgICAgIHtnZXRGaWVsZEVycm9yICYmIGdldEZpZWxkRXJyb3IoJ3Byb3RlaW4nKSAmJiAoXG4gICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LXJlZC01MDAgdGV4dC1zbSBtdC0xXCI+e2dldEZpZWxkRXJyb3IoJ3Byb3RlaW4nKX08L3A+XG4gICAgICAgICAgKX1cbiAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgPGRpdj5cbiAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPVwiYmxvY2sgdGV4dC1zbSBmb250LW1lZGl1bSBtYi0xXCI+Q2FyYnMgKGcpPC9sYWJlbD5cbiAgICAgICAgICA8aW5wdXRcbiAgICAgICAgICAgIHR5cGU9XCJudW1iZXJcIlxuICAgICAgICAgICAgbWluPVwiMFwiXG4gICAgICAgICAgICBzdGVwPVwiMC4xXCJcbiAgICAgICAgICAgIHZhbHVlPXtmb3JtRGF0YS5jYXJic31cbiAgICAgICAgICAgIG9uQ2hhbmdlPXsoZSkgPT4gb25Gb3JtRGF0YUNoYW5nZSgnY2FyYnMnLCBlLnRhcmdldC52YWx1ZSl9XG4gICAgICAgICAgICBjbGFzc05hbWU9e2dldE51bWJlcklucHV0RXJyb3JDbGFzcygnY2FyYnMnKX1cbiAgICAgICAgICAgIHBsYWNlaG9sZGVyPVwiMFwiXG4gICAgICAgICAgICBhcmlhLWxhYmVsPVwiQ2FyYm9oeWRyYXRlcyBpbiBncmFtc1wiXG4gICAgICAgICAgICBkaXNhYmxlZD17aXNMb2FkaW5nfVxuICAgICAgICAgIC8+XG4gICAgICAgICAge2dldEZpZWxkRXJyb3IgJiYgZ2V0RmllbGRFcnJvcignY2FyYnMnKSAmJiAoXG4gICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LXJlZC01MDAgdGV4dC1zbSBtdC0xXCI+e2dldEZpZWxkRXJyb3IoJ2NhcmJzJyl9PC9wPlxuICAgICAgICAgICl9XG4gICAgICAgIDwvZGl2PlxuXG4gICAgICAgIDxkaXY+XG4gICAgICAgICAgPGxhYmVsIGNsYXNzTmFtZT1cImJsb2NrIHRleHQtc20gZm9udC1tZWRpdW0gbWItMVwiPkZhdCAoZyk8L2xhYmVsPlxuICAgICAgICAgIDxpbnB1dFxuICAgICAgICAgICAgdHlwZT1cIm51bWJlclwiXG4gICAgICAgICAgICBtaW49XCIwXCJcbiAgICAgICAgICAgIHN0ZXA9XCIwLjFcIlxuICAgICAgICAgICAgdmFsdWU9e2Zvcm1EYXRhLmZhdH1cbiAgICAgICAgICAgIG9uQ2hhbmdlPXsoZSkgPT4gb25Gb3JtRGF0YUNoYW5nZSgnZmF0JywgZS50YXJnZXQudmFsdWUpfVxuICAgICAgICAgICAgY2xhc3NOYW1lPXtnZXROdW1iZXJJbnB1dEVycm9yQ2xhc3MoJ2ZhdCcpfVxuICAgICAgICAgICAgcGxhY2Vob2xkZXI9XCIwXCJcbiAgICAgICAgICAgIGFyaWEtbGFiZWw9XCJGYXQgaW4gZ3JhbXNcIlxuICAgICAgICAgICAgZGlzYWJsZWQ9e2lzTG9hZGluZ31cbiAgICAgICAgICAvPlxuICAgICAgICAgIHtnZXRGaWVsZEVycm9yICYmIGdldEZpZWxkRXJyb3IoJ2ZhdCcpICYmIChcbiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cInRleHQtcmVkLTUwMCB0ZXh0LXNtIG10LTFcIj57Z2V0RmllbGRFcnJvcignZmF0Jyl9PC9wPlxuICAgICAgICAgICl9XG4gICAgICAgIDwvZGl2PlxuICAgICAgPC9kaXY+XG5cbiAgICAgIDxidXR0b25cbiAgICAgICAgb25DbGljaz17b25TdWJtaXR9XG4gICAgICAgIGRpc2FibGVkPXtpc0xvYWRpbmd9XG4gICAgICAgIGNsYXNzTmFtZT1cIm10LTQgdy1mdWxsIGJnLXZpb2xldC01MDAgdGV4dC13aGl0ZSBweS0yIHB4LTQgcm91bmRlZC1zbSBob3ZlcjpiZy12aW9sZXQtNjAwIGRpc2FibGVkOm9wYWNpdHktNTAgZGlzYWJsZWQ6Y3Vyc29yLW5vdC1hbGxvd2VkIGN1cnNvci1wb2ludGVyIHRyYW5zaXRpb24tY29sb3JzIGR1cmF0aW9uLTIwMCBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlclwiXG4gICAgICA+XG4gICAgICAgIHtpc0xvYWRpbmcgPyAoXG4gICAgICAgICAgPD5cbiAgICAgICAgICAgIDxzdmcgY2xhc3NOYW1lPVwiYW5pbWF0ZS1zcGluIC1tbC0xIG1yLTMgaC01IHctNSB0ZXh0LXdoaXRlXCIgeG1sbnM9XCJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Z1wiIGZpbGw9XCJub25lXCIgdmlld0JveD1cIjAgMCAyNCAyNFwiPlxuICAgICAgICAgICAgICA8Y2lyY2xlIGNsYXNzTmFtZT1cIm9wYWNpdHktMjVcIiBjeD1cIjEyXCIgY3k9XCIxMlwiIHI9XCIxMFwiIHN0cm9rZT1cImN1cnJlbnRDb2xvclwiIHN0cm9rZVdpZHRoPVwiNFwiPjwvY2lyY2xlPlxuICAgICAgICAgICAgICA8cGF0aCBjbGFzc05hbWU9XCJvcGFjaXR5LTc1XCIgZmlsbD1cImN1cnJlbnRDb2xvclwiIGQ9XCJNNCAxMmE4IDggMCAwMTgtOFYwQzUuMzczIDAgMCA1LjM3MyAwIDEyaDR6bTIgNS4yOTFBNy45NjIgNy45NjIgMCAwMTQgMTJIMGMwIDMuMDQyIDEuMTM1IDUuODI0IDMgNy45MzhsMy0yLjY0N3pcIj48L3BhdGg+XG4gICAgICAgICAgICA8L3N2Zz5cbiAgICAgICAgICAgIEFkZGluZy4uLlxuICAgICAgICAgIDwvPlxuICAgICAgICApIDogKFxuICAgICAgICAgICdBZGQgQ3VzdG9tIEZvb2QnXG4gICAgICAgICl9XG4gICAgICA8L2J1dHRvbj5cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG4iXSwibmFtZXMiOlsiQ3VzdG9tRm9vZEZvcm0iLCJmb3JtRGF0YSIsIm9uRm9ybURhdGFDaGFuZ2UiLCJvblN1Ym1pdCIsImlzTG9hZGluZyIsInZhbGlkYXRpb25FcnJvcnMiLCJnZXRGaWVsZEVycm9yIiwiaGFzRmllbGRFcnJvciIsImhhbmRsZUtleURvd24iLCJlIiwia2V5IiwibmFtZSIsInRyaW0iLCJnZXRJbnB1dEVycm9yQ2xhc3MiLCJmaWVsZCIsImhhc0Vycm9yIiwiZ2V0TnVtYmVySW5wdXRFcnJvckNsYXNzIiwiZGl2IiwiY2xhc3NOYW1lIiwiaDMiLCJsYWJlbCIsImlucHV0IiwidHlwZSIsInZhbHVlIiwib25DaGFuZ2UiLCJ0YXJnZXQiLCJvbktleURvd24iLCJwbGFjZWhvbGRlciIsImFyaWEtbGFiZWwiLCJkaXNhYmxlZCIsInAiLCJtaW4iLCJzdGVwIiwiY2Fsb3JpZXMiLCJwcm90ZWluIiwiY2FyYnMiLCJmYXQiLCJidXR0b24iLCJvbkNsaWNrIiwic3ZnIiwieG1sbnMiLCJmaWxsIiwidmlld0JveCIsImNpcmNsZSIsImN4IiwiY3kiLCJyIiwic3Ryb2tlIiwic3Ryb2tlV2lkdGgiLCJwYXRoIiwiZCJdLCJtYXBwaW5ncyI6Ijs7OzsrQkFhYUE7OztlQUFBQTs7Ozs4REFiSzs7Ozs7O0FBYVgsTUFBTUEsaUJBQWdELENBQUMsRUFDNURDLFFBQVEsRUFDUkMsZ0JBQWdCLEVBQ2hCQyxRQUFRLEVBQ1JDLFlBQVksS0FBSyxFQUNqQkMsbUJBQW1CLEVBQUUsRUFDckJDLGFBQWEsRUFDYkMsYUFBYSxFQUNkO0lBQ0MsTUFBTUMsZ0JBQWdCLENBQUNDO1FBQ3JCLElBQUlBLEVBQUVDLEdBQUcsS0FBSyxXQUFXVCxTQUFTVSxJQUFJLENBQUNDLElBQUksSUFBSTtZQUM3Q1Q7UUFDRjtJQUNGO0lBRUEsc0RBQXNEO0lBQ3RELE1BQU1VLHFCQUFxQixDQUFDQztRQUMxQixNQUFNQyxXQUFXUixpQkFBaUJBLGNBQWNPO1FBQ2hELE9BQU9D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
