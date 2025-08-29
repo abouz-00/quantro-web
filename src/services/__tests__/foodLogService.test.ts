@@ -110,7 +110,10 @@ describe('FoodLogService', () => {
 
       mockFetch.mockResolvedValue({
         ok: true,
+        status: 200,
+        statusText: 'OK',
         json: async () => mockApiData,
+        text: async () => JSON.stringify(mockApiData),
       });
 
       const result = await FoodLogService.loadFoodData('2023-12-25');
@@ -127,6 +130,9 @@ describe('FoodLogService', () => {
       mockFetch.mockResolvedValue({
         ok: false,
         status: 500,
+        statusText: 'Internal Server Error',
+        json: async () => ({}),
+        text: async () => 'Internal Server Error',
       });
 
       const mockLocalData = JSON.stringify([mockFoodEntry]);
@@ -149,7 +155,13 @@ describe('FoodLogService', () => {
     });
 
     it('should return empty array when localStorage is empty', async () => {
-      mockFetch.mockResolvedValue({ ok: false });
+      mockFetch.mockResolvedValue({
+        ok: false,
+        status: 404,
+        statusText: 'Not Found',
+        json: async () => ({}),
+        text: async () => 'Not Found',
+      });
       mockLocalStorage.getItem.mockReturnValue(null);
 
       const result = await FoodLogService.loadFoodData('2023-12-25');
@@ -175,7 +187,10 @@ describe('FoodLogService', () => {
 
       mockFetch.mockResolvedValue({
         ok: true,
+        status: 200,
+        statusText: 'OK',
         json: async () => mockApiResponse,
+        text: async () => JSON.stringify(mockApiResponse),
       });
 
       const result = await FoodLogService.addFoodEntry(mockFoodEntry);
@@ -195,7 +210,13 @@ describe('FoodLogService', () => {
     });
 
     it('should fallback to localStorage when API fails', async () => {
-      mockFetch.mockResolvedValue({ ok: false });
+      mockFetch.mockResolvedValue({
+        ok: false,
+        status: 400,
+        statusText: 'Bad Request',
+        json: async () => ({}),
+        text: async () => 'Bad Request',
+      });
       mockLocalStorage.getItem.mockReturnValue('[]');
 
       const result = await FoodLogService.addFoodEntry(mockFoodEntry);
@@ -220,7 +241,13 @@ describe('FoodLogService', () => {
 
   describe('removeFoodEntry', () => {
     it('should remove food entry via API successfully', async () => {
-      mockFetch.mockResolvedValue({ ok: true });
+      mockFetch.mockResolvedValue({
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+        json: async () => ({}),
+        text: async () => 'OK',
+      });
 
       const result = await FoodLogService.removeFoodEntry('test-id');
 
@@ -231,7 +258,13 @@ describe('FoodLogService', () => {
     });
 
     it('should fallback to localStorage when API fails', async () => {
-      mockFetch.mockResolvedValue({ ok: false });
+      mockFetch.mockResolvedValue({
+        ok: false,
+        status: 404,
+        statusText: 'Not Found',
+        json: async () => ({}),
+        text: async () => 'Not Found',
+      });
       const mockData = [mockFoodEntry, { ...mockFoodEntry, id: 'other-id' }];
       mockLocalStorage.getItem.mockReturnValue(JSON.stringify(mockData));
 
@@ -265,7 +298,13 @@ describe('FoodLogService', () => {
     };
 
     it('should update food entry via API successfully', async () => {
-      mockFetch.mockResolvedValue({ ok: true });
+      mockFetch.mockResolvedValue({
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+        json: async () => ({}),
+        text: async () => 'OK',
+      });
 
       const result = await FoodLogService.updateFoodEntry('test-id', updates);
 
@@ -287,7 +326,13 @@ describe('FoodLogService', () => {
     });
 
     it('should fallback to localStorage when API fails', async () => {
-      mockFetch.mockResolvedValue({ ok: false });
+      mockFetch.mockResolvedValue({
+        ok: false,
+        status: 400,
+        statusText: 'Bad Request',
+        json: async () => ({}),
+        text: async () => 'Bad Request',
+      });
       const mockData = [mockFoodEntry];
       mockLocalStorage.getItem.mockReturnValue(JSON.stringify(mockData));
 
@@ -312,7 +357,13 @@ describe('FoodLogService', () => {
     });
 
     it('should handle localStorage with non-matching IDs', async () => {
-      mockFetch.mockResolvedValue({ ok: false });
+      mockFetch.mockResolvedValue({
+        ok: false,
+        status: 404,
+        statusText: 'Not Found',
+        json: async () => ({}),
+        text: async () => 'Not Found',
+      });
       const mockData = [{ ...mockFoodEntry, id: 'different-id' }];
       mockLocalStorage.getItem.mockReturnValue(JSON.stringify(mockData));
 

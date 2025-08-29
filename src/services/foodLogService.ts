@@ -18,7 +18,14 @@ export class FoodLogService {
         const apiData = await response.json();
         return apiData.map(transformApiDataToFoodEntry);
       } else {
-        const errorText = await response.text();
+        let errorText = 'Unknown error';
+        try {
+          // Safely attempt to get error text
+          errorText = response.text ? await response.text() : `HTTP ${response.status}`;
+        } catch {
+          errorText = `HTTP ${response.status}: ${response.statusText || 'Unknown error'}`;
+        }
+        
         console.error('API response error:', {
           status: response.status,
           statusText: response.statusText,
@@ -30,14 +37,17 @@ export class FoodLogService {
         return this.loadFromLocalStorage();
       }
     } catch (error) {
-      await errorService.logError(error as Error, {
+      // Ensure we have an Error object for logging
+      const errorInstance = error instanceof Error ? error : new Error(String(error));
+      
+      await errorService.logError(errorInstance, {
         severity: 'medium',
         category: 'network',
         metadata: { operation: 'loadFoodData', dateParam },
       });
       console.error('Network error loading food data:', {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined,
+        message: errorInstance.message,
+        stack: errorInstance.stack,
         operation: 'loadFoodData',
         dateParam
       });
@@ -62,7 +72,14 @@ export class FoodLogService {
         const savedEntry = await response.json();
         return transformApiDataToFoodEntry(savedEntry);
       } else {
-        const errorText = await response.text();
+        let errorText = 'Unknown error';
+        try {
+          // Safely attempt to get error text
+          errorText = response.text ? await response.text() : `HTTP ${response.status}`;
+        } catch {
+          errorText = `HTTP ${response.status}: ${response.statusText || 'Unknown error'}`;
+        }
+        
         console.error('API response error:', {
           status: response.status,
           statusText: response.statusText,
@@ -75,14 +92,17 @@ export class FoodLogService {
         return entry;
       }
     } catch (error) {
-      await errorService.logError(error as Error, {
+      // Ensure we have an Error object for logging
+      const errorInstance = error instanceof Error ? error : new Error(String(error));
+      
+      await errorService.logError(errorInstance, {
         severity: 'medium',
         category: 'network',
         metadata: { operation: 'addFoodEntry', entryId: entry.id },
       });
       console.error('Network error saving food entry:', {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined,
+        message: errorInstance.message,
+        stack: errorInstance.stack,
         operation: 'addFoodEntry',
         entryId: entry.id
       });
@@ -103,7 +123,14 @@ export class FoodLogService {
       if (response.ok) {
         return true;
       } else {
-        const errorText = await response.text();
+        let errorText = 'Unknown error';
+        try {
+          // Safely attempt to get error text
+          errorText = response.text ? await response.text() : `HTTP ${response.status}`;
+        } catch {
+          errorText = `HTTP ${response.status}: ${response.statusText || 'Unknown error'}`;
+        }
+        
         console.error('API response error:', {
           status: response.status,
           statusText: response.statusText,
@@ -116,14 +143,17 @@ export class FoodLogService {
         return true;
       }
     } catch (error) {
-      await errorService.logError(error as Error, {
+      // Ensure we have an Error object for logging
+      const errorInstance = error instanceof Error ? error : new Error(String(error));
+      
+      await errorService.logError(errorInstance, {
         severity: 'medium',
         category: 'network',
         metadata: { operation: 'removeFoodEntry', entryId: id },
       });
       console.error('Network error deleting food entry:', {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined,
+        message: errorInstance.message,
+        stack: errorInstance.stack,
         operation: 'removeFoodEntry',
         entryId: id
       });
@@ -155,7 +185,14 @@ export class FoodLogService {
       if (response.ok) {
         return true;
       } else {
-        const errorText = await response.text();
+        let errorText = 'Unknown error';
+        try {
+          // Safely attempt to get error text
+          errorText = response.text ? await response.text() : `HTTP ${response.status}`;
+        } catch {
+          errorText = `HTTP ${response.status}: ${response.statusText || 'Unknown error'}`;
+        }
+        
         console.error('API response error:', {
           status: response.status,
           statusText: response.statusText,
@@ -169,14 +206,17 @@ export class FoodLogService {
         return true;
       }
     } catch (error) {
-      await errorService.logError(error as Error, {
+      // Ensure we have an Error object for logging
+      const errorInstance = error instanceof Error ? error : new Error(String(error));
+      
+      await errorService.logError(errorInstance, {
         severity: 'medium',
         category: 'network',
         metadata: { operation: 'updateFoodEntry', entryId: id, updates },
       });
       console.error('Network error updating food entry:', {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined,
+        message: errorInstance.message,
+        stack: errorInstance.stack,
         operation: 'updateFoodEntry',
         entryId: id,
         updates
