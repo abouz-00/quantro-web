@@ -24,9 +24,6 @@ const ErrorComponent: React.FC = () => {
   throw new Error('Test error');
 };
 
-// Component that doesn't throw
-const NormalComponent: React.FC = () => <div>Normal component</div>;
-
 describe('ErrorBoundary Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
