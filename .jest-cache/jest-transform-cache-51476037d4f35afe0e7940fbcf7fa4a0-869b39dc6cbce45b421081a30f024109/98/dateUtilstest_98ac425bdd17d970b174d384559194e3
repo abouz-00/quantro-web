@@ -1,0 +1,52 @@
+c67b85fbf1ed7df9ad1c3b29c741187a
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+const _dateUtils = require("../dateUtils");
+describe('dateUtils', ()=>{
+    describe('generateEntryId', ()=>{
+        it('generates unique IDs', ()=>{
+            const id1 = (0, _dateUtils.generateEntryId)();
+            const id2 = (0, _dateUtils.generateEntryId)();
+            expect(id1).toBeDefined();
+            expect(id2).toBeDefined();
+            expect(id1).not.toBe(id2);
+        });
+        it('generates IDs with correct format', ()=>{
+            const id = (0, _dateUtils.generateEntryId)();
+            // Should be a string with timestamp and random component
+            expect(typeof id).toBe('string');
+            expect(id.length).toBeGreaterThan(10);
+        });
+    });
+    describe('sameDay', ()=>{
+        it('returns true for same dates', ()=>{
+            const date1 = new Date('2023-01-15T10:30:00Z');
+            const date2 = new Date('2023-01-15T18:45:00Z');
+            expect((0, _dateUtils.sameDay)(date1, date2)).toBe(true);
+        });
+        it('returns false for different dates', ()=>{
+            const date1 = new Date('2023-01-15T10:30:00Z');
+            const date2 = new Date('2023-01-16T10:30:00Z');
+            expect((0, _dateUtils.sameDay)(date1, date2)).toBe(false);
+        });
+        it('handles year differences', ()=>{
+            const date1 = new Date('2023-01-15T10:30:00Z');
+            const date2 = new Date('2024-01-15T10:30:00Z');
+            expect((0, _dateUtils.sameDay)(date1, date2)).toBe(false);
+        });
+        it('handles month differences', ()=>{
+            const date1 = new Date('2023-01-15T10:30:00Z');
+            const date2 = new Date('2023-02-15T10:30:00Z');
+            expect((0, _dateUtils.sameDay)(date1, date2)).toBe(false);
+        });
+        it('handles day differences', ()=>{
+            const date1 = new Date('2023-01-15T10:30:00Z');
+            const date2 = new Date('2023-01-16T10:30:00Z');
+            expect((0, _dateUtils.sameDay)(date1, date2)).toBe(false);
+        });
+    });
+});
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy91dGlscy9fX3Rlc3RzX18vZGF0ZVV0aWxzLnRlc3QudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgXG4gIGdlbmVyYXRlRW50cnlJZCwgXG4gIHNhbWVEYXlcbn0gZnJvbSAnLi4vZGF0ZVV0aWxzJ1xuXG5kZXNjcmliZSgnZGF0ZVV0aWxzJywgKCkgPT4ge1xuICBkZXNjcmliZSgnZ2VuZXJhdGVFbnRyeUlkJywgKCkgPT4ge1xuICAgIGl0KCdnZW5lcmF0ZXMgdW5pcXVlIElEcycsICgpID0+IHtcbiAgICAgIGNvbnN0IGlkMSA9IGdlbmVyYXRlRW50cnlJZCgpXG4gICAgICBjb25zdCBpZDIgPSBnZW5lcmF0ZUVudHJ5SWQoKVxuICAgICAgXG4gICAgICBleHBlY3QoaWQxKS50b0JlRGVmaW5lZCgpXG4gICAgICBleHBlY3QoaWQyKS50b0JlRGVmaW5lZCgpXG4gICAgICBleHBlY3QoaWQxKS5ub3QudG9CZShpZDIpXG4gICAgfSlcblxuICAgIGl0KCdnZW5lcmF0ZXMgSURzIHdpdGggY29ycmVjdCBmb3JtYXQnLCAoKSA9PiB7XG4gICAgICBjb25zdCBpZCA9IGdlbmVyYXRlRW50cnlJZCgpXG4gICAgICBcbiAgICAgIC8vIFNob3VsZCBiZSBhIHN0cmluZyB3aXRoIHRpbWVzdGFtcCBhbmQgcmFuZG9tIGNvbXBvbmVudFxuICAgICAgZXhwZWN0KHR5cGVvZiBpZCkudG9CZSgnc3RyaW5nJylcbiAgICAgIGV4cGVjdChpZC5sZW5ndGgpLnRvQmVHcmVhdGVyVGhhbigxMClcbiAgICB9KVxuICB9KVxuXG4gIGRlc2NyaWJlKCdzYW1lRGF5JywgKCkgPT4ge1xuICAgIGl0KCdyZXR1cm5zIHRydWUgZm9yIHNhbWUgZGF0ZXMnLCAoKSA9PiB7XG4gICAgICBjb25zdCBkYXRlMSA9IG5ldyBEYXRlKCcyMDIzLTAxLTE1VDEwOjMwOjAwWicpXG4gICAgICBjb25zdCBkYXRlMiA9IG5ldyBEYXRlKCcyMDIzLTAxLTE1VDE4OjQ1OjAwWicpXG4gICAgICBcbiAgICAgIGV4cGVjdChzYW1lRGF5KGRhdGUxLCBkYXRlMikpLnRvQmUodHJ1ZSlcbiAgICB9KVxuXG4gICAgaXQoJ3JldHVybnMgZmFsc2UgZm9yIGRpZmZlcmVudCBkYXRlcycsICgpID0+IHtcbiAgICAgIGNvbnN0IGRhdGUxID0gbmV3IERhdGUoJzIwMjMtMDEtMTVUMTA6MzA6MDBaJylcbiAgICAgIGNvbnN0IGRhdGUyID0gbmV3IERhdGUoJzIwMjMtMDEtMTZUMTA6MzA6MDBaJylcbiAgICAgIFxuICAgICAgZXhwZWN0KHNhbWVEYXkoZGF0ZTEsIGRhdGUyKSkudG9CZShmYWxzZSlcbiAgICB9KVxuXG4gICAgaXQoJ2hhbmRsZXMgeWVhciBkaWZmZXJlbmNlcycsICgpID0+IHtcbiAgICAgIGNvbnN0IGRhdGUxID0gbmV3IERhdGUoJzIwMjMtMDEtMTVUMTA6MzA6MDBaJylcbiAgICAgIGNvbnN0IGRhdGUyID0gbmV3IERhdGUoJzIwMjQtMDEtMTVUMTA6MzA6MDBaJylcbiAgICAgIFxuICAgICAgZXhwZWN0KHNhbWVEYXkoZGF0ZTEsIGRhdGUyKSkudG9CZShmYWxzZSlcbiAgICB9KVxuXG4gICAgaXQoJ2hhbmRsZXMgbW9udGggZGlmZmVyZW5jZXMnLCAoKSA9PiB7XG4gICAgICBjb25zdCBkYXRlMSA9IG5ldyBEYXRlKCcyMDIzLTAxLTE1VDEwOjMwOjAwWicpXG4gICAgICBjb25zdCBkYXRlMiA9IG5ldyBEYXRlKCcyMDIzLTAyLTE1VDEwOjMwOjAwWicpXG4gICAgICBcbiAgICAgIGV4cGVjdChzYW1lRGF5KGRhdGUxLCBkYXRlMikpLnRvQmUoZmFsc2UpXG4gICAgfSlcblxuICAgIGl0KCdoYW5kbGVzIGRheSBkaWZmZXJlbmNlcycsICgpID0+IHtcbiAgICAgIGNvbnN0IGRhdGUxID0gbmV3IERhdGUoJzIwMjMtMDEtMTVUMTA6MzA6MDBaJylcbiAgICAgIGNvbnN0IGRhdGUyID0gbmV3IERhdGUoJzIwMjMtMDEtMTZUMTA6MzA6MDBaJylcbiAgICAgIFxuICAgICAgZXhwZWN0KHNhbWVEYXkoZGF0ZTEsIGRhdGUyKSkudG9CZShmYWxzZSlcbiAgICB9KVxuICB9KVxufSlcbiJdLCJuYW1lcyI6WyJkZXNjcmliZSIsIml0IiwiaWQxIiwiZ2VuZXJhdGVFbnRyeUlkIiwiaWQyIiwiZXhwZWN0IiwidG9CZURlZmluZWQiLCJub3QiLCJ0b0JlIiwiaWQiLCJsZW5ndGgiLCJ0b0JlR3JlYXRlclRoYW4iLCJkYXRlMSIsIkRhdGUiLCJkYXRlMiIsInNhbWVEYXkiXSwibWFwcGluZ3MiOiI7Ozs7MkJBR087QUFFUEEsU0FBUyxhQUFhO0lBQ3BCQSxTQUFTLG1CQUFtQjtRQUMxQkMsR0FBRyx3QkFBd0I7WUFDekIsTUFBTUMsTUFBTUMsSUFBQUEsMEJBQWU7WUFDM0IsTUFBTUMsTUFBTUQsSUFBQUEsMEJBQWU7WUFFM0JFLE9BQU9ILEtBQUtJLFdBQVc7WUFDdkJELE9BQU9ELEtBQUtFLFdBQVc7WUFDdkJELE9BQU9ILEtBQUtLLEdBQUcsQ0FBQ0MsSUFBSSxDQUFDSjtRQUN2QjtRQUVBSCxHQUFHLHFDQUFxQztZQUN0QyxNQUFNUSxLQUFLTixJQUFBQSwwQkFBZTtZQUUxQix5REFBeUQ7WUFDekRFLE9BQU8sT0FBT0ksSUFBSUQsSUFBSSxDQUFDO1lBQ3ZCSCxPQUFPSSxHQUFHQyxNQUFNLEVBQUVDLGVBQWUsQ0FBQztRQUNwQztJQUNGO0lBRUFYLFNBQVMsV0FBVztRQUNsQkMsR0FBRywrQkFBK0I7WUFDaEMsTUFBTVcsUUFBUSxJQUFJQyxLQUFLO1lBQ3ZCLE1BQU1DLFFBQVEsSUFBSUQsS0FBSztZQUV2QlIsT0FBT1UsSUFBQUEsa0JBQU8sRUFBQ0gsT0FBT0UsUUFBUU4sSUFBSSxDQUFDO1FBQ3JDO1FBRUFQLEdBQUcscUNBQXFDO1lBQ3RDLE1BQU1XLFFBQVEsSUFBSUMsS0FBSztZQUN2QixNQUFNQyxRQUFRLElBQUlELEtBQUs7WUFFdkJSLE9BQU9VLElBQUFBLGtCQUFPLEVBQUNILE9BQU9FLFFBQVFOLElBQUksQ0FBQztRQUNyQztRQUVBUCxHQUFHLDRCQUE0QjtZQUM3QixNQUFNVyxRQUFRLElBQUlDLEtBQUs7WUFDdkIsTUFBTUMsUUFBUSxJQUFJRCxLQUFLO1lBRXZCUixPQUFPVSxJQUFBQSxrQkFBTyxFQUFDSCxPQUFPRSxRQUFRTixJQUFJLENBQUM7UUFDckM7UUFFQVAsR0FBRyw2QkFBNkI7WUFDOUIsTUFBTVcsUUFBUSxJQUFJQyxLQUFLO1lBQ3ZCLE1BQU1DLFFBQVEsSUFBSUQsS0FBSztZQUV2QlIsT0FBT1UsSUFBQUEsa0JBQU8sRUFBQ0gsT0FBT0UsUUFBUU4sSUFBSSxDQUFDO1FBQ3JDO1FBRUFQLEdBQUcsMkJBQTJCO1lBQzVCLE1BQU1XLFFBQVEsSUFBSUMsS0FBSztZQUN2QixNQUFNQyxRQUFRLElBQUlELEtBQUs7WUFFdkJSLE9BQU9VLElBQUFBLGtCQUFPLEVBQUNILE9BQU9FLFFBQVFOLElBQUksQ0FBQztRQUNyQztJQUNGO0FBQ0YifQ==

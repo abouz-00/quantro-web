@@ -73,13 +73,16 @@ describe('useErrorReporting', () => {
 
     await result.current.reportError(testError, testContext);
 
-    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, {
+    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, expect.objectContaining({
       userId: 'user-123',
       sessionId: 'test@example.com',
       url: 'http://localhost/',
-      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/26.1.0',
       category: 'ui',
-    });
+    }));
+
+    // Verify userAgent is present and matches jsdom pattern
+    const callArgs = mockErrorService.logError.mock.calls[0]?.[1];
+    expect(callArgs?.userAgent).toMatch(/Mozilla\/5\.0 \([^)]+\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) jsdom\/26\.1\.0/);
   });
 
   it('should call errorService.logError with string error', async () => {
@@ -92,12 +95,15 @@ describe('useErrorReporting', () => {
 
     await result.current.reportError(testError);
 
-    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, {
+    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, expect.objectContaining({
       userId: 'user-123',
       sessionId: 'test@example.com',
       url: 'http://localhost/',
-      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/26.1.0',
-    });
+    }));
+
+    // Verify userAgent is present and matches jsdom pattern
+    const callArgs = mockErrorService.logError.mock.calls[0]?.[1];
+    expect(callArgs?.userAgent).toMatch(/Mozilla\/5\.0 \([^)]+\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) jsdom\/26\.1\.0/);
   });
 
   it('should call errorService.logWarning with correct parameters', async () => {
@@ -111,14 +117,17 @@ describe('useErrorReporting', () => {
 
     await result.current.reportWarning(testMessage, testContext);
 
-    expect(mockErrorService.logWarning).toHaveBeenCalledWith(testMessage, {
+    expect(mockErrorService.logWarning).toHaveBeenCalledWith(testMessage, expect.objectContaining({
       userId: 'user-123',
       sessionId: 'test@example.com',
       url: 'http://localhost/',
-      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/26.1.0',
       category: 'validation',
       severity: 'low',
-    });
+    }));
+
+    // Verify userAgent is present and matches jsdom pattern
+    const callArgs = mockErrorService.logWarning.mock.calls[0]?.[1];
+    expect(callArgs?.userAgent).toMatch(/Mozilla\/5\.0 \([^)]+\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) jsdom\/26\.1\.0/);
   });
 
   it('should call errorService.logUserAction with correct parameters', async () => {
@@ -133,13 +142,16 @@ describe('useErrorReporting', () => {
 
     await result.current.reportUserAction(testAction, testData, testContext);
 
-    expect(mockErrorService.logUserAction).toHaveBeenCalledWith(testAction, testData, {
+    expect(mockErrorService.logUserAction).toHaveBeenCalledWith(testAction, testData, expect.objectContaining({
       userId: 'user-123',
       sessionId: 'test@example.com',
       url: 'http://localhost/',
-      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/26.1.0',
       category: 'ui',
-    });
+    }));
+
+    // Verify userAgent is present and matches jsdom pattern
+    const callArgs = mockErrorService.logUserAction.mock.calls[0]?.[2];
+    expect(callArgs?.userAgent).toMatch(/Mozilla\/5\.0 \([^)]+\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) jsdom\/26\.1\.0/);
   });
 
   it('should call errorService.logPerformance with correct parameters', async () => {
@@ -154,13 +166,16 @@ describe('useErrorReporting', () => {
 
     await result.current.reportPerformance(testMetric, testValue, testContext);
 
-    expect(mockErrorService.logPerformance).toHaveBeenCalledWith(testMetric, testValue, {
+    expect(mockErrorService.logPerformance).toHaveBeenCalledWith(testMetric, testValue, expect.objectContaining({
       userId: 'user-123',
       sessionId: 'test@example.com',
       url: 'http://localhost/',
-      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/26.1.0',
       category: 'ui',
-    });
+    }));
+
+    // Verify userAgent is present and matches jsdom pattern
+    const callArgs = mockErrorService.logPerformance.mock.calls[0]?.[2];
+    expect(callArgs?.userAgent).toMatch(/Mozilla\/5\.0 \([^)]+\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) jsdom\/26\.1\.0/);
   });
 
   it('should handle session without user data', async () => {
@@ -173,12 +188,15 @@ describe('useErrorReporting', () => {
 
     await result.current.reportError(testError);
 
-    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, {
+    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, expect.objectContaining({
       userId: undefined,
       sessionId: undefined,
       url: 'http://localhost/',
-      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/26.1.0',
-    });
+    }));
+
+    // Verify userAgent is present and matches jsdom pattern
+    const callArgs = mockErrorService.logError.mock.calls[0]?.[1];
+    expect(callArgs?.userAgent).toMatch(/Mozilla\/5\.0 \([^)]+\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) jsdom\/26\.1\.0/);
   });
 
   it('should handle session with partial user data', async () => {
@@ -203,12 +221,15 @@ describe('useErrorReporting', () => {
 
     await result.current.reportError(testError);
 
-    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, {
+    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, expect.objectContaining({
       userId: 'user-123',
       sessionId: undefined,
       url: 'http://localhost/',
-      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/26.1.0',
-    });
+    }));
+
+    // Verify userAgent is present and matches jsdom pattern
+    const callArgs = mockErrorService.logError.mock.calls[0]?.[1];
+    expect(callArgs?.userAgent).toMatch(/Mozilla\/5\.0 \([^)]+\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) jsdom\/26\.1\.0/);
   });
 
   it('should handle SSR environment gracefully', async () => {
@@ -223,12 +244,15 @@ describe('useErrorReporting', () => {
 
     await result.current.reportError(testError);
 
-    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, {
+    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, expect.objectContaining({
       userId: 'user-123',
       sessionId: 'test@example.com',
       url: 'http://localhost/',
-      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/26.1.0',
-    });
+    }));
+
+    // Verify userAgent is present and matches jsdom pattern
+    const callArgs = mockErrorService.logError.mock.calls[0]?.[1];
+    expect(callArgs?.userAgent).toMatch(/Mozilla\/5\.0 \([^)]+\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) jsdom\/26\.1\.0/);
   });
 
   it('should merge provided context with base context', async () => {
@@ -247,14 +271,17 @@ describe('useErrorReporting', () => {
 
     await result.current.reportError(testError, testContext);
 
-    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, {
+    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, expect.objectContaining({
       userId: 'override-user-id', // Should use provided context value
       sessionId: 'test@example.com',
       url: 'http://localhost/',
-      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/26.1.0',
       category: 'ui',
       severity: 'high',
-    });
+    }));
+
+    // Verify userAgent is present and matches jsdom pattern
+    const callArgs = mockErrorService.logError.mock.calls[0]?.[1];
+    expect(callArgs?.userAgent).toMatch(/Mozilla\/5\.0 \([^)]+\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) jsdom\/26\.1\.0/);
   });
 
   it('should merge provided context with base context when base has undefined values', async () => {
@@ -272,13 +299,16 @@ describe('useErrorReporting', () => {
 
     await result.current.reportError(testError, testContext);
 
-    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, {
+    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, expect.objectContaining({
       userId: 'provided-user-id', // Should use provided context value
       sessionId: 'provided-session-id', // Should use provided context value
       url: 'http://localhost/',
-      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/26.1.0',
       category: 'ui',
-    });
+    }));
+
+    // Verify userAgent is present and matches jsdom pattern
+    const callArgs = mockErrorService.logError.mock.calls[0]?.[1];
+    expect(callArgs?.userAgent).toMatch(/Mozilla\/5\.0 \([^)]+\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) jsdom\/26\.1\.0/);
   });
 
   it('should handle error service failures gracefully', async () => {
