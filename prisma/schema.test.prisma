@@ -92,6 +92,7 @@ model FoodLog {
   userId      String
   date        DateTime @default(now())
   mealType    String   // "breakfast", "lunch", "dinner", "snack"
+  orderIndex  Int?     // For drag and drop ordering within a day
   
   // Food details
   foodName    String

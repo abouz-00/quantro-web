@@ -6,7 +6,6 @@
     "dev": "next dev -p 3000",
     "dev:clean": "./restart-dev.sh",
     "dev:safe": "./scripts/safe-dev-start.sh",
-    "dev:force": "./scripts/ensure-port-3000.sh && next dev -p 3000",
     "dev:check": "./scripts/check-port-3000.sh",
     "build": "prisma generate && next build",
     "build:safe": "./scripts/safe-build.sh",
@@ -32,7 +31,8 @@
     "deps:update-interactive": "npx npm-check-updates --interactive",
     "deps:update-all": "npx npm-check-updates -u && npm install",
     "deps:audit": "npm audit",
-    "deps:audit-fix": "npm audit fix"
+    "deps:audit-fix": "npm audit fix",
+    "renovate:status": "renovate-config-validator"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.9.1",

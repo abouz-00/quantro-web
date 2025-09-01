@@ -7,13 +7,10 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   typescript: {
-    // !! WARN !!
-    // During deployment, type errors can be treated as warnings
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: process.env.NODE_ENV === 'development',
   },
   eslint: {
-    // During deployment, lint errors can be treated as warnings
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: process.env.NODE_ENV === 'development',
   },
   // Performance optimizations for faster dev startup
   experimental: {

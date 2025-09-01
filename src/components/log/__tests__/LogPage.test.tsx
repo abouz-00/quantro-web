@@ -690,9 +690,6 @@ describe('LogPage', () => {
 
   describe('Keyboard Shortcuts Conditional Logic', () => {
     it('renders correctly when entries are selected and clipboard has entries', () => {
-      (useFoodData.useFoodData as jest.Mock)
-      
-      
       (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [{ id: 'entry-1', description: 'Test Food' }],
         selectedEntries: ['entry-1'],
@@ -718,10 +715,9 @@ describe('LogPage', () => {
       // Test that the component renders with conditional logic for keyboard shortcuts
       expect(screen.getByTestId('food-log-header')).toBeInTheDocument();
       expect(screen.getByTestId('food-log-controls')).toBeInTheDocument();
-    });    it('renders correctly when no entries selected and empty clipboard', () => {
-      (useFoodData.useFoodData as jest.Mock)
-      
-      
+    });
+    
+    it('renders correctly when no entries selected and empty clipboard', () => {
       (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [],
         selectedEntries: [], // No entries selected
@@ -750,9 +746,6 @@ describe('LogPage', () => {
     });
 
     it('renders correctly when entries selected but clipboard empty', () => {
-      (useFoodData.useFoodData as jest.Mock)
-      
-      
       (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [{ id: 'entry-1', description: 'Test Food' }],
         selectedEntries: ['entry-1'], // Entries selected
@@ -781,9 +774,6 @@ describe('LogPage', () => {
     });
 
     it('renders correctly when clipboard has entries but no entries selected', () => {
-      (useFoodData.useFoodData as jest.Mock)
-      
-      
       (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [],
         selectedEntries: [], // No entries selected
