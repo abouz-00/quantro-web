@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom'
+import React from 'react'
 
 // Mock react-calendar globally to avoid ES module issues
 jest.mock('react-calendar', () => ({
@@ -42,7 +43,20 @@ jest.mock('react-chartjs-2', () => ({
 }));
 
 // Mock fetch globally
-global.fetch = jest.fn();
+const mockFetch = jest.fn(() =>
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve([]),
+    text: () => Promise.resolve(''),
+    status: 200,
+  } as Response));
+
+global.fetch = mockFetch;
+
+// Also mock globalThis.fetch for consistency
+if (typeof globalThis !== 'undefined') {
+  globalThis.fetch = mockFetch;
+}
 
 // Mock HTMLCanvasElement.getContext to avoid Chart.js canvas issues
 HTMLCanvasElement.prototype.getContext = jest.fn(() => null);
@@ -328,7 +342,7 @@ Object.defineProperty(global, 'localStorage', {
 });
 
 // Mock fetch
-global.fetch = jest.fn();
+// Already mocked above, no need for conditional
 
 // Clean up mocks after each test
 afterEach(() => {
@@ -401,14 +415,114 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
   disconnect: jest.fn(),
 }));
 
+// Also mock on globalThis for consistency
+if (typeof globalThis !== 'undefined') {
+  globalThis.ResizeObserver = global.ResizeObserver;
+}
+
 // Mock IntersectionObserver for Headless UI components
-global.IntersectionObserver = jest.fn().mockImplementation(() => ({
+const MockIntersectionObserver = jest.fn().mockImplementation(() => ({
   observe: jest.fn(),
   unobserve: jest.fn(),
   disconnect: jest.fn(),
   root: null,
   rootMargin: '',
   thresholds: [],
+}));
+
+// Set up the constructor to return the mock instance
+MockIntersectionObserver.mockImplementation(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+  root: null,
+  rootMargin: '',
+  thresholds: [],
+}));
+
+global.IntersectionObserver = MockIntersectionObserver;
+
+// Also mock on globalThis for consistency
+if (typeof globalThis !== 'undefined') {
+  globalThis.IntersectionObserver = MockIntersectionObserver;
+}
+
+// Mock @dnd-kit modules globally to avoid ResizeObserver issues
+jest.mock('@dnd-kit/core', () => ({
+  DndContext: ({ children }: { children: React.ReactNode }) => React.createElement('div', null, children),
+  useSensor: jest.fn(),
+  useSensors: jest.fn(),
+  PointerSensor: jest.fn(),
+  KeyboardSensor: jest.fn(),
+  closestCenter: jest.fn(),
+  DragOverlay: ({ children }: { children: React.ReactNode }) => React.createElement('div', null, children),
+  useDraggable: () => ({
+    attributes: {},
+    listeners: {},
+    setNodeRef: jest.fn(),
+    transform: null,
+    isDragging: false,
+  }),
+  useDroppable: () => ({
+    setNodeRef: jest.fn(),
+    isOver: false,
+  }),
+}));
+
+jest.mock('@dnd-kit/sortable', () => ({
+  SortableContext: ({ children }: { children: React.ReactNode }) => React.createElement('div', null, children),
+  useSortable: () => ({
+    attributes: {},
+    listeners: {},
+    setNodeRef: jest.fn(),
+    transform: null,
+    transition: null,
+    isDragging: false,
+  }),
+  verticalListSortingStrategy: jest.fn(),
+  sortableKeyboardCoordinates: jest.fn(),
+}));
+
+jest.mock('@dnd-kit/utilities', () => ({
+  CSS: {
+    Transform: {
+      toString: jest.fn(() => ''),
+    },
+  },
+  rectIntersection: jest.fn(),
+  rectSortingStrategy: jest.fn(),
+}));
+
+jest.mock('@dnd-kit/modifiers', () => ({
+  restrictToVerticalAxis: jest.fn(),
+}));
+
+// Mock @headlessui/react to avoid IntersectionObserver issues
+jest.mock('@headlessui/react', () => ({
+  Disclosure: ({ children }: { children: React.ReactNode }) => React.createElement('div', null, children),
+  DisclosureButton: ({ children }: { children: React.ReactNode }) => React.createElement('button', null, children),
+  DisclosurePanel: ({ children }: { children: React.ReactNode }) => React.createElement('div', null, children),
+  Menu: Object.assign(
+    ({ children }: { children: React.ReactNode }) => React.createElement('div', null, children),
+    {
+      Button: ({ children, className, ...props }: { children?: React.ReactNode; className?: string; [key: string]: unknown }) => React.createElement('button', { className, ...props }, children),
+      Items: ({ children, className, ...props }: { children?: React.ReactNode; className?: string; [key: string]: unknown }) => React.createElement('div', { className, ...props }, children),
+      Item: ({ children, ...props }: { children?: React.ReactNode | (({ active }: { active: boolean }) => React.ReactNode); [key: string]: unknown }) => {
+        if (typeof children === 'function') {
+          return children({ active: false });
+        }
+        return React.createElement('div', props, children);
+      },
+    }
+  ),
+  MenuButton: ({ children }: { children: React.ReactNode }) => React.createElement('button', null, children),
+  MenuItems: ({ children }: { children: React.ReactNode }) => React.createElement('div', null, children),
+  MenuItem: ({ children }: { children: React.ReactNode }) => React.createElement('div', null, children),
+  Transition: ({ children }: { children: React.ReactNode }) => React.createElement('div', null, children),
+  Dialog: ({ children }: { children: React.ReactNode }) => React.createElement('div', null, children),
+  DialogPanel: ({ children }: { children: React.ReactNode }) => React.createElement('div', null, children),
+  DialogTitle: ({ children }: { children: React.ReactNode }) => React.createElement('div', null, children),
+  DialogBackdrop: ({ children }: { children: React.ReactNode }) => React.createElement('div', null, children),
 }));
 
 // Mock the environment

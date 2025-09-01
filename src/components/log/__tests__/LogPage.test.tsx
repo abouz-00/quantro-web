@@ -1,36 +1,59 @@
 // Mock fetch globally before any imports
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    ok: true,
-    json: () => Promise.resolve([]),
-    text: () => Promise.resolve(''),
-    status: 200,
-  } as Response)
-);
+// global.fetch is already mocked in jest.setup.ts
 
-// Mock react-calendar to avoid ES module issues
-jest.mock('react-calendar', () => ({
-  __esModule: true,
-  default: jest.fn().mockImplementation(() => null),
+// Mock @dnd-kit/core to avoid ResizeObserver issues
+jest.doMock('@dnd-kit/core', () => ({
+  DndContext: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  useDraggable: () => ({
+    attributes: {},
+    listeners: {},
+    setNodeRef: jest.fn(),
+    transform: null,
+    isDragging: false,
+  }),
+  useDroppable: () => ({
+    setNodeRef: jest.fn(),
+    isOver: false,
+  }),
+  DragOverlay: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  closestCenter: jest.fn(),
+  KeyboardSensor: jest.fn(),
+  PointerSensor: jest.fn(),
 }));
 
-// Mock useFoodData hook to avoid network calls
-jest.mock('../../../hooks/useFoodData', () => ({
-  useFoodData: jest.fn(() => ({
-    foodEntries: [],
-    isLoading: false,
-    error: null,
-    addFoodEntry: jest.fn(),
-    updateFoodEntry: jest.fn(),
-    deleteFoodEntry: jest.fn(),
-    refreshData: jest.fn(),
+// Mock @dnd-kit/sortable to avoid ResizeObserver issues
+jest.doMock('@dnd-kit/sortable', () => ({
+  useSortable: () => ({
+    attributes: {},
+    listeners: {},
+    setNodeRef: jest.fn(),
+    transform: null,
+    transition: null,
+    isDragging: false,
+  }),
+  SortableContext: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  verticalListSortingStrategy: jest.fn(),
+}));
+
+// Mock @dnd-kit/utilities to avoid ResizeObserver issues
+jest.doMock('@dnd-kit/utilities', () => ({
+  CSS: {
+    Transform: {
+      toString: jest.fn(() => ''),
+    },
+  },
+  rectIntersection: jest.fn(),
+  rectSortingStrategy: jest.fn(),
+}));
+
+// Mock Chart.js directly in this test file
+jest.mock('chart.js', () => ({
+  Chart: jest.fn().mockImplementation(() => ({
+    destroy: jest.fn(),
+    update: jest.fn(),
   })),
-}));
-
-// Mock FoodLogService to avoid network calls
-jest.mock('../../../services/foodLogService', () => ({
-  FoodLogService: {
-    loadFoodData: jest.fn(() => Promise.resolve([])),
+  ChartJS: {
+    register: jest.fn(),
   },
 }));
 
@@ -44,27 +67,74 @@ jest.mock('../../../hooks/useClipboard', () => ({
   })),
 }));
 
-// Mock react-calendar CSS
-jest.mock('react-calendar/dist/Calendar.css', () => ({}));
-
-// Mock Chart.js directly in this test file
-jest.mock('chart.js', () => ({
-  Chart: jest.fn().mockImplementation(() => ({
-    destroy: jest.fn(),
-    update: jest.fn(),
+// Mock useGoals hook
+jest.mock('../../../hooks/useGoals', () => ({
+  useGoals: jest.fn(() => ({
+    goals: {},
+    updateGoals: jest.fn(),
   })),
-  ChartJS: {
-    register: jest.fn(),
+}));
+
+// Mock useKeyboardShortcuts hook
+jest.mock('../../../hooks/useKeyboardShortcuts', () => ({
+  useKeyboardShortcuts: jest.fn(() => ({
+    handleKeyDown: jest.fn(),
+  })),
+}));
+
+// Mock useContextMenu hook
+jest.mock('../../../hooks/useContextMenu', () => ({
+  useContextMenu: jest.fn(() => ({
+    contextMenu: null,
+    handleContextMenu: jest.fn(),
+    closeContextMenu: jest.fn(),
+  })),
+}));
+
+// Mock useDragContainment hook
+jest.mock('../../../hooks/useDragContainment', () => ({
+  useDragContainment: jest.fn(() => ({
+    handleDragStart: jest.fn(),
+    handleDragEnd: jest.fn(),
+  })),
+}));
+
+// Mock useDateManager hook
+jest.mock('../../../hooks/useDateManager', () => ({
+  useDateManager: jest.fn(() => ({
+    selectedDate: new Date('2023-06-15'),
+    setSelectedDate: jest.fn(),
+    formatApiDate: () => '2023-06-15',
+    goToPreviousDay: jest.fn(),
+    goToNextDay: jest.fn(),
+    goToToday: jest.fn(),
+  })),
+}));
+
+// Mock useFoodData hook to avoid network calls
+jest.mock('../../../hooks/useFoodData', () => ({
+  useFoodData: jest.fn(() => ({
+    foodData: [],
+    selectedEntries: [],
+    setSelectedEntries: jest.fn(),
+    filteredEntries: [],
+    displayTotals: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+    addFoodEntry: jest.fn(),
+    removeFoodEntry: jest.fn(),
+    updateFoodEntry: jest.fn(),
+    handleReorderEntries: jest.fn(),
+    handleEntrySelect: jest.fn(),
+  })),
+}));
+
+// Mock FoodLogService to avoid network calls
+jest.mock('../../../services/foodLogService', () => ({
+  FoodLogService: {
+    loadFoodData: jest.fn(() => Promise.resolve([])),
+    addFoodEntry: jest.fn(() => Promise.resolve({})),
+    removeFoodEntry: jest.fn(() => Promise.resolve(true)),
+    updateFoodEntry: jest.fn(() => Promise.resolve(true)),
   },
-  register: jest.fn(),
-  ArcElement: jest.fn(),
-  Tooltip: jest.fn(),
-  Legend: jest.fn(),
-  CategoryScale: jest.fn(),
-  LinearScale: jest.fn(),
-  PointElement: jest.fn(),
-  LineElement: jest.fn(),
-  BarElement: jest.fn(),
 }));
 
 // Override the ChartJS import to make sure register is available
@@ -129,6 +199,13 @@ jest.mock('../CopyToast', () => ({
   ),
 }));
 
+// Mock FoodLogTable to avoid @dnd-kit issues
+jest.mock('../../food-log', () => ({
+  FoodLogTable: ({ 'data-testid': testId, ...props }: React.PropsWithChildren<{ 'data-testid'?: string }>) => (
+    <div data-testid={testId || 'food-log-table'} {...props}>FoodLogTable</div>
+  ),
+}));
+
 // Mock food-log components
 jest.mock('../../food-log', () => ({
   FoodLogTable: ({ 'data-testid': testId, ...props }: React.PropsWithChildren<{ 'data-testid'?: string }>) => (
@@ -161,6 +238,12 @@ import LogPage from '../LogPage';
 describe('LogPage', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('renders without crashing', () => {
+    expect(() => {
+      render(<LogPage />);
+    }).not.toThrow();
   });
 
   it('renders all main components', () => {
