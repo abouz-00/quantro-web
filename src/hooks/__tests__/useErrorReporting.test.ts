@@ -257,6 +257,30 @@ describe('useErrorReporting', () => {
     });
   });
 
+  it('should merge provided context with base context when base has undefined values', async () => {
+    mockUseSession.mockReturnValue(mockUnauthenticatedSession);
+    mockErrorService.logError.mockResolvedValue();
+
+    const { result } = renderHook(() => useErrorReporting());
+
+    const testError = new Error('Test error');
+    const testContext = {
+      category: 'ui' as const,
+      userId: 'provided-user-id',
+      sessionId: 'provided-session-id',
+    };
+
+    await result.current.reportError(testError, testContext);
+
+    expect(mockErrorService.logError).toHaveBeenCalledWith(testError, {
+      userId: 'provided-user-id', // Should use provided context value
+      sessionId: 'provided-session-id', // Should use provided context value
+      url: 'http://localhost/',
+      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/26.1.0',
+      category: 'ui',
+    });
+  });
+
   it('should handle error service failures gracefully', async () => {
     mockUseSession.mockReturnValue(mockAuthenticatedSession);
     mockErrorService.logError.mockRejectedValue(new Error('Service failure'));
