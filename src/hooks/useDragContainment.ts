@@ -7,8 +7,8 @@ export const useDragContainment = () => {
       const target = e.target as HTMLElement;
       const foodTableContainer = document.querySelector('.food-table-container');
       
-      if (foodTableContainer && !foodTableContainer.contains(target)) {
-        // Drag started outside food table, allow it
+      if (!foodTableContainer || !foodTableContainer.contains(target)) {
+        // No container or drag started outside food table, allow it
         return;
       }
       

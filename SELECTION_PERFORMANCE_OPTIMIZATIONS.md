@@ -13,7 +13,7 @@ Clicking a selected entry to unselect it was taking longer than expected, causin
 ## Optimizations Implemented
 
 ### 1. Fast Path for Simple Deselection
-- **Location**: `useFoodData.ts` and `EnhancedFoodTable.tsx`
+- **Location**: `useFoodData.ts` and `FoodLogTable.tsx`
 - **Change**: Added early return for the most common case (clicking to deselect a single selected item)
 - **Impact**: Eliminates unnecessary conditional checks for 80% of deselection operations
 
@@ -57,7 +57,7 @@ startTransition(() => {
 ```
 
 ### 5. Event Handler Optimization
-- **Location**: `EnhancedFoodTable.tsx`
+- **Location**: `FoodLogTable.tsx`
 - **Change**: Pre-compute selection state and use early returns
 - **Impact**: Reduces redundant state checks and array operations
 

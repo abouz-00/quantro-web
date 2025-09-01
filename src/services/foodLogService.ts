@@ -26,13 +26,18 @@ export class FoodLogService {
           errorText = `HTTP ${response.status}: ${response.statusText || 'Unknown error'}`;
         }
         
-        console.error('API response error:', {
-          status: response.status,
-          statusText: response.statusText,
+        // Safely log error details with fallbacks
+        const errorDetails = {
+          status: response?.status || 'Unknown',
+          statusText: response?.statusText || 'Unknown',
           body: errorText,
           operation: 'loadFoodData',
-          dateParam
-        });
+          dateParam,
+          url: response?.url || 'Unknown',
+          ok: response?.ok || false
+        };
+        
+        console.error('API response error:', errorDetails);
         // Fallback to localStorage
         return this.loadFromLocalStorage();
       }
@@ -80,13 +85,18 @@ export class FoodLogService {
           errorText = `HTTP ${response.status}: ${response.statusText || 'Unknown error'}`;
         }
         
-        console.error('API response error:', {
-          status: response.status,
-          statusText: response.statusText,
+        // Safely log error details with fallbacks
+        const errorDetails = {
+          status: response?.status || 'Unknown',
+          statusText: response?.statusText || 'Unknown',
           body: errorText,
           operation: 'addFoodEntry',
-          entryId: entry.id
-        });
+          entryId: entry?.id || 'Unknown',
+          url: response?.url || 'Unknown',
+          ok: response?.ok || false
+        };
+        
+        console.error('API response error:', errorDetails);
         // Fallback to localStorage
         this.saveToLocalStorage(entry);
         return entry;
@@ -131,13 +141,18 @@ export class FoodLogService {
           errorText = `HTTP ${response.status}: ${response.statusText || 'Unknown error'}`;
         }
         
-        console.error('API response error:', {
-          status: response.status,
-          statusText: response.statusText,
+        // Safely log error details with fallbacks
+        const errorDetails = {
+          status: response?.status || 'Unknown',
+          statusText: response?.statusText || 'Unknown',
           body: errorText,
           operation: 'removeFoodEntry',
-          entryId: id
-        });
+          entryId: id || 'Unknown',
+          url: response?.url || 'Unknown',
+          ok: response?.ok || false
+        };
+        
+        console.error('API response error:', errorDetails);
         // Fallback to localStorage
         this.removeFromLocalStorage(id);
         return true;
@@ -193,14 +208,19 @@ export class FoodLogService {
           errorText = `HTTP ${response.status}: ${response.statusText || 'Unknown error'}`;
         }
         
-        console.error('API response error:', {
-          status: response.status,
-          statusText: response.statusText,
+        // Safely log error details with fallbacks
+        const errorDetails = {
+          status: response?.status || 'Unknown',
+          statusText: response?.statusText || 'Unknown',
           body: errorText,
           operation: 'updateFoodEntry',
-          entryId: id,
-          updates
-        });
+          entryId: id || 'Unknown',
+          updates,
+          url: response?.url || 'Unknown',
+          ok: response?.ok || false
+        };
+        
+        console.error('API response error:', errorDetails);
         // Fallback to localStorage
         this.updateInLocalStorage(id, updates);
         return true;

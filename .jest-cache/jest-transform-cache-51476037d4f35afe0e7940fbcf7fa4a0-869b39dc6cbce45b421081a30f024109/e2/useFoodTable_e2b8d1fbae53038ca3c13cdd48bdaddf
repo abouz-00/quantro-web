@@ -1,0 +1,61 @@
+26ea136e68c441f8f399700921e942ff
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "useFoodTable", {
+    enumerable: true,
+    get: function() {
+        return useFoodTable;
+    }
+});
+const _react = require("react");
+function useFoodTable() {
+    const [selectedEntries, setSelectedEntries] = (0, _react.useState)([]);
+    const [editingEntry, setEditingEntry] = (0, _react.useState)(null);
+    const [editAmount, setEditAmount] = (0, _react.useState)("");
+    const handleEntrySelect = (0, _react.useCallback)((id, index, event)=>{
+        if (event.shiftKey && selectedEntries.length > 0) {
+            // Handle shift selection logic here
+            // This is simplified - you'd implement range selection
+            setSelectedEntries((prev)=>[
+                    ...prev,
+                    id
+                ]);
+        } else if (event.ctrlKey || event.metaKey) {
+            // Toggle selection
+            setSelectedEntries((prev)=>prev.includes(id) ? prev.filter((entryId)=>entryId !== id) : [
+                    ...prev,
+                    id
+                ]);
+        } else {
+            // Single selection
+            setSelectedEntries([
+                id
+            ]);
+        }
+    }, [
+        selectedEntries
+    ]);
+    const clearSelection = (0, _react.useCallback)(()=>{
+        setSelectedEntries([]);
+    }, []);
+    const state = {
+        selectedEntries,
+        editingEntry,
+        editAmount
+    };
+    const actions = {
+        handleEntrySelect,
+        setSelectedEntries,
+        setEditingEntry,
+        setEditAmount,
+        clearSelection
+    };
+    return [
+        state,
+        actions
+    ];
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb21wb25lbnRzL2Zvb2QtbG9nL2hvb2tzL3VzZUZvb2RUYWJsZS50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyB1c2VTdGF0ZSwgdXNlQ2FsbGJhY2sgfSBmcm9tICdyZWFjdCc7XG5cbmV4cG9ydCBpbnRlcmZhY2UgVXNlRm9vZFRhYmxlU3RhdGUge1xuICBzZWxlY3RlZEVudHJpZXM6IHN0cmluZ1tdO1xuICBlZGl0aW5nRW50cnk6IHN0cmluZyB8IG51bGw7XG4gIGVkaXRBbW91bnQ6IHN0cmluZztcbn1cblxuZXhwb3J0IGludGVyZmFjZSBVc2VGb29kVGFibGVBY3Rpb25zIHtcbiAgaGFuZGxlRW50cnlTZWxlY3Q6IChpZDogc3RyaW5nLCBpbmRleDogbnVtYmVyLCBldmVudDogUmVhY3QuTW91c2VFdmVudCkgPT4gdm9pZDtcbiAgc2V0U2VsZWN0ZWRFbnRyaWVzOiAoZW50cmllczogc3RyaW5nW10pID0+IHZvaWQ7XG4gIHNldEVkaXRpbmdFbnRyeTogKGlkOiBzdHJpbmcgfCBudWxsKSA9PiB2b2lkO1xuICBzZXRFZGl0QW1vdW50OiAoYW1vdW50OiBzdHJpbmcpID0+IHZvaWQ7XG4gIGNsZWFyU2VsZWN0aW9uOiAoKSA9PiB2b2lkO1xufVxuXG5leHBvcnQgZnVuY3Rpb24gdXNlRm9vZFRhYmxlKCk6IFtVc2VGb29kVGFibGVTdGF0ZSwgVXNlRm9vZFRhYmxlQWN0aW9uc10ge1xuICBjb25zdCBbc2VsZWN0ZWRFbnRyaWVzLCBzZXRTZWxlY3RlZEVudHJpZXNdID0gdXNlU3RhdGU8c3RyaW5nW10+KFtdKTtcbiAgY29uc3QgW2VkaXRpbmdFbnRyeSwgc2V0RWRpdGluZ0VudHJ5XSA9IHVzZVN0YXRlPHN0cmluZyB8IG51bGw+KG51bGwpO1xuICBjb25zdCBbZWRpdEFtb3VudCwgc2V0RWRpdEFtb3VudF0gPSB1c2VTdGF0ZTxzdHJpbmc+KFwiXCIpO1xuXG4gIGNvbnN0IGhhbmRsZUVudHJ5U2VsZWN0ID0gdXNlQ2FsbGJhY2soKFxuICAgIGlkOiBzdHJpbmcsIFxuICAgIGluZGV4OiBudW1iZXIsIFxuICAgIGV2ZW50OiBSZWFjdC5Nb3VzZUV2ZW50XG4gICkgPT4ge1xuICAgIGlmIChldmVudC5zaGlmdEtleSAmJiBzZWxlY3RlZEVudHJpZXMubGVuZ3RoID4gMCkge1xuICAgICAgLy8gSGFuZGxlIHNoaWZ0IHNlbGVjdGlvbiBsb2dpYyBoZXJlXG4gICAgICAvLyBUaGlzIGlzIHNpbXBsaWZpZWQgLSB5b3UnZCBpbXBsZW1lbnQgcmFuZ2Ugc2VsZWN0aW9uXG4gICAgICBzZXRTZWxlY3RlZEVudHJpZXMocHJldiA9PiBbLi4ucHJldiwgaWRdKTtcbiAgICB9IGVsc2UgaWYgKGV2ZW50LmN0cmxLZXkgfHwgZXZlbnQubWV0YUtleSkge1xuICAgICAgLy8gVG9nZ2xlIHNlbGVjdGlvblxuICAgICAgc2V0U2VsZWN0ZWRFbnRyaWVzKHByZXYgPT4gXG4gICAgICAgIHByZXYuaW5jbHVkZXMoaWQpIFxuICAgICAgICAgID8gcHJldi5maWx0ZXIoZW50cnlJZCA9PiBlbnRyeUlkICE9PSBpZClcbiAgICAgICAgICA6IFsuLi5wcmV2LCBpZF1cbiAgICAgICk7XG4gICAgfSBlbHNlIHtcbiAgICAgIC8vIFNpbmdsZSBzZWxlY3Rpb25cbiAgICAgIHNldFNlbGVjdGVkRW50cmllcyhbaWRdKTtcbiAgICB9XG4gIH0sIFtzZWxlY3RlZEVudHJpZXNdKTtcblxuICBjb25zdCBjbGVhclNlbGVjdGlvbiA9IHVzZUNhbGxiYWNrKCgpID0+IHtcbiAgICBzZXRTZWxlY3RlZEVudHJpZXMoW10pO1xuICB9LCBbXSk7XG5cbiAgY29uc3Qgc3RhdGU6IFVzZUZvb2RUYWJsZVN0YXRlID0ge1xuICAgIHNlbGVjdGVkRW50cmllcyxcbiAgICBlZGl0aW5nRW50cnksXG4gICAgZWRpdEFtb3VudCxcbiAgfTtcblxuICBjb25zdCBhY3Rpb25zOiBVc2VGb29kVGFibGVBY3Rpb25zID0ge1xuICAgIGhhbmRsZUVudHJ5U2VsZWN0LFxuICAgIHNldFNlbGVjdGVkRW50cmllcyxcbiAgICBzZXRFZGl0aW5nRW50cnksXG4gICAgc2V0RWRpdEFtb3VudCxcbiAgICBjbGVhclNlbGVjdGlvbixcbiAgfTtcblxuICByZXR1cm4gW3N0YXRlLCBhY3Rpb25zXTtcbn1cbiJdLCJuYW1lcyI6WyJ1c2VGb29kVGFibGUiLCJzZWxlY3RlZEVudHJpZXMiLCJzZXRTZWxlY3RlZEVudHJpZXMiLCJ1c2VTdGF0ZSIsImVkaXRpbmdFbnRyeSIsInNldEVkaXRpbmdFbnRyeSIsImVkaXRBbW91bnQiLCJzZXRFZGl0QW1vdW50IiwiaGFuZGxlRW50cnlTZWxlY3QiLCJ1c2VDYWxsYmFjayIsImlkIiwiaW5kZXgiLCJldmVudCIsInNoaWZ0S2V5IiwibGVuZ3RoIiwicHJldiIsImN0cmxLZXkiLCJtZXRhS2V5IiwiaW5jbHVkZXMiLCJmaWx0ZXIiLCJlbnRyeUlkIiwiY2xlYXJTZWxlY3Rpb24iLCJzdGF0ZSIsImFjdGlvbnMiXSwibWFwcGluZ3MiOiI7Ozs7K0JBZ0JnQkE7OztlQUFBQTs7O3VCQWhCc0I7QUFnQi9CLFNBQVNBO0lBQ2QsTUFBTSxDQUFDQyxpQkFBaUJDLG1CQUFtQixHQUFHQyxJQUFBQSxlQUFRLEVBQVcsRUFBRTtJQUNuRSxNQUFNLENBQUNDLGNBQWNDLGdCQUFnQixHQUFHRixJQUFBQSxlQUFRLEVBQWdCO0lBQ2hFLE1BQU0sQ0FBQ0csWUFBWUMsY0FBYyxHQUFHSixJQUFBQSxlQUFRLEVBQVM7SUFFckQsTUFBTUssb0JBQW9CQyxJQUFBQSxrQkFBVyxFQUFDLENBQ3BDQyxJQUNBQyxPQUNBQztRQUVBLElBQUlBLE1BQU1DLFFBQVEsSUFBSVosZ0JBQWdCYSxNQUFNLEdBQUcsR0FBRztZQUNoRCxvQ0FBb0M7WUFDcEMsdURBQXVEO1lBQ3ZEWixtQkFBbUJhLENBQUFBLE9BQVE7dUJBQUlBO29CQUFNTDtpQkFBRztRQUMxQyxPQUFPLElBQUlFLE1BQU1JLE9BQU8sSUFBSUosTUFBTUssT0FBTyxFQUFFO1lBQ3pDLG1CQUFtQjtZQUNuQmYsbUJBQW1CYSxDQUFBQSxPQUNqQkEsS0FBS0csUUFBUSxDQUFDUixNQUNWSyxLQUFLSSxNQUFNLENBQUNDLENBQUFBLFVBQVdBLFlBQVlWLE1BQ25DO3VCQUFJSztvQkFBTUw7aUJBQUc7UUFFckIsT0FBTztZQUNMLG1CQUFtQjtZQUNuQlIsbUJBQW1CO2dCQUFDUTthQUFHO1FBQ3pCO0lBQ0YsR0FBRztRQUFDVDtLQUFnQjtJQUVwQixNQUFNb0IsaUJBQWlCWixJQUFBQSxrQkFBVyxFQUFDO1FBQ2pDUCxtQkFBbUIsRUFBRTtJQUN2QixHQUFHLEVBQUU7SUFFTCxNQUFNb0IsUUFBMkI7UUFDL0JyQjtRQUNBRztRQUNBRTtJQUNGO0lBRUEsTUFBTWlCLFVBQStCO1FBQ25DZjtRQUNBTjtRQUNBRztRQUNBRTtRQUNBYztJQUNGO0lBRUEsT0FBTztRQUFDQztRQUFPQztLQUFRO0FBQ3pCIn0=

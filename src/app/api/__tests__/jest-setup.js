@@ -1,3 +1,6 @@
+// Mock auth function
+const mockAuth = jest.fn();
+
 // Mock NextAuth to avoid ES module issues
 jest.mock('next-auth', () => ({
   __esModule: true,
@@ -6,7 +9,7 @@ jest.mock('next-auth', () => ({
 
 jest.mock('@/lib/auth', () => ({
   __esModule: true,
-  auth: jest.fn(),
+  auth: mockAuth,
   signIn: jest.fn(),
   signOut: jest.fn(),
   handlers: {
@@ -44,6 +47,101 @@ jest.mock('@/lib/prisma', () => ({
       update: jest.fn(),
       delete: jest.fn(),
     },
+    betaInvite: {
+      findMany: jest.fn(),
+      findUnique: jest.fn(),
+      findFirst: jest.fn((args) => {
+        // Intelligent mock that respects query conditions
+        if (args?.where) {
+          const { code, used, revoked, OR } = args.where;
+          
+          // Mock data for different scenarios
+          const mockInvites = {
+            'valid-code': {
+              id: 'invite-123',
+              email: 'test@example.com',
+              code: 'valid-code',
+              used: false,
+              revoked: false,
+              createdAt: new Date('2025-01-01'),
+              expiresAt: new Date('2025-12-31'),
+            },
+            'permanent-code': {
+              id: 'invite-456',
+              email: 'permanent@example.com',
+              code: 'permanent-code',
+              used: false,
+              revoked: false,
+              createdAt: new Date('2025-01-01'),
+              expiresAt: null,
+            },
+            'used-code': {
+              id: 'invite-789',
+              email: 'used@example.com',
+              code: 'used-code',
+              used: true,
+              revoked: false,
+              createdAt: new Date('2025-01-01'),
+              expiresAt: new Date('2025-12-31'),
+            },
+            'revoked-code': {
+              id: 'invite-101',
+              email: 'revoked@example.com',
+              code: 'revoked-code',
+              used: false,
+              revoked: true,
+              createdAt: new Date('2025-01-01'),
+              expiresAt: new Date('2025-12-31'),
+            },
+            'expired-code': {
+              id: 'invite-202',
+              email: 'expired@example.com',
+              code: 'expired-code',
+              used: false,
+              revoked: false,
+              createdAt: new Date('2025-01-01'),
+              expiresAt: new Date('2024-12-31'), // Expired
+            },
+          };
+
+          const invite = mockInvites[code];
+          
+          if (!invite) {
+            return Promise.resolve(null);
+          }
+
+          // Check conditions
+          if (used !== false || revoked !== false) {
+            return Promise.resolve(null);
+          }
+
+          // Check expiration
+          if (OR && OR.length > 0) {
+            const now = new Date();
+            const isValidExpiration = OR.some(condition => {
+              if (condition.expiresAt === null) {
+                return invite.expiresAt === null;
+              }
+              if (condition.expiresAt?.gt) {
+                return invite.expiresAt === null || invite.expiresAt > now;
+              }
+              return true;
+            });
+            
+            if (!isValidExpiration) {
+              return Promise.resolve(null);
+            }
+          }
+
+          return Promise.resolve(invite);
+        }
+        
+        return Promise.resolve(null);
+      }),
+      create: jest.fn(),
+      update: jest.fn(),
+      delete: jest.fn(),
+    },
     $connect: jest.fn(),
     $disconnect: jest.fn(),
   },
@@ -71,7 +169,14 @@ jest.mock('next/server', () => ({
     }
     
     async json() {
-      return typeof this._body === 'string' ? JSON.parse(this._body) : this._body || {};
+      if (typeof this._body === 'string') {
+        try {
+          return JSON.parse(this._body);
+        } catch {
+          throw new SyntaxError(`Unexpected token 'i', "${this._body}" is not valid JSON`);
+        }
+      }
+      return this._body || {};
     }
     
     async text() {
@@ -88,4 +193,20 @@ jest.mock('next/server', () => ({
   },
 }));
 
-export {};
+// Mock console methods
+const mockConsoleError = jest.fn();
+const mockConsoleLog = jest.fn();
+const mockConsoleWarn = jest.fn();
+
+global.console = {
+  ...console,
+  error: mockConsoleError,
+  log: mockConsoleLog,
+  warn: mockConsoleWarn,
+};
+
+// Export mocks for use in tests
+global.mockConsoleError = mockConsoleError;
+global.mockConsoleLog = mockConsoleLog;
+global.mockConsoleWarn = mockConsoleWarn;
+global.mockAuth = mockAuth;

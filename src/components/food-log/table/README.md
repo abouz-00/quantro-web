@@ -8,7 +8,7 @@ This directory contains the refactored table components for the food log feature
 
 ```
 table/
-├── EnhancedFoodTable.tsx      # Main table component (now ~140 lines)
+├── FoodLogTable.tsx      # Main table component (now ~140 lines)
 ├── components/                # Individual UI components
 │   ├── EditableCell.tsx       # Inline editing component (~200 lines)
 │   ├── FoodTableRow.tsx       # Individual row component (~290 lines)
@@ -26,7 +26,7 @@ table/
 
 ## 🎯 Refactored Components
 
-### `EnhancedFoodTable` (Main Container)
+### `FoodLogTable` (Main Container)
 - **Orchestrates** all table functionality
 - **Manages** drag & drop context and sensors
 - **Groups entries** by meal type
@@ -114,10 +114,10 @@ table/
 ## 🎛️ Usage
 
 ```tsx
-import { EnhancedFoodTable } from './components/food-log/table';
+import { FoodLogTable } from './components/food-log/table';
 
 // All the same props as before - the API hasn't changed
-<EnhancedFoodTable
+<FoodLogTable
   foodData={foodData}
   filteredEntries={filteredEntries}
   selectedEntries={selectedEntries}
@@ -142,7 +142,7 @@ All components are exported through `index.ts`:
 
 ```typescript
 // Main table (enhanced version)
-import { FoodTable, EnhancedFoodTable } from './table';
+import { FoodTable, FoodLogTable } from './table';
 
 // Row component
 import { EnhancedSortableTableRow } from './table';
@@ -177,17 +177,17 @@ The components follow a clean, modular architecture:
 ## 🔄 Migration
 
 All previous table variants have been consolidated:
-- ~~`FoodTable.tsx`~~ → `EnhancedFoodTable.tsx`
-- ~~`FoodTable.simple.tsx`~~ → `EnhancedFoodTable.tsx`  
+- ~~`FoodTable.tsx`~~ → `FoodLogTable.tsx`
+- ~~`FoodTable.simple.tsx`~~ → `FoodLogTable.tsx`  
 - ~~`SortableTableRow.tsx`~~ → `EnhancedSortableTableRow.tsx`
 - ~~`SortableTableRowClean.tsx`~~ → `EnhancedSortableTableRow.tsx`
 
 ## 🚀 Usage
 
 ```tsx
-import { EnhancedFoodTable } from '../food-log';
+import { FoodLogTable } from '../food-log';
 
-<EnhancedFoodTable
+<FoodLogTable
   foodData={foodData}
   filteredEntries={filteredEntries}
   selectedEntries={selectedEntries}

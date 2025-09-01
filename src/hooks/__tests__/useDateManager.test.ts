@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react'
-import { useDateManager } from '../useDateManager'
+import { useDateManager, dateHelpers } from '../useDateManager'
 
 // Mock localStorage
 const mockLocalStorage = {
@@ -169,4 +169,89 @@ describe('useDateManager Hook', () => {
     
     expect(onDateChange).toHaveBeenCalledWith(newDate)
   })
+
+  describe('dateHelpers', () => {
+    it('isValidDate returns true for valid dates', () => {
+      expect(dateHelpers.isValidDate(new Date())).toBe(true);
+    });
+
+    it('isValidDate returns false for invalid dates', () => {
+      expect(dateHelpers.isValidDate(new Date('invalid'))).toBe(false);
+      expect(dateHelpers.isValidDate('not a date')).toBe(false);
+    });
+
+    it('isToday returns true for today', () => {
+      expect(dateHelpers.isToday(new Date())).toBe(true);
+    });
+
+    it('isToday returns false for other dates', () => {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      expect(dateHelpers.isToday(yesterday)).toBe(false);
+    });
+
+    it('isSameDate returns true for same dates', () => {
+      const date1 = new Date(2023, 5, 15);
+      const date2 = new Date(2023, 5, 15);
+      expect(dateHelpers.isSameDate(date1, date2)).toBe(true);
+    });
+
+    it('isSameDate returns false for different dates', () => {
+      const date1 = new Date(2023, 5, 15);
+      const date2 = new Date(2023, 5, 16);
+      expect(dateHelpers.isSameDate(date1, date2)).toBe(false);
+    });
+
+    it('formatDisplayDate returns "Today" for today', () => {
+      expect(dateHelpers.formatDisplayDate(new Date())).toBe('Today');
+    });
+
+    it('formatDisplayDate returns formatted date for other dates', () => {
+      const date = new Date(2023, 4, 15); // May 15, 2023 (different from June 15)
+      expect(dateHelpers.formatDisplayDate(date)).toBe('May 15, 2023');
+    });
+
+    it('formatApiDate returns formatted string', () => {
+      const date = new Date(2023, 5, 15);
+      expect(dateHelpers.formatApiDate(date)).toBe('2023-06-15');
+    });
+
+    it('addDays adds days correctly', () => {
+      const date = new Date(2023, 5, 15);
+      const result = dateHelpers.addDays(date, 5);
+      expect(result.getDate()).toBe(20);
+    });
+
+    it('subtractDays subtracts days correctly', () => {
+      const date = new Date(2023, 5, 15);
+      const result = dateHelpers.subtractDays(date, 5);
+      expect(result.getDate()).toBe(10);
+    });
+
+    it('getStartOfDay returns start of day', () => {
+      const date = new Date(2023, 5, 15, 12, 30);
+      const result = dateHelpers.getStartOfDay(date);
+      expect(result.getHours()).toBe(0);
+      expect(result.getMinutes()).toBe(0);
+    });
+
+    it('getEndOfDay returns end of day', () => {
+      const date = new Date(2023, 5, 15, 12, 30);
+      const result = dateHelpers.getEndOfDay(date);
+      expect(result.getHours()).toBe(23);
+      expect(result.getMinutes()).toBe(59);
+    });
+
+    it('isWeekend returns true for weekends', () => {
+      const saturday = new Date(2023, 5, 17); // Saturday
+      const sunday = new Date(2023, 5, 18); // Sunday
+      expect(dateHelpers.isWeekend(saturday)).toBe(true);
+      expect(dateHelpers.isWeekend(sunday)).toBe(true);
+    });
+
+    it('isWeekend returns false for weekdays', () => {
+      const monday = new Date(2023, 5, 12); // Monday
+      expect(dateHelpers.isWeekend(monday)).toBe(false);
+    });
+  });
 })

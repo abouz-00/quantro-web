@@ -114,7 +114,7 @@ User Action → Component → Custom Hook → Service → API → Database
 ```text
 FoodSearchModal → useFoodData → foodLogService → /api/food-logs → Prisma → Database
                                      ↓
-EnhancedFoodTable ← FoodEntry[] ← Local Storage ← Response
+FoodLogTable ← FoodEntry[] ← Local Storage ← Response
 ```
 
 #### **Authentication Flow**

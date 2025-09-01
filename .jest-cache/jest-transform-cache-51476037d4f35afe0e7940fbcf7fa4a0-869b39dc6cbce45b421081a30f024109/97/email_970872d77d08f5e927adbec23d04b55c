@@ -1,0 +1,156 @@
+d97ae114cf31c8ffabe8abcdd618d342
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "sendBetaInviteEmail", {
+    enumerable: true,
+    get: function() {
+        return sendBetaInviteEmail;
+    }
+});
+const _resend = require("resend");
+// Initialize Resend lazily to avoid build-time errors
+function getResendInstance() {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey || apiKey === 'your_resend_api_key_here') {
+        throw new Error('RESEND_API_KEY is not configured');
+    }
+    return new _resend.Resend(apiKey);
+}
+async function sendBetaInviteEmail({ email, code, expiresAt }) {
+    try {
+        // Check if Resend API key is configured
+        if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === 'your_resend_api_key_here') {
+            console.log('📧 Email sending skipped - RESEND_API_KEY not configured');
+            console.log(`Would send beta invite to: ${email}`);
+            console.log(`Invite code: ${code}`);
+            console.log(`Invite URL: ${process.env.NEXTAUTH_URL}/beta-invite?code=${code}`);
+            return {
+                success: true,
+                data: null,
+                skipped: true,
+                message: 'Email sending skipped - API key not configured'
+            };
+        }
+        const inviteUrl = `${process.env.NEXTAUTH_URL}/beta-invite?code=${code}`;
+        const expirationText = expiresAt ? `This invite expires on ${expiresAt.toLocaleDateString()}.` : 'This invite does not expire.';
+        const htmlContent = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Welcome to Quantro Beta</title>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333333; background-color: #f8f9fa;">
+      <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: 0; padding: 0;">
+        <tr>
+          <td align="center" style="padding: 20px;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="margin: 0 auto; background-color: #ffffff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+              <!-- Header with Quantro Logo -->
+              <tr>
+                <td align="center" style="padding: 30px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                  <!-- Fallback text logo if image doesn't load -->
+                  <div style="background-color: rgba(255,255,255,0.1); border-radius: 12px; padding: 15px 25px; margin-bottom: 15px; display: inline-block;">
+                    <h1 style="color: #FFCC33; margin: 0; font-size: 36px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.3); letter-spacing: 2px;">QUANTRO</h1>
+                  </div>
+                  <h2 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">Welcome to Beta!</h2>
+                </td>
+              </tr>
+              
+              <!-- Content Section -->
+              <tr>
+                <td style="padding: 40px 30px;">
+                  <p style="font-size: 18px; color: #333333; margin: 0 0 20px 0;">You've been invited to test Quantro, our smart nutrition tracking app!</p>
+                  
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f8f9fa; border-radius: 12px; margin: 25px 0; border-left: 4px solid #667eea;">
+                    <tr>
+                      <td style="padding: 25px;">
+                        <h2 style="color: #333333; margin: 0 0 15px 0; font-size: 20px; font-weight: 600;">What is Quantro?</h2>
+                        <p style="margin: 0; color: #555555; line-height: 1.8;">Quantro makes it easy to log your meals, track your nutrition goals, and build healthier eating habits. As a beta tester, you'll get early access to all our features and help shape the future of the app.</p>
+                      </td>
+                    </tr>
+                  </table>
+                  
+                  <!-- CTA Button -->
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                    <tr>
+                      <td align="center" style="padding: 35px 0;">
+                        <a href="${inviteUrl}" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">Accept Your Beta Invite</a>
+                      </td>
+                    </tr>
+                  </table>
+                  
+                  <!-- Invite Details -->
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; margin: 25px 0;">
+                    <tr>
+                      <td style="padding: 20px;">
+                        <h3 style="margin: 0 0 10px 0; color: #856404; font-size: 16px;">Your Invite Details:</h3>
+                        <p style="margin: 5px 0; color: #856404;"><strong>Invite Code:</strong> <code style="background-color: #fff; padding: 2px 6px; border-radius: 4px; font-family: monospace;">${code}</code></p>
+                        <p style="margin: 5px 0; color: #856404;"><strong>Expires:</strong> ${expirationText}</p>
+                      </td>
+                    </tr>
+                  </table>
+                  
+                  <p style="color: #666666; font-size: 14px; margin: 25px 0 0 0; text-align: center;">
+                    Questions? Email us at <a href="mailto:hello@quantro.fit" style="color: #667eea; text-decoration: none;">hello@quantro.fit</a>
+                  </p>
+                </td>
+              </tr>
+              
+              <!-- Footer -->
+              <tr>
+                <td style="background-color: #f8f9fa; padding: 20px 30px; text-align: center; border-top: 1px solid #e9ecef;">
+                  <p style="margin: 0; color: #666666; font-size: 14px;">Thanks for being part of our beta community!</p>
+                  <p style="margin: 5px 0 0 0; color: #666666; font-size: 14px; font-weight: 600;">The Quantro Team</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+    `;
+        const resend = getResendInstance();
+        const data = await resend.emails.send({
+            from: 'Quantro Team <hello@quantro.fit>',
+            to: [
+                email
+            ],
+            subject: 'You\'re invited to Quantro Beta! 🎉',
+            html: htmlContent,
+            text: `
+        You're invited to Quantro Beta!
+
+        You've been invited to test Quantro, our smart nutrition tracking app. 
+
+        What is Quantro?
+        Quantro makes it easy to log your meals, track your nutrition goals, and build healthier eating habits. As a beta tester, you'll get early access to all our features and help shape the future of the app.
+
+        Accept your invite: ${inviteUrl}
+        
+        Your invite code: ${code}
+        ${expirationText}
+
+        Questions? Email us at hello@quantro.fit
+
+        Thanks!
+        The Quantro Team
+      `
+        });
+        return {
+            success: true,
+            data
+        };
+    } catch (error) {
+        console.error('Failed to send beta invite email:', error);
+        return {
+            success: false,
+            error
+        };
+    }
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9saWIvZW1haWwudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgUmVzZW5kIH0gZnJvbSAncmVzZW5kJ1xuXG4vLyBJbml0aWFsaXplIFJlc2VuZCBsYXppbHkgdG8gYXZvaWQgYnVpbGQtdGltZSBlcnJvcnNcbmZ1bmN0aW9uIGdldFJlc2VuZEluc3RhbmNlKCkge1xuICBjb25zdCBhcGlLZXkgPSBwcm9jZXNzLmVudi5SRVNFTkRfQVBJX0tFWVxuICBpZiAoIWFwaUtleSB8fCBhcGlLZXkgPT09ICd5b3VyX3Jlc2VuZF9hcGlfa2V5X2hlcmUnKSB7XG4gICAgdGhyb3cgbmV3IEVycm9yKCdSRVNFTkRfQVBJX0tFWSBpcyBub3QgY29uZmlndXJlZCcpXG4gIH1cbiAgcmV0dXJuIG5ldyBSZXNlbmQoYXBpS2V5KVxufVxuXG5pbnRlcmZhY2UgQmV0YUludml0ZUVtYWlsUHJvcHMge1xuICBlbWFpbDogc3RyaW5nXG4gIGNvZGU6IHN0cmluZ1xuICBleHBpcmVzQXQ/OiBEYXRlIHwgbnVsbFxufVxuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gc2VuZEJldGFJbnZpdGVFbWFpbCh7IGVtYWlsLCBjb2RlLCBleHBpcmVzQXQgfTogQmV0YUludml0ZUVtYWlsUHJvcHMpIHtcbiAgdHJ5IHtcbiAgICAvLyBDaGVjayBpZiBSZXNlbmQgQVBJIGtleSBpcyBjb25maWd1cmVkXG4gICAgaWYgKCFwcm9jZXNzLmVudi5SRVNFTkRfQVBJX0tFWSB8fCBwcm9jZXNzLmVudi5SRVNFTkRfQVBJX0tFWSA9PT0gJ3lvdXJfcmVzZW5kX2FwaV9rZXlfaGVyZScpIHtcbiAgICAgIGNvbnNvbGUubG9nKCfwn5OnIEVtYWlsIHNlbmRpbmcgc2tpcHBlZCAtIFJFU0VORF9BUElfS0VZIG5vdCBjb25maWd1cmVkJylcbiAgICAgIGNvbnNvbGUubG9nKGBXb3VsZCBzZW5kIGJldGEgaW52aXRlIHRvOiAke2VtYWlsfWApXG4gICAgICBjb25zb2xlLmxvZyhgSW52aXRlIGNvZGU6ICR7Y29kZX1gKVxuICAgICAgY29uc29sZS5sb2coYEludml0ZSBVUkw6ICR7cHJvY2Vzcy5lbnYuTkVYVEFVVEhfVVJMfS9iZXRhLWludml0ZT9jb2RlPSR7Y29kZX1gKVxuICAgICAgcmV0dXJuIHsgXG4gICAgICAgIHN1Y2Nlc3M6IHRydWUsIFxuICAgICAgICBkYXRhOiBudWxsLFxuICAgICAgICBza2lwcGVkOiB0cnVlLFxuICAgICAgICBtZXNzYWdlOiAnRW1haWwgc2VuZGluZyBza2lwcGVkIC0gQVBJIGtleSBub3QgY29uZmlndXJlZCdcbiAgICAgIH1cbiAgICB9XG5cbiAgICBjb25zdCBpbnZpdGVVcmwgPSBgJHtwcm9jZXNzLmVudi5ORVhUQVVUSF9VUkx9L2JldGEtaW52aXRlP2NvZGU9JHtjb2RlfWBcbiAgICBjb25zdCBleHBpcmF0aW9uVGV4dCA9IGV4cGlyZXNBdCBcbiAgICAgID8gYFRoaXMgaW52aXRlIGV4cGlyZXMgb24gJHtleHBpcmVzQXQudG9Mb2NhbGVEYXRlU3RyaW5nKCl9LmBcbiAgICAgIDogJ1RoaXMgaW52aXRlIGRvZXMgbm90IGV4cGlyZS4nXG5cbiAgICBjb25zdCBodG1sQ29udGVudCA9IGBcbiAgICA8IURPQ1RZUEUgaHRtbD5cbiAgICA8aHRtbD5cbiAgICA8aGVhZD5cbiAgICAgIDxtZXRhIGNoYXJzZXQ9XCJ1dGYtOFwiPlxuICAgICAgPG1ldGEgbmFtZT1cInZpZXdwb3J0XCIgY29udGVudD1cIndpZHRoPWRldmljZS13aWR0aCwgaW5pdGlhbC1zY2FsZT0xLjBcIj5cbiAgICAgIDx0aXRsZT5XZWxjb21lIHRvIFF1YW50cm8gQmV0YTwvdGl0bGU+XG4gICAgPC9oZWFkPlxuICAgIDxib2R5IHN0eWxlPVwibWFyZ2luOiAwOyBwYWRkaW5nOiAwOyBmb250LWZhbWlseTogLWFwcGxlLXN5c3RlbSwgQmxpbmtNYWNTeXN0ZW1Gb250LCAnU2Vnb2UgVUknLCBSb2JvdG8sICdIZWx2ZXRpY2EgTmV1ZScsIEFyaWFsLCBzYW5zLXNlcmlmOyBsaW5lLWhlaWdodDogMS42OyBjb2xvcjogIzMzMzMzMzsgYmFja2dyb3VuZC1jb2xvcjogI2Y4ZjlmYTtcIj5cbiAgICAgIDx0YWJsZSByb2xlPVwicHJlc2VudGF0aW9uXCIgY2VsbHNwYWNpbmc9XCIwXCIgY2VsbHBhZGRpbmc9XCIwXCIgYm9yZGVyPVwiMFwiIHdpZHRoPVwiMTAwJVwiIHN0eWxlPVwibWFyZ2luOiAwOyBwYWRkaW5nOiAwO1wiPlxuICAgICAgICA8dHI+XG4gICAgICAgICAgPHRkIGFsaWduPVwiY2VudGVyXCIgc3R5bGU9XCJwYWRkaW5nOiAyMHB4O1wiPlxuICAgICAgICAgICAgPHRhYmxlIHJvbGU9XCJwcmVzZW50YXRpb25cIiBjZWxsc3BhY2luZz1cIjBcIiBjZWxscGFkZGluZz1cIjBcIiBib3JkZXI9XCIwXCIgd2lkdGg9XCI2MDBcIiBzdHlsZT1cIm1hcmdpbjogMCBhdXRvOyBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmZmZmOyBib3gtc2hhZG93OiAwIDRweCA2cHggcmdiYSgwLCAwLCAwLCAwLjEpO1wiPlxuICAgICAgICAgICAgICA8IS0tIEhlYWRlciB3aXRoIFF1YW50cm8gTG9nbyAtLT5cbiAgICAgICAgICAgICAgPHRyPlxuICAgICAgICAgICAgICAgIDx0ZCBhbGlnbj1cImNlbnRlclwiIHN0eWxlPVwicGFkZGluZzogMzBweCAyMHB4OyBiYWNrZ3JvdW5kOiBsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjNjY3ZWVhIDAlLCAjNzY0YmEyIDEwMCUpO1wiPlxuICAgICAgICAgICAgICAgICAgPCEtLSBGYWxsYmFjayB0ZXh0IGxvZ28gaWYgaW1hZ2UgZG9lc24ndCBsb2FkIC0tPlxuICAgICAgICAgICAgICAgICAgPGRpdiBzdHlsZT1cImJhY2tncm91bmQtY29sb3I6IHJnYmEoMjU1LDI1NSwyNTUsMC4xKTsgYm9yZGVyLXJhZGl1czogMTJweDsgcGFkZGluZzogMTVweCAyNXB4OyBtYXJnaW4tYm90dG9tOiAxNXB4OyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XCI+XG4gICAgICAgICAgICAgICAgICAgIDxoMSBzdHlsZT1cImNvbG9yOiAjRkZDQzMzOyBtYXJnaW46IDA7IGZvbnQtc2l6ZTogMzZweDsgZm9udC13ZWlnaHQ6IDcwMDsgdGV4dC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsMCwwLDAuMyk7IGxldHRlci1zcGFjaW5nOiAycHg7XCI+UVVBTlRSTzwvaDE+XG4gICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICAgIDxoMiBzdHlsZT1cImNvbG9yOiAjZmZmZmZmOyBtYXJnaW46IDA7IGZvbnQtc2l6ZTogMjhweDsgZm9udC13ZWlnaHQ6IDYwMDsgdGV4dC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsMCwwLDAuMyk7XCI+V2VsY29tZSB0byBCZXRhITwvaDI+XG4gICAgICAgICAgICAgICAgPC90ZD5cbiAgICAgICAgICAgICAgPC90cj5cbiAgICAgICAgICAgICAgXG4gICAgICAgICAgICAgIDwhLS0gQ29udGVudCBTZWN0aW9uIC0tPlxuICAgICAgICAgICAgICA8dHI+XG4gICAgICAgICAgICAgICAgPHRkIHN0eWxlPVwicGFkZGluZzogNDBweCAzMHB4O1wiPlxuICAgICAgICAgICAgICAgICAgPHAgc3R5bGU9XCJmb250LXNpemU6IDE4cHg7IGNvbG9yOiAjMzMzMzMzOyBtYXJnaW46IDAgMCAyMHB4IDA7XCI+WW91J3ZlIGJlZW4gaW52aXRlZCB0byB0ZXN0IFF1YW50cm8sIG91ciBzbWFydCBudXRyaXRpb24gdHJhY2tpbmcgYXBwITwvcD5cbiAgICAgICAgICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgPHRhYmxlIHJvbGU9XCJwcmVzZW50YXRpb25cIiBjZWxsc3BhY2luZz1cIjBcIiBjZWxscGFkZGluZz1cIjBcIiBib3JkZXI9XCIwXCIgd2lkdGg9XCIxMDAlXCIgc3R5bGU9XCJiYWNrZ3JvdW5kLWNvbG9yOiAjZjhmOWZhOyBib3JkZXItcmFkaXVzOiAxMnB4OyBtYXJnaW46IDI1cHggMDsgYm9yZGVyLWxlZnQ6IDRweCBzb2xpZCAjNjY3ZWVhO1wiPlxuICAgICAgICAgICAgICAgICAgICA8dHI+XG4gICAgICAgICAgICAgICAgICAgICAgPHRkIHN0eWxlPVwicGFkZGluZzogMjVweDtcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgIDxoMiBzdHlsZT1cImNvbG9yOiAjMzMzMzMzOyBtYXJnaW46IDAgMCAxNXB4IDA7IGZvbnQtc2l6ZTogMjBweDsgZm9udC13ZWlnaHQ6IDYwMDtcIj5XaGF0IGlzIFF1YW50cm8/PC9oMj5cbiAgICAgICAgICAgICAgICAgICAgICAgIDxwIHN0eWxlPVwibWFyZ2luOiAwOyBjb2xvcjogIzU1NTU1NTsgbGluZS1oZWlnaHQ6IDEuODtcIj5RdWFudHJvIG1ha2VzIGl0IGVhc3kgdG8gbG9nIHlvdXIgbWVhbHMsIHRyYWNrIHlvdXIgbnV0cml0aW9uIGdvYWxzLCBhbmQgYnVpbGQgaGVhbHRoaWVyIGVhdGluZyBoYWJpdHMuIEFzIGEgYmV0YSB0ZXN0ZXIsIHlvdSdsbCBnZXQgZWFybHkgYWNjZXNzIHRvIGFsbCBvdXIgZmVhdHVyZXMgYW5kIGhlbHAgc2hhcGUgdGhlIGZ1dHVyZSBvZiB0aGUgYXBwLjwvcD5cbiAgICAgICAgICAgICAgICAgICAgICA8L3RkPlxuICAgICAgICAgICAgICAgICAgICA8L3RyPlxuICAgICAgICAgICAgICAgICAgPC90YWJsZT5cbiAgICAgICAgICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgPCEtLSBDVEEgQnV0dG9uIC0tPlxuICAgICAgICAgICAgICAgICAgPHRhYmxlIHJvbGU9XCJwcmVzZW50YXRpb25cIiBjZWxsc3BhY2luZz1cIjBcIiBjZWxscGFkZGluZz1cIjBcIiBib3JkZXI9XCIwXCIgd2lkdGg9XCIxMDAlXCI+XG4gICAgICAgICAgICAgICAgICAgIDx0cj5cbiAgICAgICAgICAgICAgICAgICAgICA8dGQgYWxpZ249XCJjZW50ZXJcIiBzdHlsZT1cInBhZGRpbmc6IDM1cHggMDtcIj5cbiAgICAgICAgICAgICAgICAgICAgICAgIDxhIGhyZWY9XCIke2ludml0ZVVybH1cIiBzdHlsZT1cImRpc3BsYXk6IGlubGluZS1ibG9jazsgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgIzY2N2VlYSAwJSwgIzc2NGJhMiAxMDAlKTsgY29sb3I6ICNmZmZmZmY7IHRleHQtZGVjb3JhdGlvbjogbm9uZTsgcGFkZGluZzogMTZweCAzMnB4OyBib3JkZXItcmFkaXVzOiA4cHg7IGZvbnQtd2VpZ2h0OiA2MDA7IGZvbnQtc2l6ZTogMTZweDsgYm94LXNoYWRvdzogMCA0cHggMTVweCByZ2JhKDEwMiwgMTI2LCAyMzQsIDAuNCk7XCI+QWNjZXB0IFlvdXIgQmV0YSBJbnZpdGU8L2E+XG4gICAgICAgICAgICAgICAgICAgICAgPC90ZD5cbiAgICAgICAgICAgICAgICAgICAgPC90cj5cbiAgICAgICAgICAgICAgICAgIDwvdGFibGU+XG4gICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgIDwhLS0gSW52aXRlIERldGFpbHMgLS0+XG4gICAgICAgICAgICAgICAgICA8dGFibGUgcm9sZT1cInByZXNlbnRhdGlvblwiIGNlbGxzcGFjaW5nPVwiMFwiIGNlbGxwYWRkaW5nPVwiMFwiIGJvcmRlcj1cIjBcIiB3aWR0aD1cIjEwMCVcIiBzdHlsZT1cImJhY2tncm91bmQtY29sb3I6ICNmZmYzY2Q7IGJvcmRlcjogMXB4IHNvbGlkICNmZmVhYTc7IGJvcmRlci1yYWRpdXM6IDhweDsgbWFyZ2luOiAyNXB4IDA7XCI+XG4gICAgICAgICAgICAgICAgICAgIDx0cj5cbiAgICAgICAgICAgICAgICAgICAgICA8dGQgc3R5bGU9XCJwYWRkaW5nOiAyMHB4O1wiPlxuICAgICAgICAgICAgICAgICAgICAgICAgPGgzIHN0eWxlPVwibWFyZ2luOiAwIDAgMTBweCAwOyBjb2xvcjogIzg1NjQwNDsgZm9udC1zaXplOiAxNnB4O1wiPllvdXIgSW52aXRlIERldGFpbHM6PC9oMz5cbiAgICAgICAgICAgICAgICAgICAgICAgIDxwIHN0eWxlPVwibWFyZ2luOiA1cHggMDsgY29sb3I6ICM4NTY0MDQ7XCI+PHN0cm9uZz5JbnZpdGUgQ29kZTo8L3N0cm9uZz4gPGNvZGUgc3R5bGU9XCJiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmOyBwYWRkaW5nOiAycHggNnB4OyBib3JkZXItcmFkaXVzOiA0cHg7IGZvbnQtZmFtaWx5OiBtb25vc3BhY2U7XCI+JHtjb2RlfTwvY29kZT48L3A+XG4gICAgICAgICAgICAgICAgICAgICAgICA8cCBzdHlsZT1cIm1hcmdpbjogNXB4IDA7IGNvbG9yOiAjODU2NDA0O1wiPjxzdHJvbmc+RXhwaXJlczo8L3N0cm9uZz4gJHtleHBpcmF0aW9uVGV4dH08L3A+XG4gICAgICAgICAgICAgICAgICAgICAgPC90ZD5cbiAgICAgICAgICAgICAgICAgICAgPC90cj5cbiAgICAgICAgICAgICAgICAgIDwvdGFibGU+XG4gICAgICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgIDxwIHN0eWxlPVwiY29sb3I6ICM2NjY2NjY7IGZvbnQtc2l6ZTogMTRweDsgbWFyZ2luOiAyNXB4IDAgMCAwOyB0ZXh0LWFsaWduOiBjZW50ZXI7XCI+XG4gICAgICAgICAgICAgICAgICAgIFF1ZXN0aW9ucz8gRW1haWwgdXMgYXQgPGEgaHJlZj1cIm1haWx0bzpoZWxsb0BxdWFudHJvLmZpdFwiIHN0eWxlPVwiY29sb3I6ICM2NjdlZWE7IHRleHQtZGVjb3JhdGlvbjogbm9uZTtcIj5oZWxsb0BxdWFudHJvLmZpdDwvYT5cbiAgICAgICAgICAgICAgICAgIDwvcD5cbiAgICAgICAgICAgICAgICA8L3RkPlxuICAgICAgICAgICAgICA8L3RyPlxuICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgPCEtLSBGb290ZXIgLS0+XG4gICAgICAgICAgICAgIDx0cj5cbiAgICAgICAgICAgICAgICA8dGQgc3R5bGU9XCJiYWNrZ3JvdW5kLWNvbG9yOiAjZjhmOWZhOyBwYWRkaW5nOiAyMHB4IDMwcHg7IHRleHQtYWxpZ246IGNlbnRlcjsgYm9yZGVyLXRvcDogMXB4IHNvbGlkICNlOWVjZWY7XCI+XG4gICAgICAgICAgICAgICAgICA8cCBzdHlsZT1cIm1hcmdpbjogMDsgY29sb3I6ICM2NjY2NjY7IGZvbnQtc2l6ZTogMTRweDtcIj5UaGFua3MgZm9yIGJlaW5nIHBhcnQgb2Ygb3VyIGJldGEgY29tbXVuaXR5ITwvcD5cbiAgICAgICAgICAgICAgICAgIDxwIHN0eWxlPVwibWFyZ2luOiA1cHggMCAwIDA7IGNvbG9yOiAjNjY2NjY2OyBmb250LXNpemU6IDE0cHg7IGZvbnQtd2VpZ2h0OiA2MDA7XCI+VGhlIFF1YW50cm8gVGVhbTwvcD5cbiAgICAgICAgICAgICAgICA8L3RkPlxuICAgICAgICAgICAgICA8L3RyPlxuICAgICAgICAgICAgPC90YWJsZT5cbiAgICAgICAgICA8L3RkPlxuICAgICAgICA8L3RyPlxuICAgICAgPC90YWJsZT5cbiAgICA8L2JvZHk+XG4gICAgPC9odG1sPlxuICAgIGBcblxuICAgIGNvbnN0IHJlc2VuZCA9IGdldFJlc2VuZEluc3RhbmNlKClcbiAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzZW5kLmVtYWlscy5zZW5kKHtcbiAgICAgIGZyb206ICdRdWFudHJvIFRlYW0gPGhlbGxvQHF1YW50cm8uZml0PicsXG4gICAgICB0bzogW2VtYWlsXSxcbiAgICAgIHN1YmplY3Q6ICdZb3VcXCdyZSBpbnZpdGVkIHRvIFF1YW50cm8gQmV0YSEg8J+OiScsXG4gICAgICBodG1sOiBodG1sQ29udGVudCxcbiAgICAgIHRleHQ6IGBcbiAgICAgICAgWW91J3JlIGludml0ZWQgdG8gUXVhbnRybyBCZXRhIVxuXG4gICAgICAgIFlvdSd2ZSBiZWVuIGludml0ZWQgdG8gdGVzdCBRdWFudHJvLCBvdXIgc21hcnQgbnV0cml0aW9uIHRyYWNraW5nIGFwcC4gXG5cbiAgICAgICAgV2hhdCBpcyBRdWFudHJvP1xuICAgICAgICBRdWFudHJvIG1ha2VzIGl0IGVhc3kgdG8gbG9nIHlvdXIgbWVhbHMsIHRyYWNrIHlvdXIgbnV0cml0aW9uIGdvYWxzLCBhbmQgYnVpbGQgaGVhbHRoaWVyIGVhdGluZyBoYWJpdHMuIEFzIGEgYmV0YSB0ZXN0ZXIsIHlvdSdsbCBnZXQgZWFybHkgYWNjZXNzIHRvIGFsbCBvdXIgZmVhdHVyZXMgYW5kIGhlbHAgc2hhcGUgdGhlIGZ1dHVyZSBvZiB0aGUgYXBwLlxuXG4gICAgICAgIEFjY2VwdCB5b3VyIGludml0ZTogJHtpbnZpdGVVcmx9XG4gICAgICAgIFxuICAgICAgICBZb3VyIGludml0ZSBjb2RlOiAke2NvZGV9XG4gICAgICAgICR7ZXhwaXJhdGlvblRleHR9XG5cbiAgICAgICAgUXVlc3Rpb25zPyBFbWFpbCB1cyBhdCBoZWxsb0BxdWFudHJvLmZpdFxuXG4gICAgICAgIFRoYW5rcyFcbiAgICAgICAgVGhlIFF1YW50cm8gVGVhbVxuICAgICAgYFxuICAgIH0pXG5cbiAgICByZXR1cm4geyBzdWNjZXNzOiB0cnVlLCBkYXRhIH1cbiAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICBjb25zb2xlLmVycm9yKCdGYWlsZWQgdG8gc2VuZCBiZXRhIGludml0ZSBlbWFpbDonLCBlcnJvcilcbiAgICByZXR1cm4geyBzdWNjZXNzOiBmYWxzZSwgZXJyb3IgfVxuICB9XG59XG4iXSwibmFtZXMiOlsic2VuZEJldGFJbnZpdGVFbWFpbCIsImdldFJlc2VuZEluc3RhbmNlIiwiYXBpS2V5IiwicHJvY2VzcyIsImVudiIsIlJFU0VORF9BUElfS0VZIiwiRXJyb3IiLCJSZXNlbmQiLCJlbWFpbCIsImNvZGUiLCJleHBpcmVzQXQiLCJjb25zb2xlIiwibG9nIiwiTkVYVEFVVEhfVVJMIiwic3VjY2VzcyIsImRhdGEiLCJza2lwcGVkIiwibWVzc2FnZSIsImludml0ZVVybCIsImV4cGlyYXRpb25UZXh0IiwidG9Mb2NhbGVEYXRlU3RyaW5nIiwiaHRtbENvbnRlbnQiLCJyZXNlbmQiLCJlbWFpbHMiLCJzZW5kIiwiZnJvbSIsInRvIiwic3ViamVjdCIsImh0bWwiLCJ0ZXh0IiwiZXJyb3IiXSwibWFwcGluZ3MiOiI7Ozs7K0JBaUJzQkE7OztlQUFBQTs7O3dCQWpCQztBQUV2QixzREFBc0Q7QUFDdEQsU0FBU0M7SUFDUCxNQUFNQyxTQUFTQyxRQUFRQyxHQUFHLENBQUNDLGNBQWM7SUFDekMsSUFBSSxDQUFDSCxVQUFVQSxXQUFXLDRCQUE0QjtRQUNwRCxNQUFNLElBQUlJLE1BQU07SUFDbEI7SUFDQSxPQUFPLElBQUlDLGNBQU0sQ0FBQ0w7QUFDcEI7QUFRTyxlQUFlRixvQkFBb0IsRUFBRVEsS0FBSyxFQUFFQyxJQUFJLEVBQUVDLFNBQVMsRUFBd0I7SUFDeEYsSUFBSTtRQUNGLHdDQUF3QztRQUN4QyxJQUFJLENBQUNQLFFBQVFDLEdBQUcsQ0FBQ0MsY0FBYyxJQUFJRixRQUFRQyxHQUFHLENBQUNDLGNBQWMsS0FBSyw0QkFBNEI7WUFDNUZNLFFBQVFDLEdBQUcsQ0FBQztZQUNaRCxRQUFRQyxHQUFHLENBQUMsQ0FBQywyQkFBMkIsRUFBRUosT0FBTztZQUNqREcsUUFBUUMsR0FBRyxDQUFDLENBQUMsYUFBYSxFQUFFSCxNQUFNO1lBQ2xDRSxRQUFRQyxHQUFHLENBQUMsQ0FBQyxZQUFZLEVBQUVULFFBQVFDLEdBQUcsQ0FBQ1MsWUFBWSxDQUFDLGtCQUFrQixFQUFFSixNQUFNO1lBQzlFLE9BQU87Z0JBQ0xLLFNBQVM7Z0JBQ1RDLE1BQU07Z0JBQ05DLFNBQVM7Z0JBQ1RDLFNBQVM7WUFDWDtRQUNGO1FBRUEsTUFBTUMsWUFBWSxHQUFHZixRQUFRQyxHQUFHLENBQUNTLFlBQVksQ0FBQyxrQkFBa0IsRUFBRUosTUFBTTtRQUN4RSxNQUFNVSxpQkFBaUJULFlBQ25CLENBQUMsdUJBQXVCLEVBQUVBLFVBQVVVLGtCQUFrQixHQUFHLENBQUMsQ0FBQyxHQUMzRDtRQUVKLE1BQU1DLGNBQWMsQ0FBQzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O2lDQTBDUSxFQUFFSCxVQUFVOzs7Ozs7Ozs7O29NQVV1SixFQUFFVCxLQUFLOzRGQUMvRyxFQUFFVSxlQUFlOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7SUF3QnpHLENBQUM7UUFFRCxNQUFNRyxTQUFTckI7UUFDZixNQUFNYyxPQUFPLE1BQU1PLE9BQU9DLE1BQU0sQ0FBQ0MsSUFBSSxDQUFDO1lBQ3BDQyxNQUFNO1lBQ05DLElBQUk7Z0JBQUNsQjthQUFNO1lBQ1htQixTQUFTO1lBQ1RDLE1BQU1QO1lBQ05RLE1BQU0sQ0FBQzs7Ozs7Ozs7NEJBUWUsRUFBRVgsVUFBVTs7MEJBRWQsRUFBRVQsS0FBSztRQUN6QixFQUFFVSxlQUFlOzs7Ozs7TUFNbkIsQ0FBQztRQUNIO1FBRUEsT0FBTztZQUFFTCxTQUFTO1lBQU1DO1FBQUs7SUFDL0IsRUFBRSxPQUFPZSxPQUFPO1FBQ2RuQixRQUFRbUIsS0FBSyxDQUFDLHFDQUFxQ0E7UUFDbkQsT0FBTztZQUFFaEIsU0FBUztZQUFPZ0I7UUFBTTtJQUNqQztBQUNGIn0=

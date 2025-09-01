@@ -1,5 +1,71 @@
 import '@testing-library/jest-dom'
 
+// Mock react-calendar globally to avoid ES module issues
+jest.mock('react-calendar', () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => null),
+}));
+
+// Mock react-calendar CSS
+jest.mock('react-calendar/dist/Calendar.css', () => ({}));
+
+// Mock Chart.js and react-chartjs-2 to avoid canvas issues
+const mockChartJS = {
+  register: jest.fn(),
+};
+
+jest.mock('chart.js', () => ({
+  Chart: jest.fn().mockImplementation(() => ({
+    destroy: jest.fn(),
+    update: jest.fn(),
+  })),
+  ChartJS: mockChartJS,
+  register: jest.fn(),
+  ArcElement: jest.fn(),
+  Tooltip: jest.fn(),
+  Legend: jest.fn(),
+  CategoryScale: jest.fn(),
+  LinearScale: jest.fn(),
+  PointElement: jest.fn(),
+  LineElement: jest.fn(),
+  BarElement: jest.fn(),
+  // Export ChartJS as both named and default export
+  __esModule: true,
+  default: mockChartJS,
+}));
+
+jest.mock('react-chartjs-2', () => ({
+  Line: jest.fn().mockReturnValue(null),
+  Bar: jest.fn().mockReturnValue(null),
+  Doughnut: jest.fn().mockReturnValue(null),
+  Pie: jest.fn().mockReturnValue(null),
+}));
+
+// Mock fetch globally
+global.fetch = jest.fn();
+
+// Mock HTMLCanvasElement.getContext to avoid Chart.js canvas issues
+HTMLCanvasElement.prototype.getContext = jest.fn(() => null);
+
+// Mock DragEvent for drag and drop testing
+global.DragEvent = class MockDragEvent extends Event {
+  constructor(type: string, eventInitDict?: DragEventInit) {
+    super(type, eventInitDict);
+    this.dataTransfer = (eventInitDict?.dataTransfer || {
+      dropEffect: 'none',
+      effectAllowed: 'all',
+      files: [],
+      items: [],
+      types: [],
+      clearData: jest.fn(),
+      getData: jest.fn(),
+      setData: jest.fn(),
+      setDragImage: jest.fn(),
+    }) as unknown as DataTransfer;
+  }
+  dataTransfer: DataTransfer;
+} as unknown as typeof DragEvent;
+
 // Type definitions for mocks
 interface MockHeaders {
   get(name: string): string | null

@@ -21,7 +21,7 @@ src/components/food-log/
     ├── utils.ts            # Helper functions
     ├── styles.ts           # **SIMPLIFIED** Clean CSS styles
     ├── dragConfig.ts       # **SIMPLIFIED** Basic drag config
-    └── EnhancedFoodTable.tsx # Legacy enhanced version (kept for compatibility)
+    └── FoodLogTable.tsx # Legacy enhanced version (kept for compatibility)
 ```
 
 ## What Was Fixed

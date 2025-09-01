@@ -22,10 +22,11 @@ const customJestConfig = {
   ],
   modulePathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
   transformIgnorePatterns: [
-    'node_modules/(?!(jose|openid-client|@panva/hkdf|preact-render-to-string|@babel/runtime|uuid|oauth|oidc-token-hash|@auth/prisma-adapter)/)'
+    'node_modules/(?!(jose|openid-client|@panva/hkdf|preact-render-to-string|@babel/runtime|uuid|oauth|oidc-token-hash|@auth/prisma-adapter|react-calendar|react-calendar/dist)/)'
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '\\.css$': 'identity-obj-proxy',
   },
   // Test environment setup
   setupFiles: ['<rootDir>/jest.env.js'],
@@ -66,10 +67,10 @@ const customJestConfig = {
   ],
   coverageThreshold: {
     global: {
-      branches: 14,
-      functions: 18,
-      lines: 19,
-      statements: 18,
+      branches: 60,
+      functions: 70,
+      lines: 80,
+      statements: 80,
     },
   },
 }
