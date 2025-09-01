@@ -1,0 +1,23 @@
+9082f2ad853a9fd94cb2d544ab1f01e8
+// Export all utility functions
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+_export_star(require("./dateUtils"), exports);
+_export_star(require("./foodEntryUtils"), exports);
+function _export_star(from, to) {
+    Object.keys(from).forEach(function(k) {
+        if (k !== "default" && !Object.prototype.hasOwnProperty.call(to, k)) {
+            Object.defineProperty(to, k, {
+                enumerable: true,
+                get: function() {
+                    return from[k];
+                }
+            });
+        }
+    });
+    return from;
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy91dGlscy9pbmRleC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBFeHBvcnQgYWxsIHV0aWxpdHkgZnVuY3Rpb25zXG5leHBvcnQgKiBmcm9tICcuL2RhdGVVdGlscyc7XG5leHBvcnQgKiBmcm9tICcuL2Zvb2RFbnRyeVV0aWxzJztcbiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSwrQkFBK0I7Ozs7O3FCQUNqQjtxQkFDQSJ9
