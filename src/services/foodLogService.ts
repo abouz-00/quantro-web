@@ -11,11 +11,6 @@ export class FoodLogService {
    * Load food data for a specific date
    */
   static async loadFoodData(dateParam: string): Promise<FoodEntry[]> {
-    // In test environment, return empty array to avoid fetch issues
-    if (process.env.NODE_ENV === 'test' || process.env.JEST_WORKER_ID) {
-      return [];
-    }
-    
     try {
       const response = await (globalThis as { fetch: typeof fetch }).fetch(`/api/food-logs?date=${dateParam}`);
       
