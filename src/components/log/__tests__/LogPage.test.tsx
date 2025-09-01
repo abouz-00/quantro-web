@@ -1,24 +1,10 @@
 // Mock fetch globally before any imports
 // global.fetch is already mocked in jest.setup.ts
 
-// Mock @dnd-kit/core to avoid ResizeObserver issues
-jest.doMock('@dnd-kit/core', () => ({
-  DndContext: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  useDraggable: () => ({
-    attributes: {},
-    listeners: {},
-    setNodeRef: jest.fn(),
-    transform: null,
-    isDragging: false,
-  }),
-  useDroppable: () => ({
-    setNodeRef: jest.fn(),
-    isOver: false,
-  }),
-  DragOverlay: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  closestCenter: jest.fn(),
-  KeyboardSensor: jest.fn(),
-  PointerSensor: jest.fn(),
+// Mock next/image
+jest.mock('next/image', () => ({
+  __esModule: true,
+  default: ({ src, alt, ...props }: { src: string; alt: string; [key: string]: any }) => <img src={src} alt={alt} {...props} />,
 }));
 
 // Mock @dnd-kit/sortable to avoid ResizeObserver issues
@@ -170,20 +156,25 @@ jest.mock('react-chartjs-2', () => ({
 
 // Mock all child components to prevent rendering issues
 jest.mock('../Header', () => ({
-  Header: ({ 'data-testid': testId, ...props }: React.PropsWithChildren<{ 'data-testid'?: string }>) => (
-    <div data-testid={testId || 'header'} {...props}>Header</div>
+  Header: ({ 'data-testid': testId, setIsTargetsModalOpen, setIsMainMenuOpen, isMainMenuOpen }: { 'data-testid'?: string; setIsTargetsModalOpen: (open: boolean) => void; setIsMainMenuOpen: (open: boolean) => void; isMainMenuOpen: boolean }) => (
+    <div data-testid={testId || 'header'}>
+      <button onClick={() => setIsTargetsModalOpen(true)} data-testid="targets-button">Targets</button>
+      <button onClick={() => setIsMainMenuOpen(!isMainMenuOpen)} data-testid="menu-button">Menu</button>
+    </div>
   ),
 }));
 
 jest.mock('../DateNavigation', () => ({
-  DateNavigation: ({ 'data-testid': testId, ...props }: React.PropsWithChildren<{ 'data-testid'?: string }>) => (
-    <div data-testid={testId || 'date-navigation'} {...props}>DateNavigation</div>
+  DateNavigation: ({ 'data-testid': testId }: { 'data-testid'?: string }) => (
+    <div data-testid={testId || 'date-navigation'}>June 15, 2023</div>
   ),
 }));
 
 jest.mock('../ActionButtons', () => ({
-  ActionButtons: ({ 'data-testid': testId, ...props }: React.PropsWithChildren<{ 'data-testid'?: string }>) => (
-    <div data-testid={testId || 'action-buttons'} {...props}>ActionButtons</div>
+  ActionButtons: ({ 'data-testid': testId, onAddFood }: { 'data-testid'?: string; onAddFood: () => void }) => (
+    <div data-testid={testId || 'action-buttons'}>
+      <button onClick={onAddFood}>Add Food</button>
+    </div>
   ),
 }));
 
@@ -222,12 +213,12 @@ jest.mock('../../food-log', () => ({
 // Mock food-log modals
 jest.mock('../../food-log/modals', () => ({
   EditFoodModal: () => null,
-  TargetsModal: () => null,
+  TargetsModal: ({ isOpen }: { isOpen: boolean }) => isOpen ? <div data-testid="targets-modal">Targets Modal</div> : null,
 }));
 
 // Mock food-log search
 jest.mock('../../food-log/search', () => ({
-  FoodSearchModal: () => null,
+  FoodSearchModal: () => <div data-testid="food-search-modal"><button>Close</button></div>,
 }));
 
 import React from 'react';
