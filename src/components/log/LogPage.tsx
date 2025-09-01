@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import { FoodSearchModal } from "../food-log/search";
-import { EditFoodModal, TargetsModal } from "../food-log/modals";
+import React, { useState, Suspense } from "react";
+import dynamic from 'next/dynamic';
 import { FoodLogTable } from "../food-log";
-import { EnergySummary, MicronutrientsSection } from "../food-log/core";
 import { useDateManager } from "../../hooks/useDateManager";
 import { useFoodData } from "../../hooks/useFoodData";
 import { useKeyboardShortcuts } from "../../hooks/useKeyboardShortcuts";
@@ -12,13 +10,14 @@ import { useContextMenu } from "../../hooks/useContextMenu";
 import { useClipboard } from "../../hooks/useClipboard";
 import { useGoals } from "../../hooks/useGoals";
 import { useDragContainment } from "../../hooks/useDragContainment";
-import { Header } from "./Header";
-import { DateNavigation } from "./DateNavigation";
-import { ActionButtons } from "./ActionButtons";
-import { ContextMenu } from "./ContextMenu";
-import { CopyToast } from "./CopyToast";
 import { FoodEntry } from "../../types/food";
 import { generateEntryId } from "../../utils/dateUtils";
+
+// Dynamic imports for better performance
+const FoodLogHeader = dynamic(() => import('./FoodLogHeader'));
+const FoodLogStats = dynamic(() => import('./FoodLogStats'));
+const FoodLogControls = dynamic(() => import('./FoodLogControls'));
+const DynamicFoodLogTable = dynamic(() => import('../food-log').then(mod => mod.FoodLogTable));
 
 export default function LogPage() {
   // Modal states
@@ -163,12 +162,15 @@ export default function LogPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F0E7' }}>
-      <Header
-        isMainMenuOpen={isMainMenuOpen}
-        setIsMainMenuOpen={setIsMainMenuOpen}
-        setIsTargetsModalOpen={setIsTargetsModalOpen}
-        data-testid="header"
-      />
+      <Suspense fallback={<div>Loading header...</div>}>
+        <FoodLogHeader
+          isMainMenuOpen={isMainMenuOpen}
+          setIsMainMenuOpen={setIsMainMenuOpen}
+          setIsTargetsModalOpen={setIsTargetsModalOpen}
+          selectedDate={selectedDate}
+          onDateChange={setSelectedDate}
+        />
+      </Suspense>
       
       {/* Content Area with Flex Layout */}
       <div className="flex rounded-t-3xl bg-inherit" style={{ height: 'calc(100vh - 4rem)' }}>
@@ -178,110 +180,68 @@ export default function LogPage() {
           style={{ minWidth: 0, backgroundColor: '#F5F0E7' }}
         >
           <div className="container mx-auto px-4 py-8 pb-40">
-            <DateNavigation
-              selectedDate={selectedDate}
-              onDateChange={setSelectedDate}
-              data-testid="date-navigation"
-            />
-
-            <ActionButtons
-              onAddFood={() => setIsModalOpen(true)}
-              clipboardEntries={clipboardEntries}
-              filteredEntries={filteredEntries}
-              selectedEntries={selectedEntries}
-              onCopyCurrentDay={handleCopyCurrentDay}
-              onCopySelectedItems={handleCopySelectedItems}
-              onPasteEntries={handlePasteEntries}
-              onDeleteSelected={handleDeleteSelected}
-              onCopyToToday={handleCopyToToday}
-              isToday={isToday}
-              data-testid="action-buttons"
-            />
-            
-            {/* Food entries table */}
-                        {/* Food Table - always show the table with meal headings */}
-            <div className="mb-6">
-              <FoodLogTable 
-                foodData={foodData}
+            <Suspense fallback={<div>Loading controls...</div>}>
+              <FoodLogControls
+                onAddFood={() => setIsModalOpen(true)}
+                clipboardEntries={clipboardEntries}
                 filteredEntries={filteredEntries}
                 selectedEntries={selectedEntries}
-                handleEntrySelect={handleEntrySelect}
-                removeFoodEntry={removeFoodEntry}
+                onCopyCurrentDay={handleCopyCurrentDay}
+                onCopySelectedItems={handleCopySelectedItems}
+                onPasteEntries={handlePasteEntries}
+                onDeleteSelected={handleDeleteSelected}
+                onCopyToToday={handleCopyToToday}
+                isToday={isToday}
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+                isTargetsModalOpen={isTargetsModalOpen}
+                setIsTargetsModalOpen={setIsTargetsModalOpen}
+                editModalEntry={editModalEntry}
+                setEditModalEntry={setEditModalEntry}
+                selectedDate={selectedDate}
+                addFoodEntry={addFoodEntry}
                 updateFoodEntry={updateFoodEntry}
-                onReorderEntries={handleReorderEntries}
-                onContextMenu={handleContextMenu}
-                setSelectedEntries={setSelectedEntries}
-                data-testid="food-log-table"
+                foodData={foodData}
+                contextMenu={contextMenu}
+                onEditEntry={handleEditEntry}
+                onCopyEntries={handleCopyEntries}
+                onDeleteSelectedEntries={handleDeleteSelectedEntries}
+                showCopyToast={showCopyToast}
+                targetInput={targetInput}
+                onInputChange={handleInputChange}
+                onSaveTargets={handleSaveTargets}
               />
+            </Suspense>
+            
+            {/* Food entries table */}
+            <div className="mb-6">
+              <Suspense fallback={<div>Loading table...</div>}>
+                <DynamicFoodLogTable 
+                  foodData={foodData}
+                  filteredEntries={filteredEntries}
+                  selectedEntries={selectedEntries}
+                  handleEntrySelect={handleEntrySelect}
+                  removeFoodEntry={removeFoodEntry}
+                  updateFoodEntry={updateFoodEntry}
+                  onReorderEntries={handleReorderEntries}
+                  onContextMenu={handleContextMenu}
+                  setSelectedEntries={setSelectedEntries}
+                  data-testid="food-log-table"
+                />
+              </Suspense>
             </div>
             
-            {/* Summary */}
-            <div className="mb-6">
-              <EnergySummary 
-                totals={displayTotals} 
-                customGoals={customGoals} 
-                selectedEntryCount={selectedEntries.length}
-                entries={selectedEntries.length > 0 
-                  ? filteredEntries.filter(entry => selectedEntries.includes(entry.id))
-                  : filteredEntries}
-                data-testid="energy-summary"
+            <Suspense fallback={<div>Loading stats...</div>}>
+              <FoodLogStats
+                displayTotals={displayTotals}
+                customGoals={customGoals}
+                selectedEntries={selectedEntries}
+                filteredEntries={filteredEntries}
               />
-            </div>
-
-            {/* Micronutrients */}
-            <div className="mb-6">
-              <MicronutrientsSection 
-                entries={selectedEntries.length > 0 
-                  ? filteredEntries.filter(entry => selectedEntries.includes(entry.id))
-                  : filteredEntries}
-                data-testid="micronutrients-section"
-              />
-            </div>
+            </Suspense>
           </div>
         </div>
       </div>
-
-      {/* Modals */}
-      {isModalOpen && (
-        <FoodSearchModal
-          onClose={() => setIsModalOpen(false)}
-          onAddFood={addFoodEntry}
-          selectedDate={selectedDate}
-        />
-      )}
-
-      <EditFoodModal
-        entry={editModalEntry}
-        isOpen={!!editModalEntry}
-        onClose={() => setEditModalEntry(null)}
-        onSave={updateFoodEntry}
-        originalEntry={editModalEntry ? foodData.find(entry => entry.id === editModalEntry.id) : undefined}
-      />
-
-      <TargetsModal
-        isOpen={isTargetsModalOpen}
-        onClose={() => setIsTargetsModalOpen(false)}
-        targetInput={targetInput}
-        onInputChange={handleInputChange}
-        onSave={handleSaveTargets}
-      />
-
-      {/* Context Menu and Toast */}
-      <ContextMenu
-        contextMenu={contextMenu}
-        selectedEntries={selectedEntries}
-        clipboardEntries={clipboardEntries}
-        onEditEntry={handleEditEntry}
-        onCopyEntries={handleCopyEntries}
-        onPasteEntries={handlePasteEntries}
-        onDeleteSelectedEntries={handleDeleteSelectedEntries}
-        data-testid="context-menu"
-      />
-
-      <CopyToast
-        show={showCopyToast}
-        itemCount={clipboardEntries.length}
-      />
     </div>
   );
 }
