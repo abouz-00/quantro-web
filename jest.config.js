@@ -32,7 +32,7 @@ const customJestConfig = {
   setupFiles: ['<rootDir>/jest.env.js'],
   // Performance optimizations
   maxWorkers: process.env.CI ? 2 : '50%',
-  cache: true,
+  cache: process.env.CI ? true : false, // Disable cache in development to prevent corruption
   cacheDirectory: '<rootDir>/.jest-cache',
   clearMocks: true,
   resetMocks: true,

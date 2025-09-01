@@ -23,7 +23,12 @@ rm -f tsconfig.tsbuildinfo
 
 # Remove any Jest cache
 echo "🗑️  Removing Jest cache..."
+rm -rf .jest-cache
 rm -rf node_modules/.cache/jest
+
+# Remove SWC cache
+echo "🗑️  Removing SWC cache..."
+rm -rf .swc
 
 # Remove any ESLint cache
 echo "🗑️  Removing ESLint cache..."
@@ -32,6 +37,12 @@ rm -f .eslintcache
 # Remove any Prettier cache
 echo "🗑️  Removing Prettier cache..."
 rm -rf node_modules/.cache/prettier
+
+# Remove any other potential cache directories
+echo "🗑️  Removing other cache directories..."
+rm -rf .cache
+rm -rf .turbo
+rm -rf .parcel-cache
 
 echo "✅ Build cleanup complete!"
 echo "💡 You can now run 'npm run dev' or 'npm run build'"

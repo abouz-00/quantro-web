@@ -11,6 +11,8 @@
     "build": "prisma generate && next build",
     "build:safe": "./scripts/safe-build.sh",
     "clean": "./scripts/clean-build.sh",
+    "clean:all": "./scripts/comprehensive-clean.sh",
+    "maintain": "./scripts/preventive-maintenance.sh",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
