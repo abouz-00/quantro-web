@@ -3,6 +3,10 @@
 echo "🧹 Cleaning build cache..."
 rm -rf .next
 rm -rf node_modules/.cache
+rm -rf .swc
+rm -rf .jest-cache
+rm -f tsconfig.tsbuildinfo
+rm -f .eslintcache
 
 echo "🔪 Killing existing processes..."
 # Kill any existing Next.js processes

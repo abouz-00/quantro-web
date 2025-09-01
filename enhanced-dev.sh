@@ -22,6 +22,10 @@ echo "- File descriptor limit: $(ulimit -n)"
 echo "🧹 Cleaning build cache..."
 rm -rf .next 2>/dev/null || true
 rm -rf node_modules/.cache 2>/dev/null || true
+rm -rf .swc 2>/dev/null || true
+rm -rf .jest-cache 2>/dev/null || true
+rm -f tsconfig.tsbuildinfo 2>/dev/null || true
+rm -f .eslintcache 2>/dev/null || true
 
 # Kill any existing processes
 echo "🔄 Killing existing processes..."
