@@ -4,7 +4,7 @@
 // Mock next/dynamic to prevent lazy loading issues
 jest.mock('next/dynamic', () => ({
   __esModule: true,
-  default: (importFunc: any) => {
+  default: (importFunc: () => Promise<{ default: React.ComponentType<unknown> }>) => {
     // For testing, return the actual component synchronously
     return importFunc;
   },
@@ -202,29 +202,29 @@ jest.mock('../CopyToast', () => ({
 
 // Mock FoodLogTable to avoid @dnd-kit issues
 jest.mock('../../food-log', () => ({
-  FoodLogTable: ({ 'data-testid': testId, ...props }: React.PropsWithChildren<{ 'data-testid'?: string }>) => (
-    <div data-testid={testId || 'food-log-table'} {...props}>FoodLogTable</div>
+  FoodLogTable: ({ 'data-testid': testId }: { 'data-testid'?: string }) => (
+    <div data-testid={testId || 'food-log-table'}>FoodLogTable</div>
   ),
 }));
 
 // Mock the new composite components
 jest.mock('../FoodLogHeader', () => ({
   __esModule: true,
-  default: ({ ...props }: { [key: string]: unknown }) => (
+  default: () => (
     <div data-testid="food-log-header" />
   ),
 }));
 
 jest.mock('../FoodLogStats', () => ({
   __esModule: true,
-  default: ({ ...props }: { [key: string]: unknown }) => (
+  default: () => (
     <div data-testid="food-log-stats" />
   ),
 }));
 
 jest.mock('../FoodLogControls', () => ({
   __esModule: true,
-  default: ({ ...props }: { [key: string]: unknown }) => (
+  default: () => (
     <div data-testid="food-log-controls" />
   ),
 }));
@@ -269,9 +269,12 @@ jest.mock('../../food-log/search', () => ({
 }));
 
 import React from 'react';
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import { jest } from '@jest/globals';
 import LogPage from '../LogPage';
+import * as useContextMenu from '../../../hooks/useContextMenu';
+import * as useFoodData from '../../../hooks/useFoodData';
+import * as useClipboard from '../../../hooks/useClipboard';
 
 describe('LogPage', () => {
   beforeEach(() => {
@@ -344,16 +347,13 @@ describe('LogPage', () => {
 
   describe('Context Menu Handlers', () => {
     it('handles edit entry when context menu has target entry', () => {
-      const mockUseContextMenu = require('../../../hooks/useContextMenu');
-      const mockUseFoodData = require('../../../hooks/useFoodData');
-      
-      mockUseContextMenu.useContextMenu.mockReturnValue({
+      (useContextMenu.useContextMenu as jest.Mock).mockReturnValue({
         contextMenu: { targetEntryId: 'entry-1' },
         handleContextMenu: jest.fn(),
         closeContextMenu: jest.fn(),
       });
       
-      mockUseFoodData.useFoodData.mockReturnValue({
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [{ id: 'entry-1', description: 'Test Food' }],
         selectedEntries: [],
         setSelectedEntries: jest.fn(),
@@ -373,16 +373,13 @@ describe('LogPage', () => {
     });
 
     it('handles edit entry when single entry is selected', () => {
-      const mockUseContextMenu = require('../../../hooks/useContextMenu');
-      const mockUseFoodData = require('../../../hooks/useFoodData');
-      
-      mockUseContextMenu.useContextMenu.mockReturnValue({
+      (useContextMenu.useContextMenu as jest.Mock).mockReturnValue({
         contextMenu: null,
         handleContextMenu: jest.fn(),
         closeContextMenu: jest.fn(),
       });
       
-      mockUseFoodData.useFoodData.mockReturnValue({
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [{ id: 'entry-1', description: 'Test Food' }],
         selectedEntries: ['entry-1'],
         setSelectedEntries: jest.fn(),
@@ -401,18 +398,15 @@ describe('LogPage', () => {
     });
 
     it('handles copy entries when entries are selected', () => {
-      const mockUseClipboard = require('../../../hooks/useClipboard');
-      const mockUseFoodData = require('../../../hooks/useFoodData');
-      
       const mockCopyEntries = jest.fn();
-      mockUseClipboard.useClipboard.mockReturnValue({
+      (useClipboard.useClipboard as jest.Mock).mockReturnValue({
         clipboardEntries: [],
         showCopyToast: false,
         copyEntries: mockCopyEntries,
         pasteEntries: jest.fn(),
       });
       
-      mockUseFoodData.useFoodData.mockReturnValue({
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [{ id: 'entry-1', description: 'Test Food' }],
         selectedEntries: ['entry-1'],
         setSelectedEntries: jest.fn(),
@@ -431,25 +425,21 @@ describe('LogPage', () => {
     });
 
     it('handles copy entries when context menu has target entry', () => {
-      const mockUseClipboard = require('../../../hooks/useClipboard');
-      const mockUseContextMenu = require('../../../hooks/useContextMenu');
-      const mockUseFoodData = require('../../../hooks/useFoodData');
-      
       const mockCopyEntries = jest.fn();
-      mockUseClipboard.useClipboard.mockReturnValue({
+      (useClipboard.useClipboard as jest.Mock).mockReturnValue({
         clipboardEntries: [],
         showCopyToast: false,
         copyEntries: mockCopyEntries,
         pasteEntries: jest.fn(),
       });
       
-      mockUseContextMenu.useContextMenu.mockReturnValue({
+      (useContextMenu.useContextMenu as jest.Mock).mockReturnValue({
         contextMenu: { targetEntryId: 'entry-1' },
         handleContextMenu: jest.fn(),
         closeContextMenu: jest.fn(),
       });
       
-      mockUseFoodData.useFoodData.mockReturnValue({
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [{ id: 'entry-1', description: 'Test Food' }],
         selectedEntries: [],
         setSelectedEntries: jest.fn(),
@@ -470,10 +460,9 @@ describe('LogPage', () => {
 
   describe('Copy to Today Functionality', () => {
     it('handles copy to today when there are filtered entries', () => {
-      const mockUseFoodData = require('../../../hooks/useFoodData');
       const mockAddFoodEntry = jest.fn();
       
-      mockUseFoodData.useFoodData.mockReturnValue({
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [{ id: 'entry-1', description: 'Test Food' }],
         selectedEntries: [],
         setSelectedEntries: jest.fn(),
@@ -492,9 +481,7 @@ describe('LogPage', () => {
     });
 
     it('does not copy to today when there are no filtered entries', () => {
-      const mockUseFoodData = require('../../../hooks/useFoodData');
-      
-      mockUseFoodData.useFoodData.mockReturnValue({
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [],
         selectedEntries: [],
         setSelectedEntries: jest.fn(),
@@ -515,10 +502,9 @@ describe('LogPage', () => {
 
   describe('Delete Functionality', () => {
     it('handles delete selected entries when entries are selected', () => {
-      const mockUseFoodData = require('../../../hooks/useFoodData');
       const mockRemoveFoodEntry = jest.fn();
       
-      mockUseFoodData.useFoodData.mockReturnValue({
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [{ id: 'entry-1', description: 'Test Food' }],
         selectedEntries: ['entry-1'],
         setSelectedEntries: jest.fn(),
@@ -537,17 +523,15 @@ describe('LogPage', () => {
     });
 
     it('handles delete selected entries when context menu has target entry', () => {
-      const mockUseContextMenu = require('../../../hooks/useContextMenu');
-      const mockUseFoodData = require('../../../hooks/useFoodData');
       const mockRemoveFoodEntry = jest.fn();
       
-      mockUseContextMenu.useContextMenu.mockReturnValue({
+      (useContextMenu.useContextMenu as jest.Mock).mockReturnValue({
         contextMenu: { targetEntryId: 'entry-1' },
         handleContextMenu: jest.fn(),
         closeContextMenu: jest.fn(),
       });
       
-      mockUseFoodData.useFoodData.mockReturnValue({
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [{ id: 'entry-1', description: 'Test Food' }],
         selectedEntries: [],
         setSelectedEntries: jest.fn(),
@@ -568,12 +552,9 @@ describe('LogPage', () => {
 
   describe('Copy Selected Items Functionality', () => {
     it('handles copy selected items when entries are selected', () => {
-      const mockUseFoodData = require('../../../hooks/useFoodData');
-      const mockUseClipboard = require('../../../hooks/useClipboard');
-
       const mockCopyEntries = jest.fn();
 
-      mockUseFoodData.useFoodData.mockReturnValue({
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [
           { id: 'entry-1', description: 'Apple' },
           { id: 'entry-2', description: 'Banana' }
@@ -592,7 +573,7 @@ describe('LogPage', () => {
         handleEntrySelect: jest.fn(),
       });
 
-      mockUseClipboard.useClipboard.mockReturnValue({
+      (useClipboard.useClipboard as jest.Mock).mockReturnValue({
         clipboardEntries: [],
         showCopyToast: false,
         copyEntries: mockCopyEntries,
@@ -613,12 +594,9 @@ describe('LogPage', () => {
     });
 
     it('does not copy when no entries are selected', () => {
-      const mockUseFoodData = require('../../../hooks/useFoodData');
-      const mockUseClipboard = require('../../../hooks/useClipboard');
-      
       const mockCopyEntries = jest.fn();
       
-      mockUseFoodData.useFoodData.mockReturnValue({
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [{ id: 'entry-1', description: 'Apple' }],
         selectedEntries: [], // No entries selected
         setSelectedEntries: jest.fn(),
@@ -631,7 +609,7 @@ describe('LogPage', () => {
         handleEntrySelect: jest.fn(),
       });
       
-      mockUseClipboard.useClipboard.mockReturnValue({
+      (useClipboard.useClipboard as jest.Mock).mockReturnValue({
         clipboardEntries: [],
         showCopyToast: false,
         copyEntries: mockCopyEntries,
@@ -650,11 +628,9 @@ describe('LogPage', () => {
 
   describe('Delete Selected Functionality', () => {
     it('handles delete selected when entries are selected', () => {
-      const mockUseFoodData = require('../../../hooks/useFoodData');
-      
       const mockRemoveFoodEntry = jest.fn();
       
-      mockUseFoodData.useFoodData.mockReturnValue({
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [
           { id: 'entry-1', description: 'Apple' },
           { id: 'entry-2', description: 'Banana' }
@@ -687,11 +663,9 @@ describe('LogPage', () => {
     });
 
     it('does not delete when no entries are selected', () => {
-      const mockUseFoodData = require('../../../hooks/useFoodData');
-      
       const mockRemoveFoodEntry = jest.fn();
       
-      mockUseFoodData.useFoodData.mockReturnValue({
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [{ id: 'entry-1', description: 'Apple' }],
         selectedEntries: [], // No entries selected
         setSelectedEntries: jest.fn(),
@@ -716,10 +690,10 @@ describe('LogPage', () => {
 
   describe('Keyboard Shortcuts Conditional Logic', () => {
     it('renders correctly when entries are selected and clipboard has entries', () => {
-      const mockUseFoodData = require('../../../hooks/useFoodData');
-      const mockUseClipboard = require('../../../hooks/useClipboard');
+      (useFoodData.useFoodData as jest.Mock)
       
-      mockUseFoodData.useFoodData.mockReturnValue({
+      
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [{ id: 'entry-1', description: 'Test Food' }],
         selectedEntries: ['entry-1'],
         setSelectedEntries: jest.fn(),
@@ -732,7 +706,7 @@ describe('LogPage', () => {
         handleEntrySelect: jest.fn(),
       });
       
-      mockUseClipboard.useClipboard.mockReturnValue({
+      (useClipboard.useClipboard as jest.Mock).mockReturnValue({
         clipboardEntries: [{ id: 'clipboard-1', description: 'Clipboard Food' }],
         showCopyToast: false,
         copyEntries: jest.fn(),
@@ -745,10 +719,10 @@ describe('LogPage', () => {
       expect(screen.getByTestId('food-log-header')).toBeInTheDocument();
       expect(screen.getByTestId('food-log-controls')).toBeInTheDocument();
     });    it('renders correctly when no entries selected and empty clipboard', () => {
-      const mockUseFoodData = require('../../../hooks/useFoodData');
-      const mockUseClipboard = require('../../../hooks/useClipboard');
+      (useFoodData.useFoodData as jest.Mock)
       
-      mockUseFoodData.useFoodData.mockReturnValue({
+      
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [],
         selectedEntries: [], // No entries selected
         setSelectedEntries: jest.fn(),
@@ -761,7 +735,7 @@ describe('LogPage', () => {
         handleEntrySelect: jest.fn(),
       });
       
-      mockUseClipboard.useClipboard.mockReturnValue({
+      (useClipboard.useClipboard as jest.Mock).mockReturnValue({
         clipboardEntries: [], // Empty clipboard
         showCopyToast: false,
         copyEntries: jest.fn(),
@@ -776,10 +750,10 @@ describe('LogPage', () => {
     });
 
     it('renders correctly when entries selected but clipboard empty', () => {
-      const mockUseFoodData = require('../../../hooks/useFoodData');
-      const mockUseClipboard = require('../../../hooks/useClipboard');
+      (useFoodData.useFoodData as jest.Mock)
       
-      mockUseFoodData.useFoodData.mockReturnValue({
+      
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [{ id: 'entry-1', description: 'Test Food' }],
         selectedEntries: ['entry-1'], // Entries selected
         setSelectedEntries: jest.fn(),
@@ -792,7 +766,7 @@ describe('LogPage', () => {
         handleEntrySelect: jest.fn(),
       });
       
-      mockUseClipboard.useClipboard.mockReturnValue({
+      (useClipboard.useClipboard as jest.Mock).mockReturnValue({
         clipboardEntries: [], // Empty clipboard
         showCopyToast: false,
         copyEntries: jest.fn(),
@@ -807,10 +781,10 @@ describe('LogPage', () => {
     });
 
     it('renders correctly when clipboard has entries but no entries selected', () => {
-      const mockUseFoodData = require('../../../hooks/useFoodData');
-      const mockUseClipboard = require('../../../hooks/useClipboard');
+      (useFoodData.useFoodData as jest.Mock)
       
-      mockUseFoodData.useFoodData.mockReturnValue({
+      
+      (useFoodData.useFoodData as jest.Mock).mockReturnValue({
         foodData: [],
         selectedEntries: [], // No entries selected
         setSelectedEntries: jest.fn(),
@@ -823,7 +797,7 @@ describe('LogPage', () => {
         handleEntrySelect: jest.fn(),
       });
       
-      mockUseClipboard.useClipboard.mockReturnValue({
+      (useClipboard.useClipboard as jest.Mock).mockReturnValue({
         clipboardEntries: [{ id: 'clipboard-1', description: 'Clipboard Food' }], // Has clipboard entries
         showCopyToast: false,
         copyEntries: jest.fn(),
