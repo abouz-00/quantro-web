@@ -2,7 +2,6 @@
 
 import React, { useState, Suspense } from "react";
 import dynamic from 'next/dynamic';
-import { FoodLogTable } from "../food-log";
 import { useDateManager } from "../../hooks/useDateManager";
 import { useFoodData } from "../../hooks/useFoodData";
 import { useKeyboardShortcuts } from "../../hooks/useKeyboardShortcuts";
