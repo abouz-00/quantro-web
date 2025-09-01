@@ -10,12 +10,19 @@ import {
 } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 
-// Register Chart.js components
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend
-);
+// Register Chart.js components conditionally to avoid errors in test environment
+if (typeof ChartJS.register === 'function') {
+  try {
+    ChartJS.register(
+      ArcElement,
+      Tooltip,
+      Legend
+    );
+  } catch (error) {
+    // Chart.js components may already be registered in test environment
+    console.warn('Chart.js registration failed:', error);
+  }
+}
 
 import { FoodEntry, getNutrientValueByLabel as getNutrientValue } from '../../../types/foodEntry';
 

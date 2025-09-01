@@ -58,7 +58,7 @@ src/components/food-log/table/
 ├── utils/
 │   ├── supplementDetection.ts    # 🆕 Extracted utility
 │   └── index.ts                  # 🆕 New exports
-└── EnhancedFoodTable.tsx         # Updated to remove unused props
+└── FoodLogTable.tsx         # Updated to remove unused props
 ```
 
 ## 🚀 Benefits

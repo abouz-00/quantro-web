@@ -19,6 +19,6 @@ export * from './table';
 export * from './hooks';
 
 // Clean aliases - all point to our enhanced table
-export { default as FoodTable } from './table/EnhancedFoodTable';
-export { default as FoodTableModular } from './table/EnhancedFoodTable';
-export { default as EnhancedFoodTable } from './table/EnhancedFoodTable';
+export { default as FoodTable } from './table/FoodLogTable';
+export { default as FoodTableModular } from './table/FoodLogTable';
+export { default as FoodLogTable } from './table/FoodLogTable';

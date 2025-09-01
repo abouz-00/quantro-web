@@ -1,0 +1,44 @@
+effbd322c36f93e8941b49ffa94338f4
+/**
+ * Checks if a food description indicates it's a supplement
+ */ "use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "isSupplement", {
+    enumerable: true,
+    get: function() {
+        return isSupplement;
+    }
+});
+function isSupplement(description) {
+    const supplementKeywords = [
+        'vitamin',
+        'supplement',
+        'capsule',
+        'tablet',
+        'pill',
+        'gummy',
+        'multivitamin',
+        'protein powder',
+        'creatine',
+        'omega',
+        'probiotic',
+        'magnesium',
+        'calcium',
+        'iron',
+        'zinc',
+        'b12',
+        'b-12',
+        'd3',
+        'fish oil',
+        'biotin',
+        'collagen',
+        'ashwagandha',
+        'turmeric'
+    ];
+    const lowerDescription = description.toLowerCase();
+    return supplementKeywords.some((keyword)=>lowerDescription.includes(keyword));
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb21wb25lbnRzL2Zvb2QtbG9nL3RhYmxlL3V0aWxzL3N1cHBsZW1lbnREZXRlY3Rpb24udHMiXSwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBDaGVja3MgaWYgYSBmb29kIGRlc2NyaXB0aW9uIGluZGljYXRlcyBpdCdzIGEgc3VwcGxlbWVudFxuICovXG5leHBvcnQgZnVuY3Rpb24gaXNTdXBwbGVtZW50KGRlc2NyaXB0aW9uOiBzdHJpbmcpOiBib29sZWFuIHtcbiAgY29uc3Qgc3VwcGxlbWVudEtleXdvcmRzID0gW1xuICAgICd2aXRhbWluJywgJ3N1cHBsZW1lbnQnLCAnY2Fwc3VsZScsICd0YWJsZXQnLCAncGlsbCcsICdndW1teScsXG4gICAgJ211bHRpdml0YW1pbicsICdwcm90ZWluIHBvd2RlcicsICdjcmVhdGluZScsICdvbWVnYScsICdwcm9iaW90aWMnLFxuICAgICdtYWduZXNpdW0nLCAnY2FsY2l1bScsICdpcm9uJywgJ3ppbmMnLCAnYjEyJywgJ2ItMTInLCAnZDMnLFxuICAgICdmaXNoIG9pbCcsICdiaW90aW4nLCAnY29sbGFnZW4nLCAnYXNod2FnYW5kaGEnLCAndHVybWVyaWMnXG4gIF07XG4gIFxuICBjb25zdCBsb3dlckRlc2NyaXB0aW9uID0gZGVzY3JpcHRpb24udG9Mb3dlckNhc2UoKTtcbiAgcmV0dXJuIHN1cHBsZW1lbnRLZXl3b3Jkcy5zb21lKGtleXdvcmQgPT4gbG93ZXJEZXNjcmlwdGlvbi5pbmNsdWRlcyhrZXl3b3JkKSk7XG59XG4iXSwibmFtZXMiOlsiaXNTdXBwbGVtZW50IiwiZGVzY3JpcHRpb24iLCJzdXBwbGVtZW50S2V5d29yZHMiLCJsb3dlckRlc2NyaXB0aW9uIiwidG9Mb3dlckNhc2UiLCJzb21lIiwia2V5d29yZCIsImluY2x1ZGVzIl0sIm1hcHBpbmdzIjoiQUFBQTs7Q0FFQzs7OzsrQkFDZUE7OztlQUFBQTs7O0FBQVQsU0FBU0EsYUFBYUMsV0FBbUI7SUFDOUMsTUFBTUMscUJBQXFCO1FBQ3pCO1FBQVc7UUFBYztRQUFXO1FBQVU7UUFBUTtRQUN0RDtRQUFnQjtRQUFrQjtRQUFZO1FBQVM7UUFDdkQ7UUFBYTtRQUFXO1FBQVE7UUFBUTtRQUFPO1FBQVE7UUFDdkQ7UUFBWTtRQUFVO1FBQVk7UUFBZTtLQUNsRDtJQUVELE1BQU1DLG1CQUFtQkYsWUFBWUcsV0FBVztJQUNoRCxPQUFPRixtQkFBbUJHLElBQUksQ0FBQ0MsQ0FBQUEsVUFBV0gsaUJBQWlCSSxRQUFRLENBQUNEO0FBQ3RFIn0=

@@ -19,7 +19,7 @@ src/components/food-log/
 │   └── index.ts              # Search exports
 ├── table/                    # Table-related components and utilities
 │   ├── SortableTableRow.tsx  # Individual table row component
-│   ├── EnhancedFoodTable.tsx # Enhanced table with hooks
+│   ├── FoodLogTable.tsx # Enhanced table with hooks
 │   ├── dragConfig.ts         # Drag and drop configuration
 │   ├── styles.ts             # Table-specific styles
 │   ├── types.ts              # Original table types
@@ -65,7 +65,7 @@ import { MacroChart, ProgressBar } from '@/components/food-log/charts';
 import { FoodSearchModal } from '@/components/food-log/search';
 
 // Tables
-import { FoodTableModular, EnhancedFoodTable } from '@/components/food-log/table';
+import { FoodTableModular, FoodLogTable } from '@/components/food-log/table';
 
 // Hooks
 import { useFoodTable, useDragDrop } from '@/components/food-log/hooks';
@@ -91,7 +91,7 @@ import { useFoodTable, useDragDrop } from '@/components/food-log/hooks';
 
 - **FoodTableModular**: Main food table with drag-and-drop (error-fixed version)
 - **SimplifiedFoodTable**: Simplified version using custom hooks
-- **EnhancedFoodTable**: Advanced table with better state management
+- **FoodLogTable**: Advanced table with better state management
 
 ### Custom Hooks
 

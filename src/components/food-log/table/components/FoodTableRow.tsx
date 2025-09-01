@@ -7,7 +7,7 @@ import { useFoodRowDrag } from '../hooks/useFoodRowDrag';
 import { useFoodRowInteractions } from '../hooks/useFoodRowInteractions';
 import { useContextMenu } from '../hooks/useContextMenu';
 import { isSupplement } from '../utils/supplementDetection';
-import styles from '../EnhancedFoodTable.module.css';
+import styles from '../FoodLogTable.module.css';
 
 interface FoodTableRowProps {
   item: FoodEntry;

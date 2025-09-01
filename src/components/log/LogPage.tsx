@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { FoodSearchModal } from "../food-log/search";
 import { EditFoodModal, TargetsModal } from "../food-log/modals";
-import { EnhancedFoodTable } from "../food-log";
+import { FoodLogTable } from "../food-log";
 import { EnergySummary, MicronutrientsSection } from "../food-log/core";
 import { useDateManager } from "../../hooks/useDateManager";
 import { useFoodData } from "../../hooks/useFoodData";
@@ -167,6 +167,7 @@ export default function LogPage() {
         isMainMenuOpen={isMainMenuOpen}
         setIsMainMenuOpen={setIsMainMenuOpen}
         setIsTargetsModalOpen={setIsTargetsModalOpen}
+        data-testid="header"
       />
       
       {/* Content Area with Flex Layout */}
@@ -180,6 +181,7 @@ export default function LogPage() {
             <DateNavigation
               selectedDate={selectedDate}
               onDateChange={setSelectedDate}
+              data-testid="date-navigation"
             />
 
             <ActionButtons
@@ -193,12 +195,13 @@ export default function LogPage() {
               onDeleteSelected={handleDeleteSelected}
               onCopyToToday={handleCopyToToday}
               isToday={isToday}
+              data-testid="action-buttons"
             />
             
             {/* Food entries table */}
                         {/* Food Table - always show the table with meal headings */}
             <div className="mb-6">
-              <EnhancedFoodTable 
+              <FoodLogTable 
                 foodData={foodData}
                 filteredEntries={filteredEntries}
                 selectedEntries={selectedEntries}
@@ -208,6 +211,7 @@ export default function LogPage() {
                 onReorderEntries={handleReorderEntries}
                 onContextMenu={handleContextMenu}
                 setSelectedEntries={setSelectedEntries}
+                data-testid="food-log-table"
               />
             </div>
             
@@ -220,6 +224,7 @@ export default function LogPage() {
                 entries={selectedEntries.length > 0 
                   ? filteredEntries.filter(entry => selectedEntries.includes(entry.id))
                   : filteredEntries}
+                data-testid="energy-summary"
               />
             </div>
 
@@ -229,6 +234,7 @@ export default function LogPage() {
                 entries={selectedEntries.length > 0 
                   ? filteredEntries.filter(entry => selectedEntries.includes(entry.id))
                   : filteredEntries}
+                data-testid="micronutrients-section"
               />
             </div>
           </div>
@@ -269,6 +275,7 @@ export default function LogPage() {
         onCopyEntries={handleCopyEntries}
         onPasteEntries={handlePasteEntries}
         onDeleteSelectedEntries={handleDeleteSelectedEntries}
+        data-testid="context-menu"
       />
 
       <CopyToast
