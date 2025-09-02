@@ -356,7 +356,7 @@ describe('useFoodData', () => {
       await new Promise(resolve => setTimeout(resolve, 0));
     });
 
-    expect(consoleSpy).toHaveBeenCalledWith('Error loading food data:', expect.any(Error));
+    expect(consoleSpy).toHaveBeenCalledWith('❌ Error loading food data:', expect.any(Error));
     expect(result.current.foodData).toEqual([]);
 
     consoleSpy.mockRestore();
@@ -374,7 +374,7 @@ describe('useFoodData', () => {
       await result.current.addFoodEntry(newEntry);
     });
 
-    expect(consoleSpy).toHaveBeenCalledWith('Error adding food entry:', expect.any(Error));
+    expect(consoleSpy).toHaveBeenCalledWith('❌ Error adding food entry:', expect.any(Error));
 
     consoleSpy.mockRestore();
   });

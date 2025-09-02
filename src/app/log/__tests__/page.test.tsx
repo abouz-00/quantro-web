@@ -25,7 +25,7 @@ jest.mock('next/dynamic', () => {
 });
 
 // Mock ErrorBoundary
-jest.mock('../../../components/ErrorBoundary', () => {
+jest.mock('../../../components/shared/ErrorBoundary', () => {
   return function ErrorBoundary({ children }: { children: React.ReactNode }) {
     return <div data-testid="error-boundary">{children}</div>;
   };

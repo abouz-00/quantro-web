@@ -105,7 +105,10 @@ describe('Dashboard Page', () => {
     expect(screen.getByText('Signed in as:')).toBeInTheDocument();
   });
 
-  it('renders dashboard with fallback session when not authenticated', () => {
+  it('redirects when not authenticated', () => {
+    const mockRouter = { push: jest.fn() };
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
+
     mockUseSession.mockReturnValue({
       data: null,
       status: 'unauthenticated',
@@ -114,15 +117,20 @@ describe('Dashboard Page', () => {
 
     render(<Dashboard />);
     
-    // Should show fallback test user email
-    expect(screen.getByText('test@example.com')).toBeInTheDocument();
-    expect(screen.getByText('Signed in as:')).toBeInTheDocument();
+    expect(mockRouter.push).toHaveBeenCalledWith('/');
   });
 
   it('displays Quantro logo', () => {
     mockUseSession.mockReturnValue({
-      data: null,
-      status: 'unauthenticated',
+      data: {
+        user: {
+          id: 'user-1',
+          name: 'John Doe',
+          email: 'john@example.com',
+        },
+        expires: '2025-12-31T23:59:59.999Z',
+      },
+      status: 'authenticated',
       update: jest.fn(),
     });
 
