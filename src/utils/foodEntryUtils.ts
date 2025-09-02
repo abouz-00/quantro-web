@@ -113,7 +113,7 @@ export const transformApiDataToFoodEntry = (apiData: ApiData): FoodEntry => {
     description: apiData.foodName + (apiData.brand ? ` (${apiData.brand})` : ''),
     amount: apiData.quantity.toString(),
     unit: apiData.unit,
-    date: apiData.date || new Date().toISOString().split('T')[0], // Default to today if no date
+    date: apiData.date ? new Date(apiData.date).toISOString() : new Date().toISOString(), // Keep full DateTime
     mealType: apiData.mealType || "other",
     calories: apiData.calories,
     protein: apiData.protein,
@@ -138,5 +138,7 @@ export const transformFoodEntryToApiData = (entry: FoodEntry) => {
     carbs: entry.carbs,
     fat: entry.fat,
     fiber: entry.fiber || 0,
+    sodium: entry.sodium || 0,
+    date: entry.date, // Include the date from the entry
   };
 };

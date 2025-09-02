@@ -17,6 +17,8 @@ interface FoodSelectionSectionProps {
   setQuantity: (value: string) => void;
   unit: string;
   setUnit: (value: string) => void;
+  mealType: "breakfast" | "lunch" | "dinner" | "snack" | "other";
+  setMealType: (mealType: "breakfast" | "lunch" | "dinner" | "snack" | "other") => void;
   onAddFood: () => void;
 }
 
@@ -26,6 +28,8 @@ export const FoodSelectionSection: React.FC<FoodSelectionSectionProps> = ({
   setQuantity,
   unit,
   setUnit,
+  mealType,
+  setMealType,
   onAddFood
 }) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -63,6 +67,21 @@ export const FoodSelectionSection: React.FC<FoodSelectionSectionProps> = ({
             <option value="Cup">Cup</option>
             <option value="Tablespoon">Tablespoon</option>
             <option value="Teaspoon">Teaspoon</option>
+          </select>
+        </div>
+        <div className="flex-1">
+          <label className="block text-sm font-medium mb-1">Meal</label>
+          <select
+            value={mealType}
+            onChange={(e) => setMealType(e.target.value as "breakfast" | "lunch" | "dinner" | "snack" | "other")}
+            onKeyDown={handleKeyDown}
+            className="w-full p-2 border border-gray-300 rounded-sm"
+          >
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+            <option value="snack">Snack</option>
+            <option value="other">Other</option>
           </select>
         </div>
       </div>

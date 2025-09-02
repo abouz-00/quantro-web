@@ -17,6 +17,7 @@ const FoodLogHeader = dynamic(() => import('./FoodLogHeader'));
 const FoodLogStats = dynamic(() => import('./FoodLogStats'));
 const FoodLogControls = dynamic(() => import('./FoodLogControls'));
 const DynamicFoodLogTable = dynamic(() => import('../food-log').then(mod => mod.FoodLogTable));
+const DebugPanel = dynamic(() => import('../DebugPanel'), { ssr: false });
 
 export default function LogPage() {
   // Modal states
@@ -161,6 +162,13 @@ export default function LogPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F0E7' }}>
+      {/* Debug Panel - only in development */}
+      {process.env.NODE_ENV === 'development' && (
+        <Suspense fallback={null}>
+          <DebugPanel />
+        </Suspense>
+      )}
+      
       <Suspense fallback={<div>Loading header...</div>}>
         <FoodLogHeader
           isMainMenuOpen={isMainMenuOpen}

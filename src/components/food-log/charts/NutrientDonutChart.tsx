@@ -24,7 +24,7 @@ if (typeof ChartJS.register === 'function') {
   }
 }
 
-import { FoodEntry, getNutrientValueByLabel as getNutrientValue } from '../../../types/foodEntry';
+import { FoodEntry, getNutrientValueByLabel as getNutrientValue } from '../../../types/food';
 
 interface NutrientDonutChartProps {
   label: string;

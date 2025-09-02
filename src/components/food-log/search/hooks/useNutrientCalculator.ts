@@ -92,7 +92,8 @@ export const useNutrientCalculator = () => {
     selectedFood: USDAFood, 
     quantity: string, 
     unit: string, 
-    selectedDate: Date
+    selectedDate: Date,
+    mealType: "breakfast" | "lunch" | "dinner" | "snack" | "other" = "other"
   ): FoodEntry => {
     const nutrients = calculateNutrients(selectedFood, quantity, unit);
     
@@ -102,7 +103,7 @@ export const useNutrientCalculator = () => {
       amount: quantity,
       unit: unit,
       date: selectedDate.toISOString(),
-      mealType: "other",
+      mealType: mealType,
       ...nutrients,
     } as FoodEntry;
   };

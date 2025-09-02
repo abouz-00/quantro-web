@@ -246,6 +246,10 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon: Icon, title, descriptio
 export default function LandingPage() {
   const { status } = useSession();
   const router = useRouter();
+  const [showDevModal, setShowDevModal] = React.useState(false);
+  const [devEmail, setDevEmail] = React.useState('hello@quantro.fit');
+  const [devPassword, setDevPassword] = React.useState('');
+  const [isSigningIn, setIsSigningIn] = React.useState(false);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -259,6 +263,107 @@ export default function LandingPage() {
 
   const handleGoogleSignIn = () => {
     signIn('google', { callbackUrl: '/dashboard' });
+  };
+
+  const handleDevSignIn = () => {
+    setShowDevModal(true);
+  };
+
+  const handleDevSignInSubmit = async () => {
+    if (!devEmail.trim() || !devPassword.trim()) {
+      alert('Please enter both email and password');
+      return;
+    }
+
+    setIsSigningIn(true);
+    console.log('🚀 Starting dev sign-in...');
+
+    try {
+      console.log('📧 Signing in with:', devEmail);
+
+      // First, try the API approach to validate credentials
+      const apiResponse = await fetch('/api/auth/dev-signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: devEmail, password: devPassword })
+      });
+
+      if (!apiResponse.ok) {
+        const errorData = await apiResponse.json();
+        console.log('Sign-in failed:', errorData.error || 'Invalid credentials');
+        alert('Sign-in failed: ' + (errorData.error || 'Invalid credentials'));
+        return;
+      }
+
+      console.log('✅ Credentials validated');
+
+      // Now use NextAuth to establish session
+      const result = await signIn('credentials', {
+        email: devEmail,
+        password: devPassword,
+        callbackUrl: '/log',
+        redirect: false
+      });
+
+      console.log('🔍 NextAuth result:', result);
+
+      if (result?.error) {
+        console.log('NextAuth failed:', result.error);
+        alert('Session establishment failed: ' + result.error);
+        return;
+      }
+
+      // Sign-in successful
+      console.log('✅ Sign-in successful, redirecting to /log...');
+      setShowDevModal(false);
+
+      // Longer delay to ensure session is fully established
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Check session multiple times if needed
+      let sessionData = null;
+      let attempts = 0;
+      const maxAttempts = 3;
+
+      while (attempts < maxAttempts && !sessionData?.user) {
+        try {
+          const sessionCheck = await fetch('/api/auth/session');
+          sessionData = await sessionCheck.json();
+          console.log(`Session check attempt ${attempts + 1}:`, sessionData?.user ? '✅ Found' : '⏳ Waiting');
+
+          if (!sessionData?.user) {
+            attempts++;
+            if (attempts < maxAttempts) {
+              await new Promise(resolve => setTimeout(resolve, 500));
+            }
+          }
+        } catch {
+          console.log('Session check failed, proceeding anyway...');
+          attempts = maxAttempts; // Exit the loop
+        }
+      }
+
+      if (sessionData?.user) {
+        console.log('🎉 Session established, redirecting...');
+      } else {
+        console.log('ℹ️ Proceeding with redirect (session may still be establishing)...');
+      }
+
+      // Always redirect to /log - the page will handle authentication
+      router.push('/log');
+
+    } catch (error) {
+      console.error('💥 Error during dev sign-in:', error);
+      alert('Error during sign-in: ' + (error instanceof Error ? error.message : String(error)));
+    } finally {
+      setIsSigningIn(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !isSigningIn && devEmail.trim() && devPassword.trim()) {
+      handleDevSignInSubmit();
+    }
   };
 
   if (status === "loading") {
@@ -400,8 +505,120 @@ export default function LandingPage() {
               <span className={poppins.className}>Sign in with Google</span>
             </motion.button>
           </div>
+          
+          {/* Development Sign In Button - Only in development */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="flex justify-center mt-4">
+              <motion.button 
+                onClick={handleDevSignIn}
+                className="bg-yellow-500 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-yellow-300 shadow-lg hover:shadow-xl"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.15 }}
+              >
+                <span className={poppins.className}>🚀 Dev Sign In</span>
+              </motion.button>
+            </div>
+          )}
         </motion.div>
       </main>
+
+      {/* Development Sign In Modal */}
+      {showDevModal && (
+        <div 
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+          onClick={() => setShowDevModal(false)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className={`text-xl font-semibold text-gray-900 ${poppins.className}`}>
+                  Development Sign In
+                </h3>
+                <button
+                  onClick={() => setShowDevModal(false)}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              
+              <p className="text-gray-600 mb-6 text-sm">
+                Enter your email address and development password to sign in for development testing.
+              </p>
+              
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="dev-email" className={`block text-sm font-medium text-gray-700 mb-2 ${poppins.className}`}>
+                    Email Address
+                  </label>
+                  <input
+                    id="dev-email"
+                    type="email"
+                    value={devEmail}
+                    onChange={(e) => setDevEmail(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all ${poppins.className}`}
+                    placeholder="Enter your email"
+                    disabled={isSigningIn}
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="dev-password" className={`block text-sm font-medium text-gray-700 mb-2 ${poppins.className}`}>
+                    Development Password
+                  </label>
+                  <input
+                    id="dev-password"
+                    type="password"
+                    value={devPassword}
+                    onChange={(e) => setDevPassword(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className={`w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all ${poppins.className}`}
+                    placeholder="Enter development password"
+                    disabled={isSigningIn}
+                  />
+                </div>
+                
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowDevModal(false)}
+                    className={`flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors ${poppins.className} font-medium`}
+                    disabled={isSigningIn}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleDevSignInSubmit}
+                    disabled={isSigningIn || !devEmail.trim() || !devPassword.trim()}
+                    className={`flex-1 px-4 py-3 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${poppins.className} font-medium flex items-center justify-center gap-2`}
+                  >
+                    {isSigningIn ? (
+                      <>
+                        <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Signing In...
+                      </>
+                    ) : (
+                      'Sign In'
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="px-8 py-6 relative z-20">
