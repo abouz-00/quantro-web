@@ -2,7 +2,7 @@
 
 import React from "react";
 import { MicronutrientDonut } from "../charts";
-import { FoodEntry, MICRONUTRIENT_DAILY_VALUES, MicronutrientKey, getNutrientValueByLabel } from "../../../types/foodEntry";
+import { FoodEntry, MICRONUTRIENT_DAILY_VALUES, MicronutrientKey, getNutrientValueByLabel } from "../../../types/food";
 
 interface MicronutrientsSectionProps {
   entries: FoodEntry[];

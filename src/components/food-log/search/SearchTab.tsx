@@ -44,10 +44,10 @@ export default function SearchTab({
   // Memoize suggestions for performance
   const memoizedSuggestions = useMemo(() => suggestions, [suggestions]);
 
-  // Keyboard navigation for suggestion list
-  useEffect(() => {
-    setHighlightedIdx(-1);
-  }, [memoizedSuggestions, localQuery]);
+  // Handle search input change
+  const handleQueryChange = useCallback((value: string) => {
+    setLocalQuery(value);
+  }, [setLocalQuery]);
 
   const handleInputKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     if (memoizedSuggestions.length === 0) return;
@@ -130,7 +130,7 @@ export default function SearchTab({
           type="text"
           placeholder="Search all foods"
           value={localQuery}
-          onChange={(e) => setLocalQuery(e.target.value)}
+          onChange={(e) => handleQueryChange(e.target.value)}
           onKeyDown={(e) => {
             handleInputKeyDown(e);
             if (e.key === 'Enter' && selectedFood && highlightedIdx === -1) {
@@ -166,20 +166,22 @@ export default function SearchTab({
             <div className="py-8 text-center text-red-500">{error}</div>
           )}
           {!loading && !error && (
-            <table className="w-full table-fixed" role="listbox" id="food-suggestion-list" aria-label="Food suggestions">
-              <colgroup>
-                <col className="w-auto" />
-                <col className="w-16" />
-              </colgroup>
-              <tbody>
-                {memoizedSuggestions.length === 0 && localQuery.length > 2 && (
-                  <tr>
-                    <td colSpan={2} className="py-8 text-center text-gray-400">No results found.</td>
-                  </tr>
-                )}
-                {memoizedSuggestions.map(renderSuggestionRow)}
-              </tbody>
-            </table>
+            <>
+              <table className="w-full table-fixed" role="listbox" id="food-suggestion-list" aria-label="Food suggestions">
+                <colgroup>
+                  <col className="w-auto" />
+                  <col className="w-16" />
+                </colgroup>
+                <tbody>
+                  {memoizedSuggestions.length === 0 && localQuery.length > 1 && (
+                    <tr>
+                      <td colSpan={2} className="py-8 text-center text-gray-400">No results found.</td>
+                    </tr>
+                  )}
+                  {memoizedSuggestions.map(renderSuggestionRow)}
+                </tbody>
+              </table>
+            </>
           )}
         </div>
       </div>

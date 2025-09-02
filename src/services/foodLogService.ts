@@ -12,10 +12,13 @@ export class FoodLogService {
    */
   static async loadFoodData(dateParam: string): Promise<FoodEntry[]> {
     try {
+      console.log('🌐 FoodLogService: About to fetch /api/food-logs?date=' + dateParam);
       const response = await (globalThis as { fetch: typeof fetch }).fetch(`/api/food-logs?date=${dateParam}`);
+      console.log('📡 FoodLogService: Got response status:', response.status, 'ok:', response.ok);
       
       if (response.ok) {
         const apiData = await response.json();
+        console.log('📋 FoodLogService: API returned', apiData.length, 'entries');
         return apiData.map(transformApiDataToFoodEntry);
       } else {
         let errorText = 'Unknown error';

@@ -4,6 +4,45 @@ import { FoodLogService } from '../services/foodLogService';
 import { calculateTotals } from '../utils/foodEntryUtils';
 import { sameDay } from '../utils/dateUtils';
 
+interface FoodDataDebugEntry {
+  id: string;
+  description: string;
+  date: string;
+}
+
+interface FoodDataDebugError {
+  timestamp: string;
+  error: string;
+  stack?: string;
+}
+
+interface FoodDataDebugInfo {
+  lastLoadAttempt?: string;
+  dateParam?: string;
+  selectedDate?: string;
+  lastLoadSuccess?: string;
+  totalEntries?: number;
+  filteredEntries?: number;
+  entries?: FoodDataDebugEntry[];
+  lastError?: FoodDataDebugError;
+  lastAddAttempt?: {
+    timestamp: string;
+    entry: FoodEntry;
+  };
+  lastAddSuccess?: {
+    timestamp: string;
+    savedEntry: FoodEntry;
+  };
+  lastAddError?: FoodDataDebugError;
+}
+
+// Extend Window interface
+declare global {
+  interface Window {
+    __foodDataDebug?: FoodDataDebugInfo;
+  }
+}
+
 export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => {
   const [foodData, setFoodData] = useState<FoodEntry[]>([]);
   const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
@@ -13,21 +52,62 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
     const loadData = async () => {
       try {
         const dateParam = formatApiDate();
+        console.log('🚀 useFoodData: Loading data for date:', dateParam, 'selectedDate:', selectedDate.toISOString());
+        
+        // Add window debug info
+        if (typeof window !== 'undefined') {
+          window.__foodDataDebug = {
+            lastLoadAttempt: new Date().toISOString(),
+            dateParam,
+            selectedDate: selectedDate.toISOString()
+          };
+        }
+        
         const data = await FoodLogService.loadFoodData(dateParam);
+        console.log('📊 useFoodData: Received data:', data.length, 'entries');
         
         // Filter by selected date for localStorage fallback
         const filteredData = data.filter((entry: FoodEntry) => {
           const entryDate = new Date(entry.date);
-          return sameDay(entryDate, selectedDate);
+          const isSameDay = sameDay(entryDate, selectedDate);
+          console.log('📅 Entry date:', entry.date, 'parsed:', entryDate.toISOString(), 'same day:', isSameDay);
+          return isSameDay;
         });
+        
+        console.log('✅ useFoodData: Filtered data:', filteredData.length, 'entries');
+        
+        // Update window debug info
+        if (typeof window !== 'undefined') {
+          window.__foodDataDebug = {
+            ...window.__foodDataDebug,
+            lastLoadSuccess: new Date().toISOString(),
+            totalEntries: data.length,
+            filteredEntries: filteredData.length,
+            entries: filteredData.map(e => ({ id: e.id, description: e.description, date: e.date }))
+          };
+        }
         
         setFoodData(filteredData);
       } catch (error) {
-        console.error('Error loading food data:', error);
+        console.error('❌ Error loading food data:', error);
+        
+        // Update window debug info with error
+        if (typeof window !== 'undefined') {
+          window.__foodDataDebug = {
+            ...window.__foodDataDebug,
+            lastError: {
+              timestamp: new Date().toISOString(),
+              error: String(error),
+              stack: error instanceof Error ? error.stack : undefined
+            }
+          };
+        }
+        
         setFoodData([]);
       }
     };
 
+    console.log('🔄 useFoodData useEffect triggered, selectedDate:', selectedDate.toISOString());
     loadData();
   }, [selectedDate, formatApiDate]);
 
@@ -39,10 +119,52 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
         date: targetDate.toISOString(),
       };
 
+      console.log('🔄 Adding food entry:', entryWithCorrectDate);
+      
+      // Update window debug info
+      if (typeof window !== 'undefined') {
+        window.__foodDataDebug = {
+          ...window.__foodDataDebug,
+          lastAddAttempt: {
+            timestamp: new Date().toISOString(),
+            entry: entryWithCorrectDate
+          }
+        };
+      }
+
       const savedEntry = await FoodLogService.addFoodEntry(entryWithCorrectDate);
-      setFoodData(prev => [...prev, savedEntry]);
+      console.log('✅ Food entry saved:', savedEntry);
+      
+      setFoodData(prev => {
+        const newData = [...prev, savedEntry];
+        console.log('📊 Updated foodData, total entries:', newData.length);
+        return newData;
+      });
+      
+      // Update window debug info
+      if (typeof window !== 'undefined') {
+        window.__foodDataDebug = {
+          ...window.__foodDataDebug,
+          lastAddSuccess: {
+            timestamp: new Date().toISOString(),
+            savedEntry
+          }
+        };
+      }
     } catch (error) {
-      console.error('Error adding food entry:', error);
+      console.error('❌ Error adding food entry:', error);
+      
+      // Update window debug info with error
+      if (typeof window !== 'undefined') {
+        window.__foodDataDebug = {
+          ...window.__foodDataDebug,
+          lastAddError: {
+            timestamp: new Date().toISOString(),
+            error: String(error),
+            stack: error instanceof Error ? error.stack : undefined
+          }
+        };
+      }
     }
   }, [selectedDate]);
 

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import "../styles/dm-sans.css";
-import SessionWrapper from '../components/SessionWrapper';
-import ErrorBoundary from '../components/ErrorBoundary';
+import SessionWrapper from '../components/shared/SessionWrapper';
+import ErrorBoundary from '../components/shared/ErrorBoundary';
 
 const dmSans = DM_Sans({
   subsets: ['latin'],

@@ -44,6 +44,12 @@ const nutrientMapping: { [key: number]: string } = {
   1456: "ALA", // Alpha-linolenic acid
 };
 
+// Cache interface
+interface CacheEntry {
+  data: FoodSuggestion[];
+  timestamp: number;
+}
+
 interface FoodNutrient {
   nutrientId: number;
   value: number;
@@ -71,6 +77,87 @@ interface FoodSuggestion {
   uniqueId?: string;
 }
 
+// Simple in-memory cache with localStorage persistence
+class FoodSearchCache {
+  private cache: Map<string, CacheEntry> = new Map();
+  private readonly CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days
+  private readonly MAX_CACHE_SIZE = 200;
+
+  constructor() {
+    this.loadFromStorage();
+  }
+
+  private loadFromStorage() {
+    if (typeof window === 'undefined') return;
+    try {
+      const stored = localStorage.getItem('foodSearchCache');
+      if (stored) {
+        const parsed = JSON.parse(stored) as Record<string, CacheEntry>;
+        // Only load recent entries
+        Object.entries(parsed).forEach(([key, entry]) => {
+          if (Date.now() - entry.timestamp < this.CACHE_DURATION) {
+            this.cache.set(key, entry);
+          }
+        });
+      }
+    } catch (error) {
+      console.warn('Failed to load food search cache:', error);
+    }
+  }
+
+  private saveToStorage() {
+    if (typeof window === 'undefined') return;
+    try {
+      // Convert Map to object for JSON serialization
+      const cacheObject: Record<string, CacheEntry> = {};
+      this.cache.forEach((value, key) => {
+        cacheObject[key] = value;
+      });
+      localStorage.setItem('foodSearchCache', JSON.stringify(cacheObject));
+    } catch (error) {
+      console.warn('Failed to save food search cache:', error);
+    }
+  }
+
+  get(query: string): FoodSuggestion[] | null {
+    const entry = this.cache.get(query.toLowerCase());
+    if (entry && Date.now() - entry.timestamp < this.CACHE_DURATION) {
+      return entry.data;
+    }
+    // Remove expired entry
+    if (entry) {
+      this.cache.delete(query.toLowerCase());
+    }
+    return null;
+  }
+
+  set(query: string, data: FoodSuggestion[]) {
+    // Limit cache size
+    if (this.cache.size >= this.MAX_CACHE_SIZE) {
+      // Remove oldest entry
+      const firstKey = this.cache.keys().next().value;
+      if (firstKey) {
+        this.cache.delete(firstKey);
+      }
+    }
+
+    this.cache.set(query.toLowerCase(), {
+      data,
+      timestamp: Date.now()
+    });
+    this.saveToStorage();
+  }
+
+  clear() {
+    this.cache.clear();
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('foodSearchCache');
+    }
+  }
+}
+
+const foodSearchCache = new FoodSearchCache();
+
 export function useFoodSearch(query: string, active: boolean) {
   const [suggestions, setSuggestions] = useState<FoodSuggestion[]>([]);
   const [loading, setLoading] = useState(false);
@@ -92,18 +179,39 @@ export function useFoodSearch(query: string, active: boolean) {
   }, []);
 
   useEffect(() => {
-    if (active && query.length > 2) {
+    if (active && query.length > 1) {
+      // Check cache first
+      const cachedResult = foodSearchCache.get(query);
+      if (cachedResult) {
+        setSuggestions(cachedResult);
+        setLoading(false);
+        setError("");
+        return;
+      }
+
       setLoading(true);
       setError("");
       const timeoutId = setTimeout(async () => {
         try {
+          // Double-check cache in case another request cached it
+          const cachedResult = foodSearchCache.get(query);
+          if (cachedResult) {
+            setSuggestions(cachedResult);
+            setLoading(false);
+            return;
+          }
+
           const apiKey = process.env.NEXT_PUBLIC_USDA_API_KEY || 'DEMO_KEY';
           const response = await fetch(
-            `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(query)}&pageSize=10&api_key=${apiKey}`
+            `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(query)}&pageSize=5&api_key=${apiKey}`
           );
           if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
           const data = await response.json();
           const transformedFoods = (data.foods || []).map(transformApiData);
+          
+          // Cache the result
+          foodSearchCache.set(query, transformedFoods);
+          
           setSuggestions(transformedFoods);
           setLoading(false);
         } catch (err: unknown) {
@@ -111,7 +219,7 @@ export function useFoodSearch(query: string, active: boolean) {
           setError(err instanceof Error ? err.message : "Failed to fetch food data.");
           setLoading(false);
         }
-      }, 500);
+      }, 150); // Reduced debounce time for better responsiveness
       return () => clearTimeout(timeoutId);
     } else {
       setSuggestions([]);

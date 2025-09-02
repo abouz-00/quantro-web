@@ -239,7 +239,7 @@ describe('Error Log API', () => {
       expect(response.status).toBe(200);
 
       // Check that console.error was called with enriched data
-      const consoleCall = mockConsoleError.mock.calls.find((call: any) =>
+      const consoleCall = mockConsoleError.mock.calls.find((call) =>
         call[0] === '🚨 Client Error Report:'
       );
 

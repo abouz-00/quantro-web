@@ -50,6 +50,7 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
   const [selectedFood, setSelectedFood] = useState<USDAFood | null>(null);
   const [quantity, setQuantity] = useState("100");
   const [unit, setUnit] = useState("Grams");
+  const [mealType, setMealType] = useState<"breakfast" | "lunch" | "dinner" | "snack" | "other">("breakfast");
 
   // Initialize styles and hooks
   useFoodSearchStyles();
@@ -102,7 +103,7 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
       amount: quantity,
       unit: unit,
       date: selectedDate.toISOString(),
-      mealType: "other",
+      mealType: mealType,
       calories: (newCustomFood.calories * parseFloat(quantity)) / 100,
       protein: (newCustomFood.protein * parseFloat(quantity)) / 100,
       carbs: (newCustomFood.carbs * parseFloat(quantity)) / 100,
@@ -121,7 +122,7 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
       amount: quantity,
       unit: unit,
       date: selectedDate.toISOString(),
-      mealType: "other",
+      mealType: mealType,
       calories: customFood.calories * multiplier,
       protein: customFood.protein * multiplier,
       carbs: customFood.carbs * multiplier,
@@ -135,7 +136,7 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
   const handleAddFood = () => {
     if (!selectedFood) return;
     
-    const entry = createFoodEntry(selectedFood, quantity, unit, selectedDate);
+    const entry = createFoodEntry(selectedFood, quantity, unit, selectedDate, mealType);
     onAddFood(entry);
     onClose();
   };
@@ -153,6 +154,8 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
             setQuantity={setQuantity}
             unit={unit}
             setUnit={setUnit}
+            mealType={mealType}
+            setMealType={setMealType}
             onAddFood={handleAddFood}
           />
         ) : undefined

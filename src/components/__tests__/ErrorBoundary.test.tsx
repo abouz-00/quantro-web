@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { jest } from '@jest/globals';
-import ErrorBoundary from '../ErrorBoundary';
+import ErrorBoundary from '../shared/ErrorBoundary';
 
 // Mock the error service
 const mockErrorService = {

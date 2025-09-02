@@ -83,6 +83,8 @@ describe('FoodLogService', () => {
       carbs: entry.carbs,
       fat: entry.fat,
       fiber: entry.fiber || 0,
+      sodium: entry.sodium || 0,
+      date: entry.date,
     }));
   });
 

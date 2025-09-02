@@ -1,0 +1,280 @@
+c15aa17978011b5b0d8e0461401cc6f9
+"use strict";
+
+/* istanbul ignore next */
+function cov_29owga63dl() {
+  var path = "/Users/ayman/quantro/src/app/api/analytics/route.ts";
+  var hash = "651dc93f614f0d997ce3d0f497510d44ae2d4eb1";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/ayman/quantro/src/app/api/analytics/route.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 20
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 16
+        },
+        end: {
+          line: 11,
+          column: 38
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 4
+        },
+        end: {
+          line: 52,
+          column: 5
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 21
+        },
+        end: {
+          line: 14,
+          column: 41
+        }
+      },
+      "6": {
+        start: {
+          line: 16,
+          column: 8
+        },
+        end: {
+          line: 19,
+          column: 11
+        }
+      },
+      "7": {
+        start: {
+          line: 42,
+          column: 7
+        },
+        end: {
+          line: 44,
+          column: 11
+        }
+      },
+      "8": {
+        start: {
+          line: 46,
+          column: 8
+        },
+        end: {
+          line: 46,
+          column: 67
+        }
+      },
+      "9": {
+        start: {
+          line: 47,
+          column: 8
+        },
+        end: {
+          line: 51,
+          column: 11
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "POST",
+        decl: {
+          start: {
+            line: 12,
+            column: 15
+          },
+          end: {
+            line: 12,
+            column: 19
+          }
+        },
+        loc: {
+          start: {
+            line: 12,
+            column: 29
+          },
+          end: {
+            line: 53,
+            column: 1
+          }
+        },
+        line: 12
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/Users/ayman/quantro/src/app/api/analytics/route.ts"],
+      sourcesContent: ["import { NextRequest, NextResponse } from 'next/server';\n\nexport async function POST(request: NextRequest) {\n  try {\n    const data = await request.json();\n\n    // Log analytics event\n    console.log('\uD83D\uDCCA Analytics Event:', {\n      timestamp: new Date().toISOString(),\n      ...data,\n    });\n\n    // In production, you would send this to:\n    // - Google Analytics 4\n    // - Mixpanel\n    // - Segment\n    // - Custom analytics service\n\n    // Example GA4 implementation:\n    /*\n    if (process.env.GA_MEASUREMENT_ID && process.env.GA_API_SECRET) {\n      await fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${process.env.GA_MEASUREMENT_ID}&api_secret=${process.env.GA_API_SECRET}`, {\n        method: 'POST',\n        body: JSON.stringify({\n          client_id: data.clientId || 'anonymous',\n          events: [{\n            name: data.action || 'custom_event',\n            parameters: {\n              ...data.context,\n              custom_parameter: data.data,\n            }\n          }]\n        }),\n      });\n    }\n    */\n\n    return NextResponse.json({ success: true });\n  } catch (error) {\n    console.error('Failed to process analytics event:', error);\n    return NextResponse.json(\n      { error: 'Failed to process analytics event' },\n      { status: 500 }\n    );\n  }\n}\n"],
+      names: ["POST", "request", "data", "json", "console", "log", "timestamp", "Date", "toISOString", "NextResponse", "success", "error", "status"],
+      mappings: ";;;;+BAEsBA;;;eAAAA;;;wBAFoB;AAEnC,eAAeA,KAAKC,OAAoB;IAC7C,IAAI;QACF,MAAMC,OAAO,MAAMD,QAAQE,IAAI;QAE/B,sBAAsB;QACtBC,QAAQC,GAAG,CAAC,uBAAuB;YACjCC,WAAW,IAAIC,OAAOC,WAAW;YACjC,GAAGN,IAAI;QACT;QAEA,yCAAyC;QACzC,uBAAuB;QACvB,aAAa;QACb,YAAY;QACZ,6BAA6B;QAE7B,8BAA8B;QAC9B;;;;;;;;;;;;;;;;IAgBA,GAEA,OAAOO,oBAAY,CAACN,IAAI,CAAC;YAAEO,SAAS;QAAK;IAC3C,EAAE,OAAOC,OAAO;QACdP,QAAQO,KAAK,CAAC,sCAAsCA;QACpD,OAAOF,oBAAY,CAACN,IAAI,CACtB;YAAEQ,OAAO;QAAoC,GAC7C;YAAEC,QAAQ;QAAI;IAElB;AACF"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "651dc93f614f0d997ce3d0f497510d44ae2d4eb1"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_29owga63dl = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_29owga63dl();
+cov_29owga63dl().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_29owga63dl().s[1]++;
+Object.defineProperty(exports, "POST", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_29owga63dl().f[0]++;
+    cov_29owga63dl().s[2]++;
+    return POST;
+  }
+});
+const _server =
+/* istanbul ignore next */
+(cov_29owga63dl().s[3]++, require("next/server"));
+async function POST(request) {
+  /* istanbul ignore next */
+  cov_29owga63dl().f[1]++;
+  cov_29owga63dl().s[4]++;
+  try {
+    const data =
+    /* istanbul ignore next */
+    (cov_29owga63dl().s[5]++, await request.json());
+    // Log analytics event
+    /* istanbul ignore next */
+    cov_29owga63dl().s[6]++;
+    console.log('📊 Analytics Event:', {
+      timestamp: new Date().toISOString(),
+      ...data
+    });
+    // In production, you would send this to:
+    // - Google Analytics 4
+    // - Mixpanel
+    // - Segment
+    // - Custom analytics service
+    // Example GA4 implementation:
+    /*
+    if (process.env.GA_MEASUREMENT_ID && process.env.GA_API_SECRET) {
+    await fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${process.env.GA_MEASUREMENT_ID}&api_secret=${process.env.GA_API_SECRET}`, {
+    method: 'POST',
+    body: JSON.stringify({
+      client_id: data.clientId || 'anonymous',
+      events: [{
+        name: data.action || 'custom_event',
+        parameters: {
+          ...data.context,
+          custom_parameter: data.data,
+        }
+      }]
+    }),
+    });
+    }
+    */
+    /* istanbul ignore next */
+    cov_29owga63dl().s[7]++;
+    return _server.NextResponse.json({
+      success: true
+    });
+  } catch (error) {
+    /* istanbul ignore next */
+    cov_29owga63dl().s[8]++;
+    console.error('Failed to process analytics event:', error);
+    /* istanbul ignore next */
+    cov_29owga63dl().s[9]++;
+    return _server.NextResponse.json({
+      error: 'Failed to process analytics event'
+    }, {
+      status: 500
+    });
+  }
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMjlvd2dhNjNkbCIsImFjdHVhbENvdmVyYWdlIiwicyIsIlBPU1QiLCJyZXF1ZXN0IiwiZiIsImRhdGEiLCJqc29uIiwiY29uc29sZSIsImxvZyIsInRpbWVzdGFtcCIsIkRhdGUiLCJ0b0lTT1N0cmluZyIsIl9zZXJ2ZXIiLCJOZXh0UmVzcG9uc2UiLCJzdWNjZXNzIiwiZXJyb3IiLCJzdGF0dXMiXSwic291cmNlcyI6WyIvVXNlcnMvYXltYW4vcXVhbnRyby9zcmMvYXBwL2FwaS9hbmFseXRpY3Mvcm91dGUudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgTmV4dFJlcXVlc3QsIE5leHRSZXNwb25zZSB9IGZyb20gJ25leHQvc2VydmVyJztcblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIFBPU1QocmVxdWVzdDogTmV4dFJlcXVlc3QpIHtcbiAgdHJ5IHtcbiAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVxdWVzdC5qc29uKCk7XG5cbiAgICAvLyBMb2cgYW5hbHl0aWNzIGV2ZW50XG4gICAgY29uc29sZS5sb2coJ/Cfk4ogQW5hbHl0aWNzIEV2ZW50OicsIHtcbiAgICAgIHRpbWVzdGFtcDogbmV3IERhdGUoKS50b0lTT1N0cmluZygpLFxuICAgICAgLi4uZGF0YSxcbiAgICB9KTtcblxuICAgIC8vIEluIHByb2R1Y3Rpb24sIHlvdSB3b3VsZCBzZW5kIHRoaXMgdG86XG4gICAgLy8gLSBHb29nbGUgQW5hbHl0aWNzIDRcbiAgICAvLyAtIE1peHBhbmVsXG4gICAgLy8gLSBTZWdtZW50XG4gICAgLy8gLSBDdXN0b20gYW5hbHl0aWNzIHNlcnZpY2VcblxuICAgIC8vIEV4YW1wbGUgR0E0IGltcGxlbWVudGF0aW9uOlxuICAgIC8qXG4gICAgaWYgKHByb2Nlc3MuZW52LkdBX01FQVNVUkVNRU5UX0lEICYmIHByb2Nlc3MuZW52LkdBX0FQSV9TRUNSRVQpIHtcbiAgICAgIGF3YWl0IGZldGNoKGBodHRwczovL3d3dy5nb29nbGUtYW5hbHl0aWNzLmNvbS9tcC9jb2xsZWN0P21lYXN1cmVtZW50X2lkPSR7cHJvY2Vzcy5lbnYuR0FfTUVBU1VSRU1FTlRfSUR9JmFwaV9zZWNyZXQ9JHtwcm9jZXNzLmVudi5HQV9BUElfU0VDUkVUfWAsIHtcbiAgICAgICAgbWV0aG9kOiAnUE9TVCcsXG4gICAgICAgIGJvZHk6IEpTT04uc3RyaW5naWZ5KHtcbiAgICAgICAgICBjbGllbnRfaWQ6IGRhdGEuY2xpZW50SWQgfHwgJ2Fub255bW91cycsXG4gICAgICAgICAgZXZlbnRzOiBbe1xuICAgICAgICAgICAgbmFtZTogZGF0YS5hY3Rpb24gfHwgJ2N1c3RvbV9ldmVudCcsXG4gICAgICAgICAgICBwYXJhbWV0ZXJzOiB7XG4gICAgICAgICAgICAgIC4uLmRhdGEuY29udGV4dCxcbiAgICAgICAgICAgICAgY3VzdG9tX3BhcmFtZXRlcjogZGF0YS5kYXRhLFxuICAgICAgICAgICAgfVxuICAgICAgICAgIH1dXG4gICAgICAgIH0pLFxuICAgICAgfSk7XG4gICAgfVxuICAgICovXG5cbiAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oeyBzdWNjZXNzOiB0cnVlIH0pO1xuICB9IGNhdGNoIChlcnJvcikge1xuICAgIGNvbnNvbGUuZXJyb3IoJ0ZhaWxlZCB0byBwcm9jZXNzIGFuYWx5dGljcyBldmVudDonLCBlcnJvcik7XG4gICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKFxuICAgICAgeyBlcnJvcjogJ0ZhaWxlZCB0byBwcm9jZXNzIGFuYWx5dGljcyBldmVudCcgfSxcbiAgICAgIHsgc3RhdHVzOiA1MDAgfVxuICAgICk7XG4gIH1cbn1cbiJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztJQU9JO0lBQUFBLGNBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUFDLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUFELGNBQUE7QUFBQUEsY0FBQSxHQUFBRSxDQUFBOzs7Ozs7K0JBTGtCOzs7Ozs7V0FBQUMsSUFBQTs7Ozs7a0NBRm9CO0FBRW5DLGVBQWVBLEtBQUtDLE9BQW9CO0VBQUE7RUFBQUosY0FBQSxHQUFBSyxDQUFBO0VBQUFMLGNBQUEsR0FBQUUsQ0FBQTtFQUM3QyxJQUFJO0lBQ0YsTUFBTUksSUFBQTtJQUFBO0lBQUEsQ0FBQU4sY0FBQSxHQUFBRSxDQUFBLE9BQU8sTUFBTUUsT0FBQSxDQUFRRyxJQUFJO0lBRS9CO0lBQUE7SUFBQVAsY0FBQSxHQUFBRSxDQUFBO0lBQ0FNLE9BQUEsQ0FBUUMsR0FBRyxDQUFDLHVCQUF1QjtNQUNqQ0MsU0FBQSxFQUFXLElBQUlDLElBQUEsR0FBT0MsV0FBVztNQUNqQyxHQUFHTjtJQUNMO0lBRUE7SUFDQTtJQUNBO0lBQ0E7SUFDQTtJQUVBO0lBQ0E7Ozs7Ozs7Ozs7Ozs7Ozs7O0lBQUE7SUFBQU4sY0FBQSxHQUFBRSxDQUFBO0lBa0JBLE9BQU9XLE9BQUEsQ0FBQUMsWUFBWSxDQUFDUCxJQUFJLENBQUM7TUFBRVEsT0FBQSxFQUFTO0lBQUs7RUFDM0MsRUFBRSxPQUFPQyxLQUFBLEVBQU87SUFBQTtJQUFBaEIsY0FBQSxHQUFBRSxDQUFBO0lBQ2RNLE9BQUEsQ0FBUVEsS0FBSyxDQUFDLHNDQUFzQ0EsS0FBQTtJQUFBO0lBQUFoQixjQUFBLEdBQUFFLENBQUE7SUFDcEQsT0FBT1csT0FBQSxDQUFBQyxZQUFZLENBQUNQLElBQUksQ0FDdEI7TUFBRVMsS0FBQSxFQUFPO0lBQW9DLEdBQzdDO01BQUVDLE1BQUEsRUFBUTtJQUFJO0VBRWxCO0FBQ0YiLCJpZ25vcmVMaXN0IjpbXX0=

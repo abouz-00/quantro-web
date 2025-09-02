@@ -9,7 +9,7 @@ import {
   ChartOptions
 } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import { FoodEntry, getNutrientValueByLabel } from '../../../types/foodEntry';
+import { FoodEntry, getNutrientValueByLabel } from '../../../types/food';
 
 // Register Chart.js components conditionally to avoid errors in test environment
 if (typeof ChartJS.register === 'function') {
