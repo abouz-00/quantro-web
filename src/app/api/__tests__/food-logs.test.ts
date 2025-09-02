@@ -164,6 +164,10 @@ describe('Food Logs API', () => {
         data: {
           userId: 'user-123',
           ...mockFoodEntry,
+          fiber: 3.1, // fiber is included
+          sodium: 0, // sodium defaults to 0
+          date: expect.any(Date), // date is set to current date
+          orderIndex: 0, // orderIndex is calculated
         },
       });
     });

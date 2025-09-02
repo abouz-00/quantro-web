@@ -1,0 +1,140 @@
+c3d04913545c8fa715e4e4dc3f223f2a
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "FoodSelectionSection", {
+    enumerable: true,
+    get: function() {
+        return FoodSelectionSection;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = /*#__PURE__*/ _interop_require_default(require("react"));
+const _nutritionUtils = require("../utils/nutritionUtils");
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+const FoodSelectionSection = ({ selectedFood, quantity, setQuantity, unit, setUnit, mealType, setMealType, onAddFood })=>{
+    const handleKeyDown = (e)=>{
+        if (e.key === 'Enter') {
+            onAddFood();
+        }
+    };
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+        className: "p-4 border-t border-gray-200 bg-gray-50 flex-shrink-0",
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                className: "mb-4",
+                children: /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                    className: "font-bold",
+                    children: (0, _nutritionUtils.capitalizeWords)(selectedFood.description)
+                })
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                className: "flex space-x-4 mb-4",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        className: "flex-1",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("label", {
+                                className: "block text-sm font-medium mb-1",
+                                children: "Quantity"
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("input", {
+                                type: "number",
+                                value: quantity,
+                                onChange: (e)=>setQuantity(e.target.value),
+                                onKeyDown: handleKeyDown,
+                                className: "w-full p-2 border border-gray-300 rounded-sm"
+                            })
+                        ]
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        className: "flex-1",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("label", {
+                                className: "block text-sm font-medium mb-1",
+                                children: "Unit"
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("select", {
+                                value: unit,
+                                onChange: (e)=>setUnit(e.target.value),
+                                onKeyDown: handleKeyDown,
+                                className: "w-full p-2 border border-gray-300 rounded-sm",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("option", {
+                                        value: "Grams",
+                                        children: "Grams"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("option", {
+                                        value: "Ounces",
+                                        children: "Ounces"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("option", {
+                                        value: "Cup",
+                                        children: "Cup"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("option", {
+                                        value: "Tablespoon",
+                                        children: "Tablespoon"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("option", {
+                                        value: "Teaspoon",
+                                        children: "Teaspoon"
+                                    })
+                                ]
+                            })
+                        ]
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        className: "flex-1",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("label", {
+                                className: "block text-sm font-medium mb-1",
+                                children: "Meal"
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("select", {
+                                value: mealType,
+                                onChange: (e)=>setMealType(e.target.value),
+                                onKeyDown: handleKeyDown,
+                                className: "w-full p-2 border border-gray-300 rounded-sm",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("option", {
+                                        value: "breakfast",
+                                        children: "Breakfast"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("option", {
+                                        value: "lunch",
+                                        children: "Lunch"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("option", {
+                                        value: "dinner",
+                                        children: "Dinner"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("option", {
+                                        value: "snack",
+                                        children: "Snack"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("option", {
+                                        value: "other",
+                                        children: "Other"
+                                    })
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("button", {
+                onClick: onAddFood,
+                className: "w-full bg-violet-500 text-white py-2 px-4 rounded-sm hover:bg-violet-600 cursor-pointer transition-colors duration-200",
+                children: "Add to Log"
+            })
+        ]
+    });
+};
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb21wb25lbnRzL2Zvb2QtbG9nL3NlYXJjaC9jb21wb25lbnRzL0Zvb2RTZWxlY3Rpb25TZWN0aW9uLnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgeyBjYXBpdGFsaXplV29yZHMgfSBmcm9tIFwiLi4vdXRpbHMvbnV0cml0aW9uVXRpbHNcIjtcblxuaW50ZXJmYWNlIFVTREFGb29kIHtcbiAgZGVzY3JpcHRpb246IHN0cmluZztcbiAgZm9vZENhdGVnb3J5Pzogc3RyaW5nO1xuICBmb29kTnV0cmllbnRzOiB7IG51dHJpZW50TmFtZTogc3RyaW5nOyB2YWx1ZTogbnVtYmVyIH1bXTtcbiAgc2VydmluZ1NpemU/OiBudW1iZXI7XG4gIHNlcnZpbmdTaXplVW5pdD86IHN0cmluZztcbiAgaXNGYXZvcml0ZT86IGJvb2xlYW47XG4gIHVuaXF1ZUlkPzogc3RyaW5nO1xufVxuXG5pbnRlcmZhY2UgRm9vZFNlbGVjdGlvblNlY3Rpb25Qcm9wcyB7XG4gIHNlbGVjdGVkRm9vZDogVVNEQUZvb2Q7XG4gIHF1YW50aXR5OiBzdHJpbmc7XG4gIHNldFF1YW50aXR5OiAodmFsdWU6IHN0cmluZykgPT4gdm9pZDtcbiAgdW5pdDogc3RyaW5nO1xuICBzZXRVbml0OiAodmFsdWU6IHN0cmluZykgPT4gdm9pZDtcbiAgbWVhbFR5cGU6IFwiYnJlYWtmYXN0XCIgfCBcImx1bmNoXCIgfCBcImRpbm5lclwiIHwgXCJzbmFja1wiIHwgXCJvdGhlclwiO1xuICBzZXRNZWFsVHlwZTogKG1lYWxUeXBlOiBcImJyZWFrZmFzdFwiIHwgXCJsdW5jaFwiIHwgXCJkaW5uZXJcIiB8IFwic25hY2tcIiB8IFwib3RoZXJcIikgPT4gdm9pZDtcbiAgb25BZGRGb29kOiAoKSA9PiB2b2lkO1xufVxuXG5leHBvcnQgY29uc3QgRm9vZFNlbGVjdGlvblNlY3Rpb246IFJlYWN0LkZDPEZvb2RTZWxlY3Rpb25TZWN0aW9uUHJvcHM+ID0gKHtcbiAgc2VsZWN0ZWRGb29kLFxuICBxdWFudGl0eSxcbiAgc2V0UXVhbnRpdHksXG4gIHVuaXQsXG4gIHNldFVuaXQsXG4gIG1lYWxUeXBlLFxuICBzZXRNZWFsVHlwZSxcbiAgb25BZGRGb29kXG59KSA9PiB7XG4gIGNvbnN0IGhhbmRsZUtleURvd24gPSAoZTogUmVhY3QuS2V5Ym9hcmRFdmVudCkgPT4ge1xuICAgIGlmIChlLmtleSA9PT0gJ0VudGVyJykge1xuICAgICAgb25BZGRGb29kKCk7XG4gICAgfVxuICB9O1xuXG4gIHJldHVybiAoXG4gICAgPGRpdiBjbGFzc05hbWU9XCJwLTQgYm9yZGVyLXQgYm9yZGVyLWdyYXktMjAwIGJnLWdyYXktNTAgZmxleC1zaHJpbmstMFwiPlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJtYi00XCI+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZm9udC1ib2xkXCI+e2NhcGl0YWxpemVXb3JkcyhzZWxlY3RlZEZvb2QuZGVzY3JpcHRpb24pfTwvZGl2PlxuICAgICAgPC9kaXY+XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggc3BhY2UteC00IG1iLTRcIj5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4LTFcIj5cbiAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPVwiYmxvY2sgdGV4dC1zbSBmb250LW1lZGl1bSBtYi0xXCI+UXVhbnRpdHk8L2xhYmVsPlxuICAgICAgICAgIDxpbnB1dFxuICAgICAgICAgICAgdHlwZT1cIm51bWJlclwiXG4gICAgICAgICAgICB2YWx1ZT17cXVhbnRpdHl9XG4gICAgICAgICAgICBvbkNoYW5nZT17KGUpID0+IHNldFF1YW50aXR5KGUudGFyZ2V0LnZhbHVlKX1cbiAgICAgICAgICAgIG9uS2V5RG93bj17aGFuZGxlS2V5RG93bn1cbiAgICAgICAgICAgIGNsYXNzTmFtZT1cInctZnVsbCBwLTIgYm9yZGVyIGJvcmRlci1ncmF5LTMwMCByb3VuZGVkLXNtXCJcbiAgICAgICAgICAvPlxuICAgICAgICA8L2Rpdj5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4LTFcIj5cbiAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPVwiYmxvY2sgdGV4dC1zbSBmb250LW1lZGl1bSBtYi0xXCI+VW5pdDwvbGFiZWw+XG4gICAgICAgICAgPHNlbGVjdFxuICAgICAgICAgICAgdmFsdWU9e3VuaXR9XG4gICAgICAgICAgICBvbkNoYW5nZT17KGUpID0+IHNldFVuaXQoZS50YXJnZXQudmFsdWUpfVxuICAgICAgICAgICAgb25LZXlEb3duPXtoYW5kbGVLZXlEb3dufVxuICAgICAgICAgICAgY2xhc3NOYW1lPVwidy1mdWxsIHAtMiBib3JkZXIgYm9yZGVyLWdyYXktMzAwIHJvdW5kZWQtc21cIlxuICAgICAgICAgID5cbiAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCJHcmFtc1wiPkdyYW1zPC9vcHRpb24+XG4gICAgICAgICAgICA8b3B0aW9uIHZhbHVlPVwiT3VuY2VzXCI+T3VuY2VzPC9vcHRpb24+XG4gICAgICAgICAgICA8b3B0aW9uIHZhbHVlPVwiQ3VwXCI+Q3VwPC9vcHRpb24+XG4gICAgICAgICAgICA8b3B0aW9uIHZhbHVlPVwiVGFibGVzcG9vblwiPlRhYmxlc3Bvb248L29wdGlvbj5cbiAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCJUZWFzcG9vblwiPlRlYXNwb29uPC9vcHRpb24+XG4gICAgICAgICAgPC9zZWxlY3Q+XG4gICAgICAgIDwvZGl2PlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXgtMVwiPlxuICAgICAgICAgIDxsYWJlbCBjbGFzc05hbWU9XCJibG9jayB0ZXh0LXNtIGZvbnQtbWVkaXVtIG1iLTFcIj5NZWFsPC9sYWJlbD5cbiAgICAgICAgICA8c2VsZWN0XG4gICAgICAgICAgICB2YWx1ZT17bWVhbFR5cGV9XG4gICAgICAgICAgICBvbkNoYW5nZT17KGUpID0+IHNldE1lYWxUeXBlKGUudGFyZ2V0LnZhbHVlIGFzIFwiYnJlYWtmYXN0XCIgfCBcImx1bmNoXCIgfCBcImRpbm5lclwiIHwgXCJzbmFja1wiIHwgXCJvdGhlclwiKX1cbiAgICAgICAgICAgIG9uS2V5RG93bj17aGFuZGxlS2V5RG93bn1cbiAgICAgICAgICAgIGNsYXNzTmFtZT1cInctZnVsbCBwLTIgYm9yZGVyIGJvcmRlci1ncmF5LTMwMCByb3VuZGVkLXNtXCJcbiAgICAgICAgICA+XG4gICAgICAgICAgICA8b3B0aW9uIHZhbHVlPVwiYnJlYWtmYXN0XCI+QnJlYWtmYXN0PC9vcHRpb24+XG4gICAgICAgICAgICA8b3B0aW9uIHZhbHVlPVwibHVuY2hcIj5MdW5jaDwvb3B0aW9uPlxuICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT1cImRpbm5lclwiPkRpbm5lcjwvb3B0aW9uPlxuICAgICAgICAgICAgPG9wdGlvbiB2YWx1ZT1cInNuYWNrXCI+U25hY2s8L29wdGlvbj5cbiAgICAgICAgICAgIDxvcHRpb24gdmFsdWU9XCJvdGhlclwiPk90aGVyPC9vcHRpb24+XG4gICAgICAgICAgPC9zZWxlY3Q+XG4gICAgICAgIDwvZGl2PlxuICAgICAgPC9kaXY+XG4gICAgICA8YnV0dG9uXG4gICAgICAgIG9uQ2xpY2s9e29uQWRkRm9vZH1cbiAgICAgICAgY2xhc3NOYW1lPVwidy1mdWxsIGJnLXZpb2xldC01MDAgdGV4dC13aGl0ZSBweS0yIHB4LTQgcm91bmRlZC1zbSBob3ZlcjpiZy12aW9sZXQtNjAwIGN1cnNvci1wb2ludGVyIHRyYW5zaXRpb24tY29sb3JzIGR1cmF0aW9uLTIwMFwiXG4gICAgICA+XG4gICAgICAgIEFkZCB0byBMb2dcbiAgICAgIDwvYnV0dG9uPlxuICAgIDwvZGl2PlxuICApO1xufTtcbiJdLCJuYW1lcyI6WyJGb29kU2VsZWN0aW9uU2VjdGlvbiIsInNlbGVjdGVkRm9vZCIsInF1YW50aXR5Iiwic2V0UXVhbnRpdHkiLCJ1bml0Iiwic2V0VW5pdCIsIm1lYWxUeXBlIiwic2V0TWVhbFR5cGUiLCJvbkFkZEZvb2QiLCJoYW5kbGVLZXlEb3duIiwiZSIsImtleSIsImRpdiIsImNsYXNzTmFtZSIsImNhcGl0YWxpemVXb3JkcyIsImRlc2NyaXB0aW9uIiwibGFiZWwiLCJpbnB1dCIsInR5cGUiLCJ2YWx1ZSIsIm9uQ2hhbmdlIiwidGFyZ2V0Iiwib25LZXlEb3duIiwic2VsZWN0Iiwib3B0aW9uIiwiYnV0dG9uIiwib25DbGljayJdLCJtYXBwaW5ncyI6Ijs7OzsrQkF3QmFBOzs7ZUFBQUE7Ozs7OERBeEJLO2dDQUNjOzs7Ozs7QUF1QnpCLE1BQU1BLHVCQUE0RCxDQUFDLEVBQ3hFQyxZQUFZLEVBQ1pDLFFBQVEsRUFDUkMsV0FBVyxFQUNYQyxJQUFJLEVBQ0pDLE9BQU8sRUFDUEMsUUFBUSxFQUNSQyxXQUFXLEVBQ1hDLFNBQVMsRUFDVjtJQUNDLE1BQU1DLGdCQUFnQixDQUFDQztRQUNyQixJQUFJQSxFQUFFQyxHQUFHLEtBQUssU0FBUztZQUNyQkg7UUFDRjtJQUNGO0lBRUEscUJBQ0Usc0JBQUNJO1FBQUlDLFdBQVU7OzBCQUNiLHFCQUFDRDtnQkFBSUMsV0FBVTswQkFDYixjQUFBLHFCQUFDRDtvQkFBSUMsV0FBVTs4QkFBYUMsSUFBQUEsK0JBQWUsRUFBQ2IsYUFBYWMsV0FBVzs7OzBCQUV0RSxzQkFBQ0g7Z0JBQUlDLFdBQVU7O2tDQUNiLHNCQUFDRDt3QkFBSUMsV0FBVTs7MENBQ2IscUJBQUNHO2dDQUFNSCxXQUFVOzBDQUFpQzs7MENBQ2xELHFCQUFDSTtnQ0FDQ0MsTUFBSztnQ0FDTEMsT0FBT2pCO2dDQUNQa0IsVUFBVSxDQUFDVixJQUFNUCxZQUFZTyxFQUFFVyxNQUFNLENBQUNGLEtBQUs7Z0NBQzNDRyxXQUFXYjtnQ0FDWEksV0FBVTs7OztrQ0FHZCxzQkFBQ0Q7d0JBQUlDLFdBQVU7OzBDQUNiLHFCQUFDRztnQ0FBTUgsV0FBVTswQ0FBaUM7OzBDQUNsRCxzQkFBQ1U7Z0NBQ0NKLE9BQU9mO2dDQUNQZ0IsVUFBVSxDQUFDVixJQUFNTCxRQUFRSyxFQUFFVyxNQUFNLENBQUNGLEtBQUs7Z0NBQ3ZDRyxXQUFXYjtnQ0FDWEksV0FBVTs7a0RBRVYscUJBQUNXO3dDQUFPTCxPQUFNO2tEQUFROztrREFDdEIscUJBQUNLO3dDQUFPTCxPQUFNO2tEQUFTOztrREFDdkIscUJBQUNLO3dDQUFPTCxPQUFNO2tEQUFNOztrREFDcEIscUJBQUNLO3dDQUFPTCxPQUFNO2tEQUFhOztrREFDM0IscUJBQUNLO3dDQUFPTCxPQUFNO2tEQUFXOzs7Ozs7a0NBRzdCLHNCQUFDUDt3QkFBSUMsV0FBVTs7MENBQ2IscUJBQUNHO2dDQUFNSCxXQUFVOzBDQUFpQzs7MENBQ2xELHNCQUFDVTtnQ0FDQ0osT0FBT2I7Z0NBQ1BjLFVBQVUsQ0FBQ1YsSUFBTUgsWUFBWUcsRUFBRVcsTUFBTSxDQUFDRixLQUFLO2dDQUMzQ0csV0FBV2I7Z0NBQ1hJLFdBQVU7O2tEQUVWLHFCQUFDVzt3Q0FBT0wsT0FBTTtrREFBWTs7a0RBQzFCLHFCQUFDSzt3Q0FBT0wsT0FBTTtrREFBUTs7a0RBQ3RCLHFCQUFDSzt3Q0FBT0wsT0FBTTtrREFBUzs7a0RBQ3ZCLHFCQUFDSzt3Q0FBT0wsT0FBTTtrREFBUTs7a0RBQ3RCLHFCQUFDSzt3Q0FBT0wsT0FBTTtrREFBUTs7Ozs7Ozs7MEJBSTVCLHFCQUFDTTtnQkFDQ0MsU0FBU2xCO2dCQUNUSyxXQUFVOzBCQUNYOzs7O0FBS1AifQ==

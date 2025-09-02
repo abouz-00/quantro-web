@@ -513,6 +513,8 @@ describe('foodEntryUtils', () => {
         carbs: 0,
         fat: 3.6,
         fiber: 0,
+        sodium: 0,
+        date: '2023-12-25T18:00:00.000Z',
       });
     });
 
