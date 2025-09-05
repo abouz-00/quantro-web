@@ -1,0 +1,580 @@
+e8da0a01152e08b9cb97d5e1f4f9d1a8
+"use strict";
+
+/* istanbul ignore next */
+function cov_1v0hj4zybv() {
+  var path = "/app/src/app/api/errors/log/route.ts";
+  var hash = "7553122cbc4e330447fe1ac3ea3f0bc8cbf2b94e";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/app/src/app/api/errors/log/route.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 20
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 16
+        },
+        end: {
+          line: 11,
+          column: 38
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 14
+        },
+        end: {
+          line: 12,
+          column: 45
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 4
+        },
+        end: {
+          line: 76,
+          column: 5
+        }
+      },
+      "6": {
+        start: {
+          line: 15,
+          column: 24
+        },
+        end: {
+          line: 15,
+          column: 47
+        }
+      },
+      "7": {
+        start: {
+          line: 16,
+          column: 25
+        },
+        end: {
+          line: 16,
+          column: 45
+        }
+      },
+      "8": {
+        start: {
+          line: 18,
+          column: 28
+        },
+        end: {
+          line: 27,
+          column: 9
+        }
+      },
+      "9": {
+        start: {
+          line: 29,
+          column: 8
+        },
+        end: {
+          line: 29,
+          column: 87
+        }
+      },
+      "10": {
+        start: {
+          line: 65,
+          column: 8
+        },
+        end: {
+          line: 65,
+          column: 42
+        }
+      },
+      "11": {
+        start: {
+          line: 66,
+          column: 8
+        },
+        end: {
+          line: 68,
+          column: 11
+        }
+      },
+      "12": {
+        start: {
+          line: 70,
+          column: 8
+        },
+        end: {
+          line: 70,
+          column: 61
+        }
+      },
+      "13": {
+        start: {
+          line: 71,
+          column: 8
+        },
+        end: {
+          line: 75,
+          column: 11
+        }
+      },
+      "14": {
+        start: {
+          line: 79,
+          column: 21
+        },
+        end: {
+          line: 79,
+          column: 65
+        }
+      },
+      "15": {
+        start: {
+          line: 80,
+          column: 21
+        },
+        end: {
+          line: 92,
+          column: 6
+        }
+      },
+      "16": {
+        start: {
+          line: 81,
+          column: 8
+        },
+        end: {
+          line: 91,
+          column: 9
+        }
+      },
+      "17": {
+        start: {
+          line: 82,
+          column: 12
+        },
+        end: {
+          line: 88,
+          column: 15
+        }
+      },
+      "18": {
+        start: {
+          line: 90,
+          column: 12
+        },
+        end: {
+          line: 90,
+          column: 74
+        }
+      },
+      "19": {
+        start: {
+          line: 93,
+          column: 4
+        },
+        end: {
+          line: 93,
+          column: 39
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "POST",
+        decl: {
+          start: {
+            line: 13,
+            column: 15
+          },
+          end: {
+            line: 13,
+            column: 19
+          }
+        },
+        loc: {
+          start: {
+            line: 13,
+            column: 29
+          },
+          end: {
+            line: 77,
+            column: 1
+          }
+        },
+        line: 13
+      },
+      "2": {
+        name: "sendToWebhooks",
+        decl: {
+          start: {
+            line: 78,
+            column: 15
+          },
+          end: {
+            line: 78,
+            column: 29
+          }
+        },
+        loc: {
+          start: {
+            line: 78,
+            column: 40
+          },
+          end: {
+            line: 94,
+            column: 1
+          }
+        },
+        line: 78
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 80,
+            column: 34
+          },
+          end: {
+            line: 80,
+            column: 35
+          }
+        },
+        loc: {
+          start: {
+            line: 80,
+            column: 51
+          },
+          end: {
+            line: 92,
+            column: 5
+          }
+        },
+        line: 80
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 23,
+            column: 27
+          },
+          end: {
+            line: 23,
+            column: 60
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 23,
+            column: 27
+          },
+          end: {
+            line: 23,
+            column: 47
+          }
+        }, {
+          start: {
+            line: 23,
+            column: 51
+          },
+          end: {
+            line: 23,
+            column: 60
+          }
+        }],
+        line: 23
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 79,
+            column: 21
+          },
+          end: {
+            line: 79,
+            column: 65
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 79,
+            column: 21
+          },
+          end: {
+            line: 79,
+            column: 59
+          }
+        }, {
+          start: {
+            line: 79,
+            column: 63
+          },
+          end: {
+            line: 79,
+            column: 65
+          }
+        }],
+        line: 79
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/app/src/app/api/errors/log/route.ts"],
+      sourcesContent: ["import { NextRequest, NextResponse } from 'next/server';\nimport { auth } from '../../../../lib/auth';\n\ninterface ErrorLog {\n  message: string;\n  stack?: string;\n  context?: {\n    userId?: string;\n    sessionId?: string;\n    url?: string;\n    userAgent?: string;\n    timestamp?: number;\n    severity?: string;\n    category?: string;\n    tags?: Record<string, string>;\n    metadata?: Record<string, unknown>;\n    serverTimestamp?: string;\n    environment?: string;\n  };\n  fingerprint?: string;\n}\n\nexport async function POST(request: NextRequest) {\n  try {\n    const session = await auth();\n    const errorLog: ErrorLog = await request.json();\n\n    // Add session context\n    const enrichedLog: ErrorLog = {\n      ...errorLog,\n      context: {\n        ...errorLog.context,\n        userId: session?.user?.id,\n        sessionId: session?.user?.email || undefined,\n        serverTimestamp: new Date().toISOString(),\n        environment: process.env.NODE_ENV,\n      },\n    };\n\n    // Log to console (in production, this would go to structured logging)\n    console.error('\uD83D\uDEA8 Client Error Report:', JSON.stringify(enrichedLog, null, 2));\n\n    // In production, you would:\n    // 1. Send to structured logging service (e.g., Winston, Pino)\n    // 2. Store in database for analysis\n    // 3. Send alerts for critical errors\n    // 4. Forward to external services (DataDog, New Relic, etc.)\n\n    // Example structured logging (uncomment in production):\n    /*\n    const winston = require('winston');\n    const logger = winston.createLogger({\n      level: 'error',\n      format: winston.format.json(),\n      transports: [\n        new winston.transports.File({ filename: 'error.log' }),\n        new winston.transports.Console(),\n      ],\n    });\n    \n    logger.error('Client error', enrichedLog);\n    */\n\n    // Example database storage (uncomment when database schema is ready):\n    /*\n    await prisma.errorLog.create({\n      data: {\n        message: enrichedLog.message,\n        stack: enrichedLog.stack,\n        fingerprint: enrichedLog.fingerprint,\n        severity: enrichedLog.context?.severity || 'medium',\n        category: enrichedLog.context?.category || 'unknown',\n        userId: enrichedLog.context?.userId,\n        url: enrichedLog.context?.url,\n        userAgent: enrichedLog.context?.userAgent,\n        metadata: enrichedLog.context?.metadata ? JSON.stringify(enrichedLog.context.metadata) : null,\n        timestamp: new Date(enrichedLog.context?.timestamp || Date.now()),\n      },\n    });\n    */\n\n    // Send to external monitoring services\n    await sendToWebhooks(enrichedLog);\n\n    return NextResponse.json({ success: true });\n  } catch (error) {\n    console.error('Failed to process error log:', error);\n    return NextResponse.json(\n      { error: 'Failed to process error log' },\n      { status: 500 }\n    );\n  }\n}\n\nasync function sendToWebhooks(errorLog: ErrorLog) {\n  const webhooks = process.env.ERROR_WEBHOOKS?.split(',') || [];\n  \n  const promises = webhooks.map(async (webhook) => {\n    try {\n      await fetch(webhook.trim(), {\n        method: 'POST',\n        headers: { 'Content-Type': 'application/json' },\n        body: JSON.stringify(errorLog),\n      });\n    } catch (error) {\n      console.error(`Failed to send to webhook ${webhook}:`, error);\n    }\n  });\n\n  await Promise.allSettled(promises);\n}\n"],
+      names: ["POST", "request", "session", "auth", "errorLog", "json", "enrichedLog", "context", "userId", "user", "id", "sessionId", "email", "undefined", "serverTimestamp", "Date", "toISOString", "environment", "process", "env", "NODE_ENV", "console", "error", "JSON", "stringify", "sendToWebhooks", "NextResponse", "success", "status", "webhooks", "ERROR_WEBHOOKS", "split", "promises", "map", "webhook", "fetch", "trim", "method", "headers", "body", "Promise", "allSettled"],
+      mappings: ";;;;+BAsBsBA;;;eAAAA;;;wBAtBoB;sBACrB;AAqBd,eAAeA,KAAKC,OAAoB;IAC7C,IAAI;QACF,MAAMC,UAAU,MAAMC,IAAAA,UAAI;QAC1B,MAAMC,WAAqB,MAAMH,QAAQI,IAAI;QAE7C,sBAAsB;QACtB,MAAMC,cAAwB;YAC5B,GAAGF,QAAQ;YACXG,SAAS;gBACP,GAAGH,SAASG,OAAO;gBACnBC,QAAQN,SAASO,MAAMC;gBACvBC,WAAWT,SAASO,MAAMG,SAASC;gBACnCC,iBAAiB,IAAIC,OAAOC,WAAW;gBACvCC,aAAaC,QAAQC,GAAG,CAACC,QAAQ;YACnC;QACF;QAEA,sEAAsE;QACtEC,QAAQC,KAAK,CAAC,2BAA2BC,KAAKC,SAAS,CAAClB,aAAa,MAAM;QAE3E,4BAA4B;QAC5B,8DAA8D;QAC9D,oCAAoC;QACpC,qCAAqC;QACrC,6DAA6D;QAE7D,wDAAwD;QACxD;;;;;;;;;;;;IAYA,GAEA,sEAAsE;QACtE;;;;;;;;;;;;;;;IAeA,GAEA,uCAAuC;QACvC,MAAMmB,eAAenB;QAErB,OAAOoB,oBAAY,CAACrB,IAAI,CAAC;YAAEsB,SAAS;QAAK;IAC3C,EAAE,OAAOL,OAAO;QACdD,QAAQC,KAAK,CAAC,gCAAgCA;QAC9C,OAAOI,oBAAY,CAACrB,IAAI,CACtB;YAAEiB,OAAO;QAA8B,GACvC;YAAEM,QAAQ;QAAI;IAElB;AACF;AAEA,eAAeH,eAAerB,QAAkB;IAC9C,MAAMyB,WAAWX,QAAQC,GAAG,CAACW,cAAc,EAAEC,MAAM,QAAQ,EAAE;IAE7D,MAAMC,WAAWH,SAASI,GAAG,CAAC,OAAOC;QACnC,IAAI;YACF,MAAMC,MAAMD,QAAQE,IAAI,IAAI;gBAC1BC,QAAQ;gBACRC,SAAS;oBAAE,gBAAgB;gBAAmB;gBAC9CC,MAAMhB,KAAKC,SAAS,CAACpB;YACvB;QACF,EAAE,OAAOkB,OAAO;YACdD,QAAQC,KAAK,CAAC,CAAC,0BAA0B,EAAEY,QAAQ,CAAC,CAAC,EAAEZ;QACzD;IACF;IAEA,MAAMkB,QAAQC,UAAU,CAACT;AAC3B"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "7553122cbc4e330447fe1ac3ea3f0bc8cbf2b94e"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1v0hj4zybv = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1v0hj4zybv();
+cov_1v0hj4zybv().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_1v0hj4zybv().s[1]++;
+Object.defineProperty(exports, "POST", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_1v0hj4zybv().f[0]++;
+    cov_1v0hj4zybv().s[2]++;
+    return POST;
+  }
+});
+const _server =
+/* istanbul ignore next */
+(cov_1v0hj4zybv().s[3]++, require("next/server"));
+const _auth =
+/* istanbul ignore next */
+(cov_1v0hj4zybv().s[4]++, require("../../../../lib/auth"));
+async function POST(request) {
+  /* istanbul ignore next */
+  cov_1v0hj4zybv().f[1]++;
+  cov_1v0hj4zybv().s[5]++;
+  try {
+    const session =
+    /* istanbul ignore next */
+    (cov_1v0hj4zybv().s[6]++, await (0, _auth.auth)());
+    const errorLog =
+    /* istanbul ignore next */
+    (cov_1v0hj4zybv().s[7]++, await request.json());
+    // Add session context
+    const enrichedLog =
+    /* istanbul ignore next */
+    (cov_1v0hj4zybv().s[8]++, {
+      ...errorLog,
+      context: {
+        ...errorLog.context,
+        userId: session?.user?.id,
+        sessionId:
+        /* istanbul ignore next */
+        (cov_1v0hj4zybv().b[0][0]++, session?.user?.email) ||
+        /* istanbul ignore next */
+        (cov_1v0hj4zybv().b[0][1]++, undefined),
+        serverTimestamp: new Date().toISOString(),
+        environment: process.env.NODE_ENV
+      }
+    });
+    // Log to console (in production, this would go to structured logging)
+    /* istanbul ignore next */
+    cov_1v0hj4zybv().s[9]++;
+    console.error('🚨 Client Error Report:', JSON.stringify(enrichedLog, null, 2));
+    // In production, you would:
+    // 1. Send to structured logging service (e.g., Winston, Pino)
+    // 2. Store in database for analysis
+    // 3. Send alerts for critical errors
+    // 4. Forward to external services (DataDog, New Relic, etc.)
+    // Example structured logging (uncomment in production):
+    /*
+    const winston = require('winston');
+    const logger = winston.createLogger({
+    level: 'error',
+    format: winston.format.json(),
+    transports: [
+    new winston.transports.File({ filename: 'error.log' }),
+    new winston.transports.Console(),
+    ],
+    });
+     logger.error('Client error', enrichedLog);
+    */ // Example database storage (uncomment when database schema is ready):
+    /*
+    await prisma.errorLog.create({
+    data: {
+    message: enrichedLog.message,
+    stack: enrichedLog.stack,
+    fingerprint: enrichedLog.fingerprint,
+    severity: enrichedLog.context?.severity || 'medium',
+    category: enrichedLog.context?.category || 'unknown',
+    userId: enrichedLog.context?.userId,
+    url: enrichedLog.context?.url,
+    userAgent: enrichedLog.context?.userAgent,
+    metadata: enrichedLog.context?.metadata ? JSON.stringify(enrichedLog.context.metadata) : null,
+    timestamp: new Date(enrichedLog.context?.timestamp || Date.now()),
+    },
+    });
+    */ // Send to external monitoring services
+    /* istanbul ignore next */
+    cov_1v0hj4zybv().s[10]++;
+    await sendToWebhooks(enrichedLog);
+    /* istanbul ignore next */
+    cov_1v0hj4zybv().s[11]++;
+    return _server.NextResponse.json({
+      success: true
+    });
+  } catch (error) {
+    /* istanbul ignore next */
+    cov_1v0hj4zybv().s[12]++;
+    console.error('Failed to process error log:', error);
+    /* istanbul ignore next */
+    cov_1v0hj4zybv().s[13]++;
+    return _server.NextResponse.json({
+      error: 'Failed to process error log'
+    }, {
+      status: 500
+    });
+  }
+}
+async function sendToWebhooks(errorLog) {
+  /* istanbul ignore next */
+  cov_1v0hj4zybv().f[2]++;
+  const webhooks =
+  /* istanbul ignore next */
+  (cov_1v0hj4zybv().s[14]++,
+  /* istanbul ignore next */
+  (cov_1v0hj4zybv().b[1][0]++, process.env.ERROR_WEBHOOKS?.split(',')) ||
+  /* istanbul ignore next */
+  (cov_1v0hj4zybv().b[1][1]++, []));
+  const promises =
+  /* istanbul ignore next */
+  (cov_1v0hj4zybv().s[15]++, webhooks.map(async webhook => {
+    /* istanbul ignore next */
+    cov_1v0hj4zybv().f[3]++;
+    cov_1v0hj4zybv().s[16]++;
+    try {
+      /* istanbul ignore next */
+      cov_1v0hj4zybv().s[17]++;
+      await fetch(webhook.trim(), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(errorLog)
+      });
+    } catch (error) {
+      /* istanbul ignore next */
+      cov_1v0hj4zybv().s[18]++;
+      console.error(`Failed to send to webhook ${webhook}:`, error);
+    }
+  }));
+  /* istanbul ignore next */
+  cov_1v0hj4zybv().s[19]++;
+  await Promise.allSettled(promises);
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMXYwaGo0enlidiIsImFjdHVhbENvdmVyYWdlIiwicyIsIlBPU1QiLCJyZXF1ZXN0IiwiZiIsInNlc3Npb24iLCJfYXV0aCIsImF1dGgiLCJlcnJvckxvZyIsImpzb24iLCJlbnJpY2hlZExvZyIsImNvbnRleHQiLCJ1c2VySWQiLCJ1c2VyIiwiaWQiLCJzZXNzaW9uSWQiLCJiIiwiZW1haWwiLCJ1bmRlZmluZWQiLCJzZXJ2ZXJUaW1lc3RhbXAiLCJEYXRlIiwidG9JU09TdHJpbmciLCJlbnZpcm9ubWVudCIsInByb2Nlc3MiLCJlbnYiLCJOT0RFX0VOViIsImNvbnNvbGUiLCJlcnJvciIsIkpTT04iLCJzdHJpbmdpZnkiLCJzZW5kVG9XZWJob29rcyIsIl9zZXJ2ZXIiLCJOZXh0UmVzcG9uc2UiLCJzdWNjZXNzIiwic3RhdHVzIiwid2ViaG9va3MiLCJFUlJPUl9XRUJIT09LUyIsInNwbGl0IiwicHJvbWlzZXMiLCJtYXAiLCJ3ZWJob29rIiwiZmV0Y2giLCJ0cmltIiwibWV0aG9kIiwiaGVhZGVycyIsImJvZHkiLCJQcm9taXNlIiwiYWxsU2V0dGxlZCJdLCJzb3VyY2VzIjpbIi9hcHAvc3JjL2FwcC9hcGkvZXJyb3JzL2xvZy9yb3V0ZS50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBOZXh0UmVxdWVzdCwgTmV4dFJlc3BvbnNlIH0gZnJvbSAnbmV4dC9zZXJ2ZXInO1xuaW1wb3J0IHsgYXV0aCB9IGZyb20gJy4uLy4uLy4uLy4uL2xpYi9hdXRoJztcblxuaW50ZXJmYWNlIEVycm9yTG9nIHtcbiAgbWVzc2FnZTogc3RyaW5nO1xuICBzdGFjaz86IHN0cmluZztcbiAgY29udGV4dD86IHtcbiAgICB1c2VySWQ/OiBzdHJpbmc7XG4gICAgc2Vzc2lvbklkPzogc3RyaW5nO1xuICAgIHVybD86IHN0cmluZztcbiAgICB1c2VyQWdlbnQ/OiBzdHJpbmc7XG4gICAgdGltZXN0YW1wPzogbnVtYmVyO1xuICAgIHNldmVyaXR5Pzogc3RyaW5nO1xuICAgIGNhdGVnb3J5Pzogc3RyaW5nO1xuICAgIHRhZ3M/OiBSZWNvcmQ8c3RyaW5nLCBzdHJpbmc+O1xuICAgIG1ldGFkYXRhPzogUmVjb3JkPHN0cmluZywgdW5rbm93bj47XG4gICAgc2VydmVyVGltZXN0YW1wPzogc3RyaW5nO1xuICAgIGVudmlyb25tZW50Pzogc3RyaW5nO1xuICB9O1xuICBmaW5nZXJwcmludD86IHN0cmluZztcbn1cblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIFBPU1QocmVxdWVzdDogTmV4dFJlcXVlc3QpIHtcbiAgdHJ5IHtcbiAgICBjb25zdCBzZXNzaW9uID0gYXdhaXQgYXV0aCgpO1xuICAgIGNvbnN0IGVycm9yTG9nOiBFcnJvckxvZyA9IGF3YWl0IHJlcXVlc3QuanNvbigpO1xuXG4gICAgLy8gQWRkIHNlc3Npb24gY29udGV4dFxuICAgIGNvbnN0IGVucmljaGVkTG9nOiBFcnJvckxvZyA9IHtcbiAgICAgIC4uLmVycm9yTG9nLFxuICAgICAgY29udGV4dDoge1xuICAgICAgICAuLi5lcnJvckxvZy5jb250ZXh0LFxuICAgICAgICB1c2VySWQ6IHNlc3Npb24/LnVzZXI/LmlkLFxuICAgICAgICBzZXNzaW9uSWQ6IHNlc3Npb24/LnVzZXI/LmVtYWlsIHx8IHVuZGVmaW5lZCxcbiAgICAgICAgc2VydmVyVGltZXN0YW1wOiBuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCksXG4gICAgICAgIGVudmlyb25tZW50OiBwcm9jZXNzLmVudi5OT0RFX0VOVixcbiAgICAgIH0sXG4gICAgfTtcblxuICAgIC8vIExvZyB0byBjb25zb2xlIChpbiBwcm9kdWN0aW9uLCB0aGlzIHdvdWxkIGdvIHRvIHN0cnVjdHVyZWQgbG9nZ2luZylcbiAgICBjb25zb2xlLmVycm9yKCfwn5qoIENsaWVudCBFcnJvciBSZXBvcnQ6JywgSlNPTi5zdHJpbmdpZnkoZW5yaWNoZWRMb2csIG51bGwsIDIpKTtcblxuICAgIC8vIEluIHByb2R1Y3Rpb24sIHlvdSB3b3VsZDpcbiAgICAvLyAxLiBTZW5kIHRvIHN0cnVjdHVyZWQgbG9nZ2luZyBzZXJ2aWNlIChlLmcuLCBXaW5zdG9uLCBQaW5vKVxuICAgIC8vIDIuIFN0b3JlIGluIGRhdGFiYXNlIGZvciBhbmFseXNpc1xuICAgIC8vIDMuIFNlbmQgYWxlcnRzIGZvciBjcml0aWNhbCBlcnJvcnNcbiAgICAvLyA0LiBGb3J3YXJkIHRvIGV4dGVybmFsIHNlcnZpY2VzIChEYXRhRG9nLCBOZXcgUmVsaWMsIGV0Yy4pXG5cbiAgICAvLyBFeGFtcGxlIHN0cnVjdHVyZWQgbG9nZ2luZyAodW5jb21tZW50IGluIHByb2R1Y3Rpb24pOlxuICAgIC8qXG4gICAgY29uc3Qgd2luc3RvbiA9IHJlcXVpcmUoJ3dpbnN0b24nKTtcbiAgICBjb25zdCBsb2dnZXIgPSB3aW5zdG9uLmNyZWF0ZUxvZ2dlcih7XG4gICAgICBsZXZlbDogJ2Vycm9yJyxcbiAgICAgIGZvcm1hdDogd2luc3Rvbi5mb3JtYXQuanNvbigpLFxuICAgICAgdHJhbnNwb3J0czogW1xuICAgICAgICBuZXcgd2luc3Rvbi50cmFuc3BvcnRzLkZpbGUoeyBmaWxlbmFtZTogJ2Vycm9yLmxvZycgfSksXG4gICAgICAgIG5ldyB3aW5zdG9uLnRyYW5zcG9ydHMuQ29uc29sZSgpLFxuICAgICAgXSxcbiAgICB9KTtcbiAgICBcbiAgICBsb2dnZXIuZXJyb3IoJ0NsaWVudCBlcnJvcicsIGVucmljaGVkTG9nKTtcbiAgICAqL1xuXG4gICAgLy8gRXhhbXBsZSBkYXRhYmFzZSBzdG9yYWdlICh1bmNvbW1lbnQgd2hlbiBkYXRhYmFzZSBzY2hlbWEgaXMgcmVhZHkpOlxuICAgIC8qXG4gICAgYXdhaXQgcHJpc21hLmVycm9yTG9nLmNyZWF0ZSh7XG4gICAgICBkYXRhOiB7XG4gICAgICAgIG1lc3NhZ2U6IGVucmljaGVkTG9nLm1lc3NhZ2UsXG4gICAgICAgIHN0YWNrOiBlbnJpY2hlZExvZy5zdGFjayxcbiAgICAgICAgZmluZ2VycHJpbnQ6IGVucmljaGVkTG9nLmZpbmdlcnByaW50LFxuICAgICAgICBzZXZlcml0eTogZW5yaWNoZWRMb2cuY29udGV4dD8uc2V2ZXJpdHkgfHwgJ21lZGl1bScsXG4gICAgICAgIGNhdGVnb3J5OiBlbnJpY2hlZExvZy5jb250ZXh0Py5jYXRlZ29yeSB8fCAndW5rbm93bicsXG4gICAgICAgIHVzZXJJZDogZW5yaWNoZWRMb2cuY29udGV4dD8udXNlcklkLFxuICAgICAgICB1cmw6IGVucmljaGVkTG9nLmNvbnRleHQ/LnVybCxcbiAgICAgICAgdXNlckFnZW50OiBlbnJpY2hlZExvZy5jb250ZXh0Py51c2VyQWdlbnQsXG4gICAgICAgIG1ldGFkYXRhOiBlbnJpY2hlZExvZy5jb250ZXh0Py5tZXRhZGF0YSA/IEpTT04uc3RyaW5naWZ5KGVucmljaGVkTG9nLmNvbnRleHQubWV0YWRhdGEpIDogbnVsbCxcbiAgICAgICAgdGltZXN0YW1wOiBuZXcgRGF0ZShlbnJpY2hlZExvZy5jb250ZXh0Py50aW1lc3RhbXAgfHwgRGF0ZS5ub3coKSksXG4gICAgICB9LFxuICAgIH0pO1xuICAgICovXG5cbiAgICAvLyBTZW5kIHRvIGV4dGVybmFsIG1vbml0b3Jpbmcgc2VydmljZXNcbiAgICBhd2FpdCBzZW5kVG9XZWJob29rcyhlbnJpY2hlZExvZyk7XG5cbiAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oeyBzdWNjZXNzOiB0cnVlIH0pO1xuICB9IGNhdGNoIChlcnJvcikge1xuICAgIGNvbnNvbGUuZXJyb3IoJ0ZhaWxlZCB0byBwcm9jZXNzIGVycm9yIGxvZzonLCBlcnJvcik7XG4gICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKFxuICAgICAgeyBlcnJvcjogJ0ZhaWxlZCB0byBwcm9jZXNzIGVycm9yIGxvZycgfSxcbiAgICAgIHsgc3RhdHVzOiA1MDAgfVxuICAgICk7XG4gIH1cbn1cblxuYXN5bmMgZnVuY3Rpb24gc2VuZFRvV2ViaG9va3MoZXJyb3JMb2c6IEVycm9yTG9nKSB7XG4gIGNvbnN0IHdlYmhvb2tzID0gcHJvY2Vzcy5lbnYuRVJST1JfV0VCSE9PS1M/LnNwbGl0KCcsJykgfHwgW107XG4gIFxuICBjb25zdCBwcm9taXNlcyA9IHdlYmhvb2tzLm1hcChhc3luYyAod2ViaG9vaykgPT4ge1xuICAgIHRyeSB7XG4gICAgICBhd2FpdCBmZXRjaCh3ZWJob29rLnRyaW0oKSwge1xuICAgICAgICBtZXRob2Q6ICdQT1NUJyxcbiAgICAgICAgaGVhZGVyczogeyAnQ29udGVudC1UeXBlJzogJ2FwcGxpY2F0aW9uL2pzb24nIH0sXG4gICAgICAgIGJvZHk6IEpTT04uc3RyaW5naWZ5KGVycm9yTG9nKSxcbiAgICAgIH0pO1xuICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICBjb25zb2xlLmVycm9yKGBGYWlsZWQgdG8gc2VuZCB0byB3ZWJob29rICR7d2ViaG9va306YCwgZXJyb3IpO1xuICAgIH1cbiAgfSk7XG5cbiAgYXdhaXQgUHJvbWlzZS5hbGxTZXR0bGVkKHByb21pc2VzKTtcbn1cbiJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0lBeUJJO0lBQUFBLGNBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUFDLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUFELGNBQUE7QUFBQUEsY0FBQSxHQUFBRSxDQUFBOzs7Ozs7K0JBSGtCOzs7Ozs7V0FBQUMsSUFBQTs7Ozs7a0NBdEJvQjs7O2tDQUNyQjtBQXFCZCxlQUFlQSxLQUFLQyxPQUFvQjtFQUFBO0VBQUFKLGNBQUEsR0FBQUssQ0FBQTtFQUFBTCxjQUFBLEdBQUFFLENBQUE7RUFDN0MsSUFBSTtJQUNGLE1BQU1JLE9BQUE7SUFBQTtJQUFBLENBQUFOLGNBQUEsR0FBQUUsQ0FBQSxPQUFVLE1BQU0sSUFBQUssS0FBQSxDQUFBQyxJQUFJO0lBQzFCLE1BQU1DLFFBQUE7SUFBQTtJQUFBLENBQUFULGNBQUEsR0FBQUUsQ0FBQSxPQUFxQixNQUFNRSxPQUFBLENBQVFNLElBQUk7SUFFN0M7SUFDQSxNQUFNQyxXQUFBO0lBQUE7SUFBQSxDQUFBWCxjQUFBLEdBQUFFLENBQUEsT0FBd0I7TUFDNUIsR0FBR08sUUFBUTtNQUNYRyxPQUFBLEVBQVM7UUFDUCxHQUFHSCxRQUFBLENBQVNHLE9BQU87UUFDbkJDLE1BQUEsRUFBUVAsT0FBQSxFQUFTUSxJQUFBLEVBQU1DLEVBQUE7UUFDdkJDLFNBQUE7UUFBVztRQUFBLENBQUFoQixjQUFBLEdBQUFpQixDQUFBLFVBQUFYLE9BQUEsRUFBU1EsSUFBQSxFQUFNSSxLQUFBO1FBQUE7UUFBQSxDQUFBbEIsY0FBQSxHQUFBaUIsQ0FBQSxVQUFTRSxTQUFBO1FBQ25DQyxlQUFBLEVBQWlCLElBQUlDLElBQUEsR0FBT0MsV0FBVztRQUN2Q0MsV0FBQSxFQUFhQyxPQUFBLENBQVFDLEdBQUcsQ0FBQ0M7TUFDM0I7SUFDRjtJQUVBO0lBQUE7SUFBQTFCLGNBQUEsR0FBQUUsQ0FBQTtJQUNBeUIsT0FBQSxDQUFRQyxLQUFLLENBQUMsMkJBQTJCQyxJQUFBLENBQUtDLFNBQVMsQ0FBQ25CLFdBQUEsRUFBYSxNQUFNO0lBRTNFO0lBQ0E7SUFDQTtJQUNBO0lBQ0E7SUFFQTtJQUNBOzs7Ozs7Ozs7OztNQUFBLENBY0E7SUFDQTs7Ozs7Ozs7Ozs7Ozs7O01BQUEsQ0FpQkE7SUFBQTtJQUFBWCxjQUFBLEdBQUFFLENBQUE7SUFDQSxNQUFNNkIsY0FBQSxDQUFlcEIsV0FBQTtJQUFBO0lBQUFYLGNBQUEsR0FBQUUsQ0FBQTtJQUVyQixPQUFPOEIsT0FBQSxDQUFBQyxZQUFZLENBQUN2QixJQUFJLENBQUM7TUFBRXdCLE9BQUEsRUFBUztJQUFLO0VBQzNDLEVBQUUsT0FBT04sS0FBQSxFQUFPO0lBQUE7SUFBQTVCLGNBQUEsR0FBQUUsQ0FBQTtJQUNkeUIsT0FBQSxDQUFRQyxLQUFLLENBQUMsZ0NBQWdDQSxLQUFBO0lBQUE7SUFBQTVCLGNBQUEsR0FBQUUsQ0FBQTtJQUM5QyxPQUFPOEIsT0FBQSxDQUFBQyxZQUFZLENBQUN2QixJQUFJLENBQ3RCO01BQUVrQixLQUFBLEVBQU87SUFBOEIsR0FDdkM7TUFBRU8sTUFBQSxFQUFRO0lBQUk7RUFFbEI7QUFDRjtBQUVBLGVBQWVKLGVBQWV0QixRQUFrQjtFQUFBO0VBQUFULGNBQUEsR0FBQUssQ0FBQTtFQUM5QyxNQUFNK0IsUUFBQTtFQUFBO0VBQUEsQ0FBQXBDLGNBQUEsR0FBQUUsQ0FBQTtFQUFXO0VBQUEsQ0FBQUYsY0FBQSxHQUFBaUIsQ0FBQSxVQUFBTyxPQUFBLENBQVFDLEdBQUcsQ0FBQ1ksY0FBYyxFQUFFQyxLQUFBLENBQU07RUFBQTtFQUFBLENBQUF0QyxjQUFBLEdBQUFpQixDQUFBLFVBQVEsRUFBRTtFQUU3RCxNQUFNc0IsUUFBQTtFQUFBO0VBQUEsQ0FBQXZDLGNBQUEsR0FBQUUsQ0FBQSxRQUFXa0MsUUFBQSxDQUFTSSxHQUFHLENBQUMsTUFBT0MsT0FBQTtJQUFBO0lBQUF6QyxjQUFBLEdBQUFLLENBQUE7SUFBQUwsY0FBQSxHQUFBRSxDQUFBO0lBQ25DLElBQUk7TUFBQTtNQUFBRixjQUFBLEdBQUFFLENBQUE7TUFDRixNQUFNd0MsS0FBQSxDQUFNRCxPQUFBLENBQVFFLElBQUksSUFBSTtRQUMxQkMsTUFBQSxFQUFRO1FBQ1JDLE9BQUEsRUFBUztVQUFFLGdCQUFnQjtRQUFtQjtRQUM5Q0MsSUFBQSxFQUFNakIsSUFBQSxDQUFLQyxTQUFTLENBQUNyQixRQUFBO01BQ3ZCO0lBQ0YsRUFBRSxPQUFPbUIsS0FBQSxFQUFPO01BQUE7TUFBQTVCLGNBQUEsR0FBQUUsQ0FBQTtNQUNkeUIsT0FBQSxDQUFRQyxLQUFLLENBQUMsNkJBQTZCYSxPQUFBLEdBQVUsRUFBRWIsS0FBQTtJQUN6RDtFQUNGO0VBQUE7RUFBQTVCLGNBQUEsR0FBQUUsQ0FBQTtFQUVBLE1BQU02QyxPQUFBLENBQVFDLFVBQVUsQ0FBQ1QsUUFBQTtBQUMzQiIsImlnbm9yZUxpc3QiOltdfQ==

@@ -1,0 +1,196 @@
+30135800f146ced8006392eedfdb42b0
+"use client";
+"use strict";
+
+/* istanbul ignore next */
+function cov_7hso2h7hm() {
+  var path = "/app/src/components/shared/SessionWrapper.tsx";
+  var hash = "f9ec6a129d5e8d821838477c0028bdcdcfab975b";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/app/src/components/shared/SessionWrapper.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 11,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 9,
+          column: 8
+        },
+        end: {
+          line: 9,
+          column: 30
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 12,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 15
+        },
+        end: {
+          line: 13,
+          column: 41
+        }
+      },
+      "5": {
+        start: {
+          line: 15,
+          column: 4
+        },
+        end: {
+          line: 19,
+          column: 7
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 8,
+            column: 9
+          },
+          end: {
+            line: 8,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 20
+          },
+          end: {
+            line: 10,
+            column: 5
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "SessionWrapper",
+        decl: {
+          start: {
+            line: 14,
+            column: 9
+          },
+          end: {
+            line: 14,
+            column: 23
+          }
+        },
+        loc: {
+          start: {
+            line: 14,
+            column: 38
+          },
+          end: {
+            line: 20,
+            column: 1
+          }
+        },
+        line: 14
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/app/src/components/shared/SessionWrapper.tsx"],
+      sourcesContent: ["\"use client\";\n\nimport { SessionProvider } from \"next-auth/react\";\nimport { ReactNode } from \"react\";\n\ninterface SessionWrapperProps {\n  children: ReactNode;\n}\n\nexport default function SessionWrapper({ children }: SessionWrapperProps) {\n  return (\n    <SessionProvider\n      refetchInterval={5 * 60} // Refetch session every 5 minutes\n      refetchOnWindowFocus={true} // Refetch when window gains focus\n    >\n      {children}\n    </SessionProvider>\n  );\n}\n"],
+      names: ["SessionWrapper", "children", "SessionProvider", "refetchInterval", "refetchOnWindowFocus"],
+      mappings: "AAAA;;;;;+BASA;;;eAAwBA;;;;uBAPQ;AAOjB,SAASA,eAAe,EAAEC,QAAQ,EAAuB;IACtE,qBACE,qBAACC,sBAAe;QACdC,iBAAiB,IAAI;QACrBC,sBAAsB;kBAErBH;;AAGP"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "f9ec6a129d5e8d821838477c0028bdcdcfab975b"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_7hso2h7hm = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_7hso2h7hm();
+cov_7hso2h7hm().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_7hso2h7hm().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_7hso2h7hm().f[0]++;
+    cov_7hso2h7hm().s[2]++;
+    return SessionWrapper;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_7hso2h7hm().s[3]++, require("react/jsx-runtime"));
+const _react =
+/* istanbul ignore next */
+(cov_7hso2h7hm().s[4]++, require("next-auth/react"));
+function SessionWrapper({
+  children
+}) {
+  /* istanbul ignore next */
+  cov_7hso2h7hm().f[1]++;
+  cov_7hso2h7hm().s[5]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsx)(_react.SessionProvider, {
+    refetchInterval: 5 * 60,
+    refetchOnWindowFocus: true,
+    children: children
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfN2hzbzJoN2htIiwiYWN0dWFsQ292ZXJhZ2UiLCJzIiwiU2Vzc2lvbldyYXBwZXIiLCJjaGlsZHJlbiIsImYiLCJfanN4cnVudGltZSIsImpzeCIsIl9yZWFjdCIsIlNlc3Npb25Qcm92aWRlciIsInJlZmV0Y2hJbnRlcnZhbCIsInJlZmV0Y2hPbldpbmRvd0ZvY3VzIl0sInNvdXJjZXMiOlsiL2FwcC9zcmMvY29tcG9uZW50cy9zaGFyZWQvU2Vzc2lvbldyYXBwZXIudHN4Il0sInNvdXJjZXNDb250ZW50IjpbIlwidXNlIGNsaWVudFwiO1xuXG5pbXBvcnQgeyBTZXNzaW9uUHJvdmlkZXIgfSBmcm9tIFwibmV4dC1hdXRoL3JlYWN0XCI7XG5pbXBvcnQgeyBSZWFjdE5vZGUgfSBmcm9tIFwicmVhY3RcIjtcblxuaW50ZXJmYWNlIFNlc3Npb25XcmFwcGVyUHJvcHMge1xuICBjaGlsZHJlbjogUmVhY3ROb2RlO1xufVxuXG5leHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBTZXNzaW9uV3JhcHBlcih7IGNoaWxkcmVuIH06IFNlc3Npb25XcmFwcGVyUHJvcHMpIHtcbiAgcmV0dXJuIChcbiAgICA8U2Vzc2lvblByb3ZpZGVyXG4gICAgICByZWZldGNoSW50ZXJ2YWw9ezUgKiA2MH0gLy8gUmVmZXRjaCBzZXNzaW9uIGV2ZXJ5IDUgbWludXRlc1xuICAgICAgcmVmZXRjaE9uV2luZG93Rm9jdXM9e3RydWV9IC8vIFJlZmV0Y2ggd2hlbiB3aW5kb3cgZ2FpbnMgZm9jdXNcbiAgICA+XG4gICAgICB7Y2hpbGRyZW59XG4gICAgPC9TZXNzaW9uUHJvdmlkZXI+XG4gICk7XG59XG4iXSwibWFwcGluZ3MiOiJBQUFBOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7SUFZTTtJQUFBQSxhQUFBLFlBQUFBLENBQUE7TUFBQSxPQUFBQyxjQUFBO0lBQUE7RUFBQTtFQUFBLE9BQUFBLGNBQUE7QUFBQTtBQUFBRCxhQUFBO0FBQUFBLGFBQUEsR0FBQUUsQ0FBQTs7Ozs7OytCQUhOOzs7Ozs7V0FBd0JDLGNBQUE7Ozs7Ozs7O2lDQVBRO0FBT2pCLFNBQVNBLGVBQWU7RUFBRUM7QUFBUSxDQUF1QjtFQUFBO0VBQUFKLGFBQUEsR0FBQUssQ0FBQTtFQUFBTCxhQUFBLEdBQUFFLENBQUE7RUFDdEUsb0JBQ0UsSUFBQUksV0FBQSxDQUFBQyxHQUFBLEVBQUNDLE1BQUEsQ0FBQUMsZUFBZTtJQUNkQyxlQUFBLEVBQWlCLElBQUk7SUFDckJDLG9CQUFBLEVBQXNCO2NBRXJCUDs7QUFHUCIsImlnbm9yZUxpc3QiOltdfQ==

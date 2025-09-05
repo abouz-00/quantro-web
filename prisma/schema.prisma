@@ -1,12 +1,12 @@
-// Development Prisma schema file for SQLite
-// Use this schema for local development with SQLite
+// Docker Test Prisma schema file for PostgreSQL testing
+// This uses PostgreSQL for Docker-based integration tests
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -47,69 +47,29 @@ model User {
   invitedBy     String?
   accounts      Account[]
   sessions      Session[]
-  
-  // Quantro specific fields
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  // Nutrition tracking preferences
-  dailyCalorieGoal    Int?      @default(2000)
-  dailyProteinGoal    Float?    @default(150)
-  dailyCarbGoal       Float?    @default(250)
-  dailyFatGoal        Float?    @default(67)
-  
-  // User preferences
-  weightUnit          String    @default("lbs") // "lbs" or "kg"
-  heightUnit          String    @default("ft")  // "ft" or "cm"
-  
-  // Food logs
-  foodLogs            FoodLog[]
-}
+  foodLogs      FoodLog[]
 
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
-
-model BetaInvite {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  code      String   @unique
-  used      Boolean  @default(false)
-  usedAt    DateTime?
-  revoked   Boolean  @default(false)
-  revokedAt DateTime?
-  createdAt DateTime @default(now())
-  expiresAt DateTime?
+  @@map("users")
 }
 
 model FoodLog {
   id          String   @id @default(cuid())
   userId      String
-  date        DateTime @default(now())
-  mealType    String   // "breakfast", "lunch", "dinner", "snack"
-  orderIndex  Int?     // For drag and drop ordering within a day
-  
-  // Food details
-  foodName    String
-  brand       String?
-  quantity    Float
+  description String
+  amount      String
   unit        String
-  
-  // Nutritional information
   calories    Float
-  protein     Float
-  carbs       Float
-  fat         Float
+  protein     Float?
+  carbs       Float?
+  fat         Float?
   fiber       Float?
-  sugar       Float?
-  sodium      Float?
-  
+  date        DateTime
+  mealType    String
+  orderIndex  Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("food_logs")
 }
