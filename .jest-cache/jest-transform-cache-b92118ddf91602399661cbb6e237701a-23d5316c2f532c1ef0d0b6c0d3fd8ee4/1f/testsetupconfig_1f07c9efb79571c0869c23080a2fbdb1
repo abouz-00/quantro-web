@@ -1,0 +1,306 @@
+61b7f39d5ec65a19953cab3ea6880425
+/**
+ * Test setup file for API tests
+ * Ensures all external dependencies are properly mocked
+ */ // Mock global fetch to prevent real network requests
+"use strict";
+
+/* istanbul ignore next */
+function cov_281b53gzbj() {
+  var path = "/app/src/app/api/test-setup.config.ts";
+  var hash = "99f1905532ed502c24b7efe5227b962f99abe7e0";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/app/src/app/api/test-setup.config.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 8,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 9,
+          column: 0
+        },
+        end: {
+          line: 14,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 12,
+          column: 8
+        },
+        end: {
+          line: 12,
+          column: 25
+        }
+      },
+      "3": {
+        start: {
+          line: 15,
+          column: 18
+        },
+        end: {
+          line: 15,
+          column: 27
+        }
+      },
+      "4": {
+        start: {
+          line: 16,
+          column: 0
+        },
+        end: {
+          line: 16,
+          column: 25
+        }
+      },
+      "5": {
+        start: {
+          line: 18,
+          column: 24
+        },
+        end: {
+          line: 20,
+          column: 1
+        }
+      },
+      "6": {
+        start: {
+          line: 21,
+          column: 0
+        },
+        end: {
+          line: 25,
+          column: 3
+        }
+      },
+      "7": {
+        start: {
+          line: 22,
+          column: 4
+        },
+        end: {
+          line: 22,
+          column: 30
+        }
+      },
+      "8": {
+        start: {
+          line: 23,
+          column: 4
+        },
+        end: {
+          line: 23,
+          column: 29
+        }
+      },
+      "9": {
+        start: {
+          line: 24,
+          column: 4
+        },
+        end: {
+          line: 24,
+          column: 28
+        }
+      },
+      "10": {
+        start: {
+          line: 26,
+          column: 0
+        },
+        end: {
+          line: 28,
+          column: 3
+        }
+      },
+      "11": {
+        start: {
+          line: 27,
+          column: 4
+        },
+        end: {
+          line: 27,
+          column: 44
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 11,
+            column: 9
+          },
+          end: {
+            line: 11,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 11,
+            column: 20
+          },
+          end: {
+            line: 13,
+            column: 5
+          }
+        },
+        line: 11
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 21,
+            column: 10
+          },
+          end: {
+            line: 21,
+            column: 11
+          }
+        },
+        loc: {
+          start: {
+            line: 21,
+            column: 14
+          },
+          end: {
+            line: 25,
+            column: 1
+          }
+        },
+        line: 21
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 26,
+            column: 9
+          },
+          end: {
+            line: 26,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 26,
+            column: 13
+          },
+          end: {
+            line: 28,
+            column: 1
+          }
+        },
+        line: 26
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/app/src/app/api/test-setup.config.ts"],
+      sourcesContent: ["/**\n * Test setup file for API tests\n * Ensures all external dependencies are properly mocked\n */\n\n// Mock global fetch to prevent real network requests\nconst mockFetch = jest.fn();\nglobal.fetch = mockFetch;\n\n// Mock console methods to reduce test noise\nconst originalConsole = { ...console };\nbeforeAll(() => {\n  console.error = jest.fn();\n  console.warn = jest.fn();\n  console.log = jest.fn();\n});\n\nafterAll(() => {\n  Object.assign(console, originalConsole);\n});\n\n// Export mock functions for use in tests\nexport { mockFetch };\n"],
+      names: ["mockFetch", "jest", "fn", "global", "fetch", "originalConsole", "console", "beforeAll", "error", "warn", "log", "afterAll", "Object", "assign"],
+      mappings: "AAAA;;;CAGC,GAED,qDAAqD;;;;;+BAiB5CA;;;eAAAA;;;AAhBT,MAAMA,YAAYC,KAAKC,EAAE;AACzBC,OAAOC,KAAK,GAAGJ;AAEf,4CAA4C;AAC5C,MAAMK,kBAAkB;IAAE,GAAGC,OAAO;AAAC;AACrCC,UAAU;IACRD,QAAQE,KAAK,GAAGP,KAAKC,EAAE;IACvBI,QAAQG,IAAI,GAAGR,KAAKC,EAAE;IACtBI,QAAQI,GAAG,GAAGT,KAAKC,EAAE;AACvB;AAEAS,SAAS;IACPC,OAAOC,MAAM,CAACP,SAASD;AACzB"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "99f1905532ed502c24b7efe5227b962f99abe7e0"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_281b53gzbj = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_281b53gzbj();
+cov_281b53gzbj().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_281b53gzbj().s[1]++;
+Object.defineProperty(exports, "mockFetch", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_281b53gzbj().f[0]++;
+    cov_281b53gzbj().s[2]++;
+    return mockFetch;
+  }
+});
+const mockFetch =
+/* istanbul ignore next */
+(cov_281b53gzbj().s[3]++, jest.fn());
+/* istanbul ignore next */
+cov_281b53gzbj().s[4]++;
+global.fetch = mockFetch;
+// Mock console methods to reduce test noise
+const originalConsole =
+/* istanbul ignore next */
+(cov_281b53gzbj().s[5]++, {
+  ...console
+});
+/* istanbul ignore next */
+cov_281b53gzbj().s[6]++;
+beforeAll(() => {
+  /* istanbul ignore next */
+  cov_281b53gzbj().f[1]++;
+  cov_281b53gzbj().s[7]++;
+  console.error = jest.fn();
+  /* istanbul ignore next */
+  cov_281b53gzbj().s[8]++;
+  console.warn = jest.fn();
+  /* istanbul ignore next */
+  cov_281b53gzbj().s[9]++;
+  console.log = jest.fn();
+});
+/* istanbul ignore next */
+cov_281b53gzbj().s[10]++;
+afterAll(() => {
+  /* istanbul ignore next */
+  cov_281b53gzbj().f[2]++;
+  cov_281b53gzbj().s[11]++;
+  Object.assign(console, originalConsole);
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMjgxYjUzZ3piaiIsImFjdHVhbENvdmVyYWdlIiwicyIsIm1vY2tGZXRjaCIsImplc3QiLCJmbiIsImdsb2JhbCIsImZldGNoIiwib3JpZ2luYWxDb25zb2xlIiwiY29uc29sZSIsImJlZm9yZUFsbCIsImYiLCJlcnJvciIsIndhcm4iLCJsb2ciLCJhZnRlckFsbCIsIk9iamVjdCIsImFzc2lnbiJdLCJzb3VyY2VzIjpbIi9hcHAvc3JjL2FwcC9hcGkvdGVzdC1zZXR1cC5jb25maWcudHMiXSwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBUZXN0IHNldHVwIGZpbGUgZm9yIEFQSSB0ZXN0c1xuICogRW5zdXJlcyBhbGwgZXh0ZXJuYWwgZGVwZW5kZW5jaWVzIGFyZSBwcm9wZXJseSBtb2NrZWRcbiAqL1xuXG4vLyBNb2NrIGdsb2JhbCBmZXRjaCB0byBwcmV2ZW50IHJlYWwgbmV0d29yayByZXF1ZXN0c1xuY29uc3QgbW9ja0ZldGNoID0gamVzdC5mbigpO1xuZ2xvYmFsLmZldGNoID0gbW9ja0ZldGNoO1xuXG4vLyBNb2NrIGNvbnNvbGUgbWV0aG9kcyB0byByZWR1Y2UgdGVzdCBub2lzZVxuY29uc3Qgb3JpZ2luYWxDb25zb2xlID0geyAuLi5jb25zb2xlIH07XG5iZWZvcmVBbGwoKCkgPT4ge1xuICBjb25zb2xlLmVycm9yID0gamVzdC5mbigpO1xuICBjb25zb2xlLndhcm4gPSBqZXN0LmZuKCk7XG4gIGNvbnNvbGUubG9nID0gamVzdC5mbigpO1xufSk7XG5cbmFmdGVyQWxsKCgpID0+IHtcbiAgT2JqZWN0LmFzc2lnbihjb25zb2xlLCBvcmlnaW5hbENvbnNvbGUpO1xufSk7XG5cbi8vIEV4cG9ydCBtb2NrIGZ1bmN0aW9ucyBmb3IgdXNlIGluIHRlc3RzXG5leHBvcnQgeyBtb2NrRmV0Y2ggfTtcbiJdLCJtYXBwaW5ncyI6IkFBQUE7OztHQUFBLENBS0E7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7SUFFWTtJQUFBQSxjQUFBLFlBQUFBLENBQUE7TUFBQSxPQUFBQyxjQUFBO0lBQUE7RUFBQTtFQUFBLE9BQUFBLGNBQUE7QUFBQTtBQUFBRCxjQUFBO0FBQUFBLGNBQUEsR0FBQUUsQ0FBQTs7Ozs7OytCQWVIOzs7Ozs7V0FBQUMsU0FBQTs7O0FBaEJULE1BQU1BLFNBQUE7QUFBQTtBQUFBLENBQUFILGNBQUEsR0FBQUUsQ0FBQSxPQUFZRSxJQUFBLENBQUtDLEVBQUU7QUFBQTtBQUFBTCxjQUFBLEdBQUFFLENBQUE7QUFDekJJLE1BQUEsQ0FBT0MsS0FBSyxHQUFHSixTQUFBO0FBRWY7QUFDQSxNQUFNSyxlQUFBO0FBQUE7QUFBQSxDQUFBUixjQUFBLEdBQUFFLENBQUEsT0FBa0I7RUFBRSxHQUFHTztBQUFRO0FBQUE7QUFBQVQsY0FBQSxHQUFBRSxDQUFBO0FBQ3JDUSxTQUFBLENBQVU7RUFBQTtFQUFBVixjQUFBLEdBQUFXLENBQUE7RUFBQVgsY0FBQSxHQUFBRSxDQUFBO0VBQ1JPLE9BQUEsQ0FBUUcsS0FBSyxHQUFHUixJQUFBLENBQUtDLEVBQUU7RUFBQTtFQUFBTCxjQUFBLEdBQUFFLENBQUE7RUFDdkJPLE9BQUEsQ0FBUUksSUFBSSxHQUFHVCxJQUFBLENBQUtDLEVBQUU7RUFBQTtFQUFBTCxjQUFBLEdBQUFFLENBQUE7RUFDdEJPLE9BQUEsQ0FBUUssR0FBRyxHQUFHVixJQUFBLENBQUtDLEVBQUU7QUFDdkI7QUFBQTtBQUFBTCxjQUFBLEdBQUFFLENBQUE7QUFFQWEsUUFBQSxDQUFTO0VBQUE7RUFBQWYsY0FBQSxHQUFBVyxDQUFBO0VBQUFYLGNBQUEsR0FBQUUsQ0FBQTtFQUNQYyxNQUFBLENBQU9DLE1BQU0sQ0FBQ1IsT0FBQSxFQUFTRCxlQUFBO0FBQ3pCIiwiaWdub3JlTGlzdCI6W119

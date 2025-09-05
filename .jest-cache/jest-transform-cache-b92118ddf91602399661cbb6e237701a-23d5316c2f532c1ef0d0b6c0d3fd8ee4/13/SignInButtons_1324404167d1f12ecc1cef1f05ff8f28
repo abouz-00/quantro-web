@@ -1,0 +1,641 @@
+5fb5b7cd97a3e1bd2e35ffdc621d0968
+// src/components/landing/SignInButtons.tsx
+"use strict";
+
+/* istanbul ignore next */
+function cov_1eysmfg48j() {
+  var path = "/app/src/components/landing/SignInButtons.tsx";
+  var hash = "d72541dc03fb98f76f696d6544b29cc270683517";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/app/src/components/landing/SignInButtons.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 11,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 9,
+          column: 8
+        },
+        end: {
+          line: 9,
+          column: 29
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 12,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 29
+        },
+        end: {
+          line: 13,
+          column: 71
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 22
+        },
+        end: {
+          line: 14,
+          column: 46
+        }
+      },
+      "6": {
+        start: {
+          line: 15,
+          column: 16
+        },
+        end: {
+          line: 15,
+          column: 43
+        }
+      },
+      "7": {
+        start: {
+          line: 16,
+          column: 16
+        },
+        end: {
+          line: 16,
+          column: 42
+        }
+      },
+      "8": {
+        start: {
+          line: 17,
+          column: 12
+        },
+        end: {
+          line: 17,
+          column: 41
+        }
+      },
+      "9": {
+        start: {
+          line: 18,
+          column: 15
+        },
+        end: {
+          line: 18,
+          column: 33
+        }
+      },
+      "10": {
+        start: {
+          line: 20,
+          column: 4
+        },
+        end: {
+          line: 22,
+          column: 6
+        }
+      },
+      "11": {
+        start: {
+          line: 24,
+          column: 16
+        },
+        end: {
+          line: 34,
+          column: 2
+        }
+      },
+      "12": {
+        start: {
+          line: 35,
+          column: 22
+        },
+        end: {
+          line: 136,
+          column: 1
+        }
+      },
+      "13": {
+        start: {
+          line: 36,
+          column: 30
+        },
+        end: {
+          line: 40,
+          column: 5
+        }
+      },
+      "14": {
+        start: {
+          line: 37,
+          column: 8
+        },
+        end: {
+          line: 39,
+          column: 11
+        }
+      },
+      "15": {
+        start: {
+          line: 41,
+          column: 31
+        },
+        end: {
+          line: 45,
+          column: 5
+        }
+      },
+      "16": {
+        start: {
+          line: 42,
+          column: 8
+        },
+        end: {
+          line: 44,
+          column: 11
+        }
+      },
+      "17": {
+        start: {
+          line: 46,
+          column: 4
+        },
+        end: {
+          line: 135,
+          column: 7
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 8,
+            column: 9
+          },
+          end: {
+            line: 8,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 20
+          },
+          end: {
+            line: 10,
+            column: 5
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 19,
+            column: 9
+          },
+          end: {
+            line: 19,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 19,
+            column: 39
+          },
+          end: {
+            line: 23,
+            column: 1
+          }
+        },
+        line: 19
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 35,
+            column: 22
+          },
+          end: {
+            line: 35,
+            column: 23
+          }
+        },
+        loc: {
+          start: {
+            line: 35,
+            column: 41
+          },
+          end: {
+            line: 136,
+            column: 1
+          }
+        },
+        line: 35
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 36,
+            column: 30
+          },
+          end: {
+            line: 36,
+            column: 31
+          }
+        },
+        loc: {
+          start: {
+            line: 36,
+            column: 34
+          },
+          end: {
+            line: 40,
+            column: 5
+          }
+        },
+        line: 36
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 41,
+            column: 31
+          },
+          end: {
+            line: 41,
+            column: 32
+          }
+        },
+        loc: {
+          start: {
+            line: 41,
+            column: 35
+          },
+          end: {
+            line: 45,
+            column: 5
+          }
+        },
+        line: 41
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 20,
+            column: 11
+          },
+          end: {
+            line: 22,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 20,
+            column: 35
+          },
+          end: {
+            line: 20,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 20,
+            column: 41
+          },
+          end: {
+            line: 22,
+            column: 5
+          }
+        }],
+        line: 20
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 20,
+            column: 11
+          },
+          end: {
+            line: 20,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 20,
+            column: 11
+          },
+          end: {
+            line: 20,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 20,
+            column: 18
+          },
+          end: {
+            line: 20,
+            column: 32
+          }
+        }],
+        line: 20
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 114,
+            column: 12
+          },
+          end: {
+            line: 133,
+            column: 14
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 114,
+            column: 12
+          },
+          end: {
+            line: 114,
+            column: 50
+          }
+        }, {
+          start: {
+            line: 114,
+            column: 68
+          },
+          end: {
+            line: 133,
+            column: 14
+          }
+        }],
+        line: 114
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/app/src/components/landing/SignInButtons.tsx"],
+      sourcesContent: ["// src/components/landing/SignInButtons.tsx\nimport React from 'react';\nimport { motion } from 'framer-motion';\nimport { Poppins } from 'next/font/google';\nimport { signIn } from 'next-auth/react';\nimport { COLORS, NO_SELECT_STYLES } from '../../constants/ui';\nimport { AppleIcon, GoogleIcon } from './icons';\n\nconst poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });\n\ninterface SignInButtonsProps {\n  onDevSignIn: () => void;\n}\n\nexport const SignInButtons: React.FC<SignInButtonsProps> = ({ onDevSignIn }) => {\n  const handleAppleSignIn = () => {\n    signIn('apple', { callbackUrl: '/dashboard' });\n  };\n\n  const handleGoogleSignIn = () => {\n    signIn('google', { callbackUrl: '/dashboard' });\n  };\n\n  return (\n    <motion.div\n      className=\"w-full max-w-lg\"\n      initial=\"hidden\"\n      animate=\"visible\"\n      variants={{\n        hidden: { opacity: 0, y: 50 },\n        visible: {\n          opacity: 1,\n          y: 0,\n          transition: { duration: 0.8, delay: 0.8 }\n        }\n      }}\n    >\n      <div className=\"flex flex-col sm:flex-row gap-4 justify-center items-center\">\n        {/* Apple Sign In Button */}\n        <motion.button\n          onClick={handleAppleSignIn}\n          className=\"w-full sm:flex-1 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center gap-3 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-lg hover:shadow-xl\"\n          style={{\n            backgroundColor: COLORS.black,\n            ...NO_SELECT_STYLES\n          }}\n          whileHover={{ scale: 1.02 }}\n          whileTap={{ scale: 0.98 }}\n          transition={{ duration: 0.15 }}\n        >\n          <AppleIcon />\n          <span className={poppins.className}>Sign in with Apple</span>\n        </motion.button>\n\n        {/* Google Sign In Button */}\n        <motion.button\n          onClick={handleGoogleSignIn}\n          className=\"w-full sm:flex-1 bg-white text-gray-700 font-medium py-3 px-6 rounded-xl flex items-center justify-center gap-3 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-gray-300 shadow-lg hover:shadow-xl border border-gray-200\"\n          whileHover={{ scale: 1.02 }}\n          whileTap={{ scale: 0.98 }}\n          transition={{ duration: 0.15 }}\n        >\n          <GoogleIcon />\n          <span className={poppins.className}>Sign in with Google</span>\n        </motion.button>\n      </div>\n\n      {/* Development Sign In Button - Only in development */}\n      {process.env.NODE_ENV === 'development' && (\n        <div className=\"flex justify-center mt-4\">\n          <motion.button\n            onClick={onDevSignIn}\n            className=\"bg-yellow-500 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-yellow-300 shadow-lg hover:shadow-xl\"\n            whileHover={{ scale: 1.02 }}\n            whileTap={{ scale: 0.98 }}\n            transition={{ duration: 0.15 }}\n          >\n            <span className={poppins.className}>\uD83D\uDE80 Dev Sign In</span>\n          </motion.button>\n        </div>\n      )}\n    </motion.div>\n  );\n};\n"],
+      names: ["SignInButtons", "poppins", "Poppins", "subsets", "weight", "onDevSignIn", "handleAppleSignIn", "signIn", "callbackUrl", "handleGoogleSignIn", "motion", "div", "className", "initial", "animate", "variants", "hidden", "opacity", "y", "visible", "transition", "duration", "delay", "button", "onClick", "style", "backgroundColor", "COLORS", "black", "NO_SELECT_STYLES", "whileHover", "scale", "whileTap", "AppleIcon", "span", "GoogleIcon", "process", "env", "NODE_ENV"],
+      mappings: "AAAA,2CAA2C;;;;;+BAc9BA;;;eAAAA;;;;8DAbK;8BACK;wBACC;wBACD;oBACkB;uBACH;;;;;;AAEtC,MAAMC,UAAUC,IAAAA,eAAO,EAAC;IAAEC,SAAS;QAAC;KAAQ;IAAEC,QAAQ;QAAC;QAAO;QAAO;QAAO;KAAM;AAAC;AAM5E,MAAMJ,gBAA8C,CAAC,EAAEK,WAAW,EAAE;IACzE,MAAMC,oBAAoB;QACxBC,IAAAA,cAAM,EAAC,SAAS;YAAEC,aAAa;QAAa;IAC9C;IAEA,MAAMC,qBAAqB;QACzBF,IAAAA,cAAM,EAAC,UAAU;YAAEC,aAAa;QAAa;IAC/C;IAEA,qBACE,sBAACE,oBAAM,CAACC,GAAG;QACTC,WAAU;QACVC,SAAQ;QACRC,SAAQ;QACRC,UAAU;YACRC,QAAQ;gBAAEC,SAAS;gBAAGC,GAAG;YAAG;YAC5BC,SAAS;gBACPF,SAAS;gBACTC,GAAG;gBACHE,YAAY;oBAAEC,UAAU;oBAAKC,OAAO;gBAAI;YAC1C;QACF;;0BAEA,sBAACX;gBAAIC,WAAU;;kCAEb,sBAACF,oBAAM,CAACa,MAAM;wBACZC,SAASlB;wBACTM,WAAU;wBACVa,OAAO;4BACLC,iBAAiBC,UAAM,CAACC,KAAK;4BAC7B,GAAGC,oBAAgB;wBACrB;wBACAC,YAAY;4BAAEC,OAAO;wBAAK;wBAC1BC,UAAU;4BAAED,OAAO;wBAAK;wBACxBX,YAAY;4BAAEC,UAAU;wBAAK;;0CAE7B,qBAACY,gBAAS;0CACV,qBAACC;gCAAKtB,WAAWX,QAAQW,SAAS;0CAAE;;;;kCAItC,sBAACF,oBAAM,CAACa,MAAM;wBACZC,SAASf;wBACTG,WAAU;wBACVkB,YAAY;4BAAEC,OAAO;wBAAK;wBAC1BC,UAAU;4BAAED,OAAO;wBAAK;wBACxBX,YAAY;4BAAEC,UAAU;wBAAK;;0CAE7B,qBAACc,iBAAU;0CACX,qBAACD;gCAAKtB,WAAWX,QAAQW,SAAS;0CAAE;;;;;;YAKvCwB,QAAQC,GAAG,CAACC,QAAQ,KAAK,+BACxB,qBAAC3B;gBAAIC,WAAU;0BACb,cAAA,qBAACF,oBAAM,CAACa,MAAM;oBACZC,SAASnB;oBACTO,WAAU;oBACVkB,YAAY;wBAAEC,OAAO;oBAAK;oBAC1BC,UAAU;wBAAED,OAAO;oBAAK;oBACxBX,YAAY;wBAAEC,UAAU;oBAAK;8BAE7B,cAAA,qBAACa;wBAAKtB,WAAWX,QAAQW,SAAS;kCAAE;;;;;;AAMhD"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "d72541dc03fb98f76f696d6544b29cc270683517"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1eysmfg48j = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1eysmfg48j();
+cov_1eysmfg48j().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_1eysmfg48j().s[1]++;
+Object.defineProperty(exports, "SignInButtons", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_1eysmfg48j().f[0]++;
+    cov_1eysmfg48j().s[2]++;
+    return SignInButtons;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_1eysmfg48j().s[3]++, require("react/jsx-runtime"));
+const _react =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_1eysmfg48j().s[4]++, _interop_require_default(require("react")));
+const _framermotion =
+/* istanbul ignore next */
+(cov_1eysmfg48j().s[5]++, require("framer-motion"));
+const _google =
+/* istanbul ignore next */
+(cov_1eysmfg48j().s[6]++, require("next/font/google"));
+const _react1 =
+/* istanbul ignore next */
+(cov_1eysmfg48j().s[7]++, require("next-auth/react"));
+const _ui =
+/* istanbul ignore next */
+(cov_1eysmfg48j().s[8]++, require("../../constants/ui"));
+const _icons =
+/* istanbul ignore next */
+(cov_1eysmfg48j().s[9]++, require("./icons"));
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_1eysmfg48j().f[1]++;
+  cov_1eysmfg48j().s[10]++;
+  return /* istanbul ignore next */(cov_1eysmfg48j().b[1][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_1eysmfg48j().b[1][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_1eysmfg48j().b[0][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_1eysmfg48j().b[0][1]++, {
+    default: obj
+  });
+}
+const poppins =
+/* istanbul ignore next */
+(cov_1eysmfg48j().s[11]++, (0, _google.Poppins)({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700']
+}));
+/* istanbul ignore next */
+cov_1eysmfg48j().s[12]++;
+const SignInButtons = ({
+  onDevSignIn
+}) => {
+  /* istanbul ignore next */
+  cov_1eysmfg48j().f[2]++;
+  cov_1eysmfg48j().s[13]++;
+  const handleAppleSignIn = () => {
+    /* istanbul ignore next */
+    cov_1eysmfg48j().f[3]++;
+    cov_1eysmfg48j().s[14]++;
+    (0, _react1.signIn)('apple', {
+      callbackUrl: '/dashboard'
+    });
+  };
+  /* istanbul ignore next */
+  cov_1eysmfg48j().s[15]++;
+  const handleGoogleSignIn = () => {
+    /* istanbul ignore next */
+    cov_1eysmfg48j().f[4]++;
+    cov_1eysmfg48j().s[16]++;
+    (0, _react1.signIn)('google', {
+      callbackUrl: '/dashboard'
+    });
+  };
+  /* istanbul ignore next */
+  cov_1eysmfg48j().s[17]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsxs)(_framermotion.motion.div, {
+    className: "w-full max-w-lg",
+    initial: "hidden",
+    animate: "visible",
+    variants: {
+      hidden: {
+        opacity: 0,
+        y: 50
+      },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          duration: 0.8,
+          delay: 0.8
+        }
+      }
+    },
+    children: [/*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+      className: "flex flex-col sm:flex-row gap-4 justify-center items-center",
+      children: [/*#__PURE__*/(0, _jsxruntime.jsxs)(_framermotion.motion.button, {
+        onClick: handleAppleSignIn,
+        className: "w-full sm:flex-1 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center gap-3 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-lg hover:shadow-xl",
+        style: {
+          backgroundColor: _ui.COLORS.black,
+          ..._ui.NO_SELECT_STYLES
+        },
+        whileHover: {
+          scale: 1.02
+        },
+        whileTap: {
+          scale: 0.98
+        },
+        transition: {
+          duration: 0.15
+        },
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)(_icons.AppleIcon, {}), /*#__PURE__*/(0, _jsxruntime.jsx)("span", {
+          className: poppins.className,
+          children: "Sign in with Apple"
+        })]
+      }), /*#__PURE__*/(0, _jsxruntime.jsxs)(_framermotion.motion.button, {
+        onClick: handleGoogleSignIn,
+        className: "w-full sm:flex-1 bg-white text-gray-700 font-medium py-3 px-6 rounded-xl flex items-center justify-center gap-3 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-gray-300 shadow-lg hover:shadow-xl border border-gray-200",
+        whileHover: {
+          scale: 1.02
+        },
+        whileTap: {
+          scale: 0.98
+        },
+        transition: {
+          duration: 0.15
+        },
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)(_icons.GoogleIcon, {}), /*#__PURE__*/(0, _jsxruntime.jsx)("span", {
+          className: poppins.className,
+          children: "Sign in with Google"
+        })]
+      })]
+    }),
+    /* istanbul ignore next */
+    (cov_1eysmfg48j().b[2][0]++, process.env.NODE_ENV === 'development') &&
+    /* istanbul ignore next */
+    (cov_1eysmfg48j().b[2][1]++, /*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+      className: "flex justify-center mt-4",
+      children: /*#__PURE__*/(0, _jsxruntime.jsx)(_framermotion.motion.button, {
+        onClick: onDevSignIn,
+        className: "bg-yellow-500 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-yellow-300 shadow-lg hover:shadow-xl",
+        whileHover: {
+          scale: 1.02
+        },
+        whileTap: {
+          scale: 0.98
+        },
+        transition: {
+          duration: 0.15
+        },
+        children: /*#__PURE__*/(0, _jsxruntime.jsx)("span", {
+          className: poppins.className,
+          children: "\uD83D\uDE80 Dev Sign In"
+        })
+      })
+    }))]
+  });
+};
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJTaWduSW5CdXR0b25zIiwicG9wcGlucyIsImNvdl8xZXlzbWZnNDhqIiwicyIsIl9nb29nbGUiLCJQb3BwaW5zIiwic3Vic2V0cyIsIndlaWdodCIsIm9uRGV2U2lnbkluIiwiZiIsImhhbmRsZUFwcGxlU2lnbkluIiwiX3JlYWN0MSIsInNpZ25JbiIsImNhbGxiYWNrVXJsIiwiaGFuZGxlR29vZ2xlU2lnbkluIiwiX2pzeHJ1bnRpbWUiLCJqc3hzIiwiX2ZyYW1lcm1vdGlvbiIsIm1vdGlvbiIsImRpdiIsImNsYXNzTmFtZSIsImluaXRpYWwiLCJhbmltYXRlIiwidmFyaWFudHMiLCJoaWRkZW4iLCJvcGFjaXR5IiwieSIsInZpc2libGUiLCJ0cmFuc2l0aW9uIiwiZHVyYXRpb24iLCJkZWxheSIsImJ1dHRvbiIsIm9uQ2xpY2siLCJzdHlsZSIsImJhY2tncm91bmRDb2xvciIsIl91aSIsIkNPTE9SUyIsImJsYWNrIiwiTk9fU0VMRUNUX1NUWUxFUyIsIndoaWxlSG92ZXIiLCJzY2FsZSIsIndoaWxlVGFwIiwianN4IiwiX2ljb25zIiwiQXBwbGVJY29uIiwiR29vZ2xlSWNvbiIsImIiLCJwcm9jZXNzIiwiZW52IiwiTk9ERV9FTlYiXSwic291cmNlcyI6WyIvYXBwL3NyYy9jb21wb25lbnRzL2xhbmRpbmcvU2lnbkluQnV0dG9ucy50c3giXSwic291cmNlc0NvbnRlbnQiOlsiLy8gc3JjL2NvbXBvbmVudHMvbGFuZGluZy9TaWduSW5CdXR0b25zLnRzeFxuaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IG1vdGlvbiB9IGZyb20gJ2ZyYW1lci1tb3Rpb24nO1xuaW1wb3J0IHsgUG9wcGlucyB9IGZyb20gJ25leHQvZm9udC9nb29nbGUnO1xuaW1wb3J0IHsgc2lnbkluIH0gZnJvbSAnbmV4dC1hdXRoL3JlYWN0JztcbmltcG9ydCB7IENPTE9SUywgTk9fU0VMRUNUX1NUWUxFUyB9IGZyb20gJy4uLy4uL2NvbnN0YW50cy91aSc7XG5pbXBvcnQgeyBBcHBsZUljb24sIEdvb2dsZUljb24gfSBmcm9tICcuL2ljb25zJztcblxuY29uc3QgcG9wcGlucyA9IFBvcHBpbnMoeyBzdWJzZXRzOiBbJ2xhdGluJ10sIHdlaWdodDogWyc0MDAnLCAnNTAwJywgJzYwMCcsICc3MDAnXSB9KTtcblxuaW50ZXJmYWNlIFNpZ25JbkJ1dHRvbnNQcm9wcyB7XG4gIG9uRGV2U2lnbkluOiAoKSA9PiB2b2lkO1xufVxuXG5leHBvcnQgY29uc3QgU2lnbkluQnV0dG9uczogUmVhY3QuRkM8U2lnbkluQnV0dG9uc1Byb3BzPiA9ICh7IG9uRGV2U2lnbkluIH0pID0+IHtcbiAgY29uc3QgaGFuZGxlQXBwbGVTaWduSW4gPSAoKSA9PiB7XG4gICAgc2lnbkluKCdhcHBsZScsIHsgY2FsbGJhY2tVcmw6ICcvZGFzaGJvYXJkJyB9KTtcbiAgfTtcblxuICBjb25zdCBoYW5kbGVHb29nbGVTaWduSW4gPSAoKSA9PiB7XG4gICAgc2lnbkluKCdnb29nbGUnLCB7IGNhbGxiYWNrVXJsOiAnL2Rhc2hib2FyZCcgfSk7XG4gIH07XG5cbiAgcmV0dXJuIChcbiAgICA8bW90aW9uLmRpdlxuICAgICAgY2xhc3NOYW1lPVwidy1mdWxsIG1heC13LWxnXCJcbiAgICAgIGluaXRpYWw9XCJoaWRkZW5cIlxuICAgICAgYW5pbWF0ZT1cInZpc2libGVcIlxuICAgICAgdmFyaWFudHM9e3tcbiAgICAgICAgaGlkZGVuOiB7IG9wYWNpdHk6IDAsIHk6IDUwIH0sXG4gICAgICAgIHZpc2libGU6IHtcbiAgICAgICAgICBvcGFjaXR5OiAxLFxuICAgICAgICAgIHk6IDAsXG4gICAgICAgICAgdHJhbnNpdGlvbjogeyBkdXJhdGlvbjogMC44LCBkZWxheTogMC44IH1cbiAgICAgICAgfVxuICAgICAgfX1cbiAgICA+XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggZmxleC1jb2wgc206ZmxleC1yb3cgZ2FwLTQganVzdGlmeS1jZW50ZXIgaXRlbXMtY2VudGVyXCI+XG4gICAgICAgIHsvKiBBcHBsZSBTaWduIEluIEJ1dHRvbiAqL31cbiAgICAgICAgPG1vdGlvbi5idXR0b25cbiAgICAgICAgICBvbkNsaWNrPXtoYW5kbGVBcHBsZVNpZ25Jbn1cbiAgICAgICAgICBjbGFzc05hbWU9XCJ3LWZ1bGwgc206ZmxleC0xIHRleHQtd2hpdGUgZm9udC1tZWRpdW0gcHktMyBweC02IHJvdW5kZWQtbGcgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgZ2FwLTMgdHJhbnNpdGlvbi1hbGwgZHVyYXRpb24tMTUwIGZvY3VzOm91dGxpbmUtbm9uZSBmb2N1czpyaW5nLTIgZm9jdXM6cmluZy13aGl0ZS81MCBzaGFkb3ctbGcgaG92ZXI6c2hhZG93LXhsXCJcbiAgICAgICAgICBzdHlsZT17e1xuICAgICAgICAgICAgYmFja2dyb3VuZENvbG9yOiBDT0xPUlMuYmxhY2ssXG4gICAgICAgICAgICAuLi5OT19TRUxFQ1RfU1RZTEVTXG4gICAgICAgICAgfX1cbiAgICAgICAgICB3aGlsZUhvdmVyPXt7IHNjYWxlOiAxLjAyIH19XG4gICAgICAgICAgd2hpbGVUYXA9e3sgc2NhbGU6IDAuOTggfX1cbiAgICAgICAgICB0cmFuc2l0aW9uPXt7IGR1cmF0aW9uOiAwLjE1IH19XG4gICAgICAgID5cbiAgICAgICAgICA8QXBwbGVJY29uIC8+XG4gICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPXtwb3BwaW5zLmNsYXNzTmFtZX0+U2lnbiBpbiB3aXRoIEFwcGxlPC9zcGFuPlxuICAgICAgICA8L21vdGlvbi5idXR0b24+XG5cbiAgICAgICAgey8qIEdvb2dsZSBTaWduIEluIEJ1dHRvbiAqL31cbiAgICAgICAgPG1vdGlvbi5idXR0b25cbiAgICAgICAgICBvbkNsaWNrPXtoYW5kbGVHb29nbGVTaWduSW59XG4gICAgICAgICAgY2xhc3NOYW1lPVwidy1mdWxsIHNtOmZsZXgtMSBiZy13aGl0ZSB0ZXh0LWdyYXktNzAwIGZvbnQtbWVkaXVtIHB5LTMgcHgtNiByb3VuZGVkLXhsIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIGdhcC0zIHRyYW5zaXRpb24tYWxsIGR1cmF0aW9uLTE1MCBmb2N1czpvdXRsaW5lLW5vbmUgZm9jdXM6cmluZy0yIGZvY3VzOnJpbmctZ3JheS0zMDAgc2hhZG93LWxnIGhvdmVyOnNoYWRvdy14bCBib3JkZXIgYm9yZGVyLWdyYXktMjAwXCJcbiAgICAgICAgICB3aGlsZUhvdmVyPXt7IHNjYWxlOiAxLjAyIH19XG4gICAgICAgICAgd2hpbGVUYXA9e3sgc2NhbGU6IDAuOTggfX1cbiAgICAgICAgICB0cmFuc2l0aW9uPXt7IGR1cmF0aW9uOiAwLjE1IH19XG4gICAgICAgID5cbiAgICAgICAgICA8R29vZ2xlSWNvbiAvPlxuICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT17cG9wcGlucy5jbGFzc05hbWV9PlNpZ24gaW4gd2l0aCBHb29nbGU8L3NwYW4+XG4gICAgICAgIDwvbW90aW9uLmJ1dHRvbj5cbiAgICAgIDwvZGl2PlxuXG4gICAgICB7LyogRGV2ZWxvcG1lbnQgU2lnbiBJbiBCdXR0b24gLSBPbmx5IGluIGRldmVsb3BtZW50ICovfVxuICAgICAge3Byb2Nlc3MuZW52Lk5PREVfRU5WID09PSAnZGV2ZWxvcG1lbnQnICYmIChcbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGp1c3RpZnktY2VudGVyIG10LTRcIj5cbiAgICAgICAgICA8bW90aW9uLmJ1dHRvblxuICAgICAgICAgICAgb25DbGljaz17b25EZXZTaWduSW59XG4gICAgICAgICAgICBjbGFzc05hbWU9XCJiZy15ZWxsb3ctNTAwIHRleHQtd2hpdGUgZm9udC1tZWRpdW0gcHktMiBweC00IHJvdW5kZWQtbGcgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgZ2FwLTIgdHJhbnNpdGlvbi1hbGwgZHVyYXRpb24tMTUwIGZvY3VzOm91dGxpbmUtbm9uZSBmb2N1czpyaW5nLTIgZm9jdXM6cmluZy15ZWxsb3ctMzAwIHNoYWRvdy1sZyBob3ZlcjpzaGFkb3cteGxcIlxuICAgICAgICAgICAgd2hpbGVIb3Zlcj17eyBzY2FsZTogMS4wMiB9fVxuICAgICAgICAgICAgd2hpbGVUYXA9e3sgc2NhbGU6IDAuOTggfX1cbiAgICAgICAgICAgIHRyYW5zaXRpb249e3sgZHVyYXRpb246IDAuMTUgfX1cbiAgICAgICAgICA+XG4gICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9e3BvcHBpbnMuY2xhc3NOYW1lfT7wn5qAIERldiBTaWduIEluPC9zcGFuPlxuICAgICAgICAgIDwvbW90aW9uLmJ1dHRvbj5cbiAgICAgICAgPC9kaXY+XG4gICAgICApfVxuICAgIDwvbW90aW9uLmRpdj5cbiAgKTtcbn07XG4iXSwibWFwcGluZ3MiOiJBQUFBOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OytCQWNhOzs7Ozs7V0FBQUEsYUFBQTs7Ozs7Ozs7d0VBYks7OztrQ0FDSzs7O2tDQUNDOzs7a0NBQ0Q7OztrQ0FDa0I7OztrQ0FDSDs7Ozs7Ozs7Ozs7Ozs7O0FBRXRDLE1BQU1DLE9BQUE7QUFB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

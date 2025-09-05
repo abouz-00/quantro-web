@@ -1,0 +1,29 @@
+890035996b26bc884ddaf773fe1b7c30
+// Core food log components
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: Object.getOwnPropertyDescriptor(all, name).get
+    });
+}
+_export(exports, {
+    get EnergySummary () {
+        return _EnergySummary.default;
+    },
+    get MicronutrientsSection () {
+        return _MicronutrientsSection.default;
+    }
+});
+const _EnergySummary = /*#__PURE__*/ _interop_require_default(require("./EnergySummary"));
+const _MicronutrientsSection = /*#__PURE__*/ _interop_require_default(require("./MicronutrientsSection"));
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9hcHAvc3JjL2NvbXBvbmVudHMvZm9vZC1sb2cvY29yZS9pbmRleC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBDb3JlIGZvb2QgbG9nIGNvbXBvbmVudHNcbmV4cG9ydCB7IGRlZmF1bHQgYXMgRW5lcmd5U3VtbWFyeSB9IGZyb20gJy4vRW5lcmd5U3VtbWFyeSc7XG5leHBvcnQgeyBkZWZhdWx0IGFzIE1pY3JvbnV0cmllbnRzU2VjdGlvbiB9IGZyb20gJy4vTWljcm9udXRyaWVudHNTZWN0aW9uJztcbiJdLCJuYW1lcyI6WyJFbmVyZ3lTdW1tYXJ5IiwiTWljcm9udXRyaWVudHNTZWN0aW9uIl0sIm1hcHBpbmdzIjoiQUFBQSwyQkFBMkI7Ozs7Ozs7Ozs7OztRQUNQQTtlQUFBQSxzQkFBYTs7UUFDYkM7ZUFBQUEsOEJBQXFCOzs7c0VBREE7OEVBQ1EifQ==

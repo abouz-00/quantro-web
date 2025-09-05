@@ -1,0 +1,372 @@
+c63ec06c2326d3da487debd383cf7d45
+// src/components/landing/FeaturesSection.tsx
+"use strict";
+
+/* istanbul ignore next */
+function cov_f293va19e() {
+  var path = "/app/src/components/landing/FeaturesSection.tsx";
+  var hash = "ef5cc93ec52411ce0d4000ed66e35f15625bc2fc";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/app/src/components/landing/FeaturesSection.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 11,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 9,
+          column: 8
+        },
+        end: {
+          line: 9,
+          column: 31
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 12,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 29
+        },
+        end: {
+          line: 13,
+          column: 71
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 17
+        },
+        end: {
+          line: 14,
+          column: 55
+        }
+      },
+      "6": {
+        start: {
+          line: 15,
+          column: 21
+        },
+        end: {
+          line: 15,
+          column: 45
+        }
+      },
+      "7": {
+        start: {
+          line: 17,
+          column: 4
+        },
+        end: {
+          line: 19,
+          column: 6
+        }
+      },
+      "8": {
+        start: {
+          line: 21,
+          column: 24
+        },
+        end: {
+          line: 48,
+          column: 1
+        }
+      },
+      "9": {
+        start: {
+          line: 22,
+          column: 4
+        },
+        end: {
+          line: 47,
+          column: 7
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 8,
+            column: 9
+          },
+          end: {
+            line: 8,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 20
+          },
+          end: {
+            line: 10,
+            column: 5
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 16,
+            column: 9
+          },
+          end: {
+            line: 16,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 16,
+            column: 39
+          },
+          end: {
+            line: 20,
+            column: 1
+          }
+        },
+        line: 16
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 21,
+            column: 24
+          },
+          end: {
+            line: 21,
+            column: 25
+          }
+        },
+        loc: {
+          start: {
+            line: 21,
+            column: 28
+          },
+          end: {
+            line: 48,
+            column: 1
+          }
+        },
+        line: 21
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 17,
+            column: 11
+          },
+          end: {
+            line: 19,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 17,
+            column: 35
+          },
+          end: {
+            line: 17,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 17,
+            column: 41
+          },
+          end: {
+            line: 19,
+            column: 5
+          }
+        }],
+        line: 17
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 17,
+            column: 11
+          },
+          end: {
+            line: 17,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 17,
+            column: 11
+          },
+          end: {
+            line: 17,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 17,
+            column: 18
+          },
+          end: {
+            line: 17,
+            column: 32
+          }
+        }],
+        line: 17
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/app/src/components/landing/FeaturesSection.tsx"],
+      sourcesContent: ["// src/components/landing/FeaturesSection.tsx\nimport React from 'react';\nimport { ChartPieIcon, BeakerIcon, CursorArrowRaysIcon } from '@heroicons/react/24/outline';\nimport { FeatureCard } from './FeatureCard';\n\nexport const FeaturesSection = () => {\n  return (\n    <div className=\"w-full max-w-7xl mb-20\">\n      <div className=\"grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12\">\n        <FeatureCard\n          icon={BeakerIcon}\n          title=\"Smart Tracking\"\n          description=\"Intelligent food logging with comprehensive nutrition data and AI-powered insights\"\n          delay={0.2}\n        />\n\n        <FeatureCard\n          icon={ChartPieIcon}\n          title=\"Analytics\"\n          description=\"Detailed insights into your nutritional patterns with beautiful visualizations\"\n          delay={0.4}\n        />\n\n        <FeatureCard\n          icon={CursorArrowRaysIcon}\n          title=\"Goals\"\n          description=\"Personalized targets and progress tracking with smart recommendations\"\n          delay={0.6}\n        />\n      </div>\n    </div>\n  );\n};\n"],
+      names: ["FeaturesSection", "div", "className", "FeatureCard", "icon", "BeakerIcon", "title", "description", "delay", "ChartPieIcon", "CursorArrowRaysIcon"],
+      mappings: "AAAA,6CAA6C;;;;;+BAKhCA;;;eAAAA;;;;8DAJK;yBAC4C;6BAClC;;;;;;AAErB,MAAMA,kBAAkB;IAC7B,qBACE,qBAACC;QAAIC,WAAU;kBACb,cAAA,sBAACD;YAAIC,WAAU;;8BACb,qBAACC,wBAAW;oBACVC,MAAMC,mBAAU;oBAChBC,OAAM;oBACNC,aAAY;oBACZC,OAAO;;8BAGT,qBAACL,wBAAW;oBACVC,MAAMK,qBAAY;oBAClBH,OAAM;oBACNC,aAAY;oBACZC,OAAO;;8BAGT,qBAACL,wBAAW;oBACVC,MAAMM,4BAAmB;oBACzBJ,OAAM;oBACNC,aAAY;oBACZC,OAAO;;;;;AAKjB"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "ef5cc93ec52411ce0d4000ed66e35f15625bc2fc"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_f293va19e = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_f293va19e();
+cov_f293va19e().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_f293va19e().s[1]++;
+Object.defineProperty(exports, "FeaturesSection", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_f293va19e().f[0]++;
+    cov_f293va19e().s[2]++;
+    return FeaturesSection;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_f293va19e().s[3]++, require("react/jsx-runtime"));
+const _react =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_f293va19e().s[4]++, _interop_require_default(require("react")));
+const _outline =
+/* istanbul ignore next */
+(cov_f293va19e().s[5]++, require("@heroicons/react/24/outline"));
+const _FeatureCard =
+/* istanbul ignore next */
+(cov_f293va19e().s[6]++, require("./FeatureCard"));
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_f293va19e().f[1]++;
+  cov_f293va19e().s[7]++;
+  return /* istanbul ignore next */(cov_f293va19e().b[1][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_f293va19e().b[1][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_f293va19e().b[0][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_f293va19e().b[0][1]++, {
+    default: obj
+  });
+}
+/* istanbul ignore next */
+cov_f293va19e().s[8]++;
+const FeaturesSection = () => {
+  /* istanbul ignore next */
+  cov_f293va19e().f[2]++;
+  cov_f293va19e().s[9]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+    className: "w-full max-w-7xl mb-20",
+    children: /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+      className: "grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12",
+      children: [/*#__PURE__*/(0, _jsxruntime.jsx)(_FeatureCard.FeatureCard, {
+        icon: _outline.BeakerIcon,
+        title: "Smart Tracking",
+        description: "Intelligent food logging with comprehensive nutrition data and AI-powered insights",
+        delay: 0.2
+      }), /*#__PURE__*/(0, _jsxruntime.jsx)(_FeatureCard.FeatureCard, {
+        icon: _outline.ChartPieIcon,
+        title: "Analytics",
+        description: "Detailed insights into your nutritional patterns with beautiful visualizations",
+        delay: 0.4
+      }), /*#__PURE__*/(0, _jsxruntime.jsx)(_FeatureCard.FeatureCard, {
+        icon: _outline.CursorArrowRaysIcon,
+        title: "Goals",
+        description: "Personalized targets and progress tracking with smart recommendations",
+        delay: 0.6
+      })]
+    })
+  });
+};
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJGZWF0dXJlc1NlY3Rpb24iLCJjb3ZfZjI5M3ZhMTllIiwiZiIsInMiLCJfanN4cnVudGltZSIsImpzeCIsImNsYXNzTmFtZSIsImpzeHMiLCJfRmVhdHVyZUNhcmQiLCJGZWF0dXJlQ2FyZCIsImljb24iLCJfb3V0bGluZSIsIkJlYWtlckljb24iLCJ0aXRsZSIsImRlc2NyaXB0aW9uIiwiZGVsYXkiLCJDaGFydFBpZUljb24iLCJDdXJzb3JBcnJvd1JheXNJY29uIl0sInNvdXJjZXMiOlsiL2FwcC9zcmMvY29tcG9uZW50cy9sYW5kaW5nL0ZlYXR1cmVzU2VjdGlvbi50c3giXSwic291cmNlc0NvbnRlbnQiOlsiLy8gc3JjL2NvbXBvbmVudHMvbGFuZGluZy9GZWF0dXJlc1NlY3Rpb24udHN4XG5pbXBvcnQgUmVhY3QgZnJvbSAncmVhY3QnO1xuaW1wb3J0IHsgQ2hhcnRQaWVJY29uLCBCZWFrZXJJY29uLCBDdXJzb3JBcnJvd1JheXNJY29uIH0gZnJvbSAnQGhlcm9pY29ucy9yZWFjdC8yNC9vdXRsaW5lJztcbmltcG9ydCB7IEZlYXR1cmVDYXJkIH0gZnJvbSAnLi9GZWF0dXJlQ2FyZCc7XG5cbmV4cG9ydCBjb25zdCBGZWF0dXJlc1NlY3Rpb24gPSAoKSA9PiB7XG4gIHJldHVybiAoXG4gICAgPGRpdiBjbGFzc05hbWU9XCJ3LWZ1bGwgbWF4LXctN3hsIG1iLTIwXCI+XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImdyaWQgZ3JpZC1jb2xzLTEgbWQ6Z3JpZC1jb2xzLTMgZ2FwLTggbGc6Z2FwLTEyXCI+XG4gICAgICAgIDxGZWF0dXJlQ2FyZFxuICAgICAgICAgIGljb249e0JlYWtlckljb259XG4gICAgICAgICAgdGl0bGU9XCJTbWFydCBUcmFja2luZ1wiXG4gICAgICAgICAgZGVzY3JpcHRpb249XCJJbnRlbGxpZ2VudCBmb29kIGxvZ2dpbmcgd2l0aCBjb21wcmVoZW5zaXZlIG51dHJpdGlvbiBkYXRhIGFuZCBBSS1wb3dlcmVkIGluc2lnaHRzXCJcbiAgICAgICAgICBkZWxheT17MC4yfVxuICAgICAgICAvPlxuXG4gICAgICAgIDxGZWF0dXJlQ2FyZFxuICAgICAgICAgIGljb249e0NoYXJ0UGllSWNvbn1cbiAgICAgICAgICB0aXRsZT1cIkFuYWx5dGljc1wiXG4gICAgICAgICAgZGVzY3JpcHRpb249XCJEZXRhaWxlZCBpbnNpZ2h0cyBpbnRvIHlvdXIgbnV0cml0aW9uYWwgcGF0dGVybnMgd2l0aCBiZWF1dGlmdWwgdmlzdWFsaXphdGlvbnNcIlxuICAgICAgICAgIGRlbGF5PXswLjR9XG4gICAgICAgIC8+XG5cbiAgICAgICAgPEZlYXR1cmVDYXJkXG4gICAgICAgICAgaWNvbj17Q3Vyc29yQXJyb3dSYXlzSWNvbn1cbiAgICAgICAgICB0aXRsZT1cIkdvYWxzXCJcbiAgICAgICAgICBkZXNjcmlwdGlvbj1cIlBlcnNvbmFsaXplZCB0YXJnZXRzIGFuZCBwcm9ncmVzcyB0cmFja2luZyB3aXRoIHNtYXJ0IHJlY29tbWVuZGF0aW9uc1wiXG4gICAgICAgICAgZGVsYXk9ezAuNn1cbiAgICAgICAgLz5cbiAgICAgIDwvZGl2PlxuICAgIDwvZGl2PlxuICApO1xufTtcbiJdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OzsrQkFLYTs7Ozs7O1dBQUFBLGVBQUE7Ozs7Ozs7O3VFQUpLOzs7aUNBQzRDOzs7aUNBQ2xDOzs7Ozs7Ozs7Ozs7Ozs7OztBQUVyQixNQUFNQSxlQUFBLEdBQWtCQSxDQUFBO0VBQUE7RUFBQUMsYUFBQSxHQUFBQyxDQUFBO0VBQUFELGFBQUEsR0FBQUUsQ0FBQTtFQUM3QixvQkFDRSxJQUFBQyxXQUFBLENBQUFDLEdBQUEsRUFBQztJQUFJQyxTQUFBLEVBQVU7Y0FDYixpQkFBQUYsV0FBQSxDQUFBRyxJQUFBLEVBQUM7TUFBSUQsU0FBQSxFQUFVOzhCQUNiLElBQUFGLFdBQUEsQ0FBQUMsR0FBQSxFQUFDRyxZQUFBLENBQUFDLFdBQVc7UUFDVkMsSUFBQSxFQUFNQyxRQUFBLENBQUFDLFVBQVU7UUFDaEJDLEtBQUEsRUFBTTtRQUNOQyxXQUFBLEVBQVk7UUFDWkMsS0FBQSxFQUFPO3VCQUdULElBQUFYLFdBQUEsQ0FBQUMsR0FBQSxFQUFDRyxZQUFBLENBQUFDLFdBQVc7UUFDVkMsSUFBQSxFQUFNQyxRQUFBLENBQUFLLFlBQVk7UUFDbEJILEtBQUEsRUFBTTtRQUNOQyxXQUFBLEVBQVk7UUFDWkMsS0FBQSxFQUFPO3VCQUdULElBQUFYLFdBQUEsQ0FBQUMsR0FBQSxFQUFDRyxZQUFBLENBQUFDLFdBQVc7UUFDVkMsSUFBQSxFQUFNQyxRQUFBLENBQUFNLG1CQUFtQjtRQUN6QkosS0FBQSxFQUFNO1FBQ05DLFdBQUEsRUFBWTtRQUNaQyxLQUFBLEVBQU87Ozs7QUFLakIiLCJpZ25vcmVMaXN0IjpbXX0=

@@ -1,0 +1,868 @@
+0824e31d761be2e1501d946b298aee45
+"use strict";
+
+/* istanbul ignore next */
+function cov_1k76zsi8eq() {
+  var path = "/app/src/app/api/beta-invite/route.ts";
+  var hash = "2819f344266f957caccc24a584d924b1a202cae8";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/app/src/app/api/beta-invite/route.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 4
+        },
+        end: {
+          line: 9,
+          column: 7
+        }
+      },
+      "2": {
+        start: {
+          line: 6,
+          column: 24
+        },
+        end: {
+          line: 9,
+          column: 7
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 0
+        },
+        end: {
+          line: 18,
+          column: 3
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 8
+        },
+        end: {
+          line: 13,
+          column: 19
+        }
+      },
+      "5": {
+        start: {
+          line: 16,
+          column: 8
+        },
+        end: {
+          line: 16,
+          column: 20
+        }
+      },
+      "6": {
+        start: {
+          line: 19,
+          column: 16
+        },
+        end: {
+          line: 19,
+          column: 46
+        }
+      },
+      "7": {
+        start: {
+          line: 20,
+          column: 16
+        },
+        end: {
+          line: 20,
+          column: 38
+        }
+      },
+      "8": {
+        start: {
+          line: 22,
+          column: 29
+        },
+        end: {
+          line: 22,
+          column: 49
+        }
+      },
+      "9": {
+        start: {
+          line: 23,
+          column: 17
+        },
+        end: {
+          line: 23,
+          column: 41
+        }
+      },
+      "10": {
+        start: {
+          line: 24,
+          column: 4
+        },
+        end: {
+          line: 30,
+          column: 5
+        }
+      },
+      "11": {
+        start: {
+          line: 25,
+          column: 8
+        },
+        end: {
+          line: 29,
+          column: 11
+        }
+      },
+      "12": {
+        start: {
+          line: 31,
+          column: 4
+        },
+        end: {
+          line: 71,
+          column: 5
+        }
+      },
+      "13": {
+        start: {
+          line: 33,
+          column: 23
+        },
+        end: {
+          line: 49,
+          column: 10
+        }
+      },
+      "14": {
+        start: {
+          line: 50,
+          column: 8
+        },
+        end: {
+          line: 56,
+          column: 9
+        }
+      },
+      "15": {
+        start: {
+          line: 51,
+          column: 12
+        },
+        end: {
+          line: 55,
+          column: 15
+        }
+      },
+      "16": {
+        start: {
+          line: 58,
+          column: 8
+        },
+        end: {
+          line: 63,
+          column: 11
+        }
+      },
+      "17": {
+        start: {
+          line: 65,
+          column: 8
+        },
+        end: {
+          line: 65,
+          column: 57
+        }
+      },
+      "18": {
+        start: {
+          line: 66,
+          column: 8
+        },
+        end: {
+          line: 70,
+          column: 11
+        }
+      },
+      "19": {
+        start: {
+          line: 74,
+          column: 4
+        },
+        end: {
+          line: 121,
+          column: 5
+        }
+      },
+      "20": {
+        start: {
+          line: 75,
+          column: 33
+        },
+        end: {
+          line: 75,
+          column: 53
+        }
+      },
+      "21": {
+        start: {
+          line: 76,
+          column: 8
+        },
+        end: {
+          line: 82,
+          column: 9
+        }
+      },
+      "22": {
+        start: {
+          line: 77,
+          column: 12
+        },
+        end: {
+          line: 81,
+          column: 15
+        }
+      },
+      "23": {
+        start: {
+          line: 84,
+          column: 23
+        },
+        end: {
+          line: 100,
+          column: 10
+        }
+      },
+      "24": {
+        start: {
+          line: 101,
+          column: 8
+        },
+        end: {
+          line: 107,
+          column: 9
+        }
+      },
+      "25": {
+        start: {
+          line: 102,
+          column: 12
+        },
+        end: {
+          line: 106,
+          column: 15
+        }
+      },
+      "26": {
+        start: {
+          line: 109,
+          column: 8
+        },
+        end: {
+          line: 113,
+          column: 11
+        }
+      },
+      "27": {
+        start: {
+          line: 115,
+          column: 8
+        },
+        end: {
+          line: 115,
+          column: 56
+        }
+      },
+      "28": {
+        start: {
+          line: 116,
+          column: 8
+        },
+        end: {
+          line: 120,
+          column: 11
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "_export",
+        decl: {
+          start: {
+            line: 5,
+            column: 9
+          },
+          end: {
+            line: 5,
+            column: 16
+          }
+        },
+        loc: {
+          start: {
+            line: 5,
+            column: 30
+          },
+          end: {
+            line: 10,
+            column: 1
+          }
+        },
+        line: 5
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 12,
+            column: 4
+          },
+          end: {
+            line: 12,
+            column: 5
+          }
+        },
+        loc: {
+          start: {
+            line: 12,
+            column: 15
+          },
+          end: {
+            line: 14,
+            column: 5
+          }
+        },
+        line: 12
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 15,
+            column: 4
+          },
+          end: {
+            line: 15,
+            column: 5
+          }
+        },
+        loc: {
+          start: {
+            line: 15,
+            column: 16
+          },
+          end: {
+            line: 17,
+            column: 5
+          }
+        },
+        line: 15
+      },
+      "3": {
+        name: "GET",
+        decl: {
+          start: {
+            line: 21,
+            column: 15
+          },
+          end: {
+            line: 21,
+            column: 18
+          }
+        },
+        loc: {
+          start: {
+            line: 21,
+            column: 28
+          },
+          end: {
+            line: 72,
+            column: 1
+          }
+        },
+        line: 21
+      },
+      "4": {
+        name: "POST",
+        decl: {
+          start: {
+            line: 73,
+            column: 15
+          },
+          end: {
+            line: 73,
+            column: 19
+          }
+        },
+        loc: {
+          start: {
+            line: 73,
+            column: 29
+          },
+          end: {
+            line: 122,
+            column: 1
+          }
+        },
+        line: 73
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 24,
+            column: 4
+          },
+          end: {
+            line: 30,
+            column: 5
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 24,
+            column: 4
+          },
+          end: {
+            line: 30,
+            column: 5
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 24
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 50,
+            column: 8
+          },
+          end: {
+            line: 56,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 50,
+            column: 8
+          },
+          end: {
+            line: 56,
+            column: 9
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 50
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 76,
+            column: 8
+          },
+          end: {
+            line: 82,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 76,
+            column: 8
+          },
+          end: {
+            line: 82,
+            column: 9
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 76
+      },
+      "3": {
+        loc: {
+          start: {
+            line: 76,
+            column: 12
+          },
+          end: {
+            line: 76,
+            column: 40
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 76,
+            column: 12
+          },
+          end: {
+            line: 76,
+            column: 17
+          }
+        }, {
+          start: {
+            line: 76,
+            column: 21
+          },
+          end: {
+            line: 76,
+            column: 40
+          }
+        }],
+        line: 76
+      },
+      "4": {
+        loc: {
+          start: {
+            line: 101,
+            column: 8
+          },
+          end: {
+            line: 107,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 101,
+            column: 8
+          },
+          end: {
+            line: 107,
+            column: 9
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 101
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0,
+      "20": 0,
+      "21": 0,
+      "22": 0,
+      "23": 0,
+      "24": 0,
+      "25": 0,
+      "26": 0,
+      "27": 0,
+      "28": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0],
+      "3": [0, 0],
+      "4": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/app/src/app/api/beta-invite/route.ts"],
+      sourcesContent: ["import { prisma } from '@/lib/prisma'\nimport { NextRequest, NextResponse } from 'next/server'\n\nexport async function GET(request: NextRequest) {\n  const { searchParams } = new URL(request.url)\n  const code = searchParams.get('code')\n\n  if (!code) {\n    return NextResponse.json({ error: 'Invalid invite code' }, { status: 400 })\n  }\n\n  try {\n    // Find the invite by code\n    const invite = await prisma.betaInvite.findFirst({\n      where: {\n        code,\n        used: false,\n        revoked: false,\n        OR: [\n          { expiresAt: null },\n          { expiresAt: { gt: new Date() } }\n        ]\n      }\n    })\n\n    if (!invite) {\n      return NextResponse.json({ \n        error: 'Invalid, expired, or revoked invite code' \n      }, { status: 404 })\n    }\n\n    // Return invite details\n    return NextResponse.json({\n      valid: true,\n      email: invite.email,\n      code: invite.code,\n      expiresAt: invite.expiresAt\n    })\n  } catch (error) {\n    console.error('Error validating invite:', error)\n    return NextResponse.json({ \n      error: 'Failed to validate invite' \n    }, { status: 500 })\n  }\n}\n\nexport async function POST(request: NextRequest) {\n  try {\n    const { code, action } = await request.json()\n\n    if (!code || action !== 'accept') {\n      return NextResponse.json({ error: 'Invalid request' }, { status: 400 })\n    }\n\n    // Find and validate the invite (but don't mark as used yet)\n    const invite = await prisma.betaInvite.findFirst({\n      where: {\n        code,\n        used: false,\n        revoked: false,\n        OR: [\n          { expiresAt: null },\n          { expiresAt: { gt: new Date() } }\n        ]\n      }\n    })\n\n    if (!invite) {\n      return NextResponse.json({ \n        error: 'Invalid, expired, or revoked invite code' \n      }, { status: 404 })\n    }\n\n    // Don't mark as used yet - just validate and allow redirect to sign-in\n    return NextResponse.json({\n      success: true,\n      message: 'Beta invite validated! Redirecting to sign in...',\n      email: invite.email\n    })\n  } catch (error) {\n    console.error('Error accepting invite:', error)\n    return NextResponse.json({ \n      error: 'Failed to accept invite' \n    }, { status: 500 })\n  }\n}\n"],
+      names: ["GET", "POST", "request", "searchParams", "URL", "url", "code", "get", "NextResponse", "json", "error", "status", "invite", "prisma", "betaInvite", "findFirst", "where", "used", "revoked", "OR", "expiresAt", "gt", "Date", "valid", "email", "console", "action", "success", "message"],
+      mappings: ";;;;;;;;;;;QAGsBA;eAAAA;;QA2CAC;eAAAA;;;wBA9CC;wBACmB;AAEnC,eAAeD,IAAIE,OAAoB;IAC5C,MAAM,EAAEC,YAAY,EAAE,GAAG,IAAIC,IAAIF,QAAQG,GAAG;IAC5C,MAAMC,OAAOH,aAAaI,GAAG,CAAC;IAE9B,IAAI,CAACD,MAAM;QACT,OAAOE,oBAAY,CAACC,IAAI,CAAC;YAAEC,OAAO;QAAsB,GAAG;YAAEC,QAAQ;QAAI;IAC3E;IAEA,IAAI;QACF,0BAA0B;QAC1B,MAAMC,SAAS,MAAMC,cAAM,CAACC,UAAU,CAACC,SAAS,CAAC;YAC/CC,OAAO;gBACLV;gBACAW,MAAM;gBACNC,SAAS;gBACTC,IAAI;oBACF;wBAAEC,WAAW;oBAAK;oBAClB;wBAAEA,WAAW;4BAAEC,IAAI,IAAIC;wBAAO;oBAAE;iBACjC;YACH;QACF;QAEA,IAAI,CAACV,QAAQ;YACX,OAAOJ,oBAAY,CAACC,IAAI,CAAC;gBACvBC,OAAO;YACT,GAAG;gBAAEC,QAAQ;YAAI;QACnB;QAEA,wBAAwB;QACxB,OAAOH,oBAAY,CAACC,IAAI,CAAC;YACvBc,OAAO;YACPC,OAAOZ,OAAOY,KAAK;YACnBlB,MAAMM,OAAON,IAAI;YACjBc,WAAWR,OAAOQ,SAAS;QAC7B;IACF,EAAE,OAAOV,OAAO;QACde,QAAQf,KAAK,CAAC,4BAA4BA;QAC1C,OAAOF,oBAAY,CAACC,IAAI,CAAC;YACvBC,OAAO;QACT,GAAG;YAAEC,QAAQ;QAAI;IACnB;AACF;AAEO,eAAeV,KAAKC,OAAoB;IAC7C,IAAI;QACF,MAAM,EAAEI,IAAI,EAAEoB,MAAM,EAAE,GAAG,MAAMxB,QAAQO,IAAI;QAE3C,IAAI,CAACH,QAAQoB,WAAW,UAAU;YAChC,OAAOlB,oBAAY,CAACC,IAAI,CAAC;gBAAEC,OAAO;YAAkB,GAAG;gBAAEC,QAAQ;YAAI;QACvE;QAEA,4DAA4D;QAC5D,MAAMC,SAAS,MAAMC,cAAM,CAACC,UAAU,CAACC,SAAS,CAAC;YAC/CC,OAAO;gBACLV;gBACAW,MAAM;gBACNC,SAAS;gBACTC,IAAI;oBACF;wBAAEC,WAAW;oBAAK;oBAClB;wBAAEA,WAAW;4BAAEC,IAAI,IAAIC;wBAAO;oBAAE;iBACjC;YACH;QACF;QAEA,IAAI,CAACV,QAAQ;YACX,OAAOJ,oBAAY,CAACC,IAAI,CAAC;gBACvBC,OAAO;YACT,GAAG;gBAAEC,QAAQ;YAAI;QACnB;QAEA,uEAAuE;QACvE,OAAOH,oBAAY,CAACC,IAAI,CAAC;YACvBkB,SAAS;YACTC,SAAS;YACTJ,OAAOZ,OAAOY,KAAK;QACrB;IACF,EAAE,OAAOd,OAAO;QACde,QAAQf,KAAK,CAAC,2BAA2BA;QACzC,OAAOF,oBAAY,CAACC,IAAI,CAAC;YACvBC,OAAO;QACT,GAAG;YAAEC,QAAQ;QAAI;IACnB;AACF"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "2819f344266f957caccc24a584d924b1a202cae8"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1k76zsi8eq = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1k76zsi8eq();
+cov_1k76zsi8eq().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function _export(target, all) {
+  /* istanbul ignore next */
+  cov_1k76zsi8eq().f[0]++;
+  cov_1k76zsi8eq().s[1]++;
+  for (var name in all) {
+    /* istanbul ignore next */
+    cov_1k76zsi8eq().s[2]++;
+    Object.defineProperty(target, name, {
+      enumerable: true,
+      get: Object.getOwnPropertyDescriptor(all, name).get
+    });
+  }
+}
+/* istanbul ignore next */
+cov_1k76zsi8eq().s[3]++;
+_export(exports, {
+  get GET() {
+    /* istanbul ignore next */
+    cov_1k76zsi8eq().f[1]++;
+    cov_1k76zsi8eq().s[4]++;
+    return GET;
+  },
+  get POST() {
+    /* istanbul ignore next */
+    cov_1k76zsi8eq().f[2]++;
+    cov_1k76zsi8eq().s[5]++;
+    return POST;
+  }
+});
+const _prisma =
+/* istanbul ignore next */
+(cov_1k76zsi8eq().s[6]++, require("../../../lib/prisma"));
+const _server =
+/* istanbul ignore next */
+(cov_1k76zsi8eq().s[7]++, require("next/server"));
+async function GET(request) {
+  /* istanbul ignore next */
+  cov_1k76zsi8eq().f[3]++;
+  const {
+    searchParams
+  } =
+  /* istanbul ignore next */
+  (cov_1k76zsi8eq().s[8]++, new URL(request.url));
+  const code =
+  /* istanbul ignore next */
+  (cov_1k76zsi8eq().s[9]++, searchParams.get('code'));
+  /* istanbul ignore next */
+  cov_1k76zsi8eq().s[10]++;
+  if (!code) {
+    /* istanbul ignore next */
+    cov_1k76zsi8eq().b[0][0]++;
+    cov_1k76zsi8eq().s[11]++;
+    return _server.NextResponse.json({
+      error: 'Invalid invite code'
+    }, {
+      status: 400
+    });
+  } else
+  /* istanbul ignore next */
+  {
+    cov_1k76zsi8eq().b[0][1]++;
+  }
+  cov_1k76zsi8eq().s[12]++;
+  try {
+    // Find the invite by code
+    const invite =
+    /* istanbul ignore next */
+    (cov_1k76zsi8eq().s[13]++, await _prisma.prisma.betaInvite.findFirst({
+      where: {
+        code,
+        used: false,
+        revoked: false,
+        OR: [{
+          expiresAt: null
+        }, {
+          expiresAt: {
+            gt: new Date()
+          }
+        }]
+      }
+    }));
+    /* istanbul ignore next */
+    cov_1k76zsi8eq().s[14]++;
+    if (!invite) {
+      /* istanbul ignore next */
+      cov_1k76zsi8eq().b[1][0]++;
+      cov_1k76zsi8eq().s[15]++;
+      return _server.NextResponse.json({
+        error: 'Invalid, expired, or revoked invite code'
+      }, {
+        status: 404
+      });
+    } else
+    /* istanbul ignore next */
+    {
+      cov_1k76zsi8eq().b[1][1]++;
+    }
+    // Return invite details
+    cov_1k76zsi8eq().s[16]++;
+    return _server.NextResponse.json({
+      valid: true,
+      email: invite.email,
+      code: invite.code,
+      expiresAt: invite.expiresAt
+    });
+  } catch (error) {
+    /* istanbul ignore next */
+    cov_1k76zsi8eq().s[17]++;
+    console.error('Error validating invite:', error);
+    /* istanbul ignore next */
+    cov_1k76zsi8eq().s[18]++;
+    return _server.NextResponse.json({
+      error: 'Failed to validate invite'
+    }, {
+      status: 500
+    });
+  }
+}
+async function POST(request) {
+  /* istanbul ignore next */
+  cov_1k76zsi8eq().f[4]++;
+  cov_1k76zsi8eq().s[19]++;
+  try {
+    const {
+      code,
+      action
+    } =
+    /* istanbul ignore next */
+    (cov_1k76zsi8eq().s[20]++, await request.json());
+    /* istanbul ignore next */
+    cov_1k76zsi8eq().s[21]++;
+    if (
+    /* istanbul ignore next */
+    (cov_1k76zsi8eq().b[3][0]++, !code) ||
+    /* istanbul ignore next */
+    (cov_1k76zsi8eq().b[3][1]++, action !== 'accept')) {
+      /* istanbul ignore next */
+      cov_1k76zsi8eq().b[2][0]++;
+      cov_1k76zsi8eq().s[22]++;
+      return _server.NextResponse.json({
+        error: 'Invalid request'
+      }, {
+        status: 400
+      });
+    } else
+    /* istanbul ignore next */
+    {
+      cov_1k76zsi8eq().b[2][1]++;
+    }
+    // Find and validate the invite (but don't mark as used yet)
+    const invite =
+    /* istanbul ignore next */
+    (cov_1k76zsi8eq().s[23]++, await _prisma.prisma.betaInvite.findFirst({
+      where: {
+        code,
+        used: false,
+        revoked: false,
+        OR: [{
+          expiresAt: null
+        }, {
+          expiresAt: {
+            gt: new Date()
+          }
+        }]
+      }
+    }));
+    /* istanbul ignore next */
+    cov_1k76zsi8eq().s[24]++;
+    if (!invite) {
+      /* istanbul ignore next */
+      cov_1k76zsi8eq().b[4][0]++;
+      cov_1k76zsi8eq().s[25]++;
+      return _server.NextResponse.json({
+        error: 'Invalid, expired, or revoked invite code'
+      }, {
+        status: 404
+      });
+    } else
+    /* istanbul ignore next */
+    {
+      cov_1k76zsi8eq().b[4][1]++;
+    }
+    // Don't mark as used yet - just validate and allow redirect to sign-in
+    cov_1k76zsi8eq().s[26]++;
+    return _server.NextResponse.json({
+      success: true,
+      message: 'Beta invite validated! Redirecting to sign in...',
+      email: invite.email
+    });
+  } catch (error) {
+    /* istanbul ignore next */
+    cov_1k76zsi8eq().s[27]++;
+    console.error('Error accepting invite:', error);
+    /* istanbul ignore next */
+    cov_1k76zsi8eq().s[28]++;
+    return _server.NextResponse.json({
+      error: 'Failed to accept invite'
+    }, {
+      status: 500
+    });
+  }
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJHRVQiLCJjb3ZfMWs3NnpzaThlcSIsImYiLCJzIiwiUE9TVCIsInJlcXVlc3QiLCJzZWFyY2hQYXJhbXMiLCJVUkwiLCJ1cmwiLCJjb2RlIiwiZ2V0IiwiYiIsIl9zZXJ2ZXIiLCJOZXh0UmVzcG9uc2UiLCJqc29uIiwiZXJyb3IiLCJzdGF0dXMiLCJpbnZpdGUiLCJfcHJpc21hIiwicHJpc21hIiwiYmV0YUludml0ZSIsImZpbmRGaXJzdCIsIndoZXJlIiwidXNlZCIsInJldm9rZWQiLCJPUiIsImV4cGlyZXNBdCIsImd0IiwiRGF0ZSIsInZhbGlkIiwiZW1haWwiLCJjb25zb2xlIiwiYWN0aW9uIiwic3VjY2VzcyIsIm1lc3NhZ2UiXSwic291cmNlcyI6WyIvYXBwL3NyYy9hcHAvYXBpL2JldGEtaW52aXRlL3JvdXRlLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IHByaXNtYSB9IGZyb20gJ0AvbGliL3ByaXNtYSdcbmltcG9ydCB7IE5leHRSZXF1ZXN0LCBOZXh0UmVzcG9uc2UgfSBmcm9tICduZXh0L3NlcnZlcidcblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIEdFVChyZXF1ZXN0OiBOZXh0UmVxdWVzdCkge1xuICBjb25zdCB7IHNlYXJjaFBhcmFtcyB9ID0gbmV3IFVSTChyZXF1ZXN0LnVybClcbiAgY29uc3QgY29kZSA9IHNlYXJjaFBhcmFtcy5nZXQoJ2NvZGUnKVxuXG4gIGlmICghY29kZSkge1xuICAgIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbih7IGVycm9yOiAnSW52YWxpZCBpbnZpdGUgY29kZScgfSwgeyBzdGF0dXM6IDQwMCB9KVxuICB9XG5cbiAgdHJ5IHtcbiAgICAvLyBGaW5kIHRoZSBpbnZpdGUgYnkgY29kZVxuICAgIGNvbnN0IGludml0ZSA9IGF3YWl0IHByaXNtYS5iZXRhSW52aXRlLmZpbmRGaXJzdCh7XG4gICAgICB3aGVyZToge1xuICAgICAgICBjb2RlLFxuICAgICAgICB1c2VkOiBmYWxzZSxcbiAgICAgICAgcmV2b2tlZDogZmFsc2UsXG4gICAgICAgIE9SOiBbXG4gICAgICAgICAgeyBleHBpcmVzQXQ6IG51bGwgfSxcbiAgICAgICAgICB7IGV4cGlyZXNBdDogeyBndDogbmV3IERhdGUoKSB9IH1cbiAgICAgICAgXVxuICAgICAgfVxuICAgIH0pXG5cbiAgICBpZiAoIWludml0ZSkge1xuICAgICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgXG4gICAgICAgIGVycm9yOiAnSW52YWxpZCwgZXhwaXJlZCwgb3IgcmV2b2tlZCBpbnZpdGUgY29kZScgXG4gICAgICB9LCB7IHN0YXR1czogNDA0IH0pXG4gICAgfVxuXG4gICAgLy8gUmV0dXJuIGludml0ZSBkZXRhaWxzXG4gICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHtcbiAgICAgIHZhbGlkOiB0cnVlLFxuICAgICAgZW1haWw6IGludml0ZS5lbWFpbCxcbiAgICAgIGNvZGU6IGludml0ZS5jb2RlLFxuICAgICAgZXhwaXJlc0F0OiBpbnZpdGUuZXhwaXJlc0F0XG4gICAgfSlcbiAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICBjb25zb2xlLmVycm9yKCdFcnJvciB2YWxpZGF0aW5nIGludml0ZTonLCBlcnJvcilcbiAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oeyBcbiAgICAgIGVycm9yOiAnRmFpbGVkIHRvIHZhbGlkYXRlIGludml0ZScgXG4gICAgfSwgeyBzdGF0dXM6IDUwMCB9KVxuICB9XG59XG5cbmV4cG9ydCBhc3luYyBmdW5jdGlvbiBQT1NUKHJlcXVlc3Q6IE5leHRSZXF1ZXN0KSB7XG4gIHRyeSB7XG4gICAgY29uc3QgeyBjb2RlLCBhY3Rpb24gfSA9IGF3YWl0IHJlcXVlc3QuanNvbigpXG5cbiAgICBpZiAoIWNvZGUgfHwgYWN0aW9uICE9PSAnYWNjZXB0Jykge1xuICAgICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgZXJyb3I6ICdJbnZhbGlkIHJlcXVlc3QnIH0sIHsgc3RhdHVzOiA0MDAgfSlcbiAgICB9XG5cbiAgICAvLyBGaW5kIGFuZCB2YWxpZGF0ZSB0aGUgaW52aXRlIChidXQgZG9uJ3QgbWFyayBhcyB1c2VkIHlldClcbiAgICBjb25zdCBpbnZpdGUgPSBhd2FpdCBwcmlzbWEuYmV0YUludml0ZS5maW5kRmlyc3Qoe1xuICAgICAgd2hlcmU6IHtcbiAgICAgICAgY29kZSxcbiAgICAgICAgdXNlZDogZmFsc2UsXG4gICAgICAgIHJldm9rZWQ6IGZhbHNlLFxuICAgICAgICBPUjogW1xuICAgICAgICAgIHsgZXhwaXJlc0F0OiBudWxsIH0sXG4gICAgICAgICAgeyBleHBpcmVzQXQ6IHsgZ3Q6IG5ldyBEYXRlKCkgfSB9XG4gICAgICAgIF1cbiAgICAgIH1cbiAgICB9KVxuXG4gICAgaWYgKCFpbnZpdGUpIHtcbiAgICAgIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbih7IFxuICAgICAgICBlcnJvcjogJ0ludmFsaWQsIGV4cGlyZWQsIG9yIHJldm9rZWQgaW52aXRlIGNvZGUnIFxuICAgICAgfSwgeyBzdGF0dXM6IDQwNCB9KVxuICAgIH1cblxuICAgIC8vIERvbid0IG1hcmsgYXMgdXNlZCB5ZXQgLSBqdXN0IHZhbGlkYXRlIGFuZCBhbGxvdyByZWRpcmVjdCB0byBzaWduLWluXG4gICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHtcbiAgICAgIHN1Y2Nlc3M6IHRydWUsXG4gICAgICBtZXNzYWdlOiAnQmV0YSBpbnZpdGUgdmFsaWRhdGVkISBSZWRpcmVjdGluZyB0byBzaWduIGluLi4uJyxcbiAgICAgIGVtYWlsOiBpbnZpdGUuZW1haWxcbiAgICB9KVxuICB9IGNhdGNoIChlcnJvcikge1xuICAgIGNvbnNvbGUuZXJyb3IoJ0Vycm9yIGFjY2VwdGluZyBpbnZpdGU6JywgZXJyb3IpXG4gICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgXG4gICAgICBlcnJvcjogJ0ZhaWxlZCB0byBhY2NlcHQgaW52aXRlJyBcbiAgICB9LCB7IHN0YXR1czogNTAwIH0pXG4gIH1cbn1cbiJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7TUFHc0JBLElBQUE7SUFBQTtJQUFBQyxjQUFBLEdBQUFDLENBQUE7SUFBQUQsY0FBQSxHQUFBRSxDQUFBO1dBQUFILEdBQUE7O01BMkNBSSxLQUFBO0lBQUE7SUFBQUgsY0FBQSxHQUFBQyxDQUFBO0lBQUFELGNBQUEsR0FBQUUsQ0FBQTtXQUFBQyxJQUFBOzs7OztrQ0E5Q0M7OztrQ0FDbUI7QUFFbkMsZUFBZUosSUFBSUssT0FBb0I7RUFBQTtFQUFBSixjQUFBLEdBQUFDLENBQUE7RUFD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

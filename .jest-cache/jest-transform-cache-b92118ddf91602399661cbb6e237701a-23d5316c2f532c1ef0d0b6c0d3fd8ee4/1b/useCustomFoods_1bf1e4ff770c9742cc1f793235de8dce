@@ -1,0 +1,532 @@
+78bc77d154990beb547ce9bf52adc190
+"use strict";
+
+/* istanbul ignore next */
+function cov_1bthqc7hq3() {
+  var path = "/app/src/hooks/useCustomFoods.ts";
+  var hash = "40083fbce4b49d35500988f51aa1055e80f1ab37";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/app/src/hooks/useCustomFoods.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 30
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 15
+        },
+        end: {
+          line: 11,
+          column: 31
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 42
+        },
+        end: {
+          line: 13,
+          column: 66
+        }
+      },
+      "5": {
+        start: {
+          line: 15,
+          column: 4
+        },
+        end: {
+          line: 25,
+          column: 11
+        }
+      },
+      "6": {
+        start: {
+          line: 16,
+          column: 22
+        },
+        end: {
+          line: 16,
+          column: 57
+        }
+      },
+      "7": {
+        start: {
+          line: 17,
+          column: 8
+        },
+        end: {
+          line: 24,
+          column: 9
+        }
+      },
+      "8": {
+        start: {
+          line: 18,
+          column: 12
+        },
+        end: {
+          line: 23,
+          column: 13
+        }
+      },
+      "9": {
+        start: {
+          line: 19,
+          column: 16
+        },
+        end: {
+          line: 19,
+          column: 50
+        }
+      },
+      "10": {
+        start: {
+          line: 21,
+          column: 16
+        },
+        end: {
+          line: 21,
+          column: 88
+        }
+      },
+      "11": {
+        start: {
+          line: 22,
+          column: 16
+        },
+        end: {
+          line: 22,
+          column: 55
+        }
+      },
+      "12": {
+        start: {
+          line: 27,
+          column: 4
+        },
+        end: {
+          line: 31,
+          column: 7
+        }
+      },
+      "13": {
+        start: {
+          line: 28,
+          column: 8
+        },
+        end: {
+          line: 28,
+          column: 73
+        }
+      },
+      "14": {
+        start: {
+          line: 32,
+          column: 26
+        },
+        end: {
+          line: 40,
+          column: 10
+        }
+      },
+      "15": {
+        start: {
+          line: 33,
+          column: 8
+        },
+        end: {
+          line: 39,
+          column: 11
+        }
+      },
+      "16": {
+        start: {
+          line: 34,
+          column: 29
+        },
+        end: {
+          line: 37,
+          column: 13
+        }
+      },
+      "17": {
+        start: {
+          line: 38,
+          column: 12
+        },
+        end: {
+          line: 38,
+          column: 28
+        }
+      },
+      "18": {
+        start: {
+          line: 41,
+          column: 4
+        },
+        end: {
+          line: 45,
+          column: 6
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "useCustomFoods",
+        decl: {
+          start: {
+            line: 12,
+            column: 9
+          },
+          end: {
+            line: 12,
+            column: 23
+          }
+        },
+        loc: {
+          start: {
+            line: 12,
+            column: 26
+          },
+          end: {
+            line: 46,
+            column: 1
+          }
+        },
+        line: 12
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 15,
+            column: 26
+          },
+          end: {
+            line: 15,
+            column: 27
+          }
+        },
+        loc: {
+          start: {
+            line: 15,
+            column: 30
+          },
+          end: {
+            line: 25,
+            column: 5
+          }
+        },
+        line: 15
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 27,
+            column: 26
+          },
+          end: {
+            line: 27,
+            column: 27
+          }
+        },
+        loc: {
+          start: {
+            line: 27,
+            column: 30
+          },
+          end: {
+            line: 29,
+            column: 5
+          }
+        },
+        line: 27
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 32,
+            column: 50
+          },
+          end: {
+            line: 32,
+            column: 51
+          }
+        },
+        loc: {
+          start: {
+            line: 32,
+            column: 58
+          },
+          end: {
+            line: 40,
+            column: 5
+          }
+        },
+        line: 32
+      },
+      "5": {
+        name: "(anonymous_5)",
+        decl: {
+          start: {
+            line: 33,
+            column: 23
+          },
+          end: {
+            line: 33,
+            column: 24
+          }
+        },
+        loc: {
+          start: {
+            line: 33,
+            column: 31
+          },
+          end: {
+            line: 39,
+            column: 9
+          }
+        },
+        line: 33
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 17,
+            column: 8
+          },
+          end: {
+            line: 24,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 17,
+            column: 8
+          },
+          end: {
+            line: 24,
+            column: 9
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 17
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    b: {
+      "0": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/app/src/hooks/useCustomFoods.ts"],
+      sourcesContent: ["import { useState, useEffect, useCallback } from \"react\";\nimport { CustomFood } from \"../components/food-log/search/components/custom-tab/types\";\n\nexport function useCustomFoods() {\n  const [customFoods, setCustomFoods] = useState<CustomFood[]>([]);\n  \n  // Load from localStorage on mount\n  useEffect(() => {\n    const saved = localStorage.getItem('customFoods');\n    if (saved) {\n      try {\n        setCustomFoods(JSON.parse(saved));\n      } catch (error) {\n        console.error('Failed to parse custom foods from localStorage:', error);\n        localStorage.removeItem('customFoods');\n      }\n    }\n  }, []);\n  \n  // Save to localStorage whenever customFoods changes\n  useEffect(() => {\n    localStorage.setItem('customFoods', JSON.stringify(customFoods));\n  }, [customFoods]);\n  \n  const addCustomFood = useCallback((food: CustomFood) => {\n    setCustomFoods(prev => {\n      const newFoods = [...prev, food];\n      return newFoods;\n    });\n  }, []);\n  \n  return { customFoods, addCustomFood, setCustomFoods };\n}\n"],
+      names: ["useCustomFoods", "customFoods", "setCustomFoods", "useState", "useEffect", "saved", "localStorage", "getItem", "JSON", "parse", "error", "console", "removeItem", "setItem", "stringify", "addCustomFood", "useCallback", "food", "prev", "newFoods"],
+      mappings: ";;;;+BAGgBA;;;eAAAA;;;uBAHiC;AAG1C,SAASA;IACd,MAAM,CAACC,aAAaC,eAAe,GAAGC,IAAAA,eAAQ,EAAe,EAAE;IAE/D,kCAAkC;IAClCC,IAAAA,gBAAS,EAAC;QACR,MAAMC,QAAQC,aAAaC,OAAO,CAAC;QACnC,IAAIF,OAAO;YACT,IAAI;gBACFH,eAAeM,KAAKC,KAAK,CAACJ;YAC5B,EAAE,OAAOK,OAAO;gBACdC,QAAQD,KAAK,CAAC,mDAAmDA;gBACjEJ,aAAaM,UAAU,CAAC;YAC1B;QACF;IACF,GAAG,EAAE;IAEL,oDAAoD;IACpDR,IAAAA,gBAAS,EAAC;QACRE,aAAaO,OAAO,CAAC,eAAeL,KAAKM,SAAS,CAACb;IACrD,GAAG;QAACA;KAAY;IAEhB,MAAMc,gBAAgBC,IAAAA,kBAAW,EAAC,CAACC;QACjCf,eAAegB,CAAAA;YACb,MAAMC,WAAW;mBAAID;gBAAMD;aAAK;YAChC,OAAOE;QACT;IACF,GAAG,EAAE;IAEL,OAAO;QAAElB;QAAac;QAAeb;IAAe;AACtD"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "40083fbce4b49d35500988f51aa1055e80f1ab37"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1bthqc7hq3 = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1bthqc7hq3();
+cov_1bthqc7hq3().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_1bthqc7hq3().s[1]++;
+Object.defineProperty(exports, "useCustomFoods", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_1bthqc7hq3().f[0]++;
+    cov_1bthqc7hq3().s[2]++;
+    return useCustomFoods;
+  }
+});
+const _react =
+/* istanbul ignore next */
+(cov_1bthqc7hq3().s[3]++, require("react"));
+function useCustomFoods() {
+  /* istanbul ignore next */
+  cov_1bthqc7hq3().f[1]++;
+  const [customFoods, setCustomFoods] =
+  /* istanbul ignore next */
+  (cov_1bthqc7hq3().s[4]++, (0, _react.useState)([]));
+  // Load from localStorage on mount
+  /* istanbul ignore next */
+  cov_1bthqc7hq3().s[5]++;
+  (0, _react.useEffect)(() => {
+    /* istanbul ignore next */
+    cov_1bthqc7hq3().f[2]++;
+    const saved =
+    /* istanbul ignore next */
+    (cov_1bthqc7hq3().s[6]++, localStorage.getItem('customFoods'));
+    /* istanbul ignore next */
+    cov_1bthqc7hq3().s[7]++;
+    if (saved) {
+      /* istanbul ignore next */
+      cov_1bthqc7hq3().b[0][0]++;
+      cov_1bthqc7hq3().s[8]++;
+      try {
+        /* istanbul ignore next */
+        cov_1bthqc7hq3().s[9]++;
+        setCustomFoods(JSON.parse(saved));
+      } catch (error) {
+        /* istanbul ignore next */
+        cov_1bthqc7hq3().s[10]++;
+        console.error('Failed to parse custom foods from localStorage:', error);
+        /* istanbul ignore next */
+        cov_1bthqc7hq3().s[11]++;
+        localStorage.removeItem('customFoods');
+      }
+    } else
+    /* istanbul ignore next */
+    {
+      cov_1bthqc7hq3().b[0][1]++;
+    }
+  }, []);
+  // Save to localStorage whenever customFoods changes
+  /* istanbul ignore next */
+  cov_1bthqc7hq3().s[12]++;
+  (0, _react.useEffect)(() => {
+    /* istanbul ignore next */
+    cov_1bthqc7hq3().f[3]++;
+    cov_1bthqc7hq3().s[13]++;
+    localStorage.setItem('customFoods', JSON.stringify(customFoods));
+  }, [customFoods]);
+  const addCustomFood =
+  /* istanbul ignore next */
+  (cov_1bthqc7hq3().s[14]++, (0, _react.useCallback)(food => {
+    /* istanbul ignore next */
+    cov_1bthqc7hq3().f[4]++;
+    cov_1bthqc7hq3().s[15]++;
+    setCustomFoods(prev => {
+      /* istanbul ignore next */
+      cov_1bthqc7hq3().f[5]++;
+      const newFoods =
+      /* istanbul ignore next */
+      (cov_1bthqc7hq3().s[16]++, [...prev, food]);
+      /* istanbul ignore next */
+      cov_1bthqc7hq3().s[17]++;
+      return newFoods;
+    });
+  }, []));
+  /* istanbul ignore next */
+  cov_1bthqc7hq3().s[18]++;
+  return {
+    customFoods,
+    addCustomFood,
+    setCustomFoods
+  };
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMWJ0aHFjN2hxMyIsImFjdHVhbENvdmVyYWdlIiwicyIsInVzZUN1c3RvbUZvb2RzIiwiZiIsImN1c3RvbUZvb2RzIiwic2V0Q3VzdG9tRm9vZHMiLCJfcmVhY3QiLCJ1c2VTdGF0ZSIsInVzZUVmZmVjdCIsInNhdmVkIiwibG9jYWxTdG9yYWdlIiwiZ2V0SXRlbSIsImIiLCJKU09OIiwicGFyc2UiLCJlcnJvciIsImNvbnNvbGUiLCJyZW1vdmVJdGVtIiwic2V0SXRlbSIsInN0cmluZ2lmeSIsImFkZEN1c3RvbUZvb2QiLCJ1c2VDYWxsYmFjayIsImZvb2QiLCJwcmV2IiwibmV3Rm9vZHMiXSwic291cmNlcyI6WyIvYXBwL3NyYy9ob29rcy91c2VDdXN0b21Gb29kcy50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyB1c2VTdGF0ZSwgdXNlRWZmZWN0LCB1c2VDYWxsYmFjayB9IGZyb20gXCJyZWFjdFwiO1xuaW1wb3J0IHsgQ3VzdG9tRm9vZCB9IGZyb20gXCIuLi9jb21wb25lbnRzL2Zvb2QtbG9nL3NlYXJjaC9jb21wb25lbnRzL2N1c3RvbS10YWIvdHlwZXNcIjtcblxuZXhwb3J0IGZ1bmN0aW9uIHVzZUN1c3RvbUZvb2RzKCkge1xuICBjb25zdCBbY3VzdG9tRm9vZHMsIHNldEN1c3RvbUZvb2RzXSA9IHVzZVN0YXRlPEN1c3RvbUZvb2RbXT4oW10pO1xuICBcbiAgLy8gTG9hZCBmcm9tIGxvY2FsU3RvcmFnZSBvbiBtb3VudFxuICB1c2VFZmZlY3QoKCkgPT4ge1xuICAgIGNvbnN0IHNhdmVkID0gbG9jYWxTdG9yYWdlLmdldEl0ZW0oJ2N1c3RvbUZvb2RzJyk7XG4gICAgaWYgKHNhdmVkKSB7XG4gICAgICB0cnkge1xuICAgICAgICBzZXRDdXN0b21Gb29kcyhKU09OLnBhcnNlKHNhdmVkKSk7XG4gICAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICBjb25zb2xlLmVycm9yKCdGYWlsZWQgdG8gcGFyc2UgY3VzdG9tIGZvb2RzIGZyb20gbG9jYWxTdG9yYWdlOicsIGVycm9yKTtcbiAgICAgICAgbG9jYWxTdG9yYWdlLnJlbW92ZUl0ZW0oJ2N1c3RvbUZvb2RzJyk7XG4gICAgICB9XG4gICAgfVxuICB9LCBbXSk7XG4gIFxuICAvLyBTYXZlIHRvIGxvY2FsU3RvcmFnZSB3aGVuZXZlciBjdXN0b21Gb29kcyBjaGFuZ2VzXG4gIHVzZUVmZmVjdCgoKSA9PiB7XG4gICAgbG9jYWxTdG9yYWdlLnNldEl0ZW0oJ2N1c3RvbUZvb2RzJywgSlNPTi5zdHJpbmdpZnkoY3VzdG9tRm9vZHMpKTtcbiAgfSwgW2N1c3RvbUZvb2RzXSk7XG4gIFxuICBjb25zdCBhZGRDdXN0b21Gb29kID0gdXNlQ2FsbGJhY2soKGZvb2Q6IEN1c3RvbUZvb2QpID0+IHtcbiAgICBzZXRDdXN0b21Gb29kcyhwcmV2ID0+IHtcbiAgICAgIGNvbnN0IG5ld0Zvb2RzID0gWy4uLnByZXYsIGZvb2RdO1xuICAgICAgcmV0dXJuIG5ld0Zvb2RzO1xuICAgIH0pO1xuICB9LCBbXSk7XG4gIFxuICByZXR1cm4geyBjdXN0b21Gb29kcywgYWRkQ3VzdG9tRm9vZCwgc2V0Q3VzdG9tRm9vZHMgfTtcbn1cbiJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7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
