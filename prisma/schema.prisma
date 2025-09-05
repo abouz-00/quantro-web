@@ -1,12 +1,12 @@
-// Docker Test Prisma schema file for PostgreSQL testing
-// This uses PostgreSQL for Docker-based integration tests
+// Main Prisma schema file for local development
+// This uses SQLite for local development
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
