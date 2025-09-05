@@ -1,0 +1,83 @@
+b9a55432c20a8b7087ddf33da19fe8c8
+"use client";
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = /*#__PURE__*/ _interop_require_default(require("react"));
+const _react1 = require("@testing-library/react");
+const _globals = require("@jest/globals");
+const _FoodLogHeader = /*#__PURE__*/ _interop_require_default(require("../FoodLogHeader"));
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+describe('FoodLogHeader', ()=>{
+    const defaultProps = {
+        isMainMenuOpen: false,
+        setIsMainMenuOpen: _globals.jest.fn(),
+        setIsTargetsModalOpen: _globals.jest.fn(),
+        selectedDate: new Date(2023, 5, 15),
+        onDateChange: _globals.jest.fn()
+    };
+    beforeEach(()=>{
+        _globals.jest.clearAllMocks();
+    });
+    it('renders without crashing', ()=>{
+        expect(()=>{
+            (0, _react1.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_FoodLogHeader.default, {
+                ...defaultProps
+            }));
+        }).not.toThrow();
+    });
+    it('renders Header and DateNavigation components', ()=>{
+        (0, _react1.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_FoodLogHeader.default, {
+            ...defaultProps
+        }));
+        // Check for header logo
+        expect(_react1.screen.getByAltText('Quantro Logo')).toBeInTheDocument();
+        // Check for date navigation elements
+        expect(_react1.screen.getByLabelText('Previous day')).toBeInTheDocument();
+        expect(_react1.screen.getByLabelText('Next day')).toBeInTheDocument();
+    });
+    it('passes props correctly to Header', ()=>{
+        const mockSetIsTargetsModalOpen = _globals.jest.fn();
+        const mockSetIsMainMenuOpen = _globals.jest.fn();
+        (0, _react1.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_FoodLogHeader.default, {
+            ...defaultProps,
+            setIsTargetsModalOpen: mockSetIsTargetsModalOpen,
+            setIsMainMenuOpen: mockSetIsMainMenuOpen,
+            isMainMenuOpen: true
+        }));
+        // Check that the component renders with the correct props
+        expect(_react1.screen.getByAltText('Quantro Logo')).toBeInTheDocument();
+    });
+    it('passes props correctly to DateNavigation', ()=>{
+        const mockOnDateChange = _globals.jest.fn();
+        const testDate = new Date(2023, 5, 15); // June 15, 2023
+        (0, _react1.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_FoodLogHeader.default, {
+            ...defaultProps,
+            selectedDate: testDate,
+            onDateChange: mockOnDateChange
+        }));
+        // Check that the date is displayed (formatted as "Jun 15, 2023")
+        expect(_react1.screen.getByText('Jun 15, 2023')).toBeInTheDocument();
+        // Check that date navigation buttons are present
+        expect(_react1.screen.getByLabelText('Previous day')).toBeInTheDocument();
+        expect(_react1.screen.getByLabelText('Next day')).toBeInTheDocument();
+    });
+    it('handles menu state changes', ()=>{
+        const mockSetIsMainMenuOpen = _globals.jest.fn();
+        (0, _react1.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_FoodLogHeader.default, {
+            ...defaultProps,
+            setIsMainMenuOpen: mockSetIsMainMenuOpen,
+            isMainMenuOpen: false
+        }));
+        // Check that the component renders
+        expect(_react1.screen.getByAltText('Quantro Logo')).toBeInTheDocument();
+    });
+});
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb21wb25lbnRzL2xvZy9fX3Rlc3RzX18vRm9vZExvZ0hlYWRlci50ZXN0LnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJcInVzZSBjbGllbnRcIjtcblxuaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IHJlbmRlciwgc2NyZWVuIH0gZnJvbSAnQHRlc3RpbmctbGlicmFyeS9yZWFjdCc7XG5pbXBvcnQgeyBqZXN0IH0gZnJvbSAnQGplc3QvZ2xvYmFscyc7XG5cbmltcG9ydCBGb29kTG9nSGVhZGVyIGZyb20gJy4uL0Zvb2RMb2dIZWFkZXInO1xuXG5kZXNjcmliZSgnRm9vZExvZ0hlYWRlcicsICgpID0+IHtcbiAgY29uc3QgZGVmYXVsdFByb3BzID0ge1xuICAgIGlzTWFpbk1lbnVPcGVuOiBmYWxzZSxcbiAgICBzZXRJc01haW5NZW51T3BlbjogamVzdC5mbigpLFxuICAgIHNldElzVGFyZ2V0c01vZGFsT3BlbjogamVzdC5mbigpLFxuICAgIHNlbGVjdGVkRGF0ZTogbmV3IERhdGUoMjAyMywgNSwgMTUpLFxuICAgIG9uRGF0ZUNoYW5nZTogamVzdC5mbigpLFxuICB9O1xuXG4gIGJlZm9yZUVhY2goKCkgPT4ge1xuICAgIGplc3QuY2xlYXJBbGxNb2NrcygpO1xuICB9KTtcblxuICBpdCgncmVuZGVycyB3aXRob3V0IGNyYXNoaW5nJywgKCkgPT4ge1xuICAgIGV4cGVjdCgoKSA9PiB7XG4gICAgICByZW5kZXIoPEZvb2RMb2dIZWFkZXIgey4uLmRlZmF1bHRQcm9wc30gLz4pO1xuICAgIH0pLm5vdC50b1Rocm93KCk7XG4gIH0pO1xuXG4gIGl0KCdyZW5kZXJzIEhlYWRlciBhbmQgRGF0ZU5hdmlnYXRpb24gY29tcG9uZW50cycsICgpID0+IHtcbiAgICByZW5kZXIoPEZvb2RMb2dIZWFkZXIgey4uLmRlZmF1bHRQcm9wc30gLz4pO1xuICAgIFxuICAgIC8vIENoZWNrIGZvciBoZWFkZXIgbG9nb1xuICAgIGV4cGVjdChzY3JlZW4uZ2V0QnlBbHRUZXh0KCdRdWFudHJvIExvZ28nKSkudG9CZUluVGhlRG9jdW1lbnQoKTtcbiAgICBcbiAgICAvLyBDaGVjayBmb3IgZGF0ZSBuYXZpZ2F0aW9uIGVsZW1lbnRzXG4gICAgZXhwZWN0KHNjcmVlbi5nZXRCeUxhYmVsVGV4dCgnUHJldmlvdXMgZGF5JykpLnRvQmVJblRoZURvY3VtZW50KCk7XG4gICAgZXhwZWN0KHNjcmVlbi5nZXRCeUxhYmVsVGV4dCgnTmV4dCBkYXknKSkudG9CZUluVGhlRG9jdW1lbnQoKTtcbiAgfSk7XG5cbiAgaXQoJ3Bhc3NlcyBwcm9wcyBjb3JyZWN0bHkgdG8gSGVhZGVyJywgKCkgPT4ge1xuICAgIGNvbnN0IG1vY2tTZXRJc1RhcmdldHNNb2RhbE9wZW4gPSBqZXN0LmZuKCk7XG4gICAgY29uc3QgbW9ja1NldElzTWFpbk1lbnVPcGVuID0gamVzdC5mbigpO1xuICAgIFxuICAgIHJlbmRlcihcbiAgICAgIDxGb29kTG9nSGVhZGVyIFxuICAgICAgICB7Li4uZGVmYXVsdFByb3BzfSBcbiAgICAgICAgc2V0SXNUYXJnZXRzTW9kYWxPcGVuPXttb2NrU2V0SXNUYXJnZXRzTW9kYWxPcGVufVxuICAgICAgICBzZXRJc01haW5NZW51T3Blbj17bW9ja1NldElzTWFpbk1lbnVPcGVufVxuICAgICAgICBpc01haW5NZW51T3Blbj17dHJ1ZX1cbiAgICAgIC8+XG4gICAgKTtcbiAgICBcbiAgICAvLyBDaGVjayB0aGF0IHRoZSBjb21wb25lbnQgcmVuZGVycyB3aXRoIHRoZSBjb3JyZWN0IHByb3BzXG4gICAgZXhwZWN0KHNjcmVlbi5nZXRCeUFsdFRleHQoJ1F1YW50cm8gTG9nbycpKS50b0JlSW5UaGVEb2N1bWVudCgpO1xuICB9KTtcblxuICBpdCgncGFzc2VzIHByb3BzIGNvcnJlY3RseSB0byBEYXRlTmF2aWdhdGlvbicsICgpID0+IHtcbiAgICBjb25zdCBtb2NrT25EYXRlQ2hhbmdlID0gamVzdC5mbigpO1xuICAgIGNvbnN0IHRlc3REYXRlID0gbmV3IERhdGUoMjAyMywgNSwgMTUpOyAvLyBKdW5lIDE1LCAyMDIzXG4gICAgXG4gICAgcmVuZGVyKFxuICAgICAgPEZvb2RMb2dIZWFkZXIgXG4gICAgICAgIHsuLi5kZWZhdWx0UHJvcHN9IFxuICAgICAgICBzZWxlY3RlZERhdGU9e3Rlc3REYXRlfVxuICAgICAgICBvbkRhdGVDaGFuZ2U9e21vY2tPbkRhdGVDaGFuZ2V9XG4gICAgICAvPlxuICAgICk7XG4gICAgXG4gICAgLy8gQ2hlY2sgdGhhdCB0aGUgZGF0ZSBpcyBkaXNwbGF5ZWQgKGZvcm1hdHRlZCBhcyBcIkp1biAxNSwgMjAyM1wiKVxuICAgIGV4cGVjdChzY3JlZW4uZ2V0QnlUZXh0KCdKdW4gMTUsIDIwMjMnKSkudG9CZUluVGhlRG9jdW1lbnQoKTtcbiAgICBcbiAgICAvLyBDaGVjayB0aGF0IGRhdGUgbmF2aWdhdGlvbiBidXR0b25zIGFyZSBwcmVzZW50XG4gICAgZXhwZWN0KHNjcmVlbi5nZXRCeUxhYmVsVGV4dCgnUHJldmlvdXMgZGF5JykpLnRvQmVJblRoZURvY3VtZW50KCk7XG4gICAgZXhwZWN0KHNjcmVlbi5nZXRCeUxhYmVsVGV4dCgnTmV4dCBkYXknKSkudG9CZUluVGhlRG9jdW1lbnQoKTtcbiAgfSk7XG5cbiAgaXQoJ2hhbmRsZXMgbWVudSBzdGF0ZSBjaGFuZ2VzJywgKCkgPT4ge1xuICAgIGNvbnN0IG1vY2tTZXRJc01haW5NZW51T3BlbiA9IGplc3QuZm4oKTtcbiAgICBcbiAgICByZW5kZXIoXG4gICAgICA8Rm9vZExvZ0hlYWRlciBcbiAgICAgICAgey4uLmRlZmF1bHRQcm9wc30gXG4gICAgICAgIHNldElzTWFpbk1lbnVPcGVuPXttb2NrU2V0SXNNYWluTWVudU9wZW59XG4gICAgICAgIGlzTWFpbk1lbnVPcGVuPXtmYWxzZX1cbiAgICAgIC8+XG4gICAgKTtcbiAgICBcbiAgICAvLyBDaGVjayB0aGF0IHRoZSBjb21wb25lbnQgcmVuZGVyc1xuICAgIGV4cGVjdChzY3JlZW4uZ2V0QnlBbHRUZXh0KCdRdWFudHJvIExvZ28nKSkudG9CZUluVGhlRG9jdW1lbnQoKTtcbiAgfSk7XG59KTtcbiJdLCJuYW1lcyI6WyJkZXNjcmliZSIsImRlZmF1bHRQcm9wcyIsImlzTWFpbk1lbnVPcGVuIiwic2V0SXNNYWluTWVudU9wZW4iLCJqZXN0IiwiZm4iLCJzZXRJc1RhcmdldHNNb2RhbE9wZW4iLCJzZWxlY3RlZERhdGUiLCJEYXRlIiwib25EYXRlQ2hhbmdlIiwiYmVmb3JlRWFjaCIsImNsZWFyQWxsTW9ja3MiLCJpdCIsImV4cGVjdCIsInJlbmRlciIsIkZvb2RMb2dIZWFkZXIiLCJub3QiLCJ0b1Rocm93Iiwic2NyZWVuIiwiZ2V0QnlBbHRUZXh0IiwidG9CZUluVGhlRG9jdW1lbnQiLCJnZXRCeUxhYmVsVGV4dCIsIm1vY2tTZXRJc1RhcmdldHNNb2RhbE9wZW4iLCJtb2NrU2V0SXNNYWluTWVudU9wZW4iLCJtb2NrT25EYXRlQ2hhbmdlIiwidGVzdERhdGUiLCJnZXRCeVRleHQiXSwibWFwcGluZ3MiOiJBQUFBOzs7Ozs7OERBRWtCO3dCQUNhO3lCQUNWO3NFQUVLOzs7Ozs7QUFFMUJBLFNBQVMsaUJBQWlCO0lBQ3hCLE1BQU1DLGVBQWU7UUFDbkJDLGdCQUFnQjtRQUNoQkMsbUJBQW1CQyxhQUFJLENBQUNDLEVBQUU7UUFDMUJDLHVCQUF1QkYsYUFBSSxDQUFDQyxFQUFFO1FBQzlCRSxjQUFjLElBQUlDLEtBQUssTUFBTSxHQUFHO1FBQ2hDQyxjQUFjTCxhQUFJLENBQUNDLEVBQUU7SUFDdkI7SUFFQUssV0FBVztRQUNUTixhQUFJLENBQUNPLGFBQWE7SUFDcEI7SUFFQUMsR0FBRyw0QkFBNEI7UUFDN0JDLE9BQU87WUFDTEMsSUFBQUEsY0FBTSxnQkFBQyxxQkFBQ0Msc0JBQWE7Z0JBQUUsR0FBR2QsWUFBWTs7UUFDeEMsR0FBR2UsR0FBRyxDQUFDQyxPQUFPO0lBQ2hCO0lBRUFMLEdBQUcsZ0RBQWdEO1FBQ2pERSxJQUFBQSxjQUFNLGdCQUFDLHFCQUFDQyxzQkFBYTtZQUFFLEdBQUdkLFlBQVk7O1FBRXRDLHdCQUF3QjtRQUN4QlksT0FBT0ssY0FBTSxDQUFDQyxZQUFZLENBQUMsaUJBQWlCQyxpQkFBaUI7UUFFN0QscUNBQXFDO1FBQ3JDUCxPQUFPSyxjQUFNLENBQUNHLGNBQWMsQ0FBQyxpQkFBaUJELGlCQUFpQjtRQUMvRFAsT0FBT0ssY0FBTSxDQUFDRyxjQUFjLENBQUMsYUFBYUQsaUJBQWlCO0lBQzdEO0lBRUFSLEdBQUcsb0NBQW9DO1FBQ3JDLE1BQU1VLDRCQUE0QmxCLGFBQUksQ0FBQ0MsRUFBRTtRQUN6QyxNQUFNa0Isd0JBQXdCbkIsYUFBSSxDQUFDQyxFQUFFO1FBRXJDUyxJQUFBQSxjQUFNLGdCQUNKLHFCQUFDQyxzQkFBYTtZQUNYLEdBQUdkLFlBQVk7WUFDaEJLLHVCQUF1QmdCO1lBQ3ZCbkIsbUJBQW1Cb0I7WUFDbkJyQixnQkFBZ0I7O1FBSXBCLDBEQUEwRDtRQUMxRFcsT0FBT0ssY0FBTSxDQUFDQyxZQUFZLENBQUMsaUJBQWlCQyxpQkFBaUI7SUFDL0Q7SUFFQVIsR0FBRyw0Q0FBNEM7UUFDN0MsTUFBTVksbUJBQW1CcEIsYUFBSSxDQUFDQyxFQUFFO1FBQ2hDLE1BQU1vQixXQUFXLElBQUlqQixLQUFLLE1BQU0sR0FBRyxLQUFLLGdCQUFnQjtRQUV4RE0sSUFBQUEsY0FBTSxnQkFDSixxQkFBQ0Msc0JBQWE7WUFDWCxHQUFHZCxZQUFZO1lBQ2hCTSxjQUFja0I7WUFDZGhCLGNBQWNlOztRQUlsQixpRUFBaUU7UUFDakVYLE9BQU9LLGNBQU0sQ0FBQ1EsU0FBUyxDQUFDLGlCQUFpQk4saUJBQWlCO1FBRTFELGlEQUFpRDtRQUNqRFAsT0FBT0ssY0FBTSxDQUFDRyxjQUFjLENBQUMsaUJBQWlCRCxpQkFBaUI7UUFDL0RQLE9BQU9LLGNBQU0sQ0FBQ0csY0FBYyxDQUFDLGFBQWFELGlCQUFpQjtJQUM3RDtJQUVBUixHQUFHLDhCQUE4QjtRQUMvQixNQUFNVyx3QkFBd0JuQixhQUFJLENBQUNDLEVBQUU7UUFFckNTLElBQUFBLGNBQU0sZ0JBQ0oscUJBQUNDLHNCQUFhO1lBQ1gsR0FBR2QsWUFBWTtZQUNoQkUsbUJBQW1Cb0I7WUFDbkJyQixnQkFBZ0I7O1FBSXBCLG1DQUFtQztRQUNuQ1csT0FBT0ssY0FBTSxDQUFDQyxZQUFZLENBQUMsaUJBQWlCQyxpQkFBaUI7SUFDL0Q7QUFDRiJ9

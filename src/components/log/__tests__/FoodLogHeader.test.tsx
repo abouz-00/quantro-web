@@ -11,7 +11,7 @@ describe('FoodLogHeader', () => {
     isMainMenuOpen: false,
     setIsMainMenuOpen: jest.fn(),
     setIsTargetsModalOpen: jest.fn(),
-    selectedDate: new Date('2023-06-15'),
+    selectedDate: new Date(2023, 5, 15),
     onDateChange: jest.fn(),
   };
 
@@ -55,7 +55,7 @@ describe('FoodLogHeader', () => {
 
   it('passes props correctly to DateNavigation', () => {
     const mockOnDateChange = jest.fn();
-    const testDate = new Date('2023-06-15');
+    const testDate = new Date(2023, 5, 15); // June 15, 2023
     
     render(
       <FoodLogHeader 
@@ -65,8 +65,8 @@ describe('FoodLogHeader', () => {
       />
     );
     
-    // Check that the date is displayed (formatted as "Jun 14, 2023")
-    expect(screen.getByText('Jun 14, 2023')).toBeInTheDocument();
+    // Check that the date is displayed (formatted as "Jun 15, 2023")
+    expect(screen.getByText('Jun 15, 2023')).toBeInTheDocument();
     
     // Check that date navigation buttons are present
     expect(screen.getByLabelText('Previous day')).toBeInTheDocument();

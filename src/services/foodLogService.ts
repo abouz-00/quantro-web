@@ -13,7 +13,7 @@ export class FoodLogService {
   static async loadFoodData(dateParam: string): Promise<FoodEntry[]> {
     try {
       console.log('🌐 FoodLogService: About to fetch /api/food-logs?date=' + dateParam);
-      const response = await (globalThis as { fetch: typeof fetch }).fetch(`/api/food-logs?date=${dateParam}`);
+      const response = await this.retryFetch(`/api/food-logs?date=${dateParam}`, {});
       console.log('📡 FoodLogService: Got response status:', response.status, 'ok:', response.ok);
       
       if (response.ok) {
@@ -68,7 +68,7 @@ export class FoodLogService {
    */
   static async addFoodEntry(entry: FoodEntry): Promise<FoodEntry> {
     try {
-      const response = await (globalThis as { fetch: typeof fetch }).fetch('/api/food-logs', {
+      const response = await this.retryFetch('/api/food-logs', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -129,7 +129,7 @@ export class FoodLogService {
    */
   static async removeFoodEntry(id: string): Promise<boolean> {
     try {
-      const response = await (globalThis as { fetch: typeof fetch }).fetch(`/api/food-logs?id=${id}`, {
+      const response = await this.retryFetch(`/api/food-logs?id=${id}`, {
         method: 'DELETE',
       });
 
@@ -185,7 +185,7 @@ export class FoodLogService {
    */
   static async updateFoodEntry(id: string, updates: Partial<FoodEntry>): Promise<boolean> {
     try {
-      const response = await (globalThis as { fetch: typeof fetch }).fetch('/api/food-logs', {
+      const response = await this.retryFetch('/api/food-logs', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -197,6 +197,7 @@ export class FoodLogService {
           protein: updates.protein,
           carbs: updates.carbs,
           fat: updates.fat,
+          mealType: updates.mealType,
         }),
       });
 
@@ -247,6 +248,40 @@ export class FoodLogService {
       this.updateInLocalStorage(id, updates);
       return true;
     }
+  }
+
+  /**
+   * Retry fetch with exponential backoff for network errors
+   */
+  private static async retryFetch(url: string, options: RequestInit, maxRetries = 3): Promise<Response> {
+    let lastError: Error;
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        const response = await (globalThis as { fetch: typeof fetch }).fetch(url, options);
+        return response;
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        
+        // Don't retry on the last attempt
+        if (attempt === maxRetries) {
+          break;
+        }
+
+        // Only retry on network errors, not on HTTP errors
+        if (lastError.name === 'TypeError' && lastError.message.includes('fetch')) {
+          const delay = Math.min(1000 * Math.pow(2, attempt), 5000); // Exponential backoff, max 5s
+          console.log(`Network error, retrying in ${delay}ms (attempt ${attempt + 1}/${maxRetries + 1})`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          continue;
+        }
+        
+        // For non-network errors, don't retry
+        break;
+      }
+    }
+
+    throw lastError!;
   }
 
   // Private localStorage methods
