@@ -120,7 +120,7 @@ describe('FoodLogService', () => {
 
       const result = await FoodLogService.loadFoodData('2023-12-25');
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/food-logs?date=2023-12-25');
+      expect(mockFetch).toHaveBeenCalledWith('/api/food-logs?date=2023-12-25', {});
       expect(result).toHaveLength(1);
       expect(result[0]).toMatchObject({
         id: '1',
