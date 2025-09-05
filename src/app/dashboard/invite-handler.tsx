@@ -24,7 +24,7 @@ export default function InviteHandler() {
             }),
           })
 
-          if (response.ok) {
+          if (response?.ok) {
             console.log('Invite marked as used successfully')
             // Remove the inviteCode from URL
             const url = new URL(window.location.href)

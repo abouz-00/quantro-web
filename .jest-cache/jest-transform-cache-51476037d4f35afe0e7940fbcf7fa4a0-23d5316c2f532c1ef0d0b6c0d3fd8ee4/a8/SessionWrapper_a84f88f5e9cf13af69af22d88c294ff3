@@ -1,0 +1,196 @@
+96fecb136a73f4e8858ddaa02263c20c
+"use client";
+"use strict";
+
+/* istanbul ignore next */
+function cov_1r6zlxhbsn() {
+  var path = "/Users/ayman/quantro/src/components/shared/SessionWrapper.tsx";
+  var hash = "ffc133da1759eb98ebec89c0cffbc873a4c1379e";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/ayman/quantro/src/components/shared/SessionWrapper.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 11,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 9,
+          column: 8
+        },
+        end: {
+          line: 9,
+          column: 30
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 12,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 15
+        },
+        end: {
+          line: 13,
+          column: 41
+        }
+      },
+      "5": {
+        start: {
+          line: 15,
+          column: 4
+        },
+        end: {
+          line: 19,
+          column: 7
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 8,
+            column: 9
+          },
+          end: {
+            line: 8,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 20
+          },
+          end: {
+            line: 10,
+            column: 5
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "SessionWrapper",
+        decl: {
+          start: {
+            line: 14,
+            column: 9
+          },
+          end: {
+            line: 14,
+            column: 23
+          }
+        },
+        loc: {
+          start: {
+            line: 14,
+            column: 38
+          },
+          end: {
+            line: 20,
+            column: 1
+          }
+        },
+        line: 14
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/Users/ayman/quantro/src/components/shared/SessionWrapper.tsx"],
+      sourcesContent: ["\"use client\";\n\nimport { SessionProvider } from \"next-auth/react\";\nimport { ReactNode } from \"react\";\n\ninterface SessionWrapperProps {\n  children: ReactNode;\n}\n\nexport default function SessionWrapper({ children }: SessionWrapperProps) {\n  return (\n    <SessionProvider\n      refetchInterval={5 * 60} // Refetch session every 5 minutes\n      refetchOnWindowFocus={true} // Refetch when window gains focus\n    >\n      {children}\n    </SessionProvider>\n  );\n}\n"],
+      names: ["SessionWrapper", "children", "SessionProvider", "refetchInterval", "refetchOnWindowFocus"],
+      mappings: "AAAA;;;;;+BASA;;;eAAwBA;;;;uBAPQ;AAOjB,SAASA,eAAe,EAAEC,QAAQ,EAAuB;IACtE,qBACE,qBAACC,sBAAe;QACdC,iBAAiB,IAAI;QACrBC,sBAAsB;kBAErBH;;AAGP"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "ffc133da1759eb98ebec89c0cffbc873a4c1379e"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1r6zlxhbsn = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1r6zlxhbsn();
+cov_1r6zlxhbsn().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_1r6zlxhbsn().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_1r6zlxhbsn().f[0]++;
+    cov_1r6zlxhbsn().s[2]++;
+    return SessionWrapper;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_1r6zlxhbsn().s[3]++, require("react/jsx-runtime"));
+const _react =
+/* istanbul ignore next */
+(cov_1r6zlxhbsn().s[4]++, require("next-auth/react"));
+function SessionWrapper({
+  children
+}) {
+  /* istanbul ignore next */
+  cov_1r6zlxhbsn().f[1]++;
+  cov_1r6zlxhbsn().s[5]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsx)(_react.SessionProvider, {
+    refetchInterval: 5 * 60,
+    refetchOnWindowFocus: true,
+    children: children
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMXI2emx4aGJzbiIsImFjdHVhbENvdmVyYWdlIiwicyIsIlNlc3Npb25XcmFwcGVyIiwiY2hpbGRyZW4iLCJmIiwiX2pzeHJ1bnRpbWUiLCJqc3giLCJfcmVhY3QiLCJTZXNzaW9uUHJvdmlkZXIiLCJyZWZldGNoSW50ZXJ2YWwiLCJyZWZldGNoT25XaW5kb3dGb2N1cyJdLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb21wb25lbnRzL3NoYXJlZC9TZXNzaW9uV3JhcHBlci50c3giXSwic291cmNlc0NvbnRlbnQiOlsiXCJ1c2UgY2xpZW50XCI7XG5cbmltcG9ydCB7IFNlc3Npb25Qcm92aWRlciB9IGZyb20gXCJuZXh0LWF1dGgvcmVhY3RcIjtcbmltcG9ydCB7IFJlYWN0Tm9kZSB9IGZyb20gXCJyZWFjdFwiO1xuXG5pbnRlcmZhY2UgU2Vzc2lvbldyYXBwZXJQcm9wcyB7XG4gIGNoaWxkcmVuOiBSZWFjdE5vZGU7XG59XG5cbmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIFNlc3Npb25XcmFwcGVyKHsgY2hpbGRyZW4gfTogU2Vzc2lvbldyYXBwZXJQcm9wcykge1xuICByZXR1cm4gKFxuICAgIDxTZXNzaW9uUHJvdmlkZXJcbiAgICAgIHJlZmV0Y2hJbnRlcnZhbD17NSAqIDYwfSAvLyBSZWZldGNoIHNlc3Npb24gZXZlcnkgNSBtaW51dGVzXG4gICAgICByZWZldGNoT25XaW5kb3dGb2N1cz17dHJ1ZX0gLy8gUmVmZXRjaCB3aGVuIHdpbmRvdyBnYWlucyBmb2N1c1xuICAgID5cbiAgICAgIHtjaGlsZHJlbn1cbiAgICA8L1Nlc3Npb25Qcm92aWRlcj5cbiAgKTtcbn1cbiJdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztJQVlNO0lBQUFBLGNBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUFDLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUFELGNBQUE7QUFBQUEsY0FBQSxHQUFBRSxDQUFBOzs7Ozs7K0JBSE47Ozs7OztXQUF3QkMsY0FBQTs7Ozs7Ozs7a0NBUFE7QUFPakIsU0FBU0EsZUFBZTtFQUFFQztBQUFRLENBQXVCO0VBQUE7RUFBQUosY0FBQSxHQUFBSyxDQUFBO0VBQUFMLGNBQUEsR0FBQUUsQ0FBQTtFQUN0RSxvQkFDRSxJQUFBSSxXQUFBLENBQUFDLEdBQUEsRUFBQ0MsTUFBQSxDQUFBQyxlQUFlO0lBQ2RDLGVBQUEsRUFBaUIsSUFBSTtJQUNyQkMsb0JBQUEsRUFBc0I7Y0FFckJQOztBQUdQIiwiaWdub3JlTGlzdCI6W119

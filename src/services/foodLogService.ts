@@ -14,6 +14,11 @@ export class FoodLogService {
     try {
       console.log('🌐 FoodLogService: About to fetch /api/food-logs?date=' + dateParam);
       const response = await this.retryFetch(`/api/food-logs?date=${dateParam}`, {});
+      
+      if (!response) {
+        throw new Error('No response received from server');
+      }
+      
       console.log('📡 FoodLogService: Got response status:', response.status, 'ok:', response.ok);
       
       if (response.ok) {
@@ -31,13 +36,13 @@ export class FoodLogService {
         
         // Safely log error details with fallbacks
         const errorDetails = {
-          status: response?.status || 'Unknown',
-          statusText: response?.statusText || 'Unknown',
+          status: response.status,
+          statusText: response.statusText || 'Unknown',
           body: errorText,
           operation: 'loadFoodData',
           dateParam,
-          url: response?.url || 'Unknown',
-          ok: response?.ok || false
+          url: response.url || 'Unknown',
+          ok: response.ok
         };
         
         console.error('API response error:', errorDetails);
@@ -76,6 +81,10 @@ export class FoodLogService {
         body: JSON.stringify(transformFoodEntryToApiData(entry)),
       });
 
+      if (!response) {
+        throw new Error('No response received from server');
+      }
+
       if (response.ok) {
         const savedEntry = await response.json();
         return transformApiDataToFoodEntry(savedEntry);
@@ -90,13 +99,13 @@ export class FoodLogService {
         
         // Safely log error details with fallbacks
         const errorDetails = {
-          status: response?.status || 'Unknown',
-          statusText: response?.statusText || 'Unknown',
+          status: response.status,
+          statusText: response.statusText || 'Unknown',
           body: errorText,
           operation: 'addFoodEntry',
-          entryId: entry?.id || 'Unknown',
-          url: response?.url || 'Unknown',
-          ok: response?.ok || false
+          entryId: entry.id,
+          url: response.url || 'Unknown',
+          ok: response.ok
         };
         
         console.error('API response error:', errorDetails);
@@ -133,6 +142,10 @@ export class FoodLogService {
         method: 'DELETE',
       });
 
+      if (!response) {
+        throw new Error('No response received from server');
+      }
+
       if (response.ok) {
         return true;
       } else {
@@ -146,13 +159,13 @@ export class FoodLogService {
         
         // Safely log error details with fallbacks
         const errorDetails = {
-          status: response?.status || 'Unknown',
-          statusText: response?.statusText || 'Unknown',
+          status: response.status,
+          statusText: response.statusText || 'Unknown',
           body: errorText,
           operation: 'removeFoodEntry',
-          entryId: id || 'Unknown',
-          url: response?.url || 'Unknown',
-          ok: response?.ok || false
+          entryId: id,
+          url: response.url || 'Unknown',
+          ok: response.ok
         };
         
         console.error('API response error:', errorDetails);
@@ -201,6 +214,10 @@ export class FoodLogService {
         }),
       });
 
+      if (!response) {
+        throw new Error('No response received from server');
+      }
+
       if (response.ok) {
         return true;
       } else {
@@ -214,14 +231,14 @@ export class FoodLogService {
         
         // Safely log error details with fallbacks
         const errorDetails = {
-          status: response?.status || 'Unknown',
-          statusText: response?.statusText || 'Unknown',
+          status: response.status,
+          statusText: response.statusText || 'Unknown',
           body: errorText,
           operation: 'updateFoodEntry',
-          entryId: id || 'Unknown',
+          entryId: id,
           updates,
-          url: response?.url || 'Unknown',
-          ok: response?.ok || false
+          url: response.url || 'Unknown',
+          ok: response.ok
         };
         
         console.error('API response error:', errorDetails);
