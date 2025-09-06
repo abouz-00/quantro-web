@@ -264,7 +264,7 @@ describe('SignInModal', () => {
     });
   });
 
-  it('handles Enter key press on inputs', () => {
+  it('handles Enter key press on inputs', async () => {
     mockOnSubmit.mockResolvedValue(undefined);
 
     render(
@@ -284,7 +284,9 @@ describe('SignInModal', () => {
 
     fireEvent.keyDown(passwordInput, { key: 'Enter', code: 'Enter' });
 
-    expect(mockOnSubmit).toHaveBeenCalledWith('test@example.com', 'password123');
+    await waitFor(() => {
+      expect(mockOnSubmit).toHaveBeenCalledWith('test@example.com', 'password123');
+    });
   });
 
   it('disables inputs and buttons when isSigningIn is true', () => {
