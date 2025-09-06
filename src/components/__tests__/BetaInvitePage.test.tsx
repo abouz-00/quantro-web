@@ -23,7 +23,7 @@ describe('BetaInvitePage', () => {
     
     expect(screen.getByText('Invalid Invite')).toBeInTheDocument();
     expect(screen.getByText('No invite code provided')).toBeInTheDocument();
-    expect(screen.getByText('Back to Home')).toBeInTheDocument();
+    expect(screen.getByText('Go to Homepage')).toBeInTheDocument();
   });
 
   it('should render loading state initially', () => {
@@ -40,7 +40,7 @@ describe('BetaInvitePage', () => {
     render(<BetaInvitePage code="TEST123" />);
     
     // Should show loading initially (before the fetch resolves)
-    expect(screen.getByText('Validating invite...')).toBeInTheDocument();
+    expect(screen.getByText('Validating your invite...')).toBeInTheDocument();
   });
 
   it('should render invite data when valid', async () => {
@@ -57,22 +57,19 @@ describe('BetaInvitePage', () => {
     render(<BetaInvitePage code="TEST123" />);
     
     await waitFor(() => {
-      expect(screen.getByText('Beta Invite')).toBeInTheDocument();
+      expect(screen.getByText('You\'re Invited!')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('You have been invited to join the beta!')).toBeInTheDocument();
+    expect(screen.getByText('You\'ve been invited to join the Quantro beta')).toBeInTheDocument();
     expect(screen.getByText('test@example.com')).toBeInTheDocument();
-    expect(screen.getByText('Accept Invite')).toBeInTheDocument();
+    expect(screen.getByText('Accept Invite & Join Beta')).toBeInTheDocument();
   });
 
   it('should handle invalid invite', async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
       json: () => Promise.resolve({
-        valid: false,
-        email: '',
-        code: 'INVALID',
-        expiresAt: null
+        error: 'Invalid invite code'
       })
     });
 
@@ -82,7 +79,7 @@ describe('BetaInvitePage', () => {
       expect(screen.getByText('Invalid Invite')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('This invite code is not valid or has expired.')).toBeInTheDocument();
+    expect(screen.getByText('Invalid invite code')).toBeInTheDocument();
   });
 
   it('should handle network error', async () => {
@@ -91,10 +88,10 @@ describe('BetaInvitePage', () => {
     render(<BetaInvitePage code="TEST123" />);
     
     await waitFor(() => {
-      expect(screen.getByText('Error')).toBeInTheDocument();
+      expect(screen.getByText('Invalid Invite')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('Failed to validate invite code')).toBeInTheDocument();
+    expect(screen.getByText('Failed to validate invite')).toBeInTheDocument();
   });
 
   it('should handle accept invite success', async () => {
@@ -112,7 +109,7 @@ describe('BetaInvitePage', () => {
     render(<BetaInvitePage code="TEST123" />);
     
     await waitFor(() => {
-      expect(screen.getByText('Accept Invite')).toBeInTheDocument();
+      expect(screen.getByText('Accept Invite & Join Beta')).toBeInTheDocument();
     });
 
     // Mock accept invite response
@@ -121,15 +118,15 @@ describe('BetaInvitePage', () => {
       json: () => Promise.resolve({ success: true })
     });
 
-    const acceptButton = screen.getByText('Accept Invite');
+    const acceptButton = screen.getByText('Accept Invite & Join Beta');
     fireEvent.click(acceptButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Invite Accepted!')).toBeInTheDocument();
+      expect(screen.getByText('Welcome to Quantro!')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('Your beta invite has been accepted. You can now sign in to access the application.')).toBeInTheDocument();
-    expect(screen.getByText('Sign In')).toBeInTheDocument();
+    expect(screen.getByText('Your beta invite has been accepted. You can now sign in to access the app.')).toBeInTheDocument();
+    expect(screen.getByText('Sign In Now')).toBeInTheDocument();
   });
 
   it('should handle accept invite failure', async () => {
@@ -147,17 +144,17 @@ describe('BetaInvitePage', () => {
     render(<BetaInvitePage code="TEST123" />);
     
     await waitFor(() => {
-      expect(screen.getByText('Accept Invite')).toBeInTheDocument();
+      expect(screen.getByText('Accept Invite & Join Beta')).toBeInTheDocument();
     });
 
     // Mock accept invite failure
     mockFetch.mockRejectedValueOnce(new Error('Accept failed'));
 
-    const acceptButton = screen.getByText('Accept Invite');
+    const acceptButton = screen.getByText('Accept Invite & Join Beta');
     fireEvent.click(acceptButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Failed to accept invite. Please try again.')).toBeInTheDocument();
+      expect(screen.getByText('Failed to accept invite')).toBeInTheDocument();
     });
   });
 });

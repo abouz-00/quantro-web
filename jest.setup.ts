@@ -420,7 +420,7 @@ if (typeof globalThis !== 'undefined') {
   globalThis.ResizeObserver = global.ResizeObserver;
 }
 
-// Mock IntersectionObserver for Headless UI components
+// Mock IntersectionObserver for Headless UI components and Next.js
 const MockIntersectionObserver = jest.fn().mockImplementation(() => ({
   observe: jest.fn(),
   unobserve: jest.fn(),
@@ -430,21 +430,20 @@ const MockIntersectionObserver = jest.fn().mockImplementation(() => ({
   thresholds: [],
 }));
 
-// Set up the constructor to return the mock instance
-MockIntersectionObserver.mockImplementation(() => ({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-  disconnect: jest.fn(),
-  root: null,
-  rootMargin: '',
-  thresholds: [],
-}));
-
-global.IntersectionObserver = MockIntersectionObserver;
+// Override the constructor completely
+Object.defineProperty(global, 'IntersectionObserver', {
+  writable: true,
+  configurable: true,
+  value: MockIntersectionObserver,
+});
 
 // Also mock on globalThis for consistency
 if (typeof globalThis !== 'undefined') {
-  globalThis.IntersectionObserver = MockIntersectionObserver;
+  Object.defineProperty(globalThis, 'IntersectionObserver', {
+    writable: true,
+    configurable: true,
+    value: MockIntersectionObserver,
+  });
 }
 
 // Mock @dnd-kit modules globally to avoid ResizeObserver issues

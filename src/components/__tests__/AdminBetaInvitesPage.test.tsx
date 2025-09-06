@@ -64,16 +64,16 @@ describe('AdminBetaInvitesPage', () => {
     render(<AdminBetaInvitesPage {...mockProps} />);
     
     expect(screen.getByText('Beta Invites Admin')).toBeInTheDocument();
-    expect(screen.getByText('Create New Invite')).toBeInTheDocument();
-    expect(screen.getByText('Existing Invites')).toBeInTheDocument();
+    expect(screen.getByText('Create New Beta Invite')).toBeInTheDocument();
+    expect(screen.getByText('Existing Beta Invites')).toBeInTheDocument();
   });
 
   it('should render the create invite form', () => {
     render(<AdminBetaInvitesPage {...mockProps} />);
     
     expect(screen.getByLabelText('Email Address')).toBeInTheDocument();
-    expect(screen.getByLabelText('Expires in (days)')).toBeInTheDocument();
-    expect(screen.getByLabelText('Send email notification')).toBeInTheDocument();
+    expect(screen.getByLabelText('Expires In (Days) - Optional')).toBeInTheDocument();
+    expect(screen.getByLabelText('Send email invitation to user')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Create Invite' })).toBeInTheDocument();
   });
 
@@ -89,7 +89,7 @@ describe('AdminBetaInvitesPage', () => {
   it('should handle expires in days input change', () => {
     render(<AdminBetaInvitesPage {...mockProps} />);
     
-    const daysInput = screen.getByLabelText('Expires in (days)');
+    const daysInput = screen.getByLabelText('Expires In (Days) - Optional');
     fireEvent.change(daysInput, { target: { value: '60' } });
     
     expect(mockProps.setExpiresInDays).toHaveBeenCalledWith(60);
@@ -98,7 +98,7 @@ describe('AdminBetaInvitesPage', () => {
   it('should handle send email checkbox change', () => {
     render(<AdminBetaInvitesPage {...mockProps} />);
     
-    const checkbox = screen.getByLabelText('Send email notification');
+    const checkbox = screen.getByLabelText('Send email invitation to user');
     fireEvent.click(checkbox);
     
     expect(mockProps.setSendEmail).toHaveBeenCalledWith(false);
@@ -107,8 +107,9 @@ describe('AdminBetaInvitesPage', () => {
   it('should handle form submission', () => {
     render(<AdminBetaInvitesPage {...mockProps} />);
     
-    const form = screen.getByRole('form', { name: /create invite/i });
-    fireEvent.submit(form);
+    const form = screen.getByRole('button', { name: 'Create Invite' }).closest('form');
+    expect(form).toBeTruthy();
+    fireEvent.submit(form!);
     
     expect(mockProps.onCreateInvite).toHaveBeenCalled();
   });
@@ -164,11 +165,9 @@ describe('AdminBetaInvitesPage', () => {
   it('should handle revoke action', () => {
     render(<AdminBetaInvitesPage {...mockProps} />);
     
-    const revokeButtons = screen.getAllByText('Revoke');
-    if (revokeButtons.length > 0) {
-      fireEvent.click(revokeButtons[0]);
-      expect(mockProps.onRevokeInvite).toHaveBeenCalled();
-    }
+    // The mock shows expired invites, so no revoke buttons should be present
+    const revokeButtons = screen.queryAllByText('Revoke');
+    expect(revokeButtons).toHaveLength(0);
   });
 
   it('should display form values correctly', () => {
@@ -184,10 +183,10 @@ describe('AdminBetaInvitesPage', () => {
     const emailInput = screen.getByLabelText('Email Address') as HTMLInputElement;
     expect(emailInput.value).toBe('test@example.com');
     
-    const daysInput = screen.getByLabelText('Expires in (days)') as HTMLInputElement;
+    const daysInput = screen.getByLabelText('Expires In (Days) - Optional') as HTMLInputElement;
     expect(daysInput.value).toBe('60');
     
-    const checkbox = screen.getByLabelText('Send email notification') as HTMLInputElement;
+    const checkbox = screen.getByLabelText('Send email invitation to user') as HTMLInputElement;
     expect(checkbox.checked).toBe(false);
   });
 
@@ -200,6 +199,6 @@ describe('AdminBetaInvitesPage', () => {
     render(<AdminBetaInvitesPage {...propsWithNoInvites} />);
     
     expect(screen.getByText('Beta Invites Admin')).toBeInTheDocument();
-    expect(screen.getByText('Create New Invite')).toBeInTheDocument();
+    expect(screen.getByText('Create New Beta Invite')).toBeInTheDocument();
   });
 });

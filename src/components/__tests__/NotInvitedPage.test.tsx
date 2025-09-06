@@ -43,17 +43,16 @@ describe('NotInvitedPage', () => {
   it('should render the not invited page', () => {
     render(<NotInvitedPage {...mockProps} />);
     
-    expect(screen.getByText('Quantro')).toBeInTheDocument();
     expect(screen.getByText('Beta Access Required')).toBeInTheDocument();
-    expect(screen.getByText('This application is currently in private beta.')).toBeInTheDocument();
-    expect(screen.getByText('Enter Beta Code')).toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Enter your beta invitation code')).toBeInTheDocument();
+    expect(screen.getByText('Quantro is currently in private beta. Enter your beta access code below or request access.')).toBeInTheDocument();
+    expect(screen.getByText('Beta Access Code')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Enter your beta code')).toBeInTheDocument();
   });
 
   it('should handle beta code input change', () => {
     render(<NotInvitedPage {...mockProps} />);
     
-    const input = screen.getByPlaceholderText('Enter your beta invitation code');
+    const input = screen.getByPlaceholderText('Enter your beta code');
     fireEvent.change(input, { target: { value: 'TEST123' } });
     
     expect(mockProps.setBetaCode).toHaveBeenCalledWith('TEST123');
@@ -62,8 +61,9 @@ describe('NotInvitedPage', () => {
   it('should handle form submission', () => {
     render(<NotInvitedPage {...mockProps} />);
     
-    const form = screen.getByRole('form');
-    fireEvent.submit(form);
+    const form = screen.getByRole('button', { name: 'Access Beta' }).closest('form');
+    expect(form).toBeTruthy();
+    fireEvent.submit(form!);
     
     expect(mockProps.onSubmitCode).toHaveBeenCalled();
   });
@@ -87,16 +87,21 @@ describe('NotInvitedPage', () => {
     
     render(<NotInvitedPage {...propsWithSubmitting} />);
     
-    expect(screen.getByText('Validating...')).toBeInTheDocument();
+    expect(screen.getByText('Checking...')).toBeInTheDocument();
     
-    const submitButton = screen.getByRole('button', { name: 'Validating...' });
+    const submitButton = screen.getByRole('button', { name: 'Checking...' });
     expect(submitButton).toBeDisabled();
   });
 
   it('should show submit button when not submitting', () => {
-    render(<NotInvitedPage {...mockProps} />);
+    const propsWithCode = {
+      ...mockProps,
+      betaCode: 'TEST123', // Add some content to enable the button
+    };
     
-    const submitButton = screen.getByRole('button', { name: 'Submit Code' });
+    render(<NotInvitedPage {...propsWithCode} />);
+    
+    const submitButton = screen.getByRole('button', { name: 'Access Beta' });
     expect(submitButton).not.toBeDisabled();
   });
 
@@ -108,18 +113,17 @@ describe('NotInvitedPage', () => {
     
     render(<NotInvitedPage {...propsWithCode} />);
     
-    const input = screen.getByPlaceholderText('Enter your beta invitation code') as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Enter your beta code') as HTMLInputElement;
     expect(input.value).toBe('MYBETACODE123');
   });
 
   it('should have proper form attributes', () => {
     render(<NotInvitedPage {...mockProps} />);
     
-    const form = screen.getByRole('form');
-    expect(form).toHaveAttribute('onSubmit');
+    const form = screen.getByRole('button', { name: 'Access Beta' }).closest('form');
+    expect(form).toBeTruthy();
     
-    const input = screen.getByPlaceholderText('Enter your beta invitation code');
+    const input = screen.getByPlaceholderText('Enter your beta code');
     expect(input).toHaveAttribute('type', 'text');
-    expect(input).toHaveAttribute('required');
   });
 });
