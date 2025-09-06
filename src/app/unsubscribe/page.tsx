@@ -1,12 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Metadata } from 'next'
-
-export const metadata: Metadata = {
-  title: 'Unsubscribe | Quantro',
-  description: 'Unsubscribe from Quantro emails',
-}
 
 export default function Unsubscribe() {
   const [email, setEmail] = useState('')
