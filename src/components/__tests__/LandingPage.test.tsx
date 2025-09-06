@@ -75,7 +75,7 @@ describe('LandingPage Component', () => {
     render(<LandingPage />);
     
     // Check for content that actually exists (footer)
-    expect(screen.getByText('© 2025 Quantro. All rights reserved.')).toBeInTheDocument();
+    expect(screen.getByText('© 2025 Quantro LLC. All rights reserved.')).toBeInTheDocument();
   });
 
   it('displays social media links', () => {
