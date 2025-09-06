@@ -1,4 +1,5 @@
 import { Resend } from 'resend'
+import { prisma } from './prisma'
 
 // Initialize Resend lazily to avoid build-time errors
 function getResendInstance() {
@@ -17,6 +18,22 @@ interface BetaInviteEmailProps {
 
 export async function sendBetaInviteEmail({ email, code, expiresAt }: BetaInviteEmailProps) {
   try {
+    // Check if user has unsubscribed from marketing emails
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { emailUnsubscribed: true }
+    })
+
+    if (user?.emailUnsubscribed) {
+      console.log(`📧 Email sending skipped - User has unsubscribed: ${email}`)
+      return {
+        success: true,
+        data: null,
+        skipped: true,
+        message: 'Email sending skipped - User has unsubscribed'
+      }
+    }
+
     // Check if Resend API key is configured
     if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === 'your_resend_api_key_here') {
       console.log('📧 Email sending skipped - RESEND_API_KEY not configured')
@@ -105,6 +122,7 @@ export async function sendBetaInviteEmail({ email, code, expiresAt }: BetaInvite
                 <td style="background-color: #f8f9fa; padding: 20px 30px; text-align: center; border-top: 1px solid #e9ecef;">
                   <p style="margin: 0; color: #666666; font-size: 14px;">Thanks for being part of our beta community!</p>
                   <p style="margin: 5px 0 0 0; color: #666666; font-size: 14px; font-weight: 600;">The Quantro Team</p>
+                  <p style="margin: 10px 0 0 0; color: #999999; font-size: 12px;">© 2025 Quantro. All rights reserved.</p>
                 </td>
               </tr>
             </table>
