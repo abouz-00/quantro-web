@@ -6,7 +6,7 @@ This directory contains the refactored table components for the food log feature
 
 ### 🗂️ Files
 
-```
+```bash
 table/
 ├── FoodLogTable.tsx      # Main table component (now ~140 lines)
 ├── components/                # Individual UI components
@@ -27,6 +27,7 @@ table/
 ## 🎯 Refactored Components
 
 ### `FoodLogTable` (Main Container)
+
 - **Orchestrates** all table functionality
 - **Manages** drag & drop context and sensors
 - **Groups entries** by meal type
@@ -34,12 +35,14 @@ table/
 - **Renders** meal sections in proper order
 
 ### `MealSection`
+
 - **Meal type headings** (Breakfast, Lunch, Dinner, etc.)
 - **Drop zone targets** for cross-meal dragging
 - **Contains** sortable context for entries within each meal
 - **Conditionally renders** only when entries exist
 
 ### `FoodTableRow`
+
 - **Individual row** component with full interaction support
 - **Drag handles** throughout the row
 - **Selection state** management
@@ -47,6 +50,7 @@ table/
 - **Keyboard navigation** support
 
 ### `EditableCell`
+
 - **Inline editing** for amount and unit values
 - **Input validation** and error handling
 - **Unit conversion** calculations
@@ -56,6 +60,7 @@ table/
 ## 🎣 Custom Hooks
 
 ### `useFoodTableDragDrop`
+
 - **Encapsulates** all drag & drop logic
 - **Manages** drag state and visual feedback
 - **Handles** meal type changes during drag
@@ -63,6 +68,7 @@ table/
 - **Controls** cursor styling during drag
 
 ### `useFoodTableState`
+
 - **Manages** editing state
 - **Handles** context menu state
 - **Provides** helper functions for state transitions
@@ -71,12 +77,14 @@ table/
 ## 🧰 Utilities
 
 ### `types.ts`
+
 - `FoodEntry` interface
 - `SortableRowProps` interface  
 - `FoodTableProps` interface
 - Component-specific prop interfaces
 
 ### `utils.ts`
+
 - `formatNumber()` - Number formatting
 - `capitalizeWords()` - Text capitalization
 - `abbreviateUnit()` - Unit abbreviations
@@ -87,26 +95,31 @@ table/
 ## ✅ Benefits of Refactoring
 
 ### 🔧 Maintainability
+
 - **Single responsibility** - Each component has one clear purpose
 - **Easier debugging** - Issues can be isolated to specific components
 - **Cleaner code** - Smaller files are easier to read and understand
 
 ### 🧪 Testability
+
 - **Unit testing** - Individual components can be tested in isolation
 - **Mocking** - Hooks can be mocked for testing UI components
 - **Coverage** - Better test coverage through targeted testing
 
 ### 🚀 Performance
+
 - **Selective re-renders** - Components only re-render when their specific props change
 - **Hook optimization** - Logic is memoized within custom hooks
 - **Bundle splitting** - Components can be lazy-loaded if needed
 
 ### 👥 Team Collaboration
+
 - **Parallel development** - Multiple developers can work on different components
 - **Code ownership** - Clear boundaries for code responsibility
 - **Reduced conflicts** - Smaller files mean fewer merge conflicts
 
 ### 🔄 Reusability
+
 - **Component library** - Components can be reused in other parts of the app
 - **Hook reuse** - Custom hooks can be used in other table implementations
 - **Composition** - Components can be composed in different ways
@@ -177,6 +190,7 @@ The components follow a clean, modular architecture:
 ## 🔄 Migration
 
 All previous table variants have been consolidated:
+
 - ~~`FoodTable.tsx`~~ → `FoodLogTable.tsx`
 - ~~`FoodTable.simple.tsx`~~ → `FoodLogTable.tsx`  
 - ~~`SortableTableRow.tsx`~~ → `EnhancedSortableTableRow.tsx`
