@@ -20,8 +20,6 @@ Quantro is currently in beta with a curated invite system. Features include:
 
 > **🚀 Currently in Beta** - Join the beta to get early access to the most focused nutrition tracking experience.
 
-> **🚀 Currently in Beta** - Join the beta to get early access to the most focused nutrition tracking experience.
-
 ---
 
 ## ⚡ Features

@@ -2,15 +2,15 @@
 import './jest-setup.js';
 import { NextRequest } from 'next/server';
 import { GET, POST, PUT, DELETE } from '../food-logs/route';
-import { auth } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
+import { auth } from '../../../lib/auth';
+import { prisma } from '../../../lib/prisma';
 
 // Mock console.error to prevent noise in tests
 const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
 
 // Mock dependencies
-jest.mock('@/lib/auth');
-jest.mock('@/lib/prisma');
+jest.mock('../../../lib/auth');
+jest.mock('../../../lib/prisma');
 
 const mockAuth = auth as jest.MockedFunction<any>;
 
