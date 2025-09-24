@@ -1,0 +1,60 @@
+0be2ed0cc2643a57a661f6472e3608af
+"use strict";
+// Mock next/navigation
+jest.mock('next/navigation', ()=>({
+        useSearchParams: ()=>({
+                get: ()=>'test123'
+            })
+    }));
+// Mock next-auth/react
+jest.mock('next-auth/react', ()=>({
+        useSession: ()=>({
+                data: {
+                    user: {
+                        email: 'test@example.com'
+                    }
+                },
+                status: 'authenticated'
+            })
+    }));
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = require("@testing-library/react");
+const _invitehandler = /*#__PURE__*/ _interop_require_default(require("../invite-handler"));
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+// Mock fetch
+const mockFetch = jest.fn(()=>Promise.resolve({
+        ok: true,
+        json: ()=>Promise.resolve({})
+    }));
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+global.fetch = mockFetch;
+describe('InviteHandler', ()=>{
+    it('should render without crashing', ()=>{
+        const { container } = (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_invitehandler.default, {}));
+        expect(container.firstChild).toBeNull();
+    });
+    it('should make API call when invite code and session exist', async ()=>{
+        (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_invitehandler.default, {}));
+        // Wait for useEffect to run
+        await new Promise((resolve)=>setTimeout(resolve, 0));
+        expect(global.fetch).toHaveBeenCalledWith('/api/mark-invite-used', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                code: 'test123',
+                email: 'test@example.com'
+            })
+        });
+    });
+});
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9hcHAvZGFzaGJvYXJkL19fdGVzdHNfXy9pbnZpdGUtaGFuZGxlci50ZXN0LnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyByZW5kZXIgfSBmcm9tICdAdGVzdGluZy1saWJyYXJ5L3JlYWN0JztcbmltcG9ydCBJbnZpdGVIYW5kbGVyIGZyb20gJy4uL2ludml0ZS1oYW5kbGVyJztcblxuLy8gTW9jayBuZXh0L25hdmlnYXRpb25cbmplc3QubW9jaygnbmV4dC9uYXZpZ2F0aW9uJywgKCkgPT4gKHtcbiAgdXNlU2VhcmNoUGFyYW1zOiAoKSA9PiAoe1xuICAgIGdldDogKCkgPT4gJ3Rlc3QxMjMnLFxuICB9KSxcbn0pKTtcblxuLy8gTW9jayBuZXh0LWF1dGgvcmVhY3Rcbmplc3QubW9jaygnbmV4dC1hdXRoL3JlYWN0JywgKCkgPT4gKHtcbiAgdXNlU2Vzc2lvbjogKCkgPT4gKHtcbiAgICBkYXRhOiB7IHVzZXI6IHsgZW1haWw6ICd0ZXN0QGV4YW1wbGUuY29tJyB9IH0sXG4gICAgc3RhdHVzOiAnYXV0aGVudGljYXRlZCcsXG4gIH0pLFxufSkpO1xuXG4vLyBNb2NrIGZldGNoXG5jb25zdCBtb2NrRmV0Y2ggPSBqZXN0LmZuKCgpID0+XG4gIFByb21pc2UucmVzb2x2ZSh7XG4gICAgb2s6IHRydWUsXG4gICAganNvbjogKCkgPT4gUHJvbWlzZS5yZXNvbHZlKHt9KSxcbiAgfSlcbik7XG4vLyBlc2xpbnQtZGlzYWJsZS1uZXh0LWxpbmUgQHR5cGVzY3JpcHQtZXNsaW50L25vLWV4cGxpY2l0LWFueVxuKGdsb2JhbCBhcyBhbnkpLmZldGNoID0gbW9ja0ZldGNoO1xuXG5kZXNjcmliZSgnSW52aXRlSGFuZGxlcicsICgpID0+IHtcbiAgaXQoJ3Nob3VsZCByZW5kZXIgd2l0aG91dCBjcmFzaGluZycsICgpID0+IHtcbiAgICBjb25zdCB7IGNvbnRhaW5lciB9ID0gcmVuZGVyKDxJbnZpdGVIYW5kbGVyIC8+KTtcbiAgICBleHBlY3QoY29udGFpbmVyLmZpcnN0Q2hpbGQpLnRvQmVOdWxsKCk7XG4gIH0pO1xuXG4gIGl0KCdzaG91bGQgbWFrZSBBUEkgY2FsbCB3aGVuIGludml0ZSBjb2RlIGFuZCBzZXNzaW9uIGV4aXN0JywgYXN5bmMgKCkgPT4ge1xuICAgIHJlbmRlcig8SW52aXRlSGFuZGxlciAvPik7XG5cbiAgICAvLyBXYWl0IGZvciB1c2VFZmZlY3QgdG8gcnVuXG4gICAgYXdhaXQgbmV3IFByb21pc2UocmVzb2x2ZSA9PiBzZXRUaW1lb3V0KHJlc29sdmUsIDApKTtcblxuICAgIGV4cGVjdChnbG9iYWwuZmV0Y2gpLnRvSGF2ZUJlZW5DYWxsZWRXaXRoKCcvYXBpL21hcmstaW52aXRlLXVzZWQnLCB7XG4gICAgICBtZXRob2Q6ICdQT1NUJyxcbiAgICAgIGhlYWRlcnM6IHtcbiAgICAgICAgJ0NvbnRlbnQtVHlwZSc6ICdhcHBsaWNhdGlvbi9qc29uJyxcbiAgICAgIH0sXG4gICAgICBib2R5OiBKU09OLnN0cmluZ2lmeSh7XG4gICAgICAgIGNvZGU6ICd0ZXN0MTIzJyxcbiAgICAgICAgZW1haWw6ICd0ZXN0QGV4YW1wbGUuY29tJyxcbiAgICAgIH0pLFxuICAgIH0pO1xuICB9KTtcbn0pO1xuIl0sIm5hbWVzIjpbImplc3QiLCJtb2NrIiwidXNlU2VhcmNoUGFyYW1zIiwiZ2V0IiwidXNlU2Vzc2lvbiIsImRhdGEiLCJ1c2VyIiwiZW1haWwiLCJzdGF0dXMiLCJtb2NrRmV0Y2giLCJmbiIsIlByb21pc2UiLCJyZXNvbHZlIiwib2siLCJqc29uIiwiZ2xvYmFsIiwiZmV0Y2giLCJkZXNjcmliZSIsIml0IiwiY29udGFpbmVyIiwicmVuZGVyIiwiSW52aXRlSGFuZGxlciIsImV4cGVjdCIsImZpcnN0Q2hpbGQiLCJ0b0JlTnVsbCIsInNldFRpbWVvdXQiLCJ0b0hhdmVCZWVuQ2FsbGVkV2l0aCIsIm1ldGhvZCIsImhlYWRlcnMiLCJib2R5IiwiSlNPTiIsInN0cmluZ2lmeSIsImNvZGUiXSwibWFwcGluZ3MiOiI7QUFHQSx1QkFBdUI7QUFDdkJBLEtBQUtDLElBQUksQ0FBQyxtQkFBbUIsSUFBTyxDQUFBO1FBQ2xDQyxpQkFBaUIsSUFBTyxDQUFBO2dCQUN0QkMsS0FBSyxJQUFNO1lBQ2IsQ0FBQTtJQUNGLENBQUE7QUFFQSx1QkFBdUI7QUFDdkJILEtBQUtDLElBQUksQ0FBQyxtQkFBbUIsSUFBTyxDQUFBO1FBQ2xDRyxZQUFZLElBQU8sQ0FBQTtnQkFDakJDLE1BQU07b0JBQUVDLE1BQU07d0JBQUVDLE9BQU87b0JBQW1CO2dCQUFFO2dCQUM1Q0MsUUFBUTtZQUNWLENBQUE7SUFDRixDQUFBOzs7Ozt1QkFoQnVCO3NFQUNHOzs7Ozs7QUFpQjFCLGFBQWE7QUFDYixNQUFNQyxZQUFZVCxLQUFLVSxFQUFFLENBQUMsSUFDeEJDLFFBQVFDLE9BQU8sQ0FBQztRQUNkQyxJQUFJO1FBQ0pDLE1BQU0sSUFBTUgsUUFBUUMsT0FBTyxDQUFDLENBQUM7SUFDL0I7QUFFRiw4REFBOEQ7QUFDN0RHLE9BQWVDLEtBQUssR0FBR1A7QUFFeEJRLFNBQVMsaUJBQWlCO0lBQ3hCQyxHQUFHLGtDQUFrQztRQUNuQyxNQUFNLEVBQUVDLFNBQVMsRUFBRSxHQUFHQyxJQUFBQSxhQUFNLGdCQUFDLHFCQUFDQyxzQkFBYTtRQUMzQ0MsT0FBT0gsVUFBVUksVUFBVSxFQUFFQyxRQUFRO0lBQ3ZDO0lBRUFOLEdBQUcsMkRBQTJEO1FBQzVERSxJQUFBQSxhQUFNLGdCQUFDLHFCQUFDQyxzQkFBYTtRQUVyQiw0QkFBNEI7UUFDNUIsTUFBTSxJQUFJVixRQUFRQyxDQUFBQSxVQUFXYSxXQUFXYixTQUFTO1FBRWpEVSxPQUFPUCxPQUFPQyxLQUFLLEVBQUVVLG9CQUFvQixDQUFDLHlCQUF5QjtZQUNqRUMsUUFBUTtZQUNSQyxTQUFTO2dCQUNQLGdCQUFnQjtZQUNsQjtZQUNBQyxNQUFNQyxLQUFLQyxTQUFTLENBQUM7Z0JBQ25CQyxNQUFNO2dCQUNOekIsT0FBTztZQUNUO1FBQ0Y7SUFDRjtBQUNGIn0=
