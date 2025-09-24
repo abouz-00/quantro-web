@@ -15,7 +15,7 @@
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "type-check": "tsc --noEmit",
+    "type-check": "tsc --noEmit --project tsconfig.test.json",
     "postinstall": "prisma generate",
     "test": "npm run test:db:setup && jest",
     "test:watch": "npm run test:db:setup && jest --watch",
