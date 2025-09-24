@@ -1,0 +1,139 @@
+a044964d653d8d7554cc8a5f574db356
+// src/components/landing/SignInButtons.tsx
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "SignInButtons", {
+    enumerable: true,
+    get: function() {
+        return SignInButtons;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = /*#__PURE__*/ _interop_require_default(require("react"));
+const _framermotion = require("framer-motion");
+const _google = require("next/font/google");
+const _react1 = require("next-auth/react");
+const _ui = require("../../constants/ui");
+const _icons = require("./icons");
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+const poppins = (0, _google.Poppins)({
+    subsets: [
+        'latin'
+    ],
+    weight: [
+        '400',
+        '500',
+        '600',
+        '700'
+    ]
+});
+const SignInButtons = ({ onDevSignIn })=>{
+    const handleAppleSignIn = ()=>{
+        (0, _react1.signIn)('apple', {
+            callbackUrl: '/dashboard'
+        });
+    };
+    const handleGoogleSignIn = ()=>{
+        (0, _react1.signIn)('google', {
+            callbackUrl: '/dashboard'
+        });
+    };
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)(_framermotion.motion.div, {
+        className: "w-full max-w-lg",
+        initial: "hidden",
+        animate: "visible",
+        variants: {
+            hidden: {
+                opacity: 0,
+                y: 50
+            },
+            visible: {
+                opacity: 1,
+                y: 0,
+                transition: {
+                    duration: 0.8,
+                    delay: 0.8
+                }
+            }
+        },
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                className: "flex flex-col sm:flex-row gap-4 justify-center items-center",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)(_framermotion.motion.button, {
+                        onClick: handleAppleSignIn,
+                        className: "w-full sm:flex-1 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center gap-3 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-lg hover:shadow-xl",
+                        style: {
+                            backgroundColor: _ui.COLORS.black,
+                            ..._ui.NO_SELECT_STYLES
+                        },
+                        whileHover: {
+                            scale: 1.02
+                        },
+                        whileTap: {
+                            scale: 0.98
+                        },
+                        transition: {
+                            duration: 0.15
+                        },
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)(_icons.AppleIcon, {}),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("span", {
+                                className: poppins.className,
+                                children: "Sign in with Apple"
+                            })
+                        ]
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)(_framermotion.motion.button, {
+                        onClick: handleGoogleSignIn,
+                        className: "w-full sm:flex-1 bg-white text-gray-700 font-medium py-3 px-6 rounded-xl flex items-center justify-center gap-3 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-gray-300 shadow-lg hover:shadow-xl border border-gray-200",
+                        whileHover: {
+                            scale: 1.02
+                        },
+                        whileTap: {
+                            scale: 0.98
+                        },
+                        transition: {
+                            duration: 0.15
+                        },
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)(_icons.GoogleIcon, {}),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("span", {
+                                className: poppins.className,
+                                children: "Sign in with Google"
+                            })
+                        ]
+                    })
+                ]
+            }),
+            process.env.NODE_ENV === 'development' && /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                className: "flex justify-center mt-4",
+                children: /*#__PURE__*/ (0, _jsxruntime.jsx)(_framermotion.motion.button, {
+                    onClick: onDevSignIn,
+                    className: "bg-yellow-500 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-yellow-300 shadow-lg hover:shadow-xl",
+                    whileHover: {
+                        scale: 1.02
+                    },
+                    whileTap: {
+                        scale: 0.98
+                    },
+                    transition: {
+                        duration: 0.15
+                    },
+                    children: /*#__PURE__*/ (0, _jsxruntime.jsx)("span", {
+                        className: poppins.className,
+                        children: "\uD83D\uDE80 Dev Sign In"
+                    })
+                })
+            })
+        ]
+    });
+};
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb21wb25lbnRzL2xhbmRpbmcvU2lnbkluQnV0dG9ucy50c3giXSwic291cmNlc0NvbnRlbnQiOlsiLy8gc3JjL2NvbXBvbmVudHMvbGFuZGluZy9TaWduSW5CdXR0b25zLnRzeFxuaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IG1vdGlvbiB9IGZyb20gJ2ZyYW1lci1tb3Rpb24nO1xuaW1wb3J0IHsgUG9wcGlucyB9IGZyb20gJ25leHQvZm9udC9nb29nbGUnO1xuaW1wb3J0IHsgc2lnbkluIH0gZnJvbSAnbmV4dC1hdXRoL3JlYWN0JztcbmltcG9ydCB7IENPTE9SUywgTk9fU0VMRUNUX1NUWUxFUyB9IGZyb20gJy4uLy4uL2NvbnN0YW50cy91aSc7XG5pbXBvcnQgeyBBcHBsZUljb24sIEdvb2dsZUljb24gfSBmcm9tICcuL2ljb25zJztcblxuY29uc3QgcG9wcGlucyA9IFBvcHBpbnMoeyBzdWJzZXRzOiBbJ2xhdGluJ10sIHdlaWdodDogWyc0MDAnLCAnNTAwJywgJzYwMCcsICc3MDAnXSB9KTtcblxuaW50ZXJmYWNlIFNpZ25JbkJ1dHRvbnNQcm9wcyB7XG4gIG9uRGV2U2lnbkluOiAoKSA9PiB2b2lkO1xufVxuXG5leHBvcnQgY29uc3QgU2lnbkluQnV0dG9uczogUmVhY3QuRkM8U2lnbkluQnV0dG9uc1Byb3BzPiA9ICh7IG9uRGV2U2lnbkluIH0pID0+IHtcbiAgY29uc3QgaGFuZGxlQXBwbGVTaWduSW4gPSAoKSA9PiB7XG4gICAgc2lnbkluKCdhcHBsZScsIHsgY2FsbGJhY2tVcmw6ICcvZGFzaGJvYXJkJyB9KTtcbiAgfTtcblxuICBjb25zdCBoYW5kbGVHb29nbGVTaWduSW4gPSAoKSA9PiB7XG4gICAgc2lnbkluKCdnb29nbGUnLCB7IGNhbGxiYWNrVXJsOiAnL2Rhc2hib2FyZCcgfSk7XG4gIH07XG5cbiAgcmV0dXJuIChcbiAgICA8bW90aW9uLmRpdlxuICAgICAgY2xhc3NOYW1lPVwidy1mdWxsIG1heC13LWxnXCJcbiAgICAgIGluaXRpYWw9XCJoaWRkZW5cIlxuICAgICAgYW5pbWF0ZT1cInZpc2libGVcIlxuICAgICAgdmFyaWFudHM9e3tcbiAgICAgICAgaGlkZGVuOiB7IG9wYWNpdHk6IDAsIHk6IDUwIH0sXG4gICAgICAgIHZpc2libGU6IHtcbiAgICAgICAgICBvcGFjaXR5OiAxLFxuICAgICAgICAgIHk6IDAsXG4gICAgICAgICAgdHJhbnNpdGlvbjogeyBkdXJhdGlvbjogMC44LCBkZWxheTogMC44IH1cbiAgICAgICAgfVxuICAgICAgfX1cbiAgICA+XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggZmxleC1jb2wgc206ZmxleC1yb3cgZ2FwLTQganVzdGlmeS1jZW50ZXIgaXRlbXMtY2VudGVyXCI+XG4gICAgICAgIHsvKiBBcHBsZSBTaWduIEluIEJ1dHRvbiAqL31cbiAgICAgICAgPG1vdGlvbi5idXR0b25cbiAgICAgICAgICBvbkNsaWNrPXtoYW5kbGVBcHBsZVNpZ25Jbn1cbiAgICAgICAgICBjbGFzc05hbWU9XCJ3LWZ1bGwgc206ZmxleC0xIHRleHQtd2hpdGUgZm9udC1tZWRpdW0gcHktMyBweC02IHJvdW5kZWQtbGcgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgZ2FwLTMgdHJhbnNpdGlvbi1hbGwgZHVyYXRpb24tMTUwIGZvY3VzOm91dGxpbmUtbm9uZSBmb2N1czpyaW5nLTIgZm9jdXM6cmluZy13aGl0ZS81MCBzaGFkb3ctbGcgaG92ZXI6c2hhZG93LXhsXCJcbiAgICAgICAgICBzdHlsZT17e1xuICAgICAgICAgICAgYmFja2dyb3VuZENvbG9yOiBDT0xPUlMuYmxhY2ssXG4gICAgICAgICAgICAuLi5OT19TRUxFQ1RfU1RZTEVTXG4gICAgICAgICAgfX1cbiAgICAgICAgICB3aGlsZUhvdmVyPXt7IHNjYWxlOiAxLjAyIH19XG4gICAgICAgICAgd2hpbGVUYXA9e3sgc2NhbGU6IDAuOTggfX1cbiAgICAgICAgICB0cmFuc2l0aW9uPXt7IGR1cmF0aW9uOiAwLjE1IH19XG4gICAgICAgID5cbiAgICAgICAgICA8QXBwbGVJY29uIC8+XG4gICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPXtwb3BwaW5zLmNsYXNzTmFtZX0+U2lnbiBpbiB3aXRoIEFwcGxlPC9zcGFuPlxuICAgICAgICA8L21vdGlvbi5idXR0b24+XG5cbiAgICAgICAgey8qIEdvb2dsZSBTaWduIEluIEJ1dHRvbiAqL31cbiAgICAgICAgPG1vdGlvbi5idXR0b25cbiAgICAgICAgICBvbkNsaWNrPXtoYW5kbGVHb29nbGVTaWduSW59XG4gICAgICAgICAgY2xhc3NOYW1lPVwidy1mdWxsIHNtOmZsZXgtMSBiZy13aGl0ZSB0ZXh0LWdyYXktNzAwIGZvbnQtbWVkaXVtIHB5LTMgcHgtNiByb3VuZGVkLXhsIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIGdhcC0zIHRyYW5zaXRpb24tYWxsIGR1cmF0aW9uLTE1MCBmb2N1czpvdXRsaW5lLW5vbmUgZm9jdXM6cmluZy0yIGZvY3VzOnJpbmctZ3JheS0zMDAgc2hhZG93LWxnIGhvdmVyOnNoYWRvdy14bCBib3JkZXIgYm9yZGVyLWdyYXktMjAwXCJcbiAgICAgICAgICB3aGlsZUhvdmVyPXt7IHNjYWxlOiAxLjAyIH19XG4gICAgICAgICAgd2hpbGVUYXA9e3sgc2NhbGU6IDAuOTggfX1cbiAgICAgICAgICB0cmFuc2l0aW9uPXt7IGR1cmF0aW9uOiAwLjE1IH19XG4gICAgICAgID5cbiAgICAgICAgICA8R29vZ2xlSWNvbiAvPlxuICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT17cG9wcGlucy5jbGFzc05hbWV9PlNpZ24gaW4gd2l0aCBHb29nbGU8L3NwYW4+XG4gICAgICAgIDwvbW90aW9uLmJ1dHRvbj5cbiAgICAgIDwvZGl2PlxuXG4gICAgICB7LyogRGV2ZWxvcG1lbnQgU2lnbiBJbiBCdXR0b24gLSBPbmx5IGluIGRldmVsb3BtZW50ICovfVxuICAgICAge3Byb2Nlc3MuZW52Lk5PREVfRU5WID09PSAnZGV2ZWxvcG1lbnQnICYmIChcbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGp1c3RpZnktY2VudGVyIG10LTRcIj5cbiAgICAgICAgICA8bW90aW9uLmJ1dHRvblxuICAgICAgICAgICAgb25DbGljaz17b25EZXZTaWduSW59XG4gICAgICAgICAgICBjbGFzc05hbWU9XCJiZy15ZWxsb3ctNTAwIHRleHQtd2hpdGUgZm9udC1tZWRpdW0gcHktMiBweC00IHJvdW5kZWQtbGcgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgZ2FwLTIgdHJhbnNpdGlvbi1hbGwgZHVyYXRpb24tMTUwIGZvY3VzOm91dGxpbmUtbm9uZSBmb2N1czpyaW5nLTIgZm9jdXM6cmluZy15ZWxsb3ctMzAwIHNoYWRvdy1sZyBob3ZlcjpzaGFkb3cteGxcIlxuICAgICAgICAgICAgd2hpbGVIb3Zlcj17eyBzY2FsZTogMS4wMiB9fVxuICAgICAgICAgICAgd2hpbGVUYXA9e3sgc2NhbGU6IDAuOTggfX1cbiAgICAgICAgICAgIHRyYW5zaXRpb249e3sgZHVyYXRpb246IDAuMTUgfX1cbiAgICAgICAgICA+XG4gICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9e3BvcHBpbnMuY2xhc3NOYW1lfT7wn5qAIERldiBTaWduIEluPC9zcGFuPlxuICAgICAgICAgIDwvbW90aW9uLmJ1dHRvbj5cbiAgICAgICAgPC9kaXY+XG4gICAgICApfVxuICAgIDwvbW90aW9uLmRpdj5cbiAgKTtcbn07XG4iXSwibmFtZXMiOlsiU2lnbkluQnV0dG9ucyIsInBvcHBpbnMiLCJQb3BwaW5zIiwic3Vic2V0cyIsIndlaWdodCIsIm9uRGV2U2lnbkluIiwiaGFuZGxlQXBwbGVTaWduSW4iLCJzaWduSW4iLCJjYWxsYmFja1VybCIsImhhbmRsZUdvb2dsZVNpZ25JbiIsIm1vdGlvbiIsImRpdiIsImNsYXNzTmFtZSIsImluaXRpYWwiLCJhbmltYXRlIiwidmFyaWFudHMiLCJoaWRkZW4iLCJvcGFjaXR5IiwieSIsInZpc2libGUiLCJ0cmFuc2l0aW9uIiwiZHVyYXRpb24iLCJkZWxheSIsImJ1dHRvbiIsIm9uQ2xpY2siLCJzdHlsZSIsImJhY2tncm91bmRDb2xvciIsIkNPTE9SUyIsImJsYWNrIiwiTk9fU0VMRUNUX1NUWUxFUyIsIndoaWxlSG92ZXIiLCJzY2FsZSIsIndoaWxlVGFwIiwiQXBwbGVJY29uIiwic3BhbiIsIkdvb2dsZUljb24iLCJwcm9jZXNzIiwiZW52IiwiTk9ERV9FTlYiXSwibWFwcGluZ3MiOiJBQUFBLDJDQUEyQzs7Ozs7K0JBYzlCQTs7O2VBQUFBOzs7OzhEQWJLOzhCQUNLO3dCQUNDO3dCQUNEO29CQUNrQjt1QkFDSDs7Ozs7O0FBRXRDLE1BQU1DLFVBQVVDLElBQUFBLGVBQU8sRUFBQztJQUFFQyxTQUFTO1FBQUM7S0FBUTtJQUFFQyxRQUFRO1FBQUM7UUFBTztRQUFPO1FBQU87S0FBTTtBQUFDO0FBTTVFLE1BQU1KLGdCQUE4QyxDQUFDLEVBQUVLLFdBQVcsRUFBRTtJQUN6RSxNQUFNQyxvQkFBb0I7UUFDeEJDLElBQUFBLGNBQU0sRUFBQyxTQUFTO1lBQUVDLGFBQWE7UUFBYTtJQUM5QztJQUVBLE1BQU1DLHFCQUFxQjtRQUN6QkYsSUFBQUEsY0FBTSxFQUFDLFVBQVU7WUFBRUMsYUFBYTtRQUFhO0lBQy9DO0lBRUEscUJBQ0Usc0JBQUNFLG9CQUFNLENBQUNDLEdBQUc7UUFDVEMsV0FBVTtRQUNWQyxTQUFRO1FBQ1JDLFNBQVE7UUFDUkMsVUFBVTtZQUNSQyxRQUFRO2dCQUFFQyxTQUFTO2dCQUFHQyxHQUFHO1lBQUc7WUFDNUJDLFNBQVM7Z0JBQ1BGLFNBQVM7Z0JBQ1RDLEdBQUc7Z0JBQ0hFLFlBQVk7b0JBQUVDLFVBQVU7b0JBQUtDLE9BQU87Z0JBQUk7WUFDMUM7UUFDRjs7MEJBRUEsc0JBQUNYO2dCQUFJQyxXQUFVOztrQ0FFYixzQkFBQ0Ysb0JBQU0sQ0FBQ2EsTUFBTTt3QkFDWkMsU0FBU2xCO3dCQUNUTSxXQUFVO3dCQUNWYSxPQUFPOzRCQUNMQyxpQkFBaUJDLFVBQU0sQ0FBQ0MsS0FBSzs0QkFDN0IsR0FBR0Msb0JBQWdCO3dCQUNyQjt3QkFDQUMsWUFBWTs0QkFBRUMsT0FBTzt3QkFBSzt3QkFDMUJDLFVBQVU7NEJBQUVELE9BQU87d0JBQUs7d0JBQ3hCWCxZQUFZOzRCQUFFQyxVQUFVO3dCQUFLOzswQ0FFN0IscUJBQUNZLGdCQUFTOzBDQUNWLHFCQUFDQztnQ0FBS3RCLFdBQVdYLFFBQVFXLFNBQVM7MENBQUU7Ozs7a0NBSXRDLHNCQUFDRixvQkFBTSxDQUFDYSxNQUFNO3dCQUNaQyxTQUFTZjt3QkFDVEcsV0FBVTt3QkFDVmtCLFlBQVk7NEJBQUVDLE9BQU87d0JBQUs7d0JBQzFCQyxVQUFVOzRCQUFFRCxPQUFPO3dCQUFLO3dCQUN4QlgsWUFBWTs0QkFBRUMsVUFBVTt3QkFBSzs7MENBRTdCLHFCQUFDYyxpQkFBVTswQ0FDWCxxQkFBQ0Q7Z0NBQUt0QixXQUFXWCxRQUFRVyxTQUFTOzBDQUFFOzs7Ozs7WUFLdkN3QixRQUFRQyxHQUFHLENBQUNDLFFBQVEsS0FBSywrQkFDeEIscUJBQUMzQjtnQkFBSUMsV0FBVTswQkFDYixjQUFBLHFCQUFDRixvQkFBTSxDQUFDYSxNQUFNO29CQUNaQyxTQUFTbkI7b0JBQ1RPLFdBQVU7b0JBQ1ZrQixZQUFZO3dCQUFFQyxPQUFPO29CQUFLO29CQUMxQkMsVUFBVTt3QkFBRUQsT0FBTztvQkFBSztvQkFDeEJYLFlBQVk7d0JBQUVDLFVBQVU7b0JBQUs7OEJBRTdCLGNBQUEscUJBQUNhO3dCQUFLdEIsV0FBV1gsUUFBUVcsU0FBUztrQ0FBRTs7Ozs7O0FBTWhEIn0=

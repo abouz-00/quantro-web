@@ -1,12 +1,10 @@
 version: 2
 updates:
-  # Enable version updates for npm
+  # Enable version updates for npm production dependencies
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
+      interval: "daily"
     open-pull-requests-limit: 10
     reviewers:
       - "quantrodev"
@@ -19,43 +17,40 @@ updates:
     labels:
       - "dependencies"
       - "automated"
-    # Group related updates together
+      - "grouped-prod-updates"
+    auto-merge: false
+    dependency-type: "production"
+  # Enable version updates for npm devDependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "quantrodev"
+    assignees:
+      - "quantrodev"
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "automated"
+      - "grouped-dev-updates"
+    auto-merge: true
+    dependency-type: "development"
+    update-types:
+      - "patch"
+      - "minor"
+    # Group all devDependencies patch and minor updates into a single PR
     groups:
-      react-ecosystem:
+      grouped-dev-updates:
         patterns:
-          - "react*"
-          - "@types/react*"
-      testing:
-        patterns:
-          - "@testing-library/*"
-          - "jest*"
-      eslint:
-        patterns:
-          - "eslint*"
-          - "@eslint/*"
-      tailwind:
-        patterns:
-          - "tailwind*"
-          - "@tailwindcss/*"
-      next:
-        patterns:
-          - "next*"
-      prisma:
-        patterns:
-          - "prisma*"
-          - "@prisma/*"
-      type-definitions:
-        patterns:
-          - "@types/*"
+          - "*"
         update-types:
           - "patch"
           - "minor"
-      icons-and-ui:
-        patterns:
-          - "lucide-react"
-          - "react-icons"
-          - "@radix-ui/*"
-          - "@headlessui/*"
     # Ignore specific packages if needed
     ignore:
       # Keep Node.js types stable unless major updates needed

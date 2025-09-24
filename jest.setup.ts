@@ -11,6 +11,11 @@ jest.mock('react-calendar', () => ({
 // Mock react-calendar CSS
 jest.mock('react-calendar/dist/Calendar.css', () => ({}));
 
+// Mock uuid to avoid ES module issues
+jest.mock('uuid', () => ({
+  v4: jest.fn(() => 'mock-uuid'),
+}));
+
 // Mock Chart.js and react-chartjs-2 to avoid canvas issues
 const mockChartJS = {
   register: jest.fn(),

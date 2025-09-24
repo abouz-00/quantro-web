@@ -1,0 +1,56 @@
+46f6afc24bd470dedbecb72dae6ed0c6
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "POST", {
+    enumerable: true,
+    get: function() {
+        return POST;
+    }
+});
+const _server = require("next/server");
+async function POST(request) {
+    try {
+        const data = await request.json();
+        // Log analytics event
+        console.log('📊 Analytics Event:', {
+            timestamp: new Date().toISOString(),
+            ...data
+        });
+        // In production, you would send this to:
+        // - Google Analytics 4
+        // - Mixpanel
+        // - Segment
+        // - Custom analytics service
+        // Example GA4 implementation:
+        /*
+    if (process.env.GA_MEASUREMENT_ID && process.env.GA_API_SECRET) {
+      await fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${process.env.GA_MEASUREMENT_ID}&api_secret=${process.env.GA_API_SECRET}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          client_id: data.clientId || 'anonymous',
+          events: [{
+            name: data.action || 'custom_event',
+            parameters: {
+              ...data.context,
+              custom_parameter: data.data,
+            }
+          }]
+        }),
+      });
+    }
+    */ return _server.NextResponse.json({
+            success: true
+        });
+    } catch (error) {
+        console.error('Failed to process analytics event:', error);
+        return _server.NextResponse.json({
+            error: 'Failed to process analytics event'
+        }, {
+            status: 500
+        });
+    }
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9hcHAvYXBpL2FuYWx5dGljcy9yb3V0ZS50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBOZXh0UmVxdWVzdCwgTmV4dFJlc3BvbnNlIH0gZnJvbSAnbmV4dC9zZXJ2ZXInO1xuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gUE9TVChyZXF1ZXN0OiBOZXh0UmVxdWVzdCkge1xuICB0cnkge1xuICAgIGNvbnN0IGRhdGEgPSBhd2FpdCByZXF1ZXN0Lmpzb24oKTtcblxuICAgIC8vIExvZyBhbmFseXRpY3MgZXZlbnRcbiAgICBjb25zb2xlLmxvZygn8J+TiiBBbmFseXRpY3MgRXZlbnQ6Jywge1xuICAgICAgdGltZXN0YW1wOiBuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCksXG4gICAgICAuLi5kYXRhLFxuICAgIH0pO1xuXG4gICAgLy8gSW4gcHJvZHVjdGlvbiwgeW91IHdvdWxkIHNlbmQgdGhpcyB0bzpcbiAgICAvLyAtIEdvb2dsZSBBbmFseXRpY3MgNFxuICAgIC8vIC0gTWl4cGFuZWxcbiAgICAvLyAtIFNlZ21lbnRcbiAgICAvLyAtIEN1c3RvbSBhbmFseXRpY3Mgc2VydmljZVxuXG4gICAgLy8gRXhhbXBsZSBHQTQgaW1wbGVtZW50YXRpb246XG4gICAgLypcbiAgICBpZiAocHJvY2Vzcy5lbnYuR0FfTUVBU1VSRU1FTlRfSUQgJiYgcHJvY2Vzcy5lbnYuR0FfQVBJX1NFQ1JFVCkge1xuICAgICAgYXdhaXQgZmV0Y2goYGh0dHBzOi8vd3d3Lmdvb2dsZS1hbmFseXRpY3MuY29tL21wL2NvbGxlY3Q/bWVhc3VyZW1lbnRfaWQ9JHtwcm9jZXNzLmVudi5HQV9NRUFTVVJFTUVOVF9JRH0mYXBpX3NlY3JldD0ke3Byb2Nlc3MuZW52LkdBX0FQSV9TRUNSRVR9YCwge1xuICAgICAgICBtZXRob2Q6ICdQT1NUJyxcbiAgICAgICAgYm9keTogSlNPTi5zdHJpbmdpZnkoe1xuICAgICAgICAgIGNsaWVudF9pZDogZGF0YS5jbGllbnRJZCB8fCAnYW5vbnltb3VzJyxcbiAgICAgICAgICBldmVudHM6IFt7XG4gICAgICAgICAgICBuYW1lOiBkYXRhLmFjdGlvbiB8fCAnY3VzdG9tX2V2ZW50JyxcbiAgICAgICAgICAgIHBhcmFtZXRlcnM6IHtcbiAgICAgICAgICAgICAgLi4uZGF0YS5jb250ZXh0LFxuICAgICAgICAgICAgICBjdXN0b21fcGFyYW1ldGVyOiBkYXRhLmRhdGEsXG4gICAgICAgICAgICB9XG4gICAgICAgICAgfV1cbiAgICAgICAgfSksXG4gICAgICB9KTtcbiAgICB9XG4gICAgKi9cblxuICAgIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbih7IHN1Y2Nlc3M6IHRydWUgfSk7XG4gIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgY29uc29sZS5lcnJvcignRmFpbGVkIHRvIHByb2Nlc3MgYW5hbHl0aWNzIGV2ZW50OicsIGVycm9yKTtcbiAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oXG4gICAgICB7IGVycm9yOiAnRmFpbGVkIHRvIHByb2Nlc3MgYW5hbHl0aWNzIGV2ZW50JyB9LFxuICAgICAgeyBzdGF0dXM6IDUwMCB9XG4gICAgKTtcbiAgfVxufVxuIl0sIm5hbWVzIjpbIlBPU1QiLCJyZXF1ZXN0IiwiZGF0YSIsImpzb24iLCJjb25zb2xlIiwibG9nIiwidGltZXN0YW1wIiwiRGF0ZSIsInRvSVNPU3RyaW5nIiwiTmV4dFJlc3BvbnNlIiwic3VjY2VzcyIsImVycm9yIiwic3RhdHVzIl0sIm1hcHBpbmdzIjoiOzs7OytCQUVzQkE7OztlQUFBQTs7O3dCQUZvQjtBQUVuQyxlQUFlQSxLQUFLQyxPQUFvQjtJQUM3QyxJQUFJO1FBQ0YsTUFBTUMsT0FBTyxNQUFNRCxRQUFRRSxJQUFJO1FBRS9CLHNCQUFzQjtRQUN0QkMsUUFBUUMsR0FBRyxDQUFDLHVCQUF1QjtZQUNqQ0MsV0FBVyxJQUFJQyxPQUFPQyxXQUFXO1lBQ2pDLEdBQUdOLElBQUk7UUFDVDtRQUVBLHlDQUF5QztRQUN6Qyx1QkFBdUI7UUFDdkIsYUFBYTtRQUNiLFlBQVk7UUFDWiw2QkFBNkI7UUFFN0IsOEJBQThCO1FBQzlCOzs7Ozs7Ozs7Ozs7Ozs7O0lBZ0JBLEdBRUEsT0FBT08sb0JBQVksQ0FBQ04sSUFBSSxDQUFDO1lBQUVPLFNBQVM7UUFBSztJQUMzQyxFQUFFLE9BQU9DLE9BQU87UUFDZFAsUUFBUU8sS0FBSyxDQUFDLHNDQUFzQ0E7UUFDcEQsT0FBT0Ysb0JBQVksQ0FBQ04sSUFBSSxDQUN0QjtZQUFFUSxPQUFPO1FBQW9DLEdBQzdDO1lBQUVDLFFBQVE7UUFBSTtJQUVsQjtBQUNGIn0=
