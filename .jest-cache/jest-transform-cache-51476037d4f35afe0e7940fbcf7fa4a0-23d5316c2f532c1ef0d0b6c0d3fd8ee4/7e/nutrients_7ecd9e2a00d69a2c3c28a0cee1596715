@@ -1,0 +1,117 @@
+c93d0a7a04973c5c20a7d16f2c6b9b7a
+// src/constants/nutrients.ts
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "MICRONUTRIENT_DAILY_VALUES", {
+    enumerable: true,
+    get: function() {
+        return MICRONUTRIENT_DAILY_VALUES;
+    }
+});
+const MICRONUTRIENT_DAILY_VALUES = {
+    // B Vitamins
+    vitaminB1: {
+        value: 1.2,
+        unit: 'mg'
+    },
+    vitaminB2: {
+        value: 1.3,
+        unit: 'mg'
+    },
+    vitaminB3: {
+        value: 16,
+        unit: 'mg'
+    },
+    vitaminB5: {
+        value: 5,
+        unit: 'mg'
+    },
+    vitaminB6: {
+        value: 1.7,
+        unit: 'mg'
+    },
+    vitaminB12: {
+        value: 2.4,
+        unit: 'μg'
+    },
+    biotin: {
+        value: 30,
+        unit: 'μg'
+    },
+    folate: {
+        value: 400,
+        unit: 'μg'
+    },
+    // Fat-Soluble Vitamins
+    vitaminA: {
+        value: 900,
+        unit: 'μg'
+    },
+    vitaminC: {
+        value: 90,
+        unit: 'mg'
+    },
+    vitaminD: {
+        value: 20,
+        unit: 'μg'
+    },
+    vitaminK: {
+        value: 120,
+        unit: 'μg'
+    },
+    // Minerals
+    calcium: {
+        value: 1000,
+        unit: 'mg'
+    },
+    copper: {
+        value: 0.9,
+        unit: 'mg'
+    },
+    iron: {
+        value: 8,
+        unit: 'mg'
+    },
+    magnesium: {
+        value: 400,
+        unit: 'mg'
+    },
+    manganese: {
+        value: 2.3,
+        unit: 'mg'
+    },
+    phosphorus: {
+        value: 700,
+        unit: 'mg'
+    },
+    potassium: {
+        value: 3500,
+        unit: 'mg'
+    },
+    selenium: {
+        value: 55,
+        unit: 'μg'
+    },
+    sodium: {
+        value: 2300,
+        unit: 'mg'
+    },
+    zinc: {
+        value: 11,
+        unit: 'mg'
+    },
+    // Essential Fatty Acids
+    omega3: {
+        value: 1.6,
+        unit: 'g'
+    },
+    // Macronutrients (for completeness)
+    fiber: {
+        value: 25,
+        unit: 'g'
+    }
+};
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb25zdGFudHMvbnV0cmllbnRzLnRzIl0sInNvdXJjZXNDb250ZW50IjpbIi8vIHNyYy9jb25zdGFudHMvbnV0cmllbnRzLnRzXG5leHBvcnQgY29uc3QgTUlDUk9OVVRSSUVOVF9EQUlMWV9WQUxVRVMgPSB7XG4gIC8vIEIgVml0YW1pbnNcbiAgdml0YW1pbkIxOiB7IHZhbHVlOiAxLjIsIHVuaXQ6ICdtZycgfSxcbiAgdml0YW1pbkIyOiB7IHZhbHVlOiAxLjMsIHVuaXQ6ICdtZycgfSxcbiAgdml0YW1pbkIzOiB7IHZhbHVlOiAxNiwgdW5pdDogJ21nJyB9LFxuICB2aXRhbWluQjU6IHsgdmFsdWU6IDUsIHVuaXQ6ICdtZycgfSxcbiAgdml0YW1pbkI2OiB7IHZhbHVlOiAxLjcsIHVuaXQ6ICdtZycgfSxcbiAgdml0YW1pbkIxMjogeyB2YWx1ZTogMi40LCB1bml0OiAnzrxnJyB9LFxuICBiaW90aW46IHsgdmFsdWU6IDMwLCB1bml0OiAnzrxnJyB9LFxuICBmb2xhdGU6IHsgdmFsdWU6IDQwMCwgdW5pdDogJ868ZycgfSxcblxuICAvLyBGYXQtU29sdWJsZSBWaXRhbWluc1xuICB2aXRhbWluQTogeyB2YWx1ZTogOTAwLCB1bml0OiAnzrxnJyB9LFxuICB2aXRhbWluQzogeyB2YWx1ZTogOTAsIHVuaXQ6ICdtZycgfSxcbiAgdml0YW1pbkQ6IHsgdmFsdWU6IDIwLCB1bml0OiAnzrxnJyB9LFxuICB2aXRhbWluSzogeyB2YWx1ZTogMTIwLCB1bml0OiAnzrxnJyB9LFxuXG4gIC8vIE1pbmVyYWxzXG4gIGNhbGNpdW06IHsgdmFsdWU6IDEwMDAsIHVuaXQ6ICdtZycgfSxcbiAgY29wcGVyOiB7IHZhbHVlOiAwLjksIHVuaXQ6ICdtZycgfSxcbiAgaXJvbjogeyB2YWx1ZTogOCwgdW5pdDogJ21nJyB9LFxuICBtYWduZXNpdW06IHsgdmFsdWU6IDQwMCwgdW5pdDogJ21nJyB9LFxuICBtYW5nYW5lc2U6IHsgdmFsdWU6IDIuMywgdW5pdDogJ21nJyB9LFxuICBwaG9zcGhvcnVzOiB7IHZhbHVlOiA3MDAsIHVuaXQ6ICdtZycgfSxcbiAgcG90YXNzaXVtOiB7IHZhbHVlOiAzNTAwLCB1bml0OiAnbWcnIH0sXG4gIHNlbGVuaXVtOiB7IHZhbHVlOiA1NSwgdW5pdDogJ868ZycgfSxcbiAgc29kaXVtOiB7IHZhbHVlOiAyMzAwLCB1bml0OiAnbWcnIH0sXG4gIHppbmM6IHsgdmFsdWU6IDExLCB1bml0OiAnbWcnIH0sXG5cbiAgLy8gRXNzZW50aWFsIEZhdHR5IEFjaWRzXG4gIG9tZWdhMzogeyB2YWx1ZTogMS42LCB1bml0OiAnZycgfSxcblxuICAvLyBNYWNyb251dHJpZW50cyAoZm9yIGNvbXBsZXRlbmVzcylcbiAgZmliZXI6IHsgdmFsdWU6IDI1LCB1bml0OiAnZycgfSxcbn0gYXMgY29uc3Q7XG5cbmV4cG9ydCB0eXBlIE1pY3JvbnV0cmllbnRLZXkgPSBrZXlvZiB0eXBlb2YgTUlDUk9OVVRSSUVOVF9EQUlMWV9WQUxVRVM7XG4iXSwibmFtZXMiOlsiTUlDUk9OVVRSSUVOVF9EQUlMWV9WQUxVRVMiLCJ2aXRhbWluQjEiLCJ2YWx1ZSIsInVuaXQiLCJ2aXRhbWluQjIiLCJ2aXRhbWluQjMiLCJ2aXRhbWluQjUiLCJ2aXRhbWluQjYiLCJ2aXRhbWluQjEyIiwiYmlvdGluIiwiZm9sYXRlIiwidml0YW1pbkEiLCJ2aXRhbWluQyIsInZpdGFtaW5EIiwidml0YW1pbksiLCJjYWxjaXVtIiwiY29wcGVyIiwiaXJvbiIsIm1hZ25lc2l1bSIsIm1hbmdhbmVzZSIsInBob3NwaG9ydXMiLCJwb3Rhc3NpdW0iLCJzZWxlbml1bSIsInNvZGl1bSIsInppbmMiLCJvbWVnYTMiLCJmaWJlciJdLCJtYXBwaW5ncyI6IkFBQUEsNkJBQTZCOzs7OzsrQkFDaEJBOzs7ZUFBQUE7OztBQUFOLE1BQU1BLDZCQUE2QjtJQUN4QyxhQUFhO0lBQ2JDLFdBQVc7UUFBRUMsT0FBTztRQUFLQyxNQUFNO0lBQUs7SUFDcENDLFdBQVc7UUFBRUYsT0FBTztRQUFLQyxNQUFNO0lBQUs7SUFDcENFLFdBQVc7UUFBRUgsT0FBTztRQUFJQyxNQUFNO0lBQUs7SUFDbkNHLFdBQVc7UUFBRUosT0FBTztRQUFHQyxNQUFNO0lBQUs7SUFDbENJLFdBQVc7UUFBRUwsT0FBTztRQUFLQyxNQUFNO0lBQUs7SUFDcENLLFlBQVk7UUFBRU4sT0FBTztRQUFLQyxNQUFNO0lBQUs7SUFDckNNLFFBQVE7UUFBRVAsT0FBTztRQUFJQyxNQUFNO0lBQUs7SUFDaENPLFFBQVE7UUFBRVIsT0FBTztRQUFLQyxNQUFNO0lBQUs7SUFFakMsdUJBQXVCO0lBQ3ZCUSxVQUFVO1FBQUVULE9BQU87UUFBS0MsTUFBTTtJQUFLO0lBQ25DUyxVQUFVO1FBQUVWLE9BQU87UUFBSUMsTUFBTTtJQUFLO0lBQ2xDVSxVQUFVO1FBQUVYLE9BQU87UUFBSUMsTUFBTTtJQUFLO0lBQ2xDVyxVQUFVO1FBQUVaLE9BQU87UUFBS0MsTUFBTTtJQUFLO0lBRW5DLFdBQVc7SUFDWFksU0FBUztRQUFFYixPQUFPO1FBQU1DLE1BQU07SUFBSztJQUNuQ2EsUUFBUTtRQUFFZCxPQUFPO1FBQUtDLE1BQU07SUFBSztJQUNqQ2MsTUFBTTtRQUFFZixPQUFPO1FBQUdDLE1BQU07SUFBSztJQUM3QmUsV0FBVztRQUFFaEIsT0FBTztRQUFLQyxNQUFNO0lBQUs7SUFDcENnQixXQUFXO1FBQUVqQixPQUFPO1FBQUtDLE1BQU07SUFBSztJQUNwQ2lCLFlBQVk7UUFBRWxCLE9BQU87UUFBS0MsTUFBTTtJQUFLO0lBQ3JDa0IsV0FBVztRQUFFbkIsT0FBTztRQUFNQyxNQUFNO0lBQUs7SUFDckNtQixVQUFVO1FBQUVwQixPQUFPO1FBQUlDLE1BQU07SUFBSztJQUNsQ29CLFFBQVE7UUFBRXJCLE9BQU87UUFBTUMsTUFBTTtJQUFLO0lBQ2xDcUIsTUFBTTtRQUFFdEIsT0FBTztRQUFJQyxNQUFNO0lBQUs7SUFFOUIsd0JBQXdCO0lBQ3hCc0IsUUFBUTtRQUFFdkIsT0FBTztRQUFLQyxNQUFNO0lBQUk7SUFFaEMsb0NBQW9DO0lBQ3BDdUIsT0FBTztRQUFFeEIsT0FBTztRQUFJQyxNQUFNO0lBQUk7QUFDaEMifQ==
