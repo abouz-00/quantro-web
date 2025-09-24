@@ -1,0 +1,14 @@
+fe4928b8cefa4e5c365af956d5e2e660
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+const _route = require("../route");
+describe('auth/[...nextauth]/route', ()=>{
+    it('exports GET and POST handlers', ()=>{
+        expect(_route.GET).toBeDefined();
+        expect(_route.POST).toBeDefined();
+    });
+});
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9hcHAvYXBpL2F1dGgvWy4uLm5leHRhdXRoXS9fX3Rlc3RzX18vcm91dGUudGVzdC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBHRVQsIFBPU1QgfSBmcm9tICcuLi9yb3V0ZSc7XG5cbmRlc2NyaWJlKCdhdXRoL1suLi5uZXh0YXV0aF0vcm91dGUnLCAoKSA9PiB7XG4gIGl0KCdleHBvcnRzIEdFVCBhbmQgUE9TVCBoYW5kbGVycycsICgpID0+IHtcbiAgICBleHBlY3QoR0VUKS50b0JlRGVmaW5lZCgpO1xuICAgIGV4cGVjdChQT1NUKS50b0JlRGVmaW5lZCgpO1xuICB9KTtcbn0pO1xuIl0sIm5hbWVzIjpbImRlc2NyaWJlIiwiaXQiLCJleHBlY3QiLCJHRVQiLCJ0b0JlRGVmaW5lZCIsIlBPU1QiXSwibWFwcGluZ3MiOiI7Ozs7dUJBQTBCO0FBRTFCQSxTQUFTLDRCQUE0QjtJQUNuQ0MsR0FBRyxpQ0FBaUM7UUFDbENDLE9BQU9DLFVBQUcsRUFBRUMsV0FBVztRQUN2QkYsT0FBT0csV0FBSSxFQUFFRCxXQUFXO0lBQzFCO0FBQ0YifQ==

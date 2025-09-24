@@ -1,0 +1,254 @@
+0b73631e3d82dadc747088d980756fe0
+'use client';
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "default", {
+    enumerable: true,
+    get: function() {
+        return BetaInvitePage;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = require("react");
+const _link = /*#__PURE__*/ _interop_require_default(require("next/link"));
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+function BetaInvitePage({ code }) {
+    const [inviteData, setInviteData] = (0, _react.useState)(null);
+    const [loading, setLoading] = (0, _react.useState)(true);
+    const [error, setError] = (0, _react.useState)('');
+    const [accepting, setAccepting] = (0, _react.useState)(false);
+    const [accepted, setAccepted] = (0, _react.useState)(false);
+    (0, _react.useEffect)(()=>{
+        if (!code) {
+            setError('No invite code provided');
+            setLoading(false);
+            return;
+        }
+        // Validate the invite code
+        fetch(`/api/beta-invite?code=${code}`).then((res)=>res.json()).then((data)=>{
+            if (data.error) {
+                setError(data.error);
+            } else {
+                setInviteData(data);
+            }
+        }).catch((err)=>{
+            setError('Failed to validate invite');
+            console.error(err);
+        }).finally(()=>{
+            setLoading(false);
+        });
+    }, [
+        code
+    ]);
+    const acceptInvite = async ()=>{
+        if (!code) return;
+        setAccepting(true);
+        try {
+            const response = await fetch('/api/beta-invite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    code,
+                    action: 'accept'
+                })
+            });
+            const data = await response.json();
+            if (data.success) {
+                setAccepted(true);
+                // Redirect to sign in with the invite code so it can be marked as used after successful auth
+                setTimeout(()=>{
+                    window.location.href = `/api/auth/signin?callbackUrl=${encodeURIComponent(`/dashboard?inviteCode=${code}`)}`;
+                }, 3000);
+            } else {
+                setError(data.error || 'Failed to accept invite');
+            }
+        } catch (err) {
+            setError('Failed to accept invite');
+            console.error(err);
+        } finally{
+            setAccepting(false);
+        }
+    };
+    if (loading) {
+        return /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+            className: "min-h-screen bg-gray-50 flex items-center justify-center",
+            children: /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                className: "text-center",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                        className: "animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500 mx-auto"
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                        className: "mt-4 text-gray-600",
+                        children: "Validating your invite..."
+                    })
+                ]
+            })
+        });
+    }
+    if (error) {
+        return /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+            className: "min-h-screen bg-gray-50 flex items-center justify-center",
+            children: /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                className: "max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                        className: "text-red-500 text-6xl mb-4",
+                        children: "❌"
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("h1", {
+                        className: "text-2xl font-bold text-gray-900 mb-2",
+                        children: "Invalid Invite"
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                        className: "text-gray-600 mb-6",
+                        children: error
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_link.default, {
+                        href: "/",
+                        className: "bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors",
+                        children: "Go to Homepage"
+                    })
+                ]
+            })
+        });
+    }
+    if (accepted) {
+        return /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+            className: "min-h-screen bg-gray-50 flex items-center justify-center",
+            children: /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                className: "max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                        className: "text-green-500 text-6xl mb-4",
+                        children: "✅"
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("h1", {
+                        className: "text-2xl font-bold text-gray-900 mb-2",
+                        children: "Welcome to Quantro!"
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                        className: "text-gray-600 mb-4",
+                        children: "Your beta invite has been accepted. You can now sign in to access the app."
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        className: "space-y-3",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("button", {
+                                onClick: ()=>window.location.href = `/api/auth/signin?callbackUrl=${encodeURIComponent(`/dashboard?inviteCode=${code}`)}`,
+                                className: "block w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors",
+                                children: "Sign In Now"
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                                className: "text-sm text-gray-500",
+                                children: "Or wait 3 seconds for automatic redirect..."
+                            })
+                        ]
+                    })
+                ]
+            })
+        });
+    }
+    return /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+        className: "min-h-screen bg-gray-50 flex items-center justify-center",
+        children: /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+            className: "max-w-md w-full bg-white rounded-lg shadow-md p-8",
+            children: [
+                /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                    className: "text-center mb-6",
+                    children: [
+                        /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                            className: "text-blue-500 text-6xl mb-4",
+                            children: "\uD83C\uDF89"
+                        }),
+                        /*#__PURE__*/ (0, _jsxruntime.jsx)("h1", {
+                            className: "text-2xl font-bold text-gray-900 mb-2",
+                            children: "You're Invited!"
+                        }),
+                        /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                            className: "text-gray-600",
+                            children: "You've been invited to join the Quantro beta"
+                        })
+                    ]
+                }),
+                inviteData && /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                    className: "space-y-4",
+                    children: [
+                        /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                            className: "bg-gray-50 rounded-lg p-4",
+                            children: [
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("h3", {
+                                    className: "font-semibold text-gray-900 mb-2",
+                                    children: "Invite Details"
+                                }),
+                                /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                    className: "space-y-2 text-sm",
+                                    children: [
+                                        /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                            children: [
+                                                /*#__PURE__*/ (0, _jsxruntime.jsx)("span", {
+                                                    className: "font-medium",
+                                                    children: "Email:"
+                                                }),
+                                                " ",
+                                                inviteData.email
+                                            ]
+                                        }),
+                                        /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                            children: [
+                                                /*#__PURE__*/ (0, _jsxruntime.jsx)("span", {
+                                                    className: "font-medium",
+                                                    children: "Code:"
+                                                }),
+                                                /*#__PURE__*/ (0, _jsxruntime.jsx)("code", {
+                                                    className: "ml-2 bg-gray-200 px-2 py-1 rounded",
+                                                    children: inviteData.code
+                                                })
+                                            ]
+                                        }),
+                                        inviteData.expiresAt && /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                            children: [
+                                                /*#__PURE__*/ (0, _jsxruntime.jsx)("span", {
+                                                    className: "font-medium",
+                                                    children: "Expires:"
+                                                }),
+                                                " ",
+                                                new Date(inviteData.expiresAt).toLocaleDateString()
+                                            ]
+                                        })
+                                    ]
+                                })
+                            ]
+                        }),
+                        /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                            className: "space-y-3",
+                            children: [
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)("button", {
+                                    onClick: acceptInvite,
+                                    disabled: accepting,
+                                    className: "w-full bg-blue-500 text-white py-3 px-4 rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors",
+                                    children: accepting ? 'Accepting...' : 'Accept Invite & Join Beta'
+                                }),
+                                /*#__PURE__*/ (0, _jsxruntime.jsx)(_link.default, {
+                                    href: "/",
+                                    className: "block w-full text-center bg-gray-200 text-gray-700 py-3 px-4 rounded-md hover:bg-gray-300 transition-colors",
+                                    children: "Maybe Later"
+                                })
+                            ]
+                        })
+                    ]
+                })
+            ]
+        })
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb21wb25lbnRzL0JldGFJbnZpdGVQYWdlLnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyIndXNlIGNsaWVudCdcblxuaW1wb3J0IHsgdXNlU3RhdGUsIHVzZUVmZmVjdCB9IGZyb20gJ3JlYWN0J1xuaW1wb3J0IExpbmsgZnJvbSAnbmV4dC9saW5rJ1xuXG5pbnRlcmZhY2UgSW52aXRlRGF0YSB7XG4gIHZhbGlkOiBib29sZWFuXG4gIGVtYWlsOiBzdHJpbmdcbiAgY29kZTogc3RyaW5nXG4gIGV4cGlyZXNBdDogc3RyaW5nIHwgbnVsbFxufVxuXG5pbnRlcmZhY2UgQmV0YUludml0ZVBhZ2VQcm9wcyB7XG4gIGNvZGU6IHN0cmluZyB8IG51bGxcbn1cblxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gQmV0YUludml0ZVBhZ2UoeyBjb2RlIH06IEJldGFJbnZpdGVQYWdlUHJvcHMpIHtcbiAgY29uc3QgW2ludml0ZURhdGEsIHNldEludml0ZURhdGFdID0gdXNlU3RhdGU8SW52aXRlRGF0YSB8IG51bGw+KG51bGwpXG4gIGNvbnN0IFtsb2FkaW5nLCBzZXRMb2FkaW5nXSA9IHVzZVN0YXRlKHRydWUpXG4gIGNvbnN0IFtlcnJvciwgc2V0RXJyb3JdID0gdXNlU3RhdGUoJycpXG4gIGNvbnN0IFthY2NlcHRpbmcsIHNldEFjY2VwdGluZ10gPSB1c2VTdGF0ZShmYWxzZSlcbiAgY29uc3QgW2FjY2VwdGVkLCBzZXRBY2NlcHRlZF0gPSB1c2VTdGF0ZShmYWxzZSlcblxuICB1c2VFZmZlY3QoKCkgPT4ge1xuICAgIGlmICghY29kZSkge1xuICAgICAgc2V0RXJyb3IoJ05vIGludml0ZSBjb2RlIHByb3ZpZGVkJylcbiAgICAgIHNldExvYWRpbmcoZmFsc2UpXG4gICAgICByZXR1cm5cbiAgICB9XG5cbiAgICAvLyBWYWxpZGF0ZSB0aGUgaW52aXRlIGNvZGVcbiAgICBmZXRjaChgL2FwaS9iZXRhLWludml0ZT9jb2RlPSR7Y29kZX1gKVxuICAgICAgLnRoZW4ocmVzID0+IHJlcy5qc29uKCkpXG4gICAgICAudGhlbihkYXRhID0+IHtcbiAgICAgICAgaWYgKGRhdGEuZXJyb3IpIHtcbiAgICAgICAgICBzZXRFcnJvcihkYXRhLmVycm9yKVxuICAgICAgICB9IGVsc2Uge1xuICAgICAgICAgIHNldEludml0ZURhdGEoZGF0YSlcbiAgICAgICAgfVxuICAgICAgfSlcbiAgICAgIC5jYXRjaChlcnIgPT4ge1xuICAgICAgICBzZXRFcnJvcignRmFpbGVkIHRvIHZhbGlkYXRlIGludml0ZScpXG4gICAgICAgIGNvbnNvbGUuZXJyb3IoZXJyKVxuICAgICAgfSlcbiAgICAgIC5maW5hbGx5KCgpID0+IHtcbiAgICAgICAgc2V0TG9hZGluZyhmYWxzZSlcbiAgICAgIH0pXG4gIH0sIFtjb2RlXSlcblxuICBjb25zdCBhY2NlcHRJbnZpdGUgPSBhc3luYyAoKSA9PiB7XG4gICAgaWYgKCFjb2RlKSByZXR1cm5cblxuICAgIHNldEFjY2VwdGluZyh0cnVlKVxuICAgIHRyeSB7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKCcvYXBpL2JldGEtaW52aXRlJywge1xuICAgICAgICBtZXRob2Q6ICdQT1NUJyxcbiAgICAgICAgaGVhZGVyczoge1xuICAgICAgICAgICdDb250ZW50LVR5cGUnOiAnYXBwbGljYXRpb24vanNvbicsXG4gICAgICAgIH0sXG4gICAgICAgIGJvZHk6IEpTT04uc3RyaW5naWZ5KHtcbiAgICAgICAgICBjb2RlLFxuICAgICAgICAgIGFjdGlvbjogJ2FjY2VwdCdcbiAgICAgICAgfSksXG4gICAgICB9KVxuXG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuanNvbigpXG5cbiAgICAgIGlmIChkYXRhLnN1Y2Nlc3MpIHtcbiAgICAgICAgc2V0QWNjZXB0ZWQodHJ1ZSlcbiAgICAgICAgLy8gUmVkaXJlY3QgdG8gc2lnbiBpbiB3aXRoIHRoZSBpbnZpdGUgY29kZSBzbyBpdCBjYW4gYmUgbWFya2VkIGFzIHVzZWQgYWZ0ZXIgc3VjY2Vzc2Z1bCBhdXRoXG4gICAgICAgIHNldFRpbWVvdXQoKCkgPT4ge1xuICAgICAgICAgIHdpbmRvdy5sb2NhdGlvbi5ocmVmID0gYC9hcGkvYXV0aC9zaWduaW4/Y2FsbGJhY2tVcmw9JHtlbmNvZGVVUklDb21wb25lbnQoYC9kYXNoYm9hcmQ/aW52aXRlQ29kZT0ke2NvZGV9YCl9YFxuICAgICAgICB9LCAzMDAwKVxuICAgICAgfSBlbHNlIHtcbiAgICAgICAgc2V0RXJyb3IoZGF0YS5lcnJvciB8fCAnRmFpbGVkIHRvIGFjY2VwdCBpbnZpdGUnKVxuICAgICAgfVxuICAgIH0gY2F0Y2ggKGVycikge1xuICAgICAgc2V0RXJyb3IoJ0ZhaWxlZCB0byBhY2NlcHQgaW52aXRlJylcbiAgICAgIGNvbnNvbGUuZXJyb3IoZXJyKVxuICAgIH0gZmluYWxseSB7XG4gICAgICBzZXRBY2NlcHRpbmcoZmFsc2UpXG4gICAgfVxuICB9XG5cbiAgaWYgKGxvYWRpbmcpIHtcbiAgICByZXR1cm4gKFxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJtaW4taC1zY3JlZW4gYmctZ3JheS01MCBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlclwiPlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInRleHQtY2VudGVyXCI+XG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJhbmltYXRlLXNwaW4gcm91bmRlZC1mdWxsIGgtMzIgdy0zMiBib3JkZXItYi0yIGJvcmRlci1ibHVlLTUwMCBteC1hdXRvXCI+PC9kaXY+XG4gICAgICAgICAgPHAgY2xhc3NOYW1lPVwibXQtNCB0ZXh0LWdyYXktNjAwXCI+VmFsaWRhdGluZyB5b3VyIGludml0ZS4uLjwvcD5cbiAgICAgICAgPC9kaXY+XG4gICAgICA8L2Rpdj5cbiAgICApXG4gIH1cblxuICBpZiAoZXJyb3IpIHtcbiAgICByZXR1cm4gKFxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJtaW4taC1zY3JlZW4gYmctZ3JheS01MCBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlclwiPlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cIm1heC13LW1kIHctZnVsbCBiZy13aGl0ZSByb3VuZGVkLWxnIHNoYWRvdy1tZCBwLTggdGV4dC1jZW50ZXJcIj5cbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInRleHQtcmVkLTUwMCB0ZXh0LTZ4bCBtYi00XCI+4p2MPC9kaXY+XG4gICAgICAgICAgPGgxIGNsYXNzTmFtZT1cInRleHQtMnhsIGZvbnQtYm9sZCB0ZXh0LWdyYXktOTAwIG1iLTJcIj5JbnZhbGlkIEludml0ZTwvaDE+XG4gICAgICAgICAgPHAgY2xhc3NOYW1lPVwidGV4dC1ncmF5LTYwMCBtYi02XCI+e2Vycm9yfTwvcD5cbiAgICAgICAgICA8TGlua1xuICAgICAgICAgICAgaHJlZj1cIi9cIlxuICAgICAgICAgICAgY2xhc3NOYW1lPVwiYmctYmx1ZS01MDAgdGV4dC13aGl0ZSBweC00IHB5LTIgcm91bmRlZC1tZCBob3ZlcjpiZy1ibHVlLTYwMCB0cmFuc2l0aW9uLWNvbG9yc1wiXG4gICAgICAgICAgPlxuICAgICAgICAgICAgR28gdG8gSG9tZXBhZ2VcbiAgICAgICAgICA8L0xpbms+XG4gICAgICAgIDwvZGl2PlxuICAgICAgPC9kaXY+XG4gICAgKVxuICB9XG5cbiAgaWYgKGFjY2VwdGVkKSB7XG4gICAgcmV0dXJuIChcbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwibWluLWgtc2NyZWVuIGJnLWdyYXktNTAgZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXJcIj5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJtYXgtdy1tZCB3LWZ1bGwgYmctd2hpdGUgcm91bmRlZC1sZyBzaGFkb3ctbWQgcC04IHRleHQtY2VudGVyXCI+XG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0ZXh0LWdyZWVuLTUwMCB0ZXh0LTZ4bCBtYi00XCI+4pyFPC9kaXY+XG4gICAgICAgICAgPGgxIGNsYXNzTmFtZT1cInRleHQtMnhsIGZvbnQtYm9sZCB0ZXh0LWdyYXktOTAwIG1iLTJcIj5XZWxjb21lIHRvIFF1YW50cm8hPC9oMT5cbiAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LWdyYXktNjAwIG1iLTRcIj5cbiAgICAgICAgICAgIFlvdXIgYmV0YSBpbnZpdGUgaGFzIGJlZW4gYWNjZXB0ZWQuIFlvdSBjYW4gbm93IHNpZ24gaW4gdG8gYWNjZXNzIHRoZSBhcHAuXG4gICAgICAgICAgPC9wPlxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwic3BhY2UteS0zXCI+XG4gICAgICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgICAgIG9uQ2xpY2s9eygpID0+IHdpbmRvdy5sb2NhdGlvbi5ocmVmID0gYC9hcGkvYXV0aC9zaWduaW4/Y2FsbGJhY2tVcmw9JHtlbmNvZGVVUklDb21wb25lbnQoYC9kYXNoYm9hcmQ/aW52aXRlQ29kZT0ke2NvZGV9YCl9YH1cbiAgICAgICAgICAgICAgY2xhc3NOYW1lPVwiYmxvY2sgdy1mdWxsIGJnLWJsdWUtNTAwIHRleHQtd2hpdGUgcHgtNCBweS0yIHJvdW5kZWQtbWQgaG92ZXI6YmctYmx1ZS02MDAgdHJhbnNpdGlvbi1jb2xvcnNcIlxuICAgICAgICAgICAgPlxuICAgICAgICAgICAgICBTaWduIEluIE5vd1xuICAgICAgICAgICAgPC9idXR0b24+XG4gICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LXNtIHRleHQtZ3JheS01MDBcIj5cbiAgICAgICAgICAgICAgT3Igd2FpdCAzIHNlY29uZHMgZm9yIGF1dG9tYXRpYyByZWRpcmVjdC4uLlxuICAgICAgICAgICAgPC9wPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICA8L2Rpdj5cbiAgICAgIDwvZGl2PlxuICAgIClcbiAgfVxuXG4gIHJldHVybiAoXG4gICAgPGRpdiBjbGFzc05hbWU9XCJtaW4taC1zY3JlZW4gYmctZ3JheS01MCBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlclwiPlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJtYXgtdy1tZCB3LWZ1bGwgYmctd2hpdGUgcm91bmRlZC1sZyBzaGFkb3ctbWQgcC04XCI+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwidGV4dC1jZW50ZXIgbWItNlwiPlxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwidGV4dC1ibHVlLTUwMCB0ZXh0LTZ4bCBtYi00XCI+8J+OiTwvZGl2PlxuICAgICAgICAgIDxoMSBjbGFzc05hbWU9XCJ0ZXh0LTJ4bCBmb250LWJvbGQgdGV4dC1ncmF5LTkwMCBtYi0yXCI+WW91JmFwb3M7cmUgSW52aXRlZCE8L2gxPlxuICAgICAgICAgIDxwIGNsYXNzTmFtZT1cInRleHQtZ3JheS02MDBcIj5cbiAgICAgICAgICAgIFlvdSZhcG9zO3ZlIGJlZW4gaW52aXRlZCB0byBqb2luIHRoZSBRdWFudHJvIGJldGFcbiAgICAgICAgICA8L3A+XG4gICAgICAgIDwvZGl2PlxuXG4gICAgICAgIHtpbnZpdGVEYXRhICYmIChcbiAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInNwYWNlLXktNFwiPlxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJiZy1ncmF5LTUwIHJvdW5kZWQtbGcgcC00XCI+XG4gICAgICAgICAgICAgIDxoMyBjbGFzc05hbWU9XCJmb250LXNlbWlib2xkIHRleHQtZ3JheS05MDAgbWItMlwiPkludml0ZSBEZXRhaWxzPC9oMz5cbiAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJzcGFjZS15LTIgdGV4dC1zbVwiPlxuICAgICAgICAgICAgICAgIDxkaXY+XG4gICAgICAgICAgICAgICAgICA8c3BhbiBjbGFzc05hbWU9XCJmb250LW1lZGl1bVwiPkVtYWlsOjwvc3Bhbj4ge2ludml0ZURhdGEuZW1haWx9XG4gICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAgPGRpdj5cbiAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImZvbnQtbWVkaXVtXCI+Q29kZTo8L3NwYW4+XG4gICAgICAgICAgICAgICAgICA8Y29kZSBjbGFzc05hbWU9XCJtbC0yIGJnLWdyYXktMjAwIHB4LTIgcHktMSByb3VuZGVkXCI+e2ludml0ZURhdGEuY29kZX08L2NvZGU+XG4gICAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgICAge2ludml0ZURhdGEuZXhwaXJlc0F0ICYmIChcbiAgICAgICAgICAgICAgICAgIDxkaXY+XG4gICAgICAgICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT1cImZvbnQtbWVkaXVtXCI+RXhwaXJlczo8L3NwYW4+IHtuZXcgRGF0ZShpbnZpdGVEYXRhLmV4cGlyZXNBdCkudG9Mb2NhbGVEYXRlU3RyaW5nKCl9XG4gICAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICApfVxuICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgIDwvZGl2PlxuXG4gICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInNwYWNlLXktM1wiPlxuICAgICAgICAgICAgICA8YnV0dG9uXG4gICAgICAgICAgICAgICAgb25DbGljaz17YWNjZXB0SW52aXRlfVxuICAgICAgICAgICAgICAgIGRpc2FibGVkPXthY2NlcHRpbmd9XG4gICAgICAgICAgICAgICAgY2xhc3NOYW1lPVwidy1mdWxsIGJnLWJsdWUtNTAwIHRleHQtd2hpdGUgcHktMyBweC00IHJvdW5kZWQtbWQgaG92ZXI6YmctYmx1ZS02MDAgZGlzYWJsZWQ6b3BhY2l0eS01MCBkaXNhYmxlZDpjdXJzb3Itbm90LWFsbG93ZWQgdHJhbnNpdGlvbi1jb2xvcnNcIlxuICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAge2FjY2VwdGluZyA/ICdBY2NlcHRpbmcuLi4nIDogJ0FjY2VwdCBJbnZpdGUgJiBKb2luIEJldGEnfVxuICAgICAgICAgICAgICA8L2J1dHRvbj5cblxuICAgICAgICAgICAgICA8TGlua1xuICAgICAgICAgICAgICAgIGhyZWY9XCIvXCJcbiAgICAgICAgICAgICAgICBjbGFzc05hbWU9XCJibG9jayB3LWZ1bGwgdGV4dC1jZW50ZXIgYmctZ3JheS0yMDAgdGV4dC1ncmF5LTcwMCBweS0zIHB4LTQgcm91bmRlZC1tZCBob3ZlcjpiZy1ncmF5LTMwMCB0cmFuc2l0aW9uLWNvbG9yc1wiXG4gICAgICAgICAgICAgID5cbiAgICAgICAgICAgICAgICBNYXliZSBMYXRlclxuICAgICAgICAgICAgICA8L0xpbms+XG4gICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgKX1cbiAgICAgIDwvZGl2PlxuICAgIDwvZGl2PlxuICApXG59XG4iXSwibmFtZXMiOlsiQmV0YUludml0ZVBhZ2UiLCJjb2RlIiwiaW52aXRlRGF0YSIsInNldEludml0ZURhdGEiLCJ1c2VTdGF0ZSIsImxvYWRpbmciLCJzZXRMb2FkaW5nIiwiZXJyb3IiLCJzZXRFcnJvciIsImFjY2VwdGluZyIsInNldEFjY2VwdGluZyIsImFjY2VwdGVkIiwic2V0QWNjZXB0ZWQiLCJ1c2VFZmZlY3QiLCJmZXRjaCIsInRoZW4iLCJyZXMiLCJqc29uIiwiZGF0YSIsImNhdGNoIiwiZXJyIiwiY29uc29sZSIsImZpbmFsbHkiLCJhY2NlcHRJbnZpdGUiLCJyZXNwb25zZSIsIm1ldGhvZCIsImhlYWRlcnMiLCJib2R5IiwiSlNPTiIsInN0cmluZ2lmeSIsImFjdGlvbiIsInN1Y2Nlc3MiLCJzZXRUaW1lb3V0Iiwid2luZG93IiwibG9jYXRpb24iLCJocmVmIiwiZW5jb2RlVVJJQ29tcG9uZW50IiwiZGl2IiwiY2xhc3NOYW1lIiwicCIsImgxIiwiTGluayIsImJ1dHRvbiIsIm9uQ2xpY2siLCJoMyIsInNwYW4iLCJlbWFpbCIsImV4cGlyZXNBdCIsIkRhdGUiLCJ0b0xvY2FsZURhdGVTdHJpbmciLCJkaXNhYmxlZCJdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7OytCQWdCQTs7O2VBQXdCQTs7Ozt1QkFkWTs2REFDbkI7Ozs7OztBQWFGLFNBQVNBLGVBQWUsRUFBRUMsSUFBSSxFQUF1QjtJQUNs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
