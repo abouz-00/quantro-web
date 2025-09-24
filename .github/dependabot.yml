@@ -23,8 +23,6 @@ updates:
         dependency-type: "production"
         patterns:
           - "*"
-        labels:
-          - "grouped-prod-updates"
       grouped-dev-updates:
         dependency-type: "development"
         patterns:
@@ -32,8 +30,6 @@ updates:
         update-types:
           - "patch"
           - "minor"
-        labels:
-          - "grouped-dev-updates"
     ignore:
       # Keep Node.js types stable unless major updates needed
       - dependency-name: "@types/node"
