@@ -1,11 +1,13 @@
 version: 2
+auto-merge:
+  - match:
+      package-ecosystem: "npm"
 updates:
   # Enable version updates for npm dependencies
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
-    auto-merge: true
     open-pull-requests-limit: 10
     reviewers:
       - "quantrodev"
