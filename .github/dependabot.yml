@@ -1,4 +1,11 @@
 version: 2
+automerged_updates:
+  - match:
+      dependency_type: "development"
+      update_type: "patch"
+  - match:
+      dependency_type: "production"
+      update_type: "patch"
 updates:
   # Enable version updates for npm dependencies
   - package-ecosystem: "npm"
@@ -29,8 +36,6 @@ updates:
         update-types:
           - "patch"
           - "minor"
-        labels:
-          - "grouped-dev-updates"
     ignore:
       # Keep Node.js types stable unless major updates needed
       - dependency-name: "@types/node"
