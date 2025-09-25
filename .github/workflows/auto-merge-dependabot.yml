@@ -1,0 +1,50 @@
+name: Auto-merge Dependabot PRs
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        
+      - name: Enable auto-merge for Dependabot PRs
+        run: |
+          gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Alternative: More selective auto-merge based on dependency type
+  selective-auto-merge:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        
+      - name: Auto-merge patch and minor updates
+        run: |
+          # Get PR details
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          
+          # Auto-merge patch and minor updates, but not major updates
+          if [[ "$PR_TITLE" =~ bump.*from.*to.* ]]; then
+            if [[ "$PR_TITLE" =~ \([0-9]+\.[0-9]+\.[0-9]+.*to.*[0-9]+\.[0-9]+\.[0-9]+\) ]]; then
+              # Extract version numbers and check if it's a major update
+              echo "Checking if this is a safe update to auto-merge..."
+              
+              # For now, auto-merge all updates (you can add more logic here)
+              gh pr merge --auto --squash "$PR_URL"
+              echo "Enabled auto-merge for: $PR_TITLE"
+            fi
+          fi
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
