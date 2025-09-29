@@ -26,8 +26,22 @@ jobs:
           github-token: ${{ secrets.PAT_GITHUB }}
       
       - name: Enable auto-merge for patch and minor updates
-        if: steps.metadata.outputs.update-type == 'version-update:semver-patch' || steps.metadata.outputs.update-type == 'version-update:semver-minor'
+        if: |
+          contains(steps.metadata.outputs.update-type, 'version-update:semver-patch') || 
+          contains(steps.metadata.outputs.update-type, 'version-update:semver-minor') ||
+          (steps.metadata.outputs.dependency-group != '' && 
+           (contains(github.event.pull_request.title, 'grouped-dev-updates') ||
+            contains(github.event.pull_request.title, 'grouped-prod-updates')))
         run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
+          
+      - name: Label major updates for manual review
+        if: contains(steps.metadata.outputs.update-type, 'version-update:semver-major')
+        run: |
+          gh pr edit "$PR_URL" --add-label "major-update" --add-label "needs-review"
+          gh pr comment "$PR_URL" --body "🚨 This is a major version update that requires manual review before merging."
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
