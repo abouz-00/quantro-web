@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import BetaInvitePage from '../BetaInvitePage';
+import { BetaInvitePage } from '../auth';
 
 // Mock next/link
 jest.mock('next/link', () => {

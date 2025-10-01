@@ -19,11 +19,11 @@ jest.mock('../../components/shared/ErrorBoundary', () => {
 });
 
 // Mock LandingPage
-jest.mock('../../components/LandingPage', () => {
-  return function LandingPage() {
+jest.mock('../../components/landing', () => ({
+  LandingPage: function LandingPage() {
     return <div data-testid="landing-page">Landing Page</div>;
-  };
-});
+  },
+}));
 
 describe('Home Page', () => {
   beforeEach(() => {

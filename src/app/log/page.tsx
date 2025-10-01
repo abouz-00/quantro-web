@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import ErrorBoundary from '../../components/shared/ErrorBoundary';
+import { ErrorBoundary } from '../../components/shared';
 
 // Use dynamic import with SSR disabled for the entire page
 const LogPage = dynamic(() => import('../../components/log/LogPage'), {
