@@ -23,7 +23,7 @@ jobs:
       - name: Auto-approve Dependabot PRs
         uses: hmarr/auto-approve-action@v4.0.0
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          github-token: "${{ secrets.PAT_GITHUB }}"
       
       - name: Enable auto-merge for patch and minor updates
         if: |
