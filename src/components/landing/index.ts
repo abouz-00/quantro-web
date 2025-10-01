@@ -1,4 +1,5 @@
 // src/components/landing/index.ts
+export { default as LandingPage } from './LandingPage';
 export { FloatingFoodParticles } from './FloatingFoodParticles';
 export { LogoSection } from './LogoSection';
 export { FeaturesSection } from './FeaturesSection';

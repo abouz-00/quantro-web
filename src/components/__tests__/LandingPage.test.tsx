@@ -43,7 +43,7 @@ jest.mock('@heroicons/react/24/outline', () => ({
 
 import { render, screen } from '@testing-library/react';
 import { useSession } from 'next-auth/react';
-import LandingPage from '../LandingPage';
+import { LandingPage } from '../landing';
 
 const mockUseSession = useSession as jest.MockedFunction<typeof useSession>;
 

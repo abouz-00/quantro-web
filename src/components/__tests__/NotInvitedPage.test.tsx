@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import NotInvitedPage from '../NotInvitedPage';
+import { NotInvitedPage } from '../auth';
 
 // Mock next/image
 jest.mock('next/image', () => ({

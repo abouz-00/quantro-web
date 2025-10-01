@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import InviteHandler from './invite-handler';
-import DashboardPage from '../../components/DashboardPage';
+import DashboardPage from '../../components/dashboard';
 
 export default function Dashboard() {
   const { data: session, status } = useSession();

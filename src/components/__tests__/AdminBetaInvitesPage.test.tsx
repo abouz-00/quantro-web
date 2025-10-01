@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import AdminBetaInvitesPage from '../AdminBetaInvitesPage';
+import AdminBetaInvitesPage from '../admin';
 
 const mockInvites = [
   {

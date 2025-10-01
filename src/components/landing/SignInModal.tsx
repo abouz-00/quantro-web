@@ -1,3 +1,5 @@
+"use client";
+
 // src/components/landing/SignInModal.tsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';

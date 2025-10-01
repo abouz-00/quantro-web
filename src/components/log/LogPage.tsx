@@ -17,7 +17,7 @@ const FoodLogHeader = dynamic(() => import('./FoodLogHeader'));
 const FoodLogStats = dynamic(() => import('./FoodLogStats'));
 const FoodLogControls = dynamic(() => import('./FoodLogControls'));
 const DynamicFoodLogTable = dynamic(() => import('../food-log').then(mod => mod.FoodLogTable));
-const DebugPanel = dynamic(() => import('../DebugPanel'), { ssr: false });
+const DebugPanel = dynamic(() => import('../debug/DebugPanel'), { ssr: false });
 
 export default function LogPage() {
   // Modal states

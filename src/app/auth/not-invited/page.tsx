@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import NotInvitedPage from '../../../components/NotInvitedPage';
+import { NotInvitedPage } from '../../../components/auth';
 
 export default function NotInvited() {
   const [betaCode, setBetaCode] = useState('');

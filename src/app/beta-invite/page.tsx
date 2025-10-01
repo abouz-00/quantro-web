@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import BetaInvitePage from '../../components/BetaInvitePage'
+import { BetaInvitePage } from '../../components/auth'
 
 function BetaInviteContent() {
   const searchParams = useSearchParams()

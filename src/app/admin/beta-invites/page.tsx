@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import AdminBetaInvitesPage from '../../../components/AdminBetaInvitesPage'
+import AdminBetaInvitesPage from '../../../components/admin'
 
 interface BetaInvite {
   id: string

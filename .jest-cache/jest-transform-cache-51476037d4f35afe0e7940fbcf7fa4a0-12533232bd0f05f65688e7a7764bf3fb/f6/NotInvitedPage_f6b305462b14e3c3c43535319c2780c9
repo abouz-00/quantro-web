@@ -1,0 +1,169 @@
+a325794315c54500686dc950128d2838
+"use client";
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "default", {
+    enumerable: true,
+    get: function() {
+        return NotInvitedPage;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _google = require("next/font/google");
+const _image = /*#__PURE__*/ _interop_require_default(require("next/image"));
+const _link = /*#__PURE__*/ _interop_require_default(require("next/link"));
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+const poppins = (0, _google.Poppins)({
+    subsets: [
+        'latin'
+    ],
+    weight: [
+        '400',
+        '500',
+        '600',
+        '700'
+    ]
+});
+function NotInvitedPage({ betaCode, setBetaCode, isSubmitting, error, onSubmitCode }) {
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+        className: "h-screen w-screen flex items-center justify-center overflow-hidden fixed inset-0",
+        style: {
+            backgroundColor: '#6e44ff',
+            userSelect: 'none',
+            WebkitUserSelect: 'none'
+        },
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                className: "text-center px-6 py-4 w-full max-w-md mx-auto h-full flex flex-col justify-center",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                        className: "mb-8 flex justify-center",
+                        children: /*#__PURE__*/ (0, _jsxruntime.jsx)(_image.default, {
+                            src: "/header.svg",
+                            alt: "Quantro Logo",
+                            className: "h-24 w-auto mx-auto",
+                            width: 576,
+                            height: 576,
+                            style: {
+                                userSelect: 'none',
+                                WebkitUserSelect: 'none',
+                                filter: 'drop-shadow(0 0 10px rgba(0,0,0,0.05))'
+                            }
+                        })
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        className: "bg-white rounded-xl p-8 shadow-lg mb-8",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("h1", {
+                                className: `text-2xl font-semibold text-gray-800 mb-4 ${poppins.className}`,
+                                children: "Beta Access Required"
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                                className: `text-gray-600 mb-6 leading-relaxed ${poppins.className}`,
+                                children: "Quantro is currently in private beta. Enter your beta access code below or request access."
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("form", {
+                                onSubmit: onSubmitCode,
+                                className: "mb-6",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                        className: "mb-4",
+                                        children: [
+                                            /*#__PURE__*/ (0, _jsxruntime.jsx)("label", {
+                                                htmlFor: "betaCode",
+                                                className: `block text-sm font-medium text-gray-700 mb-2 text-left ${poppins.className}`,
+                                                children: "Beta Access Code"
+                                            }),
+                                            /*#__PURE__*/ (0, _jsxruntime.jsx)("input", {
+                                                type: "text",
+                                                id: "betaCode",
+                                                value: betaCode,
+                                                onChange: (e)=>setBetaCode(e.target.value),
+                                                placeholder: "Enter your beta code",
+                                                className: `w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all ${poppins.className}`,
+                                                disabled: isSubmitting
+                                            }),
+                                            error && /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                                                className: `text-red-600 text-sm mt-2 text-left ${poppins.className}`,
+                                                children: error
+                                            })
+                                        ]
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("button", {
+                                        type: "submit",
+                                        disabled: isSubmitting || !betaCode.trim(),
+                                        className: `w-full px-6 py-3 bg-violet-500 text-white rounded-lg font-medium hover:bg-violet-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors ${poppins.className}`,
+                                        children: isSubmitting ? 'Checking...' : 'Access Beta'
+                                    })
+                                ]
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                className: "relative mb-6",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                                        className: "absolute inset-0 flex items-center",
+                                        children: /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                                            className: "w-full border-t border-gray-300"
+                                        })
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                                        className: "relative flex justify-center text-sm",
+                                        children: /*#__PURE__*/ (0, _jsxruntime.jsx)("span", {
+                                            className: `px-2 bg-white text-gray-500 ${poppins.className}`,
+                                            children: "or"
+                                        })
+                                    })
+                                ]
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                className: "space-y-3",
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_link.default, {
+                                        href: "mailto:hello@quantro.fit?subject=Beta Access Request",
+                                        className: `block w-full px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors cursor-pointer text-center ${poppins.className}`,
+                                        children: "Request Beta Access"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)(_link.default, {
+                                        href: "/",
+                                        className: `block w-full px-6 py-3 bg-gray-50 text-gray-600 rounded-lg font-medium hover:bg-gray-100 transition-colors cursor-pointer text-center ${poppins.className}`,
+                                        children: "Back to Home"
+                                    })
+                                ]
+                            })
+                        ]
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("p", {
+                        className: `text-white/70 text-sm ${poppins.className}`,
+                        children: [
+                            "Questions? Email us at",
+                            ' ',
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("a", {
+                                href: "mailto:hello@quantro.fit",
+                                className: "text-white hover:underline",
+                                children: "hello@quantro.fit"
+                            })
+                        ]
+                    })
+                ]
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("footer", {
+                className: "fixed bottom-0 left-0 right-0 px-8 py-4",
+                children: /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                    className: "max-w-7xl mx-auto text-center",
+                    children: /*#__PURE__*/ (0, _jsxruntime.jsx)("p", {
+                        className: `text-white/70 text-sm ${poppins.className}`,
+                        children: "\xa9 2025 Quantro LLC. All rights reserved."
+                    })
+                })
+            })
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvL3NyYy9jb21wb25lbnRzL2F1dGgvTm90SW52aXRlZFBhZ2UudHN4Il0sInNvdXJjZXNDb250ZW50IjpbIlwidXNlIGNsaWVudFwiO1xuXG5pbXBvcnQgeyBQb3BwaW5zIH0gZnJvbSAnbmV4dC9mb250L2dvb2dsZSc7XG5pbXBvcnQgSW1hZ2UgZnJvbSAnbmV4dC9pbWFnZSc7XG5pbXBvcnQgTGluayBmcm9tICduZXh0L2xpbmsnO1xuXG5jb25zdCBwb3BwaW5zID0gUG9wcGlucyh7IHN1YnNldHM6IFsnbGF0aW4nXSwgd2VpZ2h0OiBbJzQwMCcsICc1MDAnLCAnNjAwJywgJzcwMCddIH0pO1xuXG5pbnRlcmZhY2UgTm90SW52aXRlZFBhZ2VQcm9wcyB7XG4gIGJldGFDb2RlOiBzdHJpbmc7XG4gIHNldEJldGFDb2RlOiAoY29kZTogc3RyaW5nKSA9PiB2b2lkO1xuICBpc1N1Ym1pdHRpbmc6IGJvb2xlYW47XG4gIGVycm9yOiBzdHJpbmc7XG4gIG9uU3VibWl0Q29kZTogKGU6IFJlYWN0LkZvcm1FdmVudCkgPT4gdm9pZDtcbn1cblxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gTm90SW52aXRlZFBhZ2Uoe1xuICBiZXRhQ29kZSxcbiAgc2V0QmV0YUNvZGUsXG4gIGlzU3VibWl0dGluZyxcbiAgZXJyb3IsXG4gIG9uU3VibWl0Q29kZVxufTogTm90SW52aXRlZFBhZ2VQcm9wcykge1xuICByZXR1cm4gKFxuICAgIDxkaXYgY2xhc3NOYW1lPVwiaC1zY3JlZW4gdy1zY3JlZW4gZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgb3ZlcmZsb3ctaGlkZGVuIGZpeGVkIGluc2V0LTBcIiBzdHlsZT17eyBiYWNrZ3JvdW5kQ29sb3I6ICcjNmU0NGZmJywgdXNlclNlbGVjdDogJ25vbmUnLCBXZWJraXRVc2VyU2VsZWN0OiAnbm9uZScgfX0+XG4gICAgICA8ZGl2IGNsYXNzTmFtZT1cInRleHQtY2VudGVyIHB4LTYgcHktNCB3LWZ1bGwgbWF4LXctbWQgbXgtYXV0byBoLWZ1bGwgZmxleCBmbGV4LWNvbCBqdXN0aWZ5LWNlbnRlclwiPlxuICAgICAgICB7LyogTG9nbyAqL31cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJtYi04IGZsZXgganVzdGlmeS1jZW50ZXJcIj5cbiAgICAgICAgICA8SW1hZ2VcbiAgICAgICAgICAgIHNyYz1cIi9oZWFkZXIuc3ZnXCJcbiAgICAgICAgICAgIGFsdD1cIlF1YW50cm8gTG9nb1wiXG4gICAgICAgICAgICBjbGFzc05hbWU9XCJoLTI0IHctYXV0byBteC1hdXRvXCJcbiAgICAgICAgICAgIHdpZHRoPXs1NzZ9XG4gICAgICAgICAgICBoZWlnaHQ9ezU3Nn1cbiAgICAgICAgICAgIHN0eWxlPXt7XG4gICAgICAgICAgICAgIHVzZXJTZWxlY3Q6ICdub25lJyxcbiAgICAgICAgICAgICAgV2Via2l0VXNlclNlbGVjdDogJ25vbmUnLFxuICAgICAgICAgICAgICBmaWx0ZXI6ICdkcm9wLXNoYWRvdygwIDAgMTBweCByZ2JhKDAsMCwwLDAuMDUpKSdcbiAgICAgICAgICAgIH19XG4gICAgICAgICAgLz5cbiAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgey8qIE1lc3NhZ2UgKi99XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiYmctd2hpdGUgcm91bmRlZC14bCBwLTggc2hhZG93LWxnIG1iLThcIj5cbiAgICAgICAgICA8aDEgY2xhc3NOYW1lPXtgdGV4dC0yeGwgZm9udC1zZW1pYm9sZCB0ZXh0LWdyYXktODAwIG1iLTQgJHtwb3BwaW5zLmNsYXNzTmFtZX1gfT5cbiAgICAgICAgICAgIEJldGEgQWNjZXNzIFJlcXVpcmVkXG4gICAgICAgICAgPC9oMT5cbiAgICAgICAgICA8cCBjbGFzc05hbWU9e2B0ZXh0LWdyYXktNjAwIG1iLTYgbGVhZGluZy1yZWxheGVkICR7cG9wcGlucy5jbGFzc05hbWV9YH0+XG4gICAgICAgICAgICBRdWFudHJvIGlzIGN1cnJlbnRseSBpbiBwcml2YXRlIGJldGEuIEVudGVyIHlvdXIgYmV0YSBhY2Nlc3MgY29kZSBiZWxvdyBvciByZXF1ZXN0IGFjY2Vzcy5cbiAgICAgICAgICA8L3A+XG5cbiAgICAgICAgICB7LyogQmV0YSBDb2RlIEZvcm0gKi99XG4gICAgICAgICAgPGZvcm0gb25TdWJtaXQ9e29uU3VibWl0Q29kZX0gY2xhc3NOYW1lPVwibWItNlwiPlxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJtYi00XCI+XG4gICAgICAgICAgICAgIDxsYWJlbCBodG1sRm9yPVwiYmV0YUNvZGVcIiBjbGFzc05hbWU9e2BibG9jayB0ZXh0LXNtIGZvbnQtbWVkaXVtIHRleHQtZ3JheS03MDAgbWItMiB0ZXh0LWxlZnQgJHtwb3BwaW5zLmNsYXNzTmFtZX1gfT5cbiAgICAgICAgICAgICAgICBCZXRhIEFjY2VzcyBDb2RlXG4gICAgICAgICAgICAgIDwvbGFiZWw+XG4gICAgICAgICAgICAgIDxpbnB1dFxuICAgICAgICAgICAgICAgIHR5cGU9XCJ0ZXh0XCJcbiAgICAgICAgICAgICAgICBpZD1cImJldGFDb2RlXCJcbiAgICAgICAgICAgICAgICB2YWx1ZT17YmV0YUNvZGV9XG4gICAgICAgICAgICAgICAgb25DaGFuZ2U9eyhlKSA9PiBzZXRCZXRhQ29kZShlLnRhcmdldC52YWx1ZSl9XG4gICAgICAgICAgICAgICAgcGxhY2Vob2xkZXI9XCJFbnRlciB5b3VyIGJldGEgY29kZVwiXG4gICAgICAgICAgICAgICAgY2xhc3NOYW1lPXtgdy1mdWxsIHB4LTQgcHktMyBib3JkZXIgYm9yZGVyLWdyYXktMzAwIHJvdW5kZWQtbGcgZm9jdXM6cmluZy0yIGZvY3VzOnJpbmctdmlvbGV0LTUwMCBmb2N1czpib3JkZXItdHJhbnNwYXJlbnQgdHJhbnNpdGlvbi1hbGwgJHtwb3BwaW5zLmNsYXNzTmFtZX1gfVxuICAgICAgICAgICAgICAgIGRpc2FibGVkPXtpc1N1Ym1pdHRpbmd9XG4gICAgICAgICAgICAgIC8+XG4gICAgICAgICAgICAgIHtlcnJvciAmJiAoXG4gICAgICAgICAgICAgICAgPHAgY2xhc3NOYW1lPXtgdGV4dC1yZWQtNjAwIHRleHQtc20gbXQtMiB0ZXh0LWxlZnQgJHtwb3BwaW5zLmNsYXNzTmFtZX1gfT5cbiAgICAgICAgICAgICAgICAgIHtlcnJvcn1cbiAgICAgICAgICAgICAgICA8L3A+XG4gICAgICAgICAgICAgICl9XG4gICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgIDxidXR0b25cbiAgICAgICAgICAgICAgdHlwZT1cInN1Ym1pdFwiXG4gICAgICAgICAgICAgIGRpc2FibGVkPXtpc1N1Ym1pdHRpbmcgfHwgIWJldGFDb2RlLnRyaW0oKX1cbiAgICAgICAgICAgICAgY2xhc3NOYW1lPXtgdy1mdWxsIHB4LTYgcHktMyBiZy12aW9sZXQtNTAwIHRleHQtd2hpdGUgcm91bmRlZC1sZyBmb250LW1lZGl1bSBob3ZlcjpiZy12aW9sZXQtNjAwIGRpc2FibGVkOmJnLWdyYXktMzAwIGRpc2FibGVkOmN1cnNvci1ub3QtYWxsb3dlZCB0cmFuc2l0aW9uLWNvbG9ycyAke3BvcHBpbnMuY2xhc3NOYW1lfWB9XG4gICAgICAgICAgICA+XG4gICAgICAgICAgICAgIHtpc1N1Ym1pdHRpbmcgPyAnQ2hlY2tpbmcuLi4nIDogJ0FjY2VzcyBCZXRhJ31cbiAgICAgICAgICAgIDwvYnV0dG9uPlxuICAgICAgICAgIDwvZm9ybT5cblxuICAgICAgICAgIHsvKiBEaXZpZGVyICovfVxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwicmVsYXRpdmUgbWItNlwiPlxuICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJhYnNvbHV0ZSBpbnNldC0wIGZsZXggaXRlbXMtY2VudGVyXCI+XG4gICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwidy1mdWxsIGJvcmRlci10IGJvcmRlci1ncmF5LTMwMFwiIC8+XG4gICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwicmVsYXRpdmUgZmxleCBqdXN0aWZ5LWNlbnRlciB0ZXh0LXNtXCI+XG4gICAgICAgICAgICAgIDxzcGFuIGNsYXNzTmFtZT17YHB4LTIgYmctd2hpdGUgdGV4dC1ncmF5LTUwMCAke3BvcHBpbnMuY2xhc3NOYW1lfWB9Pm9yPC9zcGFuPlxuICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgPC9kaXY+XG5cbiAgICAgICAgICB7LyogQWN0aW9uIEJ1dHRvbnMgKi99XG4gICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJzcGFjZS15LTNcIj5cbiAgICAgICAgICAgIDxMaW5rXG4gICAgICAgICAgICAgIGhyZWY9XCJtYWlsdG86aGVsbG9AcXVhbnRyby5maXQ/c3ViamVjdD1CZXRhIEFjY2VzcyBSZXF1ZXN0XCJcbiAgICAgICAgICAgICAgY2xhc3NOYW1lPXtgYmxvY2sgdy1mdWxsIHB4LTYgcHktMyBiZy1ncmF5LTEwMCB0ZXh0LWdyYXktNzAwIHJvdW5kZWQtbGcgZm9udC1tZWRpdW0gaG92ZXI6YmctZ3JheS0yMDAgdHJhbnNpdGlvbi1jb2xvcnMgY3Vyc29yLXBvaW50ZXIgdGV4dC1jZW50ZXIgJHtwb3BwaW5zLmNsYXNzTmFtZX1gfVxuICAgICAgICAgICAgPlxuICAgICAgICAgICAgICBSZXF1ZXN0IEJldGEgQWNjZXNzXG4gICAgICAgICAgICA8L0xpbms+XG5cbiAgICAgICAgICAgIDxMaW5rXG4gICAgICAgICAgICAgIGhyZWY9XCIvXCJcbiAgICAgICAgICAgICAgY2xhc3NOYW1lPXtgYmxvY2sgdy1mdWxsIHB4LTYgcHktMyBiZy1ncmF5LTUwIHRleHQtZ3JheS02MDAgcm91bmRlZC1sZyBmb250LW1lZGl1bSBob3ZlcjpiZy1ncmF5LTEwMCB0cmFuc2l0aW9uLWNvbG9ycyBjdXJzb3ItcG9pbnRlciB0ZXh0LWNlbnRlciAke3BvcHBpbnMuY2xhc3NOYW1lfWB9XG4gICAgICAgICAgICA+XG4gICAgICAgICAgICAgIEJhY2sgdG8gSG9tZVxuICAgICAgICAgICAgPC9MaW5rPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICA8L2Rpdj5cblxuICAgICAgICB7LyogQ29udGFjdCAqL31cbiAgICAgICAgPHAgY2xhc3NOYW1lPXtgdGV4dC13aGl0ZS83MCB0ZXh0LXNtICR7cG9wcGlucy5jbGFzc05hbWV9YH0+XG4gICAgICAgICAgUXVlc3Rpb25zPyBFbWFpbCB1cyBhdHsnICd9XG4gICAgICAgICAgPGEgaHJlZj1cIm1haWx0bzpoZWxsb0BxdWFudHJvLmZpdFwiIGNsYXNzTmFtZT1cInRleHQtd2hpdGUgaG92ZXI6dW5kZXJsaW5lXCI+XG4gICAgICAgICAgICBoZWxsb0BxdWFudHJvLmZpdFxuICAgICAgICAgIDwvYT5cbiAgICAgICAgPC9wPlxuICAgICAgPC9kaXY+XG5cbiAgICAgIHsvKiBGb290ZXIgKi99XG4gICAgICA8Zm9vdGVyIGNsYXNzTmFtZT1cImZpeGVkIGJvdHRvbS0wIGxlZnQtMCByaWdodC0wIHB4LTggcHktNFwiPlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cIm1heC13LTd4bCBteC1hdXRvIHRleHQtY2VudGVyXCI+XG4gICAgICAgICAgPHAgY2xhc3NOYW1lPXtgdGV4dC13aGl0ZS83MCB0ZXh0LXNtICR7cG9wcGlucy5jbGFzc05hbWV9YH0+XG4gICAgICAgICAgICDCqSAyMDI1IFF1YW50cm8gTExDLiBBbGwgcmlnaHRzIHJlc2VydmVkLlxuICAgICAgICAgIDwvcD5cbiAgICAgICAgPC9kaXY+XG4gICAgICA8L2Zvb3Rlcj5cbiAgICA8L2Rpdj5cbiAgKTtcbn1cbiJdLCJuYW1lcyI6WyJOb3RJbnZpdGVkUGFnZSIsInBvcHBpbnMiLCJQb3BwaW5zIiwic3Vic2V0cyIsIndlaWdodCIsImJldGFDb2RlIiwic2V0QmV0YUNvZGUiLCJpc1N1Ym1pdHRpbmciLCJlcnJvciIsIm9uU3VibWl0Q29kZSIsImRpdiIsImNsYXNzTmFtZSIsInN0eWxlIiwiYmFja2dyb3VuZENvbG9yIiwidXNlclNlbGVjdCIsIldlYmtpdFVzZXJTZWxlY3QiLCJJbWFnZSIsInNyYyIsImFsdCIsIndpZHRoIiwiaGVpZ2h0IiwiZmlsdGVyIiwiaDEiLCJwIiwiZm9ybSIsIm9uU3VibWl0IiwibGFiZWwiLCJodG1sRm9yIiwiaW5wdXQiLCJ0eXBlIiwiaWQiLCJ2YWx1ZSIsIm9uQ2hhbmdlIiwiZSIsInRhcmdldCIsInBsYWNlaG9sZGVyIiwiZGlzYWJsZWQiLCJidXR0b24iLCJ0cmltIiwic3BhbiIsIkxpbmsiLCJocmVmIiwiYSIsImZvb3RlciJdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7OytCQWdCQTs7O2VBQXdCQTs7Ozt3QkFkQTs4REFDTjs2REFDRDs7Ozs7O0FBRWpCLE1BQU1DLFVBQVVDLElBQUFBLGVBQU8sRUFBQztJQUFFQyxTQUFTO1FBQUM7S0FBUTtJQUFFQyxRQUFRO1FBQUM7UUFBTztRQUFPO1FBQU87S0FBTTtBQUFDO0FBVXBFLFNBQVNKLGVBQWUsRUFDckNLLFFBQVEsRUFDUkMsV0FBVyxFQUNYQyxZQUFZLEVBQ1pDLEtBQUssRUFDTEMsWUFBWSxFQUNRO0lBQ3BCLHFCQUNFLHNCQUFDQztRQUFJQyxXQUFVO1FBQW1GQyxPQUFPO1lBQUVDLGlCQUFpQjtZQUFXQyxZQUFZO1lBQVFDLGtCQUFrQjtRQUFPOzswQkFDbEwsc0JBQUNMO2dCQUFJQyxXQUFVOztrQ0FFYixxQkFBQ0Q7d0JBQUlDLFdBQVU7a0NBQ2IsY0FBQSxxQkFBQ0ssY0FBSzs0QkFDSkMsS0FBSTs0QkFDSkMsS0FBSTs0QkFDSlAsV0FBVTs0QkFDVlEsT0FBTzs0QkFDUEMsUUFBUTs0QkFDUlIsT0FBTztnQ0FDTEUsWUFBWTtnQ0FDWkMsa0JBQWtCO2dDQUNsQk0sUUFBUTs0QkFDVjs7O2tDQUtKLHNCQUFDWDt3QkFBSUMsV0FBVTs7MENBQ2IscUJBQUNXO2dDQUFHWCxXQUFXLENBQUMsMENBQTBDLEVBQUVWLFFBQVFVLFNBQVMsRUFBRTswQ0FBRTs7MENBR2pGLHFCQUFDWTtnQ0FBRVosV0FBVyxDQUFDLG1DQUFtQyxFQUFFVixRQUFRVSxTQUFTLEVBQUU7MENBQUU7OzBDQUt6RSxzQkFBQ2E7Z0NBQUtDLFVBQVVoQjtnQ0FBY0UsV0FBVTs7a0RBQ3RDLHNCQUFDRDt3Q0FBSUMsV0FBVTs7MERBQ2IscUJBQUNlO2dEQUFNQyxTQUFRO2dEQUFXaEIsV0FBVyxDQUFDLHVEQUF1RCxFQUFFVixRQUFRVSxTQUFTLEVBQUU7MERBQUU7OzBEQUdwSCxxQkFBQ2lCO2dEQUNDQyxNQUFLO2dEQUNMQyxJQUFHO2dEQUNIQyxPQUFPMUI7Z0RBQ1AyQixVQUFVLENBQUNDLElBQU0zQixZQUFZMkIsRUFBRUMsTUFBTSxDQUFDSCxLQUFLO2dEQUMzQ0ksYUFBWTtnREFDWnhCLFdBQVcsQ0FBQyw4SEFBOEgsRUFBRVYsUUFBUVUsU0FBUyxFQUFFO2dEQUMvSnlCLFVBQVU3Qjs7NENBRVhDLHVCQUNDLHFCQUFDZTtnREFBRVosV0FBVyxDQUFDLG9DQUFvQyxFQUFFVixRQUFRVSxTQUFTLEVBQUU7MERBQ3JFSDs7OztrREFJUCxxQkFBQzZCO3dDQUNDUixNQUFLO3dDQUNMTyxVQUFVN0IsZ0JBQWdCLENBQUNGLFNBQVNpQyxJQUFJO3dDQUN4QzNCLFdBQVcsQ0FBQyx3SkFBd0osRUFBRVYsUUFBUVUsU0FBUyxFQUFFO2tEQUV4TEosZUFBZSxnQkFBZ0I7Ozs7MENBS3BDLHNCQUFDRztnQ0FBSUMsV0FBVTs7a0RBQ2IscUJBQUNEO3dDQUFJQyxXQUFVO2tEQUNiLGNBQUEscUJBQUNEOzRDQUFJQyxXQUFVOzs7a0RBRWpCLHFCQUFDRDt3Q0FBSUMsV0FBVTtrREFDYixjQUFBLHFCQUFDNEI7NENBQUs1QixXQUFXLENBQUMsNEJBQTRCLEVBQUVWLFFBQVFVLFNBQVMsRUFBRTtzREFBRTs7Ozs7MENBS3pFLHNCQUFDRDtnQ0FBSUMsV0FBVTs7a0RBQ2IscUJBQUM2QixhQUFJO3dDQUNIQyxNQUFLO3dDQUNMOUIsV0FBVyxDQUFDLHVJQUF1SSxFQUFFVixRQUFRVSxTQUFTLEVBQUU7a0RBQ3pLOztrREFJRCxxQkFBQzZCLGFBQUk7d0NBQ0hDLE1BQUs7d0NBQ0w5QixXQUFXLENBQUMsc0lBQXNJLEVBQUVWLFFBQVFVLFNBQVMsRUFBRTtrREFDeEs7Ozs7OztrQ0FPTCxzQkFBQ1k7d0JBQUVaLFdBQVcsQ0FBQyxzQkFBc0IsRUFBRVYsUUFBUVUsU0FBUyxFQUFFOzs0QkFBRTs0QkFDbkM7MENBQ3ZCLHFCQUFDK0I7Z0NBQUVELE1BQUs7Z0NBQTJCOUIsV0FBVTswQ0FBNkI7Ozs7OzswQkFPOUUscUJBQUNnQztnQkFBT2hDLFdBQVU7MEJBQ2hCLGNBQUEscUJBQUNEO29CQUFJQyxXQUFVOzhCQUNiLGNBQUEscUJBQUNZO3dCQUFFWixXQUFXLENBQUMsc0JBQXNCLEVBQUVWLFFBQVFVLFNBQVMsRUFBRTtrQ0FBRTs7Ozs7O0FBT3RFIn0=

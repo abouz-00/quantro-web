@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
-import AuthErrorPage from '../../../components/AuthErrorPage';
+import { AuthErrorPage } from '../../../components/auth';
 
 function AuthErrorContent() {
   const searchParams = useSearchParams();

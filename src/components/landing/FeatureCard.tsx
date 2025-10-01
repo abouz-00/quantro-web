@@ -1,3 +1,5 @@
+"use client";
+
 // src/components/landing/FeatureCard.tsx
 import React, { useEffect, useRef } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
