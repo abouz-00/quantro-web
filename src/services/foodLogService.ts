@@ -35,8 +35,22 @@ export class FoodLogService {
       console.log('📋 FoodLogService: API returned', apiData.length, 'entries');
       return apiData.map(transformApiDataToFoodEntry);
     } catch (error) {
-      console.error('API response error:', error);
-      // Fallback to localStorage
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      
+      // Handle specific HTTP errors
+      if (errorMessage.includes('HTTP 401') || errorMessage.includes('HTTP 403')) {
+        console.error('Authentication error:', errorMessage);
+        // Could trigger a re-authentication flow here
+      } else if (errorMessage.includes('HTTP 404')) {
+        console.log('No food logs found for date:', dateParam);
+        return []; // Return empty array for 404
+      } else if (errorMessage.includes('HTTP 500') || errorMessage.includes('HTTP 503')) {
+        console.error('Server error:', errorMessage);
+      } else {
+        console.error('API response error:', errorMessage);
+      }
+      
+      // Fallback to localStorage for all errors
       return this.loadFromLocalStorage();
     }
   }
@@ -50,7 +64,21 @@ export class FoodLogService {
       const savedEntry = await apiClient.post<ApiData>('/food-logs', apiData);
       return transformApiDataToFoodEntry(savedEntry);
     } catch (error) {
-      console.error('API response error:', error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      
+      // Handle specific HTTP errors
+      if (errorMessage.includes('HTTP 401') || errorMessage.includes('HTTP 403')) {
+        console.error('Authentication error - cannot save food entry:', errorMessage);
+        throw new Error('Authentication required to save food entry');
+      } else if (errorMessage.includes('HTTP 400')) {
+        console.error('Invalid food entry data:', errorMessage);
+        throw new Error('Invalid food entry data');
+      } else if (errorMessage.includes('HTTP 500') || errorMessage.includes('HTTP 503')) {
+        console.error('Server error:', errorMessage);
+      } else {
+        console.error('API response error:', errorMessage);
+      }
+      
       // Fallback to localStorage
       this.saveToLocalStorage(entry);
       return entry;
@@ -65,7 +93,21 @@ export class FoodLogService {
       await apiClient.delete('/food-logs', { id });
       return true;
     } catch (error) {
-      console.error('API response error:', error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      
+      // Handle specific HTTP errors
+      if (errorMessage.includes('HTTP 401') || errorMessage.includes('HTTP 403')) {
+        console.error('Authentication error - cannot delete food entry:', errorMessage);
+        throw new Error('Authentication required to delete food entry');
+      } else if (errorMessage.includes('HTTP 404')) {
+        console.log('Food entry not found (may already be deleted):', id);
+        // Still remove from localStorage if it exists there
+      } else if (errorMessage.includes('HTTP 500') || errorMessage.includes('HTTP 503')) {
+        console.error('Server error:', errorMessage);
+      } else {
+        console.error('API response error:', errorMessage);
+      }
+      
       // Fallback to localStorage
       this.removeFromLocalStorage(id);
       return true;
@@ -89,7 +131,24 @@ export class FoodLogService {
       await apiClient.put('/food-logs', updateData);
       return true;
     } catch (error) {
-      console.error('API response error:', error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      
+      // Handle specific HTTP errors
+      if (errorMessage.includes('HTTP 401') || errorMessage.includes('HTTP 403')) {
+        console.error('Authentication error - cannot update food entry:', errorMessage);
+        throw new Error('Authentication required to update food entry');
+      } else if (errorMessage.includes('HTTP 400')) {
+        console.error('Invalid update data:', errorMessage);
+        throw new Error('Invalid food entry update data');
+      } else if (errorMessage.includes('HTTP 404')) {
+        console.error('Food entry not found:', id);
+        throw new Error('Food entry not found');
+      } else if (errorMessage.includes('HTTP 500') || errorMessage.includes('HTTP 503')) {
+        console.error('Server error:', errorMessage);
+      } else {
+        console.error('API response error:', errorMessage);
+      }
+      
       // Fallback to localStorage
       this.updateInLocalStorage(id, updates);
       return true;

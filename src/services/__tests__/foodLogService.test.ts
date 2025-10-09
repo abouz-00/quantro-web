@@ -32,8 +32,9 @@ const mockLocalStorage = {
 };
 Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
 
-// Mock console.error to prevent noise in tests
-const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+// Spy on console methods to verify error handling
+const mockConsoleError = jest.spyOn(console, 'error');
+const mockConsoleLog = jest.spyOn(console, 'log');
 
 describe('FoodLogService', () => {
   const mockFoodEntry: FoodEntry = {
@@ -56,6 +57,7 @@ describe('FoodLogService', () => {
     mockLocalStorage.getItem.mockClear();
     mockLocalStorage.setItem.mockClear();
     mockConsoleError.mockClear();
+    mockConsoleLog.mockClear();
     
     // Set up transform function mocks
     mockTransformApiDataToFoodEntry.mockImplementation((data) => ({
@@ -90,6 +92,7 @@ describe('FoodLogService', () => {
 
   afterAll(() => {
     mockConsoleError.mockRestore();
+    mockConsoleLog.mockRestore();
   });
 
   describe('loadFoodData', () => {
@@ -120,7 +123,13 @@ describe('FoodLogService', () => {
 
       const result = await FoodLogService.loadFoodData('2023-12-25');
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/food-logs?date=2023-12-25', {});
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('/food-logs?date=2023-12-25'),
+        expect.objectContaining({
+          method: 'GET',
+          credentials: 'include',
+        })
+      );
       expect(result).toHaveLength(1);
       expect(result[0]).toMatchObject({
         id: '1',
@@ -197,13 +206,17 @@ describe('FoodLogService', () => {
 
       const result = await FoodLogService.addFoodEntry(mockFoodEntry);
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/food-logs', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: expect.any(String),
-      });
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('/food-logs'),
+        expect.objectContaining({
+          method: 'POST',
+          credentials: 'include',
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json',
+          }),
+          body: expect.any(String),
+        })
+      );
       
       expect(result).toMatchObject({
         id: 'api-id',
@@ -211,7 +224,7 @@ describe('FoodLogService', () => {
       });
     });
 
-    it('should fallback to localStorage when API fails', async () => {
+    it('should throw error on 400 Bad Request', async () => {
       mockFetch.mockResolvedValue({
         ok: false,
         status: 400,
@@ -221,13 +234,9 @@ describe('FoodLogService', () => {
       });
       mockLocalStorage.getItem.mockReturnValue('[]');
 
-      const result = await FoodLogService.addFoodEntry(mockFoodEntry);
-
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-        'foodData',
-        JSON.stringify([mockFoodEntry])
+      await expect(FoodLogService.addFoodEntry(mockFoodEntry)).rejects.toThrow(
+        'Invalid food entry data'
       );
-      expect(result).toEqual(mockFoodEntry);
     });
 
     it('should handle fetch errors and use localStorage', async () => {
@@ -253,9 +262,13 @@ describe('FoodLogService', () => {
 
       const result = await FoodLogService.removeFoodEntry('test-id');
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/food-logs?id=test-id', {
-        method: 'DELETE',
-      });
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('/food-logs?id=test-id'),
+        expect.objectContaining({
+          method: 'DELETE',
+          credentials: 'include',
+        })
+      );
       expect(result).toBe(true);
     });
 
@@ -310,24 +323,28 @@ describe('FoodLogService', () => {
 
       const result = await FoodLogService.updateFoodEntry('test-id', updates);
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/food-logs', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: 'test-id',
-          quantity: 2,
-          calories: 190,
-          protein: 1.0,
-          carbs: 50,
-          fat: 0.6,
-        }),
-      });
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('/food-logs'),
+        expect.objectContaining({
+          method: 'PUT',
+          credentials: 'include',
+          headers: expect.objectContaining({
+            'Content-Type': 'application/json',
+          }),
+          body: JSON.stringify({
+            id: 'test-id',
+            quantity: 2,
+            calories: 190,
+            protein: 1.0,
+            carbs: 50,
+            fat: 0.6,
+          }),
+        })
+      );
       expect(result).toBe(true);
     });
 
-    it('should fallback to localStorage when API fails', async () => {
+    it('should throw error on 400 Bad Request', async () => {
       mockFetch.mockResolvedValue({
         ok: false,
         status: 400,
@@ -338,14 +355,9 @@ describe('FoodLogService', () => {
       const mockData = [mockFoodEntry];
       mockLocalStorage.getItem.mockReturnValue(JSON.stringify(mockData));
 
-      const result = await FoodLogService.updateFoodEntry('test-id', updates);
-
-      const expectedUpdatedData = [{ ...mockFoodEntry, ...updates }];
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-        'foodData',
-        JSON.stringify(expectedUpdatedData)
+      await expect(FoodLogService.updateFoodEntry('test-id', updates)).rejects.toThrow(
+        'Invalid food entry update data'
       );
-      expect(result).toBe(true);
     });
 
     it('should handle fetch errors and use localStorage', async () => {
@@ -358,7 +370,7 @@ describe('FoodLogService', () => {
       expect(result).toBe(true);
     });
 
-    it('should handle localStorage with non-matching IDs', async () => {
+    it('should throw error on 404 Not Found', async () => {
       mockFetch.mockResolvedValue({
         ok: false,
         status: 404,
@@ -369,14 +381,365 @@ describe('FoodLogService', () => {
       const mockData = [{ ...mockFoodEntry, id: 'different-id' }];
       mockLocalStorage.getItem.mockReturnValue(JSON.stringify(mockData));
 
+      await expect(FoodLogService.updateFoodEntry('test-id', updates)).rejects.toThrow(
+        'Food entry not found'
+      );
+    });
+  });
+
+  describe('Error Handling - Specific HTTP Status Codes', () => {
+    describe('loadFoodData - HTTP errors', () => {
+      it('should handle 401 Unauthorized error and fallback to localStorage', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 401,
+          statusText: 'Unauthorized',
+          json: async () => ({}),
+          text: async () => 'Unauthorized',
+        });
+        mockLocalStorage.getItem.mockReturnValue('[]');
+
+        const result = await FoodLogService.loadFoodData('2023-12-25');
+
+        // Should fallback to localStorage on auth error
+        expect(mockLocalStorage.getItem).toHaveBeenCalledWith('foodData');
+        expect(result).toEqual([]);
+      });
+
+      it('should handle 403 Forbidden error and fallback to localStorage', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 403,
+          statusText: 'Forbidden',
+          json: async () => ({}),
+          text: async () => 'Forbidden',
+        });
+        mockLocalStorage.getItem.mockReturnValue('[]');
+
+        const result = await FoodLogService.loadFoodData('2023-12-25');
+
+        // Should fallback to localStorage on auth error
+        expect(mockLocalStorage.getItem).toHaveBeenCalledWith('foodData');
+        expect(result).toEqual([]);
+      });
+
+      it('should handle 404 Not Found error and return empty array', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+          json: async () => ({}),
+          text: async () => 'Not Found',
+        });
+        mockLocalStorage.getItem.mockReturnValue(null);
+
+        const result = await FoodLogService.loadFoodData('2023-12-25');
+
+        expect(result).toEqual([]);
+      });
+
+      it('should handle 500 Internal Server Error and fallback to localStorage', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 500,
+          statusText: 'Internal Server Error',
+          json: async () => ({}),
+          text: async () => 'Internal Server Error',
+        });
+        mockLocalStorage.getItem.mockReturnValue('[]');
+
+        const result = await FoodLogService.loadFoodData('2023-12-25');
+
+        // Should fallback to localStorage on server error
+        expect(mockLocalStorage.getItem).toHaveBeenCalledWith('foodData');
+        expect(result).toEqual([]);
+      });
+
+      it('should handle 503 Service Unavailable error and fallback to localStorage', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 503,
+          statusText: 'Service Unavailable',
+          json: async () => ({}),
+          text: async () => 'Service Unavailable',
+        });
+        mockLocalStorage.getItem.mockReturnValue('[]');
+
+        const result = await FoodLogService.loadFoodData('2023-12-25');
+
+        // Should fallback to localStorage on service unavailable error
+        expect(mockLocalStorage.getItem).toHaveBeenCalledWith('foodData');
+        expect(result).toEqual([]);
+      });
+    });
+
+    describe('addFoodEntry - HTTP errors', () => {
+      it('should throw error on 401 Unauthorized', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 401,
+          statusText: 'Unauthorized',
+          json: async () => ({}),
+          text: async () => 'Unauthorized',
+        });
+
+        await expect(FoodLogService.addFoodEntry(mockFoodEntry)).rejects.toThrow(
+          'Authentication required to save food entry'
+        );
+      });
+
+      it('should throw error on 403 Forbidden', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 403,
+          statusText: 'Forbidden',
+          json: async () => ({}),
+          text: async () => 'Forbidden',
+        });
+
+        await expect(FoodLogService.addFoodEntry(mockFoodEntry)).rejects.toThrow(
+          'Authentication required to save food entry'
+        );
+      });
+
+      it('should throw error on 400 Bad Request', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 400,
+          statusText: 'Bad Request',
+          json: async () => ({}),
+          text: async () => 'Bad Request',
+        });
+
+        await expect(FoodLogService.addFoodEntry(mockFoodEntry)).rejects.toThrow(
+          'Invalid food entry data'
+        );
+      });
+
+      it('should fallback to localStorage on 500 error', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 500,
+          statusText: 'Internal Server Error',
+          json: async () => ({}),
+          text: async () => 'Internal Server Error',
+        });
+        mockLocalStorage.getItem.mockReturnValue('[]');
+
+        const result = await FoodLogService.addFoodEntry(mockFoodEntry);
+
+        expect(mockLocalStorage.setItem).toHaveBeenCalled();
+        expect(result).toEqual(mockFoodEntry);
+      });
+    });
+
+    describe('removeFoodEntry - HTTP errors', () => {
+      it('should throw error on 401 Unauthorized', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 401,
+          statusText: 'Unauthorized',
+          json: async () => ({}),
+          text: async () => 'Unauthorized',
+        });
+
+        await expect(FoodLogService.removeFoodEntry('test-id')).rejects.toThrow(
+          'Authentication required to delete food entry'
+        );
+      });
+
+      it('should throw error on 403 Forbidden', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 403,
+          statusText: 'Forbidden',
+          json: async () => ({}),
+          text: async () => 'Forbidden',
+        });
+
+        await expect(FoodLogService.removeFoodEntry('test-id')).rejects.toThrow(
+          'Authentication required to delete food entry'
+        );
+      });
+
+      it('should handle 404 Not Found gracefully', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+          json: async () => ({}),
+          text: async () => 'Not Found',
+        });
+        mockLocalStorage.getItem.mockReturnValue('[]');
+
+        const result = await FoodLogService.removeFoodEntry('test-id');
+
+        expect(result).toBe(true);
+        expect(mockLocalStorage.setItem).toHaveBeenCalled();
+      });
+    });
+
+    describe('updateFoodEntry - HTTP errors', () => {
+      const updates = { amount: '2', calories: 190 };
+
+      it('should throw error on 401 Unauthorized', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 401,
+          statusText: 'Unauthorized',
+          json: async () => ({}),
+          text: async () => 'Unauthorized',
+        });
+
+        await expect(FoodLogService.updateFoodEntry('test-id', updates)).rejects.toThrow(
+          'Authentication required to update food entry'
+        );
+      });
+
+      it('should throw error on 403 Forbidden', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 403,
+          statusText: 'Forbidden',
+          json: async () => ({}),
+          text: async () => 'Forbidden',
+        });
+
+        await expect(FoodLogService.updateFoodEntry('test-id', updates)).rejects.toThrow(
+          'Authentication required to update food entry'
+        );
+      });
+
+      it('should throw error on 400 Bad Request', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 400,
+          statusText: 'Bad Request',
+          json: async () => ({}),
+          text: async () => 'Bad Request',
+        });
+
+        await expect(FoodLogService.updateFoodEntry('test-id', updates)).rejects.toThrow(
+          'Invalid food entry update data'
+        );
+      });
+
+      it('should throw error on 404 Not Found', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+          json: async () => ({}),
+          text: async () => 'Not Found',
+        });
+
+        await expect(FoodLogService.updateFoodEntry('test-id', updates)).rejects.toThrow(
+          'Food entry not found'
+        );
+      });
+
+      it('should fallback to localStorage on 500 error', async () => {
+        mockFetch.mockResolvedValue({
+          ok: false,
+          status: 500,
+          statusText: 'Internal Server Error',
+          json: async () => ({}),
+          text: async () => 'Internal Server Error',
+        });
+        mockLocalStorage.getItem.mockReturnValue('[]');
+
+        const result = await FoodLogService.updateFoodEntry('test-id', updates);
+
+        expect(mockLocalStorage.setItem).toHaveBeenCalled();
+        expect(result).toBe(true);
+      });
+    });
+  });
+
+  describe('Edge Cases and Additional Coverage', () => {
+    it('should handle non-Error objects in catch blocks', async () => {
+      mockFetch.mockRejectedValue('string error');
+      mockLocalStorage.getItem.mockReturnValue('[]');
+
+      const result = await FoodLogService.loadFoodData('2023-12-25');
+
+      expect(result).toEqual([]);
+    });
+
+    it('should handle empty foodData in localStorage correctly', async () => {
+      mockFetch.mockResolvedValue({
+        ok: false,
+        status: 500,
+        statusText: 'Internal Server Error',
+        json: async () => ({}),
+        text: async () => 'Internal Server Error',
+      });
+      mockLocalStorage.getItem.mockReturnValue('[]');
+
+      const result = await FoodLogService.loadFoodData('2023-12-25');
+
+      expect(result).toEqual([]);
+    });
+
+    it('should handle updates with undefined optional fields', async () => {
+      mockFetch.mockResolvedValue({
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+        json: async () => ({}),
+        text: async () => 'OK',
+      });
+
+      const updates = { mealType: 'lunch' as const };
       const result = await FoodLogService.updateFoodEntry('test-id', updates);
 
-      // Should not modify data when ID doesn't match
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-        'foodData',
-        JSON.stringify(mockData)
-      );
       expect(result).toBe(true);
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('/food-logs'),
+        expect.objectContaining({
+          method: 'PUT',
+          body: expect.stringContaining('lunch'),
+        })
+      );
+    });
+
+    it('should correctly transform multiple food entries from API', async () => {
+      const mockApiData = [
+        {
+          id: '1',
+          foodName: 'Apple',
+          brand: 'Organic',
+          quantity: 1,
+          unit: 'medium',
+          calories: 95,
+          protein: 0.5,
+          carbs: 25,
+          fat: 0.3,
+        },
+        {
+          id: '2',
+          foodName: 'Banana',
+          quantity: 2,
+          unit: 'large',
+          calories: 210,
+          protein: 2,
+          carbs: 54,
+          fat: 0.8,
+        },
+      ];
+
+      mockFetch.mockResolvedValue({
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+        json: async () => mockApiData,
+        text: async () => JSON.stringify(mockApiData),
+      });
+
+      const result = await FoodLogService.loadFoodData('2023-12-25');
+
+      expect(result).toHaveLength(2);
+      expect(mockTransformApiDataToFoodEntry).toHaveBeenCalledTimes(2);
     });
   });
 });
