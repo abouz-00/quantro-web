@@ -2,6 +2,23 @@ import { FoodEntry } from '../types/food';
 import { transformApiDataToFoodEntry, transformFoodEntryToApiData } from '../utils/foodEntryUtils';
 import { apiClient } from '../lib/apiClient';
 
+// API response type matching backend structure
+interface ApiData {
+  id: string;
+  foodName: string;
+  brand?: string;
+  quantity: number;
+  unit: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+  fiber?: number;
+  createdAt?: string;
+  date?: string;
+  mealType?: "breakfast" | "lunch" | "dinner" | "snack" | "other";
+}
+
 /**
  * Food Log API Service
  * Handles all API interactions for food logging with localStorage fallback
@@ -13,7 +30,7 @@ export class FoodLogService {
   static async loadFoodData(dateParam: string): Promise<FoodEntry[]> {
     try {
       console.log('🌐 FoodLogService: About to fetch /food-logs?date=' + dateParam);
-      const apiData = await apiClient.get('/food-logs', { date: dateParam }) as any[];
+      const apiData = await apiClient.get<ApiData[]>('/food-logs', { date: dateParam });
 
       console.log('📋 FoodLogService: API returned', apiData.length, 'entries');
       return apiData.map(transformApiDataToFoodEntry);
@@ -30,8 +47,8 @@ export class FoodLogService {
   static async addFoodEntry(entry: FoodEntry): Promise<FoodEntry> {
     try {
       const apiData = transformFoodEntryToApiData(entry);
-      const savedEntry = await apiClient.post('/food-logs', apiData);
-      return transformApiDataToFoodEntry(savedEntry as any);
+      const savedEntry = await apiClient.post<ApiData>('/food-logs', apiData);
+      return transformApiDataToFoodEntry(savedEntry);
     } catch (error) {
       console.error('API response error:', error);
       // Fallback to localStorage
