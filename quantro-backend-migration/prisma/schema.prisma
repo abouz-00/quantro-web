@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  isApproved    Boolean   @default(false)
+  invitedBy     String?
+  accounts      Account[]
+  sessions      Session[]
+  
+  // Quantro specific fields
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Email preferences
+  emailUnsubscribed Boolean @default(false)
+  
+  // Nutrition tracking preferences
+  dailyCalorieGoal    Int?      @default(2000)
+  dailyProteinGoal    Float?    @default(150)
+  dailyCarbGoal       Float?    @default(250)
+  dailyFatGoal        Float?    @default(67)
+  
+  // User preferences
+  weightUnit          String    @default("lbs") // "lbs" or "kg"
+  heightUnit          String    @default("ft")  // "ft" or "cm"
+  
+  // Food logs
+  foodLogs      FoodLog[]
+
+  @@map("users")
+}
+
+model FoodLog {
+  id          String   @id @default(cuid())
+  userId      String
+  date        DateTime @default(now())
+  mealType    String   // "breakfast", "lunch", "dinner", "snack"
+  orderIndex  Int?     // For drag and drop ordering within a day
+  
+  // Food details
+  foodName    String
+  brand       String?
+  quantity    Float
+  unit        String
+  
+  // Nutritional information
+  calories    Float
+  protein     Float
+  carbs       Float
+  fat         Float
+  fiber       Float?
+  sugar       Float?
+  sodium      Float?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("food_logs")
+}
+
+model BetaInvite {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  code      String   @unique
+  used      Boolean  @default(false)
+  usedAt    DateTime?
+  revoked   Boolean  @default(false)
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+  expiresAt DateTime?
+}
