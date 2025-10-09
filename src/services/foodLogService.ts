@@ -1,6 +1,6 @@
 import { FoodEntry } from '../types/food';
-import { errorService } from './errorService';
 import { transformApiDataToFoodEntry, transformFoodEntryToApiData } from '../utils/foodEntryUtils';
+import { apiClient } from '../lib/apiClient';
 
 /**
  * Food Log API Service
@@ -12,58 +12,14 @@ export class FoodLogService {
    */
   static async loadFoodData(dateParam: string): Promise<FoodEntry[]> {
     try {
-      console.log('🌐 FoodLogService: About to fetch /api/food-logs?date=' + dateParam);
-      const response = await this.retryFetch(`/api/food-logs?date=${dateParam}`, {});
-      
-      if (!response) {
-        throw new Error('No response received from server');
-      }
-      
-      console.log('📡 FoodLogService: Got response status:', response.status, 'ok:', response.ok);
-      
-      if (response.ok) {
-        const apiData = await response.json();
-        console.log('📋 FoodLogService: API returned', apiData.length, 'entries');
-        return apiData.map(transformApiDataToFoodEntry);
-      } else {
-        let errorText = 'Unknown error';
-        try {
-          // Safely attempt to get error text
-          errorText = response.text ? await response.text() : `HTTP ${response.status}`;
-        } catch {
-          errorText = `HTTP ${response.status}: ${response.statusText || 'Unknown error'}`;
-        }
-        
-        // Safely log error details with fallbacks
-        const errorDetails = {
-          status: response.status,
-          statusText: response.statusText || 'Unknown',
-          body: errorText,
-          operation: 'loadFoodData',
-          dateParam,
-          url: response.url || 'Unknown',
-          ok: response.ok
-        };
-        
-        console.error('API response error:', errorDetails);
-        // Fallback to localStorage
-        return this.loadFromLocalStorage();
-      }
+      console.log('🌐 FoodLogService: About to fetch /food-logs?date=' + dateParam);
+      const apiData = await apiClient.get('/food-logs', { date: dateParam }) as any[];
+
+      console.log('📋 FoodLogService: API returned', apiData.length, 'entries');
+      return apiData.map(transformApiDataToFoodEntry);
     } catch (error) {
-      // Ensure we have an Error object for logging
-      const errorInstance = error instanceof Error ? error : new Error(String(error));
-      
-      await errorService.logError(errorInstance, {
-        severity: 'medium',
-        category: 'network',
-        metadata: { operation: 'loadFoodData', dateParam },
-      });
-      console.error('Network error loading food data:', {
-        message: errorInstance.message,
-        stack: errorInstance.stack,
-        operation: 'loadFoodData',
-        dateParam
-      });
+      console.error('API response error:', error);
+      // Fallback to localStorage
       return this.loadFromLocalStorage();
     }
   }
@@ -73,61 +29,12 @@ export class FoodLogService {
    */
   static async addFoodEntry(entry: FoodEntry): Promise<FoodEntry> {
     try {
-      const response = await this.retryFetch('/api/food-logs', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(transformFoodEntryToApiData(entry)),
-      });
-
-      if (!response) {
-        throw new Error('No response received from server');
-      }
-
-      if (response.ok) {
-        const savedEntry = await response.json();
-        return transformApiDataToFoodEntry(savedEntry);
-      } else {
-        let errorText = 'Unknown error';
-        try {
-          // Safely attempt to get error text
-          errorText = response.text ? await response.text() : `HTTP ${response.status}`;
-        } catch {
-          errorText = `HTTP ${response.status}: ${response.statusText || 'Unknown error'}`;
-        }
-        
-        // Safely log error details with fallbacks
-        const errorDetails = {
-          status: response.status,
-          statusText: response.statusText || 'Unknown',
-          body: errorText,
-          operation: 'addFoodEntry',
-          entryId: entry.id,
-          url: response.url || 'Unknown',
-          ok: response.ok
-        };
-        
-        console.error('API response error:', errorDetails);
-        // Fallback to localStorage
-        this.saveToLocalStorage(entry);
-        return entry;
-      }
+      const apiData = transformFoodEntryToApiData(entry);
+      const savedEntry = await apiClient.post('/food-logs', apiData);
+      return transformApiDataToFoodEntry(savedEntry as any);
     } catch (error) {
-      // Ensure we have an Error object for logging
-      const errorInstance = error instanceof Error ? error : new Error(String(error));
-      
-      await errorService.logError(errorInstance, {
-        severity: 'medium',
-        category: 'network',
-        metadata: { operation: 'addFoodEntry', entryId: entry.id },
-      });
-      console.error('Network error saving food entry:', {
-        message: errorInstance.message,
-        stack: errorInstance.stack,
-        operation: 'addFoodEntry',
-        entryId: entry.id
-      });
+      console.error('API response error:', error);
+      // Fallback to localStorage
       this.saveToLocalStorage(entry);
       return entry;
     }
@@ -138,56 +45,11 @@ export class FoodLogService {
    */
   static async removeFoodEntry(id: string): Promise<boolean> {
     try {
-      const response = await this.retryFetch(`/api/food-logs?id=${id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response) {
-        throw new Error('No response received from server');
-      }
-
-      if (response.ok) {
-        return true;
-      } else {
-        let errorText = 'Unknown error';
-        try {
-          // Safely attempt to get error text
-          errorText = response.text ? await response.text() : `HTTP ${response.status}`;
-        } catch {
-          errorText = `HTTP ${response.status}: ${response.statusText || 'Unknown error'}`;
-        }
-        
-        // Safely log error details with fallbacks
-        const errorDetails = {
-          status: response.status,
-          statusText: response.statusText || 'Unknown',
-          body: errorText,
-          operation: 'removeFoodEntry',
-          entryId: id,
-          url: response.url || 'Unknown',
-          ok: response.ok
-        };
-        
-        console.error('API response error:', errorDetails);
-        // Fallback to localStorage
-        this.removeFromLocalStorage(id);
-        return true;
-      }
+      await apiClient.delete('/food-logs', { id });
+      return true;
     } catch (error) {
-      // Ensure we have an Error object for logging
-      const errorInstance = error instanceof Error ? error : new Error(String(error));
-      
-      await errorService.logError(errorInstance, {
-        severity: 'medium',
-        category: 'network',
-        metadata: { operation: 'removeFoodEntry', entryId: id },
-      });
-      console.error('Network error deleting food entry:', {
-        message: errorInstance.message,
-        stack: errorInstance.stack,
-        operation: 'removeFoodEntry',
-        entryId: id
-      });
+      console.error('API response error:', error);
+      // Fallback to localStorage
       this.removeFromLocalStorage(id);
       return true;
     }
@@ -198,70 +60,20 @@ export class FoodLogService {
    */
   static async updateFoodEntry(id: string, updates: Partial<FoodEntry>): Promise<boolean> {
     try {
-      const response = await this.retryFetch('/api/food-logs', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id,
-          quantity: updates.amount ? parseFloat(updates.amount) : undefined,
-          calories: updates.calories,
-          protein: updates.protein,
-          carbs: updates.carbs,
-          fat: updates.fat,
-          mealType: updates.mealType,
-        }),
-      });
-
-      if (!response) {
-        throw new Error('No response received from server');
-      }
-
-      if (response.ok) {
-        return true;
-      } else {
-        let errorText = 'Unknown error';
-        try {
-          // Safely attempt to get error text
-          errorText = response.text ? await response.text() : `HTTP ${response.status}`;
-        } catch {
-          errorText = `HTTP ${response.status}: ${response.statusText || 'Unknown error'}`;
-        }
-        
-        // Safely log error details with fallbacks
-        const errorDetails = {
-          status: response.status,
-          statusText: response.statusText || 'Unknown',
-          body: errorText,
-          operation: 'updateFoodEntry',
-          entryId: id,
-          updates,
-          url: response.url || 'Unknown',
-          ok: response.ok
-        };
-        
-        console.error('API response error:', errorDetails);
-        // Fallback to localStorage
-        this.updateInLocalStorage(id, updates);
-        return true;
-      }
+      const updateData = {
+        id,
+        quantity: updates.amount ? parseFloat(updates.amount) : undefined,
+        calories: updates.calories,
+        protein: updates.protein,
+        carbs: updates.carbs,
+        fat: updates.fat,
+        mealType: updates.mealType,
+      };
+      await apiClient.put('/food-logs', updateData);
+      return true;
     } catch (error) {
-      // Ensure we have an Error object for logging
-      const errorInstance = error instanceof Error ? error : new Error(String(error));
-      
-      await errorService.logError(errorInstance, {
-        severity: 'medium',
-        category: 'network',
-        metadata: { operation: 'updateFoodEntry', entryId: id, updates },
-      });
-      console.error('Network error updating food entry:', {
-        message: errorInstance.message,
-        stack: errorInstance.stack,
-        operation: 'updateFoodEntry',
-        entryId: id,
-        updates
-      });
+      console.error('API response error:', error);
+      // Fallback to localStorage
       this.updateInLocalStorage(id, updates);
       return true;
     }
