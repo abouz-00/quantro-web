@@ -1,4 +1,5 @@
 // Export all custom hooks
+export * from './useAuthSync';
 export * from './useClipboard';
 export * from './useContextMenu';
 export * from './useCustomFoods';
