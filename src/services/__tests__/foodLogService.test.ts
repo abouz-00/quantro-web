@@ -137,7 +137,7 @@ describe('FoodLogService', () => {
       });
     });
 
-    it('should fallback to localStorage when API fails', async () => {
+    it('should throw error when API returns 500 error', async () => {
       mockFetch.mockResolvedValue({
         ok: false,
         status: 500,
@@ -146,23 +146,13 @@ describe('FoodLogService', () => {
         text: async () => 'Internal Server Error',
       });
 
-      const mockLocalData = JSON.stringify([mockFoodEntry]);
-      mockLocalStorage.getItem.mockReturnValue(mockLocalData);
-
-      const result = await FoodLogService.loadFoodData('2023-12-25');
-
-      expect(mockLocalStorage.getItem).toHaveBeenCalledWith('foodData');
-      expect(result).toEqual([mockFoodEntry]);
+      await expect(FoodLogService.loadFoodData('2023-12-25')).rejects.toThrow('HTTP 500');
     });
 
-    it('should fallback to localStorage when fetch throws error', async () => {
+    it('should throw error when fetch throws network error', async () => {
       mockFetch.mockRejectedValue(new Error('Network error'));
-      mockLocalStorage.getItem.mockReturnValue('[]');
 
-      const result = await FoodLogService.loadFoodData('2023-12-25');
-
-      expect(mockLocalStorage.getItem).toHaveBeenCalledWith('foodData');
-      expect(result).toEqual([]);
+      await expect(FoodLogService.loadFoodData('2023-12-25')).rejects.toThrow('Network');
     });
 
     it('should return empty array when localStorage is empty', async () => {
@@ -239,14 +229,10 @@ describe('FoodLogService', () => {
       );
     });
 
-    it('should handle fetch errors and use localStorage', async () => {
+    it('should throw error on network failure', async () => {
       mockFetch.mockRejectedValue(new Error('Network error'));
-      mockLocalStorage.getItem.mockReturnValue('[]');
 
-      const result = await FoodLogService.addFoodEntry(mockFoodEntry);
-
-      expect(mockLocalStorage.setItem).toHaveBeenCalled();
-      expect(result).toEqual(mockFoodEntry);
+      await expect(FoodLogService.addFoodEntry(mockFoodEntry)).rejects.toThrow('Network');
     });
   });
 
@@ -272,7 +258,7 @@ describe('FoodLogService', () => {
       expect(result).toBe(true);
     });
 
-    it('should fallback to localStorage when API fails', async () => {
+    it('should throw error on 404 Not Found', async () => {
       mockFetch.mockResolvedValue({
         ok: false,
         status: 404,
@@ -280,26 +266,14 @@ describe('FoodLogService', () => {
         json: async () => ({}),
         text: async () => 'Not Found',
       });
-      const mockData = [mockFoodEntry, { ...mockFoodEntry, id: 'other-id' }];
-      mockLocalStorage.getItem.mockReturnValue(JSON.stringify(mockData));
 
-      const result = await FoodLogService.removeFoodEntry('test-id');
-
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-        'foodData',
-        JSON.stringify([{ ...mockFoodEntry, id: 'other-id' }])
-      );
-      expect(result).toBe(true);
+      await expect(FoodLogService.removeFoodEntry('test-id')).rejects.toThrow('HTTP 404');
     });
 
-    it('should handle fetch errors and use localStorage', async () => {
+    it('should throw error on network failure', async () => {
       mockFetch.mockRejectedValue(new Error('Network error'));
-      mockLocalStorage.getItem.mockReturnValue('[]');
 
-      const result = await FoodLogService.removeFoodEntry('test-id');
-
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('foodData', '[]');
-      expect(result).toBe(true);
+      await expect(FoodLogService.removeFoodEntry('test-id')).rejects.toThrow('Network');
     });
   });
 
@@ -360,14 +334,10 @@ describe('FoodLogService', () => {
       );
     });
 
-    it('should handle fetch errors and use localStorage', async () => {
+    it('should throw error on network failure', async () => {
       mockFetch.mockRejectedValue(new Error('Network error'));
-      mockLocalStorage.getItem.mockReturnValue('[]');
 
-      const result = await FoodLogService.updateFoodEntry('test-id', updates);
-
-      expect(mockLocalStorage.setItem).toHaveBeenCalled();
-      expect(result).toBe(true);
+      await expect(FoodLogService.updateFoodEntry('test-id', updates)).rejects.toThrow('Network');
     });
 
     it('should throw error on 404 Not Found', async () => {
@@ -389,7 +359,7 @@ describe('FoodLogService', () => {
 
   describe('Error Handling - Specific HTTP Status Codes', () => {
     describe('loadFoodData - HTTP errors', () => {
-      it('should handle 401 Unauthorized error and fallback to localStorage', async () => {
+      it('should throw error on 401 Unauthorized', async () => {
         mockFetch.mockResolvedValue({
           ok: false,
           status: 401,
@@ -397,16 +367,11 @@ describe('FoodLogService', () => {
           json: async () => ({}),
           text: async () => 'Unauthorized',
         });
-        mockLocalStorage.getItem.mockReturnValue('[]');
 
-        const result = await FoodLogService.loadFoodData('2023-12-25');
-
-        // Should fallback to localStorage on auth error
-        expect(mockLocalStorage.getItem).toHaveBeenCalledWith('foodData');
-        expect(result).toEqual([]);
+        await expect(FoodLogService.loadFoodData('2023-12-25')).rejects.toThrow('HTTP 401');
       });
 
-      it('should handle 403 Forbidden error and fallback to localStorage', async () => {
+      it('should throw error on 403 Forbidden', async () => {
         mockFetch.mockResolvedValue({
           ok: false,
           status: 403,
@@ -414,13 +379,8 @@ describe('FoodLogService', () => {
           json: async () => ({}),
           text: async () => 'Forbidden',
         });
-        mockLocalStorage.getItem.mockReturnValue('[]');
 
-        const result = await FoodLogService.loadFoodData('2023-12-25');
-
-        // Should fallback to localStorage on auth error
-        expect(mockLocalStorage.getItem).toHaveBeenCalledWith('foodData');
-        expect(result).toEqual([]);
+        await expect(FoodLogService.loadFoodData('2023-12-25')).rejects.toThrow('HTTP 403');
       });
 
       it('should handle 404 Not Found error and return empty array', async () => {
@@ -438,7 +398,7 @@ describe('FoodLogService', () => {
         expect(result).toEqual([]);
       });
 
-      it('should handle 500 Internal Server Error and fallback to localStorage', async () => {
+      it('should throw error on 500 Internal Server Error', async () => {
         mockFetch.mockResolvedValue({
           ok: false,
           status: 500,
@@ -446,16 +406,11 @@ describe('FoodLogService', () => {
           json: async () => ({}),
           text: async () => 'Internal Server Error',
         });
-        mockLocalStorage.getItem.mockReturnValue('[]');
 
-        const result = await FoodLogService.loadFoodData('2023-12-25');
-
-        // Should fallback to localStorage on server error
-        expect(mockLocalStorage.getItem).toHaveBeenCalledWith('foodData');
-        expect(result).toEqual([]);
+        await expect(FoodLogService.loadFoodData('2023-12-25')).rejects.toThrow('HTTP 500');
       });
 
-      it('should handle 503 Service Unavailable error and fallback to localStorage', async () => {
+      it('should throw error on 503 Service Unavailable', async () => {
         mockFetch.mockResolvedValue({
           ok: false,
           status: 503,
@@ -463,13 +418,8 @@ describe('FoodLogService', () => {
           json: async () => ({}),
           text: async () => 'Service Unavailable',
         });
-        mockLocalStorage.getItem.mockReturnValue('[]');
 
-        const result = await FoodLogService.loadFoodData('2023-12-25');
-
-        // Should fallback to localStorage on service unavailable error
-        expect(mockLocalStorage.getItem).toHaveBeenCalledWith('foodData');
-        expect(result).toEqual([]);
+        await expect(FoodLogService.loadFoodData('2023-12-25')).rejects.toThrow('HTTP 503');
       });
     });
 
@@ -516,7 +466,7 @@ describe('FoodLogService', () => {
         );
       });
 
-      it('should fallback to localStorage on 500 error', async () => {
+      it('should throw error on 500 error', async () => {
         mockFetch.mockResolvedValue({
           ok: false,
           status: 500,
@@ -524,12 +474,8 @@ describe('FoodLogService', () => {
           json: async () => ({}),
           text: async () => 'Internal Server Error',
         });
-        mockLocalStorage.getItem.mockReturnValue('[]');
 
-        const result = await FoodLogService.addFoodEntry(mockFoodEntry);
-
-        expect(mockLocalStorage.setItem).toHaveBeenCalled();
-        expect(result).toEqual(mockFoodEntry);
+        await expect(FoodLogService.addFoodEntry(mockFoodEntry)).rejects.toThrow('HTTP 500');
       });
     });
 
@@ -562,7 +508,7 @@ describe('FoodLogService', () => {
         );
       });
 
-      it('should handle 404 Not Found gracefully', async () => {
+      it('should throw error on 404 Not Found', async () => {
         mockFetch.mockResolvedValue({
           ok: false,
           status: 404,
@@ -570,12 +516,8 @@ describe('FoodLogService', () => {
           json: async () => ({}),
           text: async () => 'Not Found',
         });
-        mockLocalStorage.getItem.mockReturnValue('[]');
 
-        const result = await FoodLogService.removeFoodEntry('test-id');
-
-        expect(result).toBe(true);
-        expect(mockLocalStorage.setItem).toHaveBeenCalled();
+        await expect(FoodLogService.removeFoodEntry('test-id')).rejects.toThrow('HTTP 404');
       });
     });
 
@@ -638,7 +580,7 @@ describe('FoodLogService', () => {
         );
       });
 
-      it('should fallback to localStorage on 500 error', async () => {
+      it('should throw error on 500 error', async () => {
         mockFetch.mockResolvedValue({
           ok: false,
           status: 500,
@@ -646,12 +588,8 @@ describe('FoodLogService', () => {
           json: async () => ({}),
           text: async () => 'Internal Server Error',
         });
-        mockLocalStorage.getItem.mockReturnValue('[]');
 
-        const result = await FoodLogService.updateFoodEntry('test-id', updates);
-
-        expect(mockLocalStorage.setItem).toHaveBeenCalled();
-        expect(result).toBe(true);
+        await expect(FoodLogService.updateFoodEntry('test-id', updates)).rejects.toThrow('HTTP 500');
       });
     });
   });
@@ -659,14 +597,11 @@ describe('FoodLogService', () => {
   describe('Edge Cases and Additional Coverage', () => {
     it('should handle non-Error objects in catch blocks', async () => {
       mockFetch.mockRejectedValue('string error');
-      mockLocalStorage.getItem.mockReturnValue('[]');
 
-      const result = await FoodLogService.loadFoodData('2023-12-25');
-
-      expect(result).toEqual([]);
+      await expect(FoodLogService.loadFoodData('2023-12-25')).rejects.toThrow('NetworkError');
     });
 
-    it('should handle empty foodData in localStorage correctly', async () => {
+    it('should throw error on 500 status', async () => {
       mockFetch.mockResolvedValue({
         ok: false,
         status: 500,
@@ -674,11 +609,8 @@ describe('FoodLogService', () => {
         json: async () => ({}),
         text: async () => 'Internal Server Error',
       });
-      mockLocalStorage.getItem.mockReturnValue('[]');
 
-      const result = await FoodLogService.loadFoodData('2023-12-25');
-
-      expect(result).toEqual([]);
+      await expect(FoodLogService.loadFoodData('2023-12-25')).rejects.toThrow('HTTP 500');
     });
 
     it('should handle updates with undefined optional fields', async () => {
