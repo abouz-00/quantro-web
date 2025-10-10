@@ -1,8 +1,10 @@
 name: Auto-approve and merge Dependabot PRs
 
 on:
-  pull_request:
-    types: [opened, synchronize]
+  workflow_run:
+    workflows: ["CI/CD Pipeline"]
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: write
@@ -11,32 +13,50 @@ permissions:
 jobs:
   dependabot:
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    # Only run if CI workflow succeeded and PR is from Dependabot
+    if: |
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
     
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      
+      - name: Get PR number
+        id: pr
+        run: |
+          PR_NUMBER=$(gh pr list --head "${{ github.event.workflow_run.head_branch }}" --json number --jq '.[0].number')
+          echo "number=$PR_NUMBER" >> $GITHUB_OUTPUT
+          PR_AUTHOR=$(gh pr view "$PR_NUMBER" --json author --jq '.author.login')
+          echo "author=$PR_AUTHOR" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
       - name: Dependabot metadata
         id: metadata
+        if: steps.pr.outputs.author == 'dependabot[bot]'
         uses: dependabot/fetch-metadata@v2.4.0
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
       
-      - name: Enable auto-merge for patch and minor updates
+      - name: Enable auto-merge for patch and minor updates (only after CI passes)
         if: |
-          contains(steps.metadata.outputs.update-type, 'version-update:semver-patch') || 
-          contains(steps.metadata.outputs.update-type, 'version-update:semver-minor') ||
-          (steps.metadata.outputs.dependency-group != '' && 
-           (contains(github.event.pull_request.title, 'grouped-dev-updates') ||
-            contains(github.event.pull_request.title, 'grouped-prod-updates')))
-        run: gh pr merge --auto --squash "$PR_URL"
+          steps.pr.outputs.author == 'dependabot[bot]' &&
+          (contains(steps.metadata.outputs.update-type, 'version-update:semver-patch') || 
+           contains(steps.metadata.outputs.update-type, 'version-update:semver-minor'))
+        run: |
+          gh pr merge --auto --squash "${{ steps.pr.outputs.number }}"
+          gh pr comment "${{ steps.pr.outputs.number }}" --body "✅ CI checks passed. Auto-merging this dependency update."
         env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Label major updates for manual review
-        if: contains(steps.metadata.outputs.update-type, 'version-update:semver-major')
+        if: |
+          steps.pr.outputs.author == 'dependabot[bot]' &&
+          contains(steps.metadata.outputs.update-type, 'version-update:semver-major')
         run: |
-          gh pr edit "$PR_URL" --add-label "major-update" --add-label "needs-review"
-          gh pr comment "$PR_URL" --body "🚨 This is a major version update that requires manual review before merging."
+          gh pr edit "${{ steps.pr.outputs.number }}" --add-label "major-update" --add-label "needs-review"
+          gh pr comment "${{ steps.pr.outputs.number }}" --body "🚨 This is a major version update that requires manual review before merging."
         env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
