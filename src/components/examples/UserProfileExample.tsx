@@ -6,6 +6,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { useUserStore } from '@/stores/userStore';
 
 export default function UserProfileExample() {
@@ -70,9 +71,11 @@ export default function UserProfileExample() {
         {user.image && (
           <div>
             <span className="font-semibold">Avatar:</span>
-            <img 
+            <Image 
               src={user.image} 
               alt="User avatar" 
+              width={64}
+              height={64}
               className="w-16 h-16 rounded-full mt-2"
             />
           </div>
