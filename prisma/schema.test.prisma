@@ -45,6 +45,7 @@ model User {
   emailVerified DateTime?
   image         String?
   isApproved    Boolean   @default(false)
+  isAdmin       Boolean   @default(false)
   invitedBy     String?
   accounts      Account[]
   sessions      Session[]

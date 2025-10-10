@@ -2,8 +2,39 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createBetaInvite } from '@/lib/betaAccess';
 import { sendBetaInviteEmail } from '@/lib/email';
 import { prisma } from '@/lib/prisma';
+import { auth } from '@/lib/auth';
+
+// Helper function to check if user is admin
+async function checkAdminAccess(): Promise<{ isAdmin: boolean; error?: NextResponse }> {
+  const session = await auth();
+  
+  if (!session?.user?.email) {
+    return { 
+      isAdmin: false, 
+      error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    };
+  }
+  
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+    select: { isAdmin: true }
+  });
+  
+  if (!user?.isAdmin) {
+    return { 
+      isAdmin: false, 
+      error: NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 })
+    };
+  }
+  
+  return { isAdmin: true };
+}
 
 export async function POST(req: NextRequest) {
+  // Check admin access
+  const { isAdmin, error } = await checkAdminAccess();
+  if (!isAdmin) return error!;
+  
   try {
     const { email, expiresInDays, sendEmail = true } = await req.json();
     
@@ -46,6 +77,10 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
+  // Check admin access
+  const { isAdmin, error } = await checkAdminAccess();
+  if (!isAdmin) return error!;
+  
   try {
     const { prisma } = await import('@/lib/prisma');
     const invites = await prisma.betaInvite.findMany({
@@ -63,6 +98,10 @@ export async function GET() {
 }
 
 export async function PATCH(req: NextRequest) {
+  // Check admin access
+  const { isAdmin, error } = await checkAdminAccess();
+  if (!isAdmin) return error!;
+  
   try {
     const { id, action } = await req.json();
     

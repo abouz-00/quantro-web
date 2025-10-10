@@ -11,6 +11,9 @@ const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {
 jest.mock('@/lib/prisma');
 jest.mock('@/lib/betaAccess');
 jest.mock('@/lib/email');
+jest.mock('@/lib/auth', () => ({
+  auth: jest.fn()
+}));
 
 // Get the mocked prisma instance
 const mockPrisma = prisma as any;
@@ -18,15 +21,18 @@ const mockPrisma = prisma as any;
 // Import after mocking
 import { createBetaInvite, revokeBetaInvite } from '@/lib/betaAccess';
 import { sendBetaInviteEmail } from '@/lib/email';
+import { auth } from '@/lib/auth';
 
 // Create mock functions
 const mockCreateBetaInvite = createBetaInvite as jest.MockedFunction<any>;
 const mockRevokeBetaInvite = revokeBetaInvite as jest.MockedFunction<any>;
 const mockSendBetaInviteEmail = sendBetaInviteEmail as jest.MockedFunction<any>;
+const mockAuthFn = auth as jest.MockedFunction<any>;
 
 // Add proper typing for mock functions
 const mockFindMany = mockPrisma.betaInvite.findMany as jest.MockedFunction<any>;
 const mockFindUnique = mockPrisma.betaInvite.findUnique as jest.MockedFunction<any>;
+const mockUserFindUnique = mockPrisma.user.findUnique as jest.MockedFunction<any>;
 
 describe('Admin Beta Invites API', () => {
   beforeEach(() => {
@@ -37,6 +43,17 @@ describe('Admin Beta Invites API', () => {
     mockCreateBetaInvite.mockReset();
     mockRevokeBetaInvite.mockReset();
     mockSendBetaInviteEmail.mockReset();
+    mockAuthFn.mockReset();
+    
+    // Mock successful admin authentication by default
+    mockAuthFn.mockResolvedValue({
+      user: { email: 'admin@quantro.fit', name: 'Admin User' }
+    });
+    mockUserFindUnique.mockResolvedValue({
+      id: 'admin-id',
+      email: 'admin@quantro.fit',
+      isAdmin: true
+    });
   });
 
   afterAll(() => {

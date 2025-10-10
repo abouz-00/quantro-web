@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import AdminBetaInvitesPage from '../../../components/admin'
 
 interface BetaInvite {
@@ -16,12 +18,21 @@ interface BetaInvite {
 }
 
 export default function AdminBetaInvites() {
+  const { status } = useSession()
+  const router = useRouter()
   const [invites, setInvites] = useState<BetaInvite[]>([])
   const [newEmail, setNewEmail] = useState('')
   const [expiresInDays, setExpiresInDays] = useState<number | ''>('')
   const [sendEmail, setSendEmail] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
+  
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/')
+    }
+  }, [status, router])
 
   const revokeInvite = async (id: string, email: string) => {
     if (!confirm(`Are you sure you want to revoke the invite for ${email}? This action cannot be undone.`)) {
@@ -54,8 +65,10 @@ export default function AdminBetaInvites() {
   }
 
   useEffect(() => {
-    fetchInvites()
-  }, [])
+    if (status === 'authenticated') {
+      fetchInvites()
+    }
+  }, [status])
 
   const fetchInvites = async () => {
     try {
@@ -102,6 +115,20 @@ export default function AdminBetaInvites() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // Show loading state while checking authentication
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl">Loading...</div>
+      </div>
+    )
+  }
+
+  // Don't render anything if not authenticated (will redirect)
+  if (status === 'unauthenticated') {
+    return null
   }
 
   return (
