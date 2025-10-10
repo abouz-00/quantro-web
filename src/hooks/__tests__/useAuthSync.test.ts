@@ -4,6 +4,7 @@
 
 import { renderHook } from '@testing-library/react';
 import { useSession } from 'next-auth/react';
+import type { Session } from 'next-auth';
 import { useAuthSync } from '../useAuthSync';
 import { useUserStore } from '../../stores/userStore';
 
@@ -124,7 +125,7 @@ describe('useAuthSync', () => {
 
   it('should handle session with missing user gracefully', () => {
     mockUseSession.mockReturnValue({
-      data: { user: null, expires: '2025-12-31T23:59:59Z' } as any,
+      data: { user: null, expires: '2025-12-31T23:59:59Z' } as unknown as Session,
       status: 'authenticated',
       update: jest.fn(),
     });
