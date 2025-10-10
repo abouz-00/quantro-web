@@ -33,25 +33,28 @@ export class FoodLogService {
       const apiData = await apiClient.get<ApiData[]>('/food-logs', { date: dateParam });
 
       console.log('📋 FoodLogService: API returned', apiData.length, 'entries');
-      return apiData.map(transformApiDataToFoodEntry);
+      const entries = apiData.map(transformApiDataToFoodEntry);
+      
+      return entries;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       
       // Handle specific HTTP errors
       if (errorMessage.includes('HTTP 401') || errorMessage.includes('HTTP 403')) {
         console.error('Authentication error:', errorMessage);
+        console.log('🔄 Falling back to localStorage');
         // Could trigger a re-authentication flow here
       } else if (errorMessage.includes('HTTP 404')) {
         console.log('No food logs found for date:', dateParam);
-        return []; // Return empty array for 404
+        return []; // Return empty array for not found
       } else if (errorMessage.includes('HTTP 500') || errorMessage.includes('HTTP 503')) {
         console.error('Server error:', errorMessage);
       } else {
         console.error('API response error:', errorMessage);
       }
       
-      // Fallback to localStorage for all errors
-      return this.loadFromLocalStorage();
+      // For other errors, throw to let the hook handle it
+      throw error;
     }
   }
 
@@ -79,9 +82,8 @@ export class FoodLogService {
         console.error('API response error:', errorMessage);
       }
       
-      // Fallback to localStorage
-      this.saveToLocalStorage(entry);
-      return entry;
+      // Throw error to let the hook handle it
+      throw error;
     }
   }
 
@@ -108,9 +110,8 @@ export class FoodLogService {
         console.error('API response error:', errorMessage);
       }
       
-      // Fallback to localStorage
-      this.removeFromLocalStorage(id);
-      return true;
+      // Throw error to let the hook handle it
+      throw error;
     }
   }
 
@@ -149,9 +150,8 @@ export class FoodLogService {
         console.error('API response error:', errorMessage);
       }
       
-      // Fallback to localStorage
-      this.updateInLocalStorage(id, updates);
-      return true;
+      // Throw error to let the hook handle it
+      throw error;
     }
   }
 
@@ -189,37 +189,4 @@ export class FoodLogService {
     throw lastError!;
   }
 
-  // Private localStorage methods
-  private static loadFromLocalStorage(): FoodEntry[] {
-    const savedFoodData = localStorage.getItem('foodData');
-    if (savedFoodData) {
-      const parsedData = JSON.parse(savedFoodData);
-      // Note: Date filtering would need to be handled by the calling code
-      // since we don't have the selectedDate here
-      return parsedData;
-    }
-    return [];
-  }
-
-  private static saveToLocalStorage(entry: FoodEntry): void {
-    const allLocalData = JSON.parse(localStorage.getItem('foodData') || '[]');
-    localStorage.setItem('foodData', JSON.stringify([...allLocalData, entry]));
-  }
-
-  private static removeFromLocalStorage(id: string): void {
-    const allLocalData = JSON.parse(localStorage.getItem('foodData') || '[]');
-    const updatedData = allLocalData.filter((item: FoodEntry) => item.id !== id);
-    localStorage.setItem('foodData', JSON.stringify(updatedData));
-  }
-
-  private static updateInLocalStorage(id: string, updates: Partial<FoodEntry>): void {
-    const allLocalData = JSON.parse(localStorage.getItem('foodData') || '[]');
-    const updatedData = allLocalData.map((item: FoodEntry) => {
-      if (item.id === id) {
-        return { ...item, ...updates };
-      }
-      return item;
-    });
-    localStorage.setItem('foodData', JSON.stringify(updatedData));
-  }
 }

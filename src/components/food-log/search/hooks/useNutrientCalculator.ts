@@ -10,6 +10,7 @@ interface USDAFood {
   servingSizeUnit?: string;
   isFavorite?: boolean;
   uniqueId?: string;
+  fdcId?: number;
 }
 
 export const useNutrientCalculator = () => {

@@ -46,9 +46,16 @@ declare global {
 export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => {
   const [foodData, setFoodData] = useState<FoodEntry[]>([]);
   const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Helper to get localStorage key for a specific date
+  const getStorageKey = (date: Date) => {
+    return `foodData_${date.toISOString().split('T')[0]}`;
+  };
 
   // Load food data from API when component mounts or date changes
   useEffect(() => {
+    setIsLoaded(false);
     const loadData = async () => {
       try {
         const dateParam = formatApiDate();
@@ -88,8 +95,25 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
         }
         
         setFoodData(filteredData);
+        setIsLoaded(true);
       } catch (error) {
         console.error('❌ Error loading food data:', error);
+        
+        // Try to load from localStorage as fallback
+        const storageKey = getStorageKey(selectedDate);
+        try {
+          const cached = localStorage.getItem(storageKey);
+          if (cached) {
+            const cachedData = JSON.parse(cached);
+            console.log('📦 Loaded', cachedData.length, 'entries from localStorage fallback');
+            setFoodData(cachedData);
+          } else {
+            setFoodData([]);
+          }
+        } catch (localStorageError) {
+          console.error('Failed to load from localStorage:', localStorageError);
+          setFoodData([]);
+        }
         
         // Update window debug info with error
         if (typeof window !== 'undefined') {
@@ -103,13 +127,26 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
           };
         }
         
-        setFoodData([]);
+        setIsLoaded(true);
       }
     };
 
     console.log('🔄 useFoodData useEffect triggered, selectedDate:', selectedDate.toISOString());
     loadData();
   }, [selectedDate, formatApiDate]);
+
+  // Save to localStorage whenever foodData changes (but only after initial load)
+  useEffect(() => {
+    if (isLoaded) {
+      const storageKey = getStorageKey(selectedDate);
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(foodData));
+        console.log('💾 Saved', foodData.length, 'food entries to localStorage for', selectedDate.toISOString().split('T')[0]);
+      } catch (error) {
+        console.error('Failed to save food entries to localStorage:', error);
+      }
+    }
+  }, [foodData, isLoaded, selectedDate]);
 
   const addFoodEntry = useCallback(async (entry: FoodEntry, overrideDate?: Date) => {
     try {

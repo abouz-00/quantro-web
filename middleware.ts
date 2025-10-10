@@ -1,6 +1,13 @@
 import { auth } from "@/lib/auth"
+import { NextResponse } from "next/server"
 
 export default auth((req) => {
+  console.log('🔐 Middleware check:', {
+    path: req.nextUrl.pathname,
+    hasAuth: !!req.auth,
+    userId: req.auth?.user?.id
+  });
+
   // Add any additional middleware logic here
   if (!req.auth && req.nextUrl.pathname.startsWith('/dashboard')) {
     return Response.redirect(new URL('/', req.url))
@@ -10,10 +17,12 @@ export default auth((req) => {
     return Response.redirect(new URL('/', req.url))
   }
   if (!req.auth && req.nextUrl.pathname.startsWith('/api/user')) {
-    return Response.redirect(new URL('/api/auth/signin', req.url))
+    console.log('❌ Unauthorized access to /api/user');
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   if (!req.auth && req.nextUrl.pathname.startsWith('/api/food-logs')) {
-    return Response.redirect(new URL('/api/auth/signin', req.url))
+    console.log('❌ Unauthorized access to /api/food-logs');
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 })
 

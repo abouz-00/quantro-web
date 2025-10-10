@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 const BETA_EMAILS = [
   'hello@quantro.fit',        // Your main email
   'abouzelfane@icloud.com',   // Your Apple Sign-In email
+  'aymanbouzelfane1@gmail.com', // Your Google Sign-In email
   'dev@quantro.local',        // Development email for testing
   // Add more beta tester emails here
 ];

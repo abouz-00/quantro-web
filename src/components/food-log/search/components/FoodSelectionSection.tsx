@@ -9,6 +9,7 @@ interface USDAFood {
   servingSizeUnit?: string;
   isFavorite?: boolean;
   uniqueId?: string;
+  fdcId?: number;
 }
 
 interface FoodSelectionSectionProps {
@@ -50,7 +51,32 @@ export const FoodSelectionSection: React.FC<FoodSelectionSectionProps> = ({
             type="number"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
-            onKeyDown={handleKeyDown}
+            onKeyDown={(e) => {
+              // Prevent non-numeric characters except decimal point, backspace, delete, arrow keys, tab
+              if (
+                !/[0-9.]/.test(e.key) && 
+                !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'].includes(e.key) &&
+                !(e.key === 'a' && (e.metaKey || e.ctrlKey)) && // Allow Cmd/Ctrl+A
+                !(e.key === 'c' && (e.metaKey || e.ctrlKey)) && // Allow Cmd/Ctrl+C
+                !(e.key === 'v' && (e.metaKey || e.ctrlKey)) && // Allow Cmd/Ctrl+V
+                !(e.key === 'x' && (e.metaKey || e.ctrlKey))    // Allow Cmd/Ctrl+X
+              ) {
+                e.preventDefault();
+              }
+              // Call original handleKeyDown for Enter key functionality
+              if (e.key === 'Enter') {
+                handleKeyDown(e);
+              }
+            }}
+            onPaste={(e) => {
+              // Prevent pasting non-numeric content
+              const pastedText = e.clipboardData.getData('text');
+              if (!/^[0-9.]*$/.test(pastedText)) {
+                e.preventDefault();
+              }
+            }}
+            min="0"
+            step="any"
             className="w-full p-2 border border-gray-300 rounded-sm"
           />
         </div>
