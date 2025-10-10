@@ -9,6 +9,7 @@ interface USDAFood {
   servingSizeUnit?: string;
   isFavorite?: boolean;
   uniqueId?: string;
+  fdcId?: number;
 }
 
 interface SearchTabProps {
@@ -86,7 +87,7 @@ export default function SearchTab({
       className={`food-table-row border-b border-gray-200 last:border-0 transition-colors duration-150 cursor-pointer ${
         selectedFood?.uniqueId === (food.uniqueId || `${food.description}_${idx}`)
           ? "selected bg-violet-50 border-l-4 border-l-violet-500"
-          : "hover:bg-gray-50"
+          : "hover:bg-violet-50"
       } ${highlightedIdx === idx ? "ring-2 ring-violet-400" : ""}`}
       role="option"
       aria-selected={highlightedIdx === idx}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 
 interface ModalLayoutProps {
@@ -16,6 +16,35 @@ export const ModalLayout: React.FC<ModalLayoutProps> = ({
   children,
   bottomSection
 }) => {
+  // Prevent background scroll when modal is open
+  useEffect(() => {
+    // Save original styles
+    const originalBodyOverflow = document.body.style.overflow;
+    const originalBodyPosition = document.body.style.position;
+    const originalBodyTop = document.body.style.top;
+    const originalBodyWidth = document.body.style.width;
+    
+    // Get current scroll position
+    const scrollY = window.scrollY;
+    
+    // Lock body in place
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
+    document.body.style.overflow = 'hidden';
+    
+    return () => {
+      // Restore body styles
+      document.body.style.position = originalBodyPosition;
+      document.body.style.top = originalBodyTop;
+      document.body.style.width = originalBodyWidth;
+      document.body.style.overflow = originalBodyOverflow;
+      
+      // Restore scroll position
+      window.scrollTo(0, scrollY);
+    };
+  }, []);
+
   const TabButton = ({ 
     tab, 
     label 
@@ -28,7 +57,7 @@ export const ModalLayout: React.FC<ModalLayoutProps> = ({
       className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ${
         activeTab === tab 
           ? "bg-white text-violet-600 shadow-sm" 
-          : "text-gray-600 hover:text-gray-800"
+          : "text-gray-700 hover:text-gray-900"
       }`}
     >
       {label}
@@ -39,6 +68,12 @@ export const ModalLayout: React.FC<ModalLayoutProps> = ({
     <div 
       className="fixed inset-0 flex items-center justify-center z-50 p-4" 
       style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}
+      onClick={(e) => {
+        // Only close if clicking on the backdrop itself
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
     >
       <div
         className="bg-white rounded-sm shadow-xl h-[600px] max-h-[90vh] food-search-modal flex flex-col"
@@ -48,6 +83,7 @@ export const ModalLayout: React.FC<ModalLayoutProps> = ({
           maxWidth: '900px',
           margin: '0 auto',
         }}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="p-4 border-b border-gray-200 flex-shrink-0">
@@ -70,8 +106,28 @@ export const ModalLayout: React.FC<ModalLayoutProps> = ({
         </div>
 
         {/* Content */}
-        <div className="p-4 overflow-y-auto flex-1">
-          {children}
+        <div 
+          className="flex-1 overflow-hidden"
+          style={{ minHeight: 0 }}
+        >
+          <div 
+            className="h-full p-4"
+            onWheel={(e) => {
+              const target = e.currentTarget;
+              const scrollTop = target.scrollTop;
+              const scrollHeight = target.scrollHeight;
+              const clientHeight = target.clientHeight;
+              const wheelDelta = e.deltaY;
+              
+              // Prevent scroll chaining when at boundaries
+              if ((wheelDelta < 0 && scrollTop === 0) || 
+                  (wheelDelta > 0 && scrollTop + clientHeight >= scrollHeight)) {
+                e.preventDefault();
+              }
+            }}
+          >
+            {children}
+          </div>
         </div>
 
         {/* Bottom Section */}

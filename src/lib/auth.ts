@@ -117,15 +117,34 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             return null;
           }
 
-          // Return a mock user for development
+          // Get or create user in database
+          let dbUser = await prisma.user.findUnique({
+            where: { email: email },
+          });
+
+          if (!dbUser) {
+            // Create user if doesn't exist
+            dbUser = await prisma.user.create({
+              data: {
+                email: email,
+                name: "Development User",
+                isApproved: true,
+              },
+            });
+            console.log('Created new dev user:', dbUser.id);
+          } else {
+            console.log('Found existing user:', dbUser.id);
+          }
+
+          // Return user with actual database ID
           const user = {
-            id: `dev-${email}`,
-            email: email,
-            name: "Development User",
-            image: null,
+            id: dbUser.id,
+            email: dbUser.email,
+            name: dbUser.name || "Development User",
+            image: dbUser.image,
           };
           
-          console.log('Dev sign-in successful for:', email);
+          console.log('Dev sign-in successful for:', email, 'with ID:', user.id);
           return user;
         }
       })

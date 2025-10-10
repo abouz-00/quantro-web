@@ -52,7 +52,7 @@ export const CustomFoodList: React.FC<CustomFoodListProps> = ({
                   }
                 }}
                 className={`food-table-row border-b border-gray-200 last:border-0 transition-colors duration-150 ${
-                  isLoading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-gray-50'
+                  isLoading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-violet-50'
                 } ${highlightedIdx === idx ? "ring-2 ring-violet-400" : ""}`}
                 role="option"
                 aria-selected={highlightedIdx === idx}

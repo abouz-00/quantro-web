@@ -59,14 +59,18 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  console.log('🔍 [DEBUG] POST /api/food-logs called');
   try {
     const session = await auth();
+    console.log('🔍 [DEBUG] Session:', session?.user?.id ? `User ID: ${session.user.id}` : 'No session');
     
     if (!session?.user?.id) {
+      console.log('🔍 [DEBUG] Unauthorized - no session');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await request.json();
+    console.log('🔍 [DEBUG] Request body:', JSON.stringify(body, null, 2));
     const {
       foodName,
       brand,
@@ -130,6 +134,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.log('🔍 [DEBUG] Successfully created food log:', foodLog.id);
     return NextResponse.json(foodLog, { status: 201 });
   } catch (error) {
     console.error('Error creating food log:', {

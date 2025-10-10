@@ -8,7 +8,7 @@ import { useCustomFoods } from "../../../hooks";
 import { useNutrientCalculator } from "./hooks/useNutrientCalculator";
 import { useFoodSearchStyles } from "./hooks/useFoodSearchStyles";
 import { FoodEntry } from "../../../types/foodEntry";
-import { ModalLayout } from "./components/ModalLayout";
+import { Modal } from "../../ui/Modal";
 import { FoodSelectionSection } from "./components/FoodSelectionSection";
 import { capitalizeWords } from "./utils/nutritionUtils";
 
@@ -31,6 +31,7 @@ interface USDAFood {
   servingSizeUnit?: string;
   isFavorite?: boolean;
   uniqueId?: string;
+  fdcId?: number;
 }
 
 interface CustomFood extends Nutrients {
@@ -141,13 +142,88 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
     onClose();
   };
 
+  const TabButton = ({ 
+    tab, 
+    label 
+  }: { 
+    tab: "search" | "favorites" | "custom"; 
+    label: string 
+  }) => (
+    <button
+      onClick={() => setActiveTab(tab)}
+      className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ${
+        activeTab === tab 
+          ? "bg-white text-violet-600 shadow-sm" 
+          : "text-gray-700 hover:text-gray-900"
+      }`}
+    >
+      {label}
+    </button>
+  );
+
   return (
-    <ModalLayout 
+    <Modal 
+      isOpen={true}
       onClose={onClose}
-      activeTab={activeTab}
-      setActiveTab={setActiveTab}
-      bottomSection={
-        selectedFood && activeTab === "search" ? (
+      title="Add Food"
+    >
+      <div className="p-4 h-full flex flex-col">
+        {/* Tab Navigation */}
+        <div className="flex space-x-1 bg-gray-100 rounded-sm p-1 mb-4">
+          <TabButton tab="search" label="Search" />
+          <TabButton tab="favorites" label="Favorites" />
+          <TabButton tab="custom" label="Custom" />
+        </div>
+
+        {/* Tab Content */}
+        <div className="flex-1 overflow-hidden" style={{ minHeight: 0 }}>
+          {activeTab === "search" && (
+            <SearchTab
+              localQuery={localQuery}
+              setLocalQuery={setLocalQuery}
+              suggestions={suggestions}
+              selectedFood={selectedFood}
+              handleSelectFood={handleSelectFood}
+              toggleFavorite={toggleFavorite}
+              isFavorite={isFavorite}
+              capitalizeWords={capitalizeWords}
+              handleAddFood={handleAddFood}
+              loading={searchLoading}
+              error={searchError}
+            />
+          )}
+          {activeTab === "favorites" && (
+            <FavoritesTab
+              favorites={favorites}
+              selectedFood={selectedFood}
+              handleSelectFood={handleSelectFood}
+              toggleFavorite={toggleFavorite}
+              capitalizeWords={capitalizeWords}
+              loading={false}
+              error={""}
+            />
+          )}
+          {activeTab === "custom" && (
+            <CustomTab
+              customName={customName}
+              setCustomName={setCustomName}
+              customCalories={customCalories}
+              setCustomCalories={setCustomCalories}
+              customProtein={customProtein}
+              setCustomProtein={setCustomProtein}
+              customCarbs={customCarbs}
+              setCustomCarbs={setCustomCarbs}
+              customFat={customFat}
+              setCustomFat={setCustomFat}
+              handleAddCustomFood={handleAddCustomFood}
+              customFoods={customFoods}
+              handleAddFromCustomList={handleAddFromCustomList}
+            />
+          )}
+        </div>
+
+        {/* Bottom Section - Food Selection */}
+        {selectedFood && (activeTab === "search" || activeTab === "favorites") && (
           <FoodSelectionSection 
             selectedFood={selectedFood}
             quantity={quantity}
@@ -158,53 +234,9 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
             setMealType={setMealType}
             onAddFood={handleAddFood}
           />
-        ) : undefined
-      }
-    >
-      {activeTab === "search" && (
-        <SearchTab
-          localQuery={localQuery}
-          setLocalQuery={setLocalQuery}
-          suggestions={suggestions}
-          selectedFood={selectedFood}
-          handleSelectFood={handleSelectFood}
-          toggleFavorite={toggleFavorite}
-          isFavorite={isFavorite}
-          capitalizeWords={capitalizeWords}
-          handleAddFood={handleAddFood}
-          loading={searchLoading}
-          error={searchError}
-        />
-      )}
-      {activeTab === "favorites" && (
-        <FavoritesTab
-          favorites={favorites}
-          selectedFood={selectedFood}
-          handleSelectFood={handleSelectFood}
-          toggleFavorite={toggleFavorite}
-          capitalizeWords={capitalizeWords}
-          loading={false}
-          error={""}
-        />
-      )}
-      {activeTab === "custom" && (
-        <CustomTab
-          customName={customName}
-          setCustomName={setCustomName}
-          customCalories={customCalories}
-          setCustomCalories={setCustomCalories}
-          customProtein={customProtein}
-          setCustomProtein={setCustomProtein}
-          customCarbs={customCarbs}
-          setCustomCarbs={setCustomCarbs}
-          customFat={customFat}
-          setCustomFat={setCustomFat}
-          handleAddCustomFood={handleAddCustomFood}
-          customFoods={customFoods}
-          handleAddFromCustomList={handleAddFromCustomList}
-        />
-      )}
-    </ModalLayout>
+        )}
+      </div>
+    </Modal>
   );
 }
 
