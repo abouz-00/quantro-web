@@ -200,7 +200,7 @@ jobs:
       continue-on-error: true
       
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: build-artifacts
         path: |
@@ -213,7 +213,7 @@ jobs:
         
     - name: Upload standalone build (fallback)
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: standalone-build
         path: |
