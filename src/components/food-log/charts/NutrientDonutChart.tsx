@@ -59,8 +59,8 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
 
   const [popoutPosition, setPopoutPosition] = useState({ left: '50%', top: '50%' });
 
-  // Update popout position
-  const updatePopoutPosition = () => {
+  // Update popout position - memoized with useCallback to prevent unnecessary re-renders
+  const updatePopoutPosition = React.useCallback(() => {
     if (chartAreaRef.current) {
       const rect = chartAreaRef.current.getBoundingClientRect();
       const popoutWidth = 320; // w-80 = 320px (increased from 256px)
@@ -85,7 +85,7 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
         setPopoutOnRight(true);
       }
     }
-  };
+  }, []);
 
   // Handle window resize and scroll to update popout position
   useEffect(() => {
@@ -103,7 +103,13 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
         window.removeEventListener('scroll', handleResizeOrScroll, true);
       };
     }
-  }, [showPopout]);
+  }, [showPopout, updatePopoutPosition]);
+
+  // Helper function to get the appropriate nutrient value based on label
+  // Memoized with useCallback to prevent unnecessary re-creation
+  const getNutrientValueByLabel = React.useCallback((entry: FoodEntry, nutrientLabel: string): number => {
+    return getNutrientValue(entry, nutrientLabel);
+  }, []);
 
   // Get relevant entries sorted by the nutrient value (descending)
   const sortedEntries = useMemo(() => {
@@ -114,7 +120,7 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
       const valueB = getNutrientValueByLabel(b, label);
       return valueB - valueA;
     });
-  }, [entries, label]);
+  }, [entries, label, getNutrientValueByLabel]);
 
   // Helper function to capitalize the first letter of each word
   function capitalizeWords(str: string): string {
@@ -123,11 +129,6 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
       .split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
-  }
-
-  // Helper function to get the appropriate nutrient value based on label
-  function getNutrientValueByLabel(entry: FoodEntry, label: string): number {
-    return getNutrientValue(entry, label);
   }
 
   const remaining = Math.max(0, goal - current);
