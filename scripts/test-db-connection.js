@@ -2,8 +2,10 @@
 
 const { PrismaClient } = require('@prisma/client');
 
-async function testDatabaseConnection() {
-  const prisma = new PrismaClient();
+async function testConnection() {
+  const prisma = new PrismaClient({
+    datasourceUrl: process.env.DATABASE_URL,
+  });
   
   try {
     console.log('🔗 Testing database connection...');
