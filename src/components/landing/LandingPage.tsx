@@ -41,14 +41,30 @@ export default function LandingPage() {
       console.log('📧 Signing in with:', email);
 
       // First, try the API approach to validate credentials
-      const apiResponse = await fetch('/api/auth/dev-signin', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
+      let apiResponse;
+      try {
+        apiResponse = await fetch('/api/auth/dev-signin', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify({ email, password })
+        });
+      } catch (fetchError) {
+        console.error('❌ Fetch error:', fetchError);
+        alert('Network error: Could not connect to server. Please check if the dev server is running.');
+        return;
+      }
 
       if (!apiResponse.ok) {
-        const errorData = await apiResponse.json();
+        let errorData;
+        try {
+          errorData = await apiResponse.json();
+        } catch {
+          errorData = { error: `HTTP ${apiResponse.status}` };
+        }
         console.log('Sign-in failed:', errorData.error || 'Invalid credentials');
         alert('Sign-in failed: ' + (errorData.error || 'Invalid credentials'));
         return;
@@ -57,12 +73,19 @@ export default function LandingPage() {
       console.log('✅ Credentials validated');
 
       // Now use NextAuth to establish session
-      const result = await signIn('credentials', {
-        email,
-        password,
-        callbackUrl: '/log',
-        redirect: false
-      });
+      let result;
+      try {
+        result = await signIn('credentials', {
+          email,
+          password,
+          callbackUrl: '/log',
+          redirect: false
+        });
+      } catch (signInError) {
+        console.error('❌ NextAuth error:', signInError);
+        alert('Sign-in error: ' + (signInError instanceof Error ? signInError.message : 'Unknown error'));
+        return;
+      }
 
       console.log('🔍 NextAuth result:', result);
 
