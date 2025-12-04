@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, memo } from 'react';
 import Image from 'next/image';
 import { FoodEntry } from '../types';

@@ -32,14 +32,21 @@ export default function EditFoodModal({
   onSave,
   originalEntry 
 }: EditFoodModalProps) {
-  const [editedEntry, setEditedEntry] = useState<FoodEntry | null>(null);
+  // Initialize edited entry directly from entry prop
+  // This avoids calling setState in useEffect
+  const [editedEntry, setEditedEntry] = useState<FoodEntry | null>(() => 
+    (entry && isOpen) ? entry : null
+  );
 
-  // Initialize edited entry when modal opens
-  useEffect(() => {
+  // Reset edited entry when entry or modal state changes
+  // Using layout effect to avoid visual flicker
+  React.useLayoutEffect(() => {
     if (entry && isOpen) {
       setEditedEntry(entry);
+    } else if (!isOpen) {
+      setEditedEntry(null);
     }
-  }, [entry, isOpen]);
+  }, [entry?.id, isOpen]); // Only depend on entry.id to avoid unnecessary updates
 
   if (!isOpen || !entry || !editedEntry) {
     return null;

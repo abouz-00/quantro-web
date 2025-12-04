@@ -55,8 +55,10 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
 
   // Load food data from API when component mounts or date changes
   useEffect(() => {
-    setIsLoaded(false);
+    let cancelled = false;
     const loadData = async () => {
+      // Move setIsLoaded here to avoid synchronous setState in effect
+      if (!cancelled) setIsLoaded(false);
       try {
         const dateParam = formatApiDate();
         console.log('🚀 useFoodData: Loading data for date:', dateParam, 'selectedDate:', selectedDate.toISOString());
@@ -71,6 +73,8 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
         }
         
         const data = await FoodLogService.loadFoodData(dateParam);
+        if (cancelled) return; // Guard against state update after unmount
+        
         console.log('📊 useFoodData: Received data:', data.length, 'entries');
         
         // Filter by selected date for localStorage fallback

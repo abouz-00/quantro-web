@@ -1,6 +1,18 @@
 import { NextResponse } from 'next/server';
 import { checkBetaAccess } from '@/lib/betaAccess';
 
+// Add CORS headers for Safari compatibility
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Accept',
+  'Access-Control-Allow-Credentials': 'true',
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 export async function POST(request: Request) {
   try {
     console.log('Dev sign-in API called');
@@ -8,7 +20,10 @@ export async function POST(request: Request) {
     // Only allow in development
     if (process.env.NODE_ENV !== 'development') {
       console.log('Not in development mode');
-      return NextResponse.json({ error: 'Not available in production' }, { status: 403 });
+      return NextResponse.json(
+        { error: 'Not available in production' }, 
+        { status: 403, headers: corsHeaders }
+      );
     }
 
     const body = await request.json();
@@ -17,14 +32,20 @@ export async function POST(request: Request) {
     console.log('Dev sign-in attempt for:', email);
 
     if (!email || !password) {
-      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Email and password are required' }, 
+        { status: 400, headers: corsHeaders }
+      );
     }
 
     // Check development password
     const DEV_PASSWORD = process.env.DEV_SIGNIN_PASSWORD || 'quantro-dev-2024';
     if (password !== DEV_PASSWORD) {
       console.log('Invalid development password');
-      return NextResponse.json({ error: 'Invalid password' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Invalid password' }, 
+        { status: 401, headers: corsHeaders }
+      );
     }
 
     // Check if email has beta access
@@ -33,13 +54,22 @@ export async function POST(request: Request) {
 
     if (!hasAccess) {
       console.log('No beta access for:', email);
-      return NextResponse.json({ error: 'No beta access' }, { status: 403 });
+      return NextResponse.json(
+        { error: 'No beta access' }, 
+        { status: 403, headers: corsHeaders }
+      );
     }
 
     console.log('Dev sign-in successful for:', email);
-    return NextResponse.json({ success: true, email });
+    return NextResponse.json(
+      { success: true, email }, 
+      { headers: corsHeaders }
+    );
   } catch (error) {
     console.error('Dev sign-in API error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' }, 
+      { status: 500, headers: corsHeaders }
+    );
   }
 }
