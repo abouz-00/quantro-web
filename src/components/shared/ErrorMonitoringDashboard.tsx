@@ -15,23 +15,15 @@ interface ErrorReport {
 }
 
 export const ErrorMonitoringDashboard: React.FC = () => {
-  const [errors, setErrors] = useState<ErrorReport[]>([]);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    // Load stored errors
+  // Initialize state with computed values to avoid effect setState
+  const [errors, setErrors] = useState<ErrorReport[]>(() => errorService.getStoredErrors());
+  const [isVisible, setIsVisible] = useState(() => {
     const storedErrors = errorService.getStoredErrors();
-    setErrors(storedErrors);
-
-    // Show dashboard if there are critical errors or in development
     const hasCriticalErrors = storedErrors.some((error: ErrorReport) => 
       error.context?.severity === 'critical' || error.context?.severity === 'high'
     );
-    
-    if (process.env.NODE_ENV === 'development' || hasCriticalErrors) {
-      setIsVisible(true);
-    }
-  }, []);
+    return process.env.NODE_ENV === 'development' || hasCriticalErrors;
+  });
 
   const clearErrors = () => {
     errorService.clearStoredErrors();

@@ -7,12 +7,14 @@ export const useKeyboardNavigation = (
   isDisabled: boolean = false
 ) => {
   const [highlightedIdx, setHighlightedIdx] = useState<number>(-1);
+  const [prevItems, setPrevItems] = useState(items);
   const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
 
-  // Reset highlighted index when items change
-  useEffect(() => {
+  // Reset highlighted index when items change (with guard)
+  if (prevItems !== items) {
+    setPrevItems(items);
     setHighlightedIdx(-1);
-  }, [items]);
+  }
 
   // Scroll highlighted item into view
   useEffect(() => {

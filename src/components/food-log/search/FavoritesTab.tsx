@@ -32,13 +32,15 @@ export default function FavoritesTab({
   error = "",
 }: FavoritesTabProps) {
   const [highlightedIdx, setHighlightedIdx] = useState<number>(-1);
+  const [prevFavorites, setPrevFavorites] = useState(favorites);
   const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
   const memoizedFavorites = useMemo(() => favorites, [favorites]);
 
-  // Reset highlight on favorites change
-  useEffect(() => {
+  // Reset highlight on favorites change (with guard to prevent infinite loop)
+  if (prevFavorites !== favorites) {
+    setPrevFavorites(favorites);
     setHighlightedIdx(-1);
-  }, [memoizedFavorites]);
+  }
 
   // Keyboard navigation for favorites list
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTableElement>) => {

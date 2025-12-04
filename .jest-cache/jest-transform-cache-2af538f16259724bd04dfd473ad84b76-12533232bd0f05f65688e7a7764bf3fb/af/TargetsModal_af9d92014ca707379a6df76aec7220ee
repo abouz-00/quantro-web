@@ -1,0 +1,196 @@
+27033b5c8be7ca27f74b6ac38685ef26
+"use client";
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "default", {
+    enumerable: true,
+    get: function() {
+        return TargetsModal;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = /*#__PURE__*/ _interop_require_default(require("react"));
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+function TargetsModal({ isOpen, onClose, targetInput, onInputChange, onSave }) {
+    if (!isOpen) return null;
+    // Calculate total calories from macronutrients
+    const calculateMacroCalories = ()=>{
+        const proteinCalories = targetInput.protein * 4; // 4 kcal per gram
+        const carbCalories = targetInput.carbs * 4; // 4 kcal per gram
+        const fatCalories = targetInput.fat * 9; // 9 kcal per gram
+        return proteinCalories + carbCalories + fatCalories;
+    };
+    const macroCalories = calculateMacroCalories();
+    const caloriesMismatch = Math.abs(macroCalories - targetInput.calories) > 1; // Allow 1 calorie tolerance
+    const handleInputChange = (field, value)=>{
+        // Handle empty string by setting to 0, otherwise parse the number
+        const numValue = value === '' ? 0 : parseFloat(value);
+        // Only update if it's a valid number (including 0 for empty strings)
+        if (!isNaN(numValue) && numValue >= 0) {
+            onInputChange(field, numValue);
+        }
+    };
+    const handleSave = ()=>{
+        onSave();
+        onClose();
+    };
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+        className: "fixed inset-0 z-50 flex items-center justify-center p-4",
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                className: "absolute inset-0 transition-opacity duration-300",
+                style: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.15)'
+                },
+                onClick: onClose
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                className: "relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-auto",
+                children: [
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        className: "flex items-center justify-between mb-4",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("h2", {
+                                className: "text-xl font-semibold text-gray-800",
+                                children: "Set Custom Targets"
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("button", {
+                                onClick: onClose,
+                                className: "p-1 rounded-full transition-colors duration-200",
+                                onMouseEnter: (e)=>e.currentTarget.style.backgroundColor = '#f3f4f6',
+                                onMouseLeave: (e)=>e.currentTarget.style.backgroundColor = 'transparent',
+                                "aria-label": "Close",
+                                children: /*#__PURE__*/ (0, _jsxruntime.jsx)("span", {
+                                    className: "text-gray-500 text-xl",
+                                    children: "\xd7"
+                                })
+                            })
+                        ]
+                    }),
+                    caloriesMismatch && /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                        id: "macro-mismatch-error",
+                        className: "p-3 bg-red-50 border border-red-200 rounded-md mb-4",
+                        children: /*#__PURE__*/ (0, _jsxruntime.jsxs)("p", {
+                            className: "text-red-700 text-sm",
+                            children: [
+                                "⚠️ Target totals don't match: Macronutrients equal ",
+                                macroCalories,
+                                " calories, but calorie target is ",
+                                targetInput.calories,
+                                "."
+                            ]
+                        })
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        className: "space-y-4",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("label", {
+                                        className: "block text-sm font-medium text-gray-700",
+                                        children: "Calories"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("input", {
+                                        type: "number",
+                                        value: targetInput.calories || '',
+                                        onChange: (e)=>handleInputChange("calories", e.target.value),
+                                        className: "mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent",
+                                        style: {
+                                            userSelect: 'text',
+                                            WebkitUserSelect: 'text'
+                                        }
+                                    })
+                                ]
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("label", {
+                                        className: "block text-sm font-medium text-gray-700",
+                                        children: "Protein (g)"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("input", {
+                                        type: "number",
+                                        value: targetInput.protein || '',
+                                        onChange: (e)=>handleInputChange("protein", e.target.value),
+                                        className: "mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent",
+                                        style: {
+                                            userSelect: 'text',
+                                            WebkitUserSelect: 'text'
+                                        },
+                                        "aria-describedby": caloriesMismatch ? 'macro-mismatch-error' : undefined
+                                    })
+                                ]
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("label", {
+                                        className: "block text-sm font-medium text-gray-700",
+                                        children: "Carbs (g)"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("input", {
+                                        type: "number",
+                                        value: targetInput.carbs || '',
+                                        onChange: (e)=>handleInputChange("carbs", e.target.value),
+                                        className: "mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent",
+                                        style: {
+                                            userSelect: 'text',
+                                            WebkitUserSelect: 'text'
+                                        },
+                                        "aria-describedby": caloriesMismatch ? 'macro-mismatch-error' : undefined
+                                    })
+                                ]
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                                children: [
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("label", {
+                                        className: "block text-sm font-medium text-gray-700",
+                                        children: "Fat (g)"
+                                    }),
+                                    /*#__PURE__*/ (0, _jsxruntime.jsx)("input", {
+                                        type: "number",
+                                        value: targetInput.fat || '',
+                                        onChange: (e)=>handleInputChange("fat", e.target.value),
+                                        className: "mt-1 block w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent",
+                                        style: {
+                                            userSelect: 'text',
+                                            WebkitUserSelect: 'text'
+                                        },
+                                        "aria-describedby": caloriesMismatch ? 'macro-mismatch-error' : undefined
+                                    })
+                                ]
+                            })
+                        ]
+                    }),
+                    /*#__PURE__*/ (0, _jsxruntime.jsxs)("div", {
+                        className: "flex justify-end space-x-3 mt-6",
+                        children: [
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("button", {
+                                onClick: onClose,
+                                className: "px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors duration-200",
+                                children: "Cancel"
+                            }),
+                            /*#__PURE__*/ (0, _jsxruntime.jsx)("button", {
+                                onClick: handleSave,
+                                className: "px-6 py-2 text-white rounded-lg transition-colors duration-200",
+                                style: {
+                                    backgroundColor: '#6e44ff'
+                                },
+                                onMouseEnter: (e)=>e.currentTarget.style.backgroundColor = '#5a37d9',
+                                onMouseLeave: (e)=>e.currentTarget.style.backgroundColor = '#6e44ff',
+                                children: "Save Targets"
+                            })
+                        ]
+                    })
+                ]
+            })
+        ]
+    });
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvLXdlYi9zcmMvY29tcG9uZW50cy9mb29kLWxvZy9tb2RhbHMvVGFyZ2V0c01vZGFsLnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJcInVzZSBjbGllbnRcIjtcblxuaW1wb3J0IFJlYWN0IGZyb20gXCJyZWFjdFwiO1xuXG5pbnRlcmZhY2UgTnV0cmllbnRzIHtcbiAgY2Fsb3JpZXM6IG51bWJlcjtcbiAgcHJvdGVpbjogbnVtYmVyO1xuICBjYXJiczogbnVtYmVyO1xuICBmYXQ6IG51bWJlcjtcbiAgZmliZXI/OiBudW1iZXI7XG59XG5cbmludGVyZmFjZSBUYXJnZXRzTW9kYWxQcm9wcyB7XG4gIGlzT3BlbjogYm9vbGVhbjtcbiAgb25DbG9zZTogKCkgPT4gdm9pZDtcbiAgdGFyZ2V0SW5wdXQ6IE51dHJpZW50cztcbiAgb25JbnB1dENoYW5nZTogKGZpZWxkOiBrZXlvZiBOdXRyaWVudHMsIHZhbHVlOiBudW1iZXIpID0+IHZvaWQ7XG4gIG9uU2F2ZTogKCkgPT4gdm9pZDtcbn1cblxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gVGFyZ2V0c01vZGFsKHtcbiAgaXNPcGVuLFxuICBvbkNsb3NlLFxuICB0YXJnZXRJbnB1dCxcbiAgb25JbnB1dENoYW5nZSxcbiAgb25TYXZlXG59OiBUYXJnZXRzTW9kYWxQcm9wcykge1xuICBpZiAoIWlzT3BlbikgcmV0dXJuIG51bGw7XG5cbiAgLy8gQ2FsY3VsYXRlIHRvdGFsIGNhbG9yaWVzIGZyb20gbWFjcm9udXRyaWVudHNcbiAgY29uc3QgY2FsY3VsYXRlTWFjcm9DYWxvcmllcyA9ICgpID0+IHtcbiAgICBjb25zdCBwcm90ZWluQ2Fsb3JpZXMgPSB0YXJnZXRJbnB1dC5wcm90ZWluICogNDsgLy8gNCBrY2FsIHBlciBncmFtXG4gICAgY29uc3QgY2FyYkNhbG9yaWVzID0gdGFyZ2V0SW5wdXQuY2FyYnMgKiA0OyAvLyA0IGtjYWwgcGVyIGdyYW1cbiAgICBjb25zdCBmYXRDYWxvcmllcyA9IHRhcmdldElucHV0LmZhdCAqIDk7IC8vIDkga2NhbCBwZXIgZ3JhbVxuICAgIHJldHVybiBwcm90ZWluQ2Fsb3JpZXMgKyBjYXJiQ2Fsb3JpZXMgKyBmYXRDYWxvcmllcztcbiAgfTtcblxuICBjb25zdCBtYWNyb0NhbG9yaWVzID0gY2FsY3VsYXRlTWFjcm9DYWxvcmllcygpO1xuICBjb25zdCBjYWxvcmllc01pc21hdGNoID0gTWF0aC5hYnMobWFjcm9DYWxvcmllcyAtIHRhcmdldElucHV0LmNhbG9yaWVzKSA+IDE7IC8vIEFsbG93IDEgY2Fsb3JpZSB0b2xlcmFuY2VcblxuICBjb25zdCBoYW5kbGVJbnB1dENoYW5nZSA9IChmaWVsZDoga2V5b2YgTnV0cmllbnRzLCB2YWx1ZTogc3RyaW5nKSA9PiB7XG4gICAgLy8gSGFuZGxlIGVtcHR5IHN0cmluZyBieSBzZXR0aW5nIHRvIDAsIG90aGVyd2lzZSBwYXJzZSB0aGUgbnVtYmVyXG4gICAgY29uc3QgbnVtVmFsdWUgPSB2YWx1ZSA9PT0gJycgPyAwIDogcGFyc2VGbG9hdCh2YWx1ZSk7XG4gICAgLy8gT25seSB1cGRhdGUgaWYgaXQncyBhIHZhbGlkIG51bWJlciAoaW5jbHVkaW5nIDAgZm9yIGVtcHR5IHN0cmluZ3MpXG4gICAgaWYgKCFpc05hTihudW1WYWx1ZSkgJiYgbnVtVmFsdWUgPj0gMCkge1xuICAgICAgb25JbnB1dENoYW5nZShmaWVsZCwgbnVtVmFsdWUpO1xuICAgIH1cbiAgfTtcblxuICBjb25zdCBoYW5kbGVTYXZlID0gKCkgPT4ge1xuICAgIG9uU2F2ZSgpO1xuICAgIG9uQ2xvc2UoKTtcbiAgfTtcblxuICByZXR1cm4gKFxuICAgIDxkaXYgY2xhc3NOYW1lPVwiZml4ZWQgaW5zZXQtMCB6LTUwIGZsZXggaXRlbXMtY2VudGVyIGp1c3RpZnktY2VudGVyIHAtNFwiPlxuICAgICAgey8qIEJhY2tkcm9wICovfVxuICAgICAgPGRpdiBcbiAgICAgICAgY2xhc3NOYW1lPVwiYWJzb2x1dGUgaW5zZXQtMCB0cmFuc2l0aW9uLW9wYWNpdHkgZHVyYXRpb24tMzAwXCJcbiAgICAgICAgc3R5bGU9e3sgYmFja2dyb3VuZENvbG9yOiAncmdiYSgwLCAwLCAwLCAwLjE1KScgfX1cbiAgICAgICAgb25DbGljaz17b25DbG9zZX1cbiAgICAgID48L2Rpdj5cbiAgICAgIFxuICAgICAgey8qIE1vZGFsICovfVxuICAgICAgPGRpdiBjbGFzc05hbWU9XCJyZWxhdGl2ZSBiZy13aGl0ZSByb3VuZGVkLWxnIHNoYWRvdy14bCBwLTYgdy1mdWxsIG1heC13LW1kIG14LWF1dG9cIj5cbiAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWJldHdlZW4gbWItNFwiPlxuICAgICAgICAgIDxoMiBjbGFzc05hbWU9XCJ0ZXh0LXhsIGZvbnQtc2VtaWJvbGQgdGV4dC1ncmF5LTgwMFwiPlNldCBDdXN0b20gVGFyZ2V0czwvaDI+XG4gICAgICAgICAgPGJ1dHRvblxuICAgICAgICAgICAgb25DbGljaz17b25DbG9zZX1cbiAgICAgICAgICAgIGNsYXNzTmFtZT1cInAtMSByb3VuZGVkLWZ1bGwgdHJhbnNpdGlvbi1jb2xvcnMgZHVyYXRpb24tMjAwXCJcbiAgICAgICAgICAgIG9uTW91c2VFbnRlcj17KGUpID0+IGUuY3VycmVudFRhcmdldC5zdHlsZS5iYWNrZ3JvdW5kQ29sb3IgPSAnI2YzZjRmNid9XG4gICAgICAgICAgICBvbk1vdXNlTGVhdmU9eyhlKSA9PiBlLmN1cnJlbnRUYXJnZXQuc3R5bGUuYmFja2dyb3VuZENvbG9yID0gJ3RyYW5zcGFyZW50J31cbiAgICAgICAgICAgIGFyaWEtbGFiZWw9XCJDbG9zZVwiXG4gICAgICAgICAgPlxuICAgICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwidGV4dC1ncmF5LTUwMCB0ZXh0LXhsXCI+w5c8L3NwYW4+XG4gICAgICAgICAgPC9idXR0b24+XG4gICAgICAgIDwvZGl2PlxuICAgICAgICBcbiAgICAgICAge2NhbG9yaWVzTWlzbWF0Y2ggJiYgKFxuICAgICAgICAgIDxkaXYgaWQ9XCJtYWNyby1taXNtYXRjaC1lcnJvclwiIGNsYXNzTmFtZT1cInAtMyBiZy1yZWQtNTAgYm9yZGVyIGJvcmRlci1yZWQtMjAwIHJvdW5kZWQtbWQgbWItNFwiPlxuICAgICAgICAgICAgPHAgY2xhc3NOYW1lPVwidGV4dC1yZWQtNzAwIHRleHQtc21cIj5cbiAgICAgICAgICAgICAg4pqg77iPIFRhcmdldCB0b3RhbHMgZG9uJmFwb3M7dCBtYXRjaDogTWFjcm9udXRyaWVudHMgZXF1YWwge21hY3JvQ2Fsb3JpZXN9IGNhbG9yaWVzLCBidXQgY2Fsb3JpZSB0YXJnZXQgaXMge3RhcmdldElucHV0LmNhbG9yaWVzfS5cbiAgICAgICAgICAgIDwvcD5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgKX1cbiAgICAgICAgXG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwic3BhY2UteS00XCI+XG4gICAgICAgICAgPGRpdj5cbiAgICAgICAgICAgIDxsYWJlbCBjbGFzc05hbWU9XCJibG9jayB0ZXh0LXNtIGZvbnQtbWVkaXVtIHRleHQtZ3JheS03MDBcIj5DYWxvcmllczwvbGFiZWw+XG4gICAgICAgICAgICA8aW5wdXRcbiAgICAgICAgICAgICAgdHlwZT1cIm51bWJlclwiXG4gICAgICAgICAgICAgIHZhbHVlPXt0YXJnZXRJbnB1dC5jYWxvcmllcyB8fCAnJ31cbiAgICAgICAgICAgICAgb25DaGFuZ2U9eyhlKSA9PiBoYW5kbGVJbnB1dENoYW5nZShcImNhbG9yaWVzXCIsIGUudGFyZ2V0LnZhbHVlKX1cbiAgICAgICAgICAgICAgY2xhc3NOYW1lPVwibXQtMSBibG9jayB3LWZ1bGwgYm9yZGVyIGJvcmRlci1ncmF5LTMwMCByb3VuZGVkLW1kIHAtMyBmb2N1czpyaW5nLTIgZm9jdXM6cmluZy12aW9sZXQtNTAwIGZvY3VzOmJvcmRlci10cmFuc3BhcmVudFwiXG4gICAgICAgICAgICAgIHN0eWxlPXt7IHVzZXJTZWxlY3Q6ICd0ZXh0JywgV2Via2l0VXNlclNlbGVjdDogJ3RleHQnIH19XG4gICAgICAgICAgICAvPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDxkaXY+XG4gICAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPVwiYmxvY2sgdGV4dC1zbSBmb250LW1lZGl1bSB0ZXh0LWdyYXktNzAwXCI+UHJvdGVpbiAoZyk8L2xhYmVsPlxuICAgICAgICAgICAgPGlucHV0XG4gICAgICAgICAgICAgIHR5cGU9XCJudW1iZXJcIlxuICAgICAgICAgICAgICB2YWx1ZT17dGFyZ2V0SW5wdXQucHJvdGVpbiB8fCAnJ31cbiAgICAgICAgICAgICAgb25DaGFuZ2U9eyhlKSA9PiBoYW5kbGVJbnB1dENoYW5nZShcInByb3RlaW5cIiwgZS50YXJnZXQudmFsdWUpfVxuICAgICAgICAgICAgICBjbGFzc05hbWU9XCJtdC0xIGJsb2NrIHctZnVsbCBib3JkZXIgYm9yZGVyLWdyYXktMzAwIHJvdW5kZWQtbWQgcC0zIGZvY3VzOnJpbmctMiBmb2N1czpyaW5nLXZpb2xldC01MDAgZm9jdXM6Ym9yZGVyLXRyYW5zcGFyZW50XCJcbiAgICAgICAgICAgICAgc3R5bGU9e3sgdXNlclNlbGVjdDogJ3RleHQnLCBXZWJraXRVc2VyU2VsZWN0OiAndGV4dCcgfX1cbiAgICAgICAgICAgICAgYXJpYS1kZXNjcmliZWRieT17Y2Fsb3JpZXNNaXNtYXRjaCA/ICdtYWNyby1taXNtYXRjaC1lcnJvcicgOiB1bmRlZmluZWR9XG4gICAgICAgICAgICAvPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDxkaXY+XG4gICAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPVwiYmxvY2sgdGV4dC1zbSBmb250LW1lZGl1bSB0ZXh0LWdyYXktNzAwXCI+Q2FyYnMgKGcpPC9sYWJlbD5cbiAgICAgICAgICAgIDxpbnB1dFxuICAgICAgICAgICAgICB0eXBlPVwibnVtYmVyXCJcbiAgICAgICAgICAgICAgdmFsdWU9e3RhcmdldElucHV0LmNhcmJzIHx8ICcnfVxuICAgICAgICAgICAgICBvbkNoYW5nZT17KGUpID0+IGhhbmRsZUlucHV0Q2hhbmdlKFwiY2FyYnNcIiwgZS50YXJnZXQudmFsdWUpfVxuICAgICAgICAgICAgICBjbGFzc05hbWU9XCJtdC0xIGJsb2NrIHctZnVsbCBib3JkZXIgYm9yZGVyLWdyYXktMzAwIHJvdW5kZWQtbWQgcC0zIGZvY3VzOnJpbmctMiBmb2N1czpyaW5nLXZpb2xldC01MDAgZm9jdXM6Ym9yZGVyLXRyYW5zcGFyZW50XCJcbiAgICAgICAgICAgICAgc3R5bGU9e3sgdXNlclNlbGVjdDogJ3RleHQnLCBXZWJraXRVc2VyU2VsZWN0OiAndGV4dCcgfX1cbiAgICAgICAgICAgICAgYXJpYS1kZXNjcmliZWRieT17Y2Fsb3JpZXNNaXNtYXRjaCA/ICdtYWNyby1taXNtYXRjaC1lcnJvcicgOiB1bmRlZmluZWR9XG4gICAgICAgICAgICAvPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDxkaXY+XG4gICAgICAgICAgICA8bGFiZWwgY2xhc3NOYW1lPVwiYmxvY2sgdGV4dC1zbSBmb250LW1lZGl1bSB0ZXh0LWdyYXktNzAwXCI+RmF0IChnKTwvbGFiZWw+XG4gICAgICAgICAgICA8aW5wdXRcbiAgICAgICAgICAgICAgdHlwZT1cIm51bWJlclwiXG4gICAgICAgICAgICAgIHZhbHVlPXt0YXJnZXRJbnB1dC5mYXQgfHwgJyd9XG4gICAgICAgICAgICAgIG9uQ2hhbmdlPXsoZSkgPT4gaGFuZGxlSW5wdXRDaGFuZ2UoXCJmYXRcIiwgZS50YXJnZXQudmFsdWUpfVxuICAgICAgICAgICAgICBjbGFzc05hbWU9XCJtdC0xIGJsb2NrIHctZnVsbCBib3JkZXIgYm9yZGVyLWdyYXktMzAwIHJvdW5kZWQtbWQgcC0zIGZvY3VzOnJpbmctMiBmb2N1czpyaW5nLXZpb2xldC01MDAgZm9jdXM6Ym9yZGVyLXRyYW5zcGFyZW50XCJcbiAgICAgICAgICAgICAgc3R5bGU9e3sgdXNlclNlbGVjdDogJ3RleHQnLCBXZWJraXRVc2VyU2VsZWN0OiAndGV4dCcgfX1cbiAgICAgICAgICAgICAgYXJpYS1kZXNjcmliZWRieT17Y2Fsb3JpZXNNaXNtYXRjaCA/ICdtYWNyby1taXNtYXRjaC1lcnJvcicgOiB1bmRlZmluZWR9XG4gICAgICAgICAgICAvPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICA8L2Rpdj5cbiAgICAgICAgXG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleCBqdXN0aWZ5LWVuZCBzcGFjZS14LTMgbXQtNlwiPlxuICAgICAgICAgIDxidXR0b25cbiAgICAgICAgICAgIG9uQ2xpY2s9e29uQ2xvc2V9XG4gICAgICAgICAgICBjbGFzc05hbWU9XCJweC00IHB5LTIgdGV4dC1ncmF5LTYwMCBob3ZlcjpiZy1ncmF5LTEwMCByb3VuZGVkLWxnIHRyYW5zaXRpb24tY29sb3JzIGR1cmF0aW9uLTIwMFwiXG4gICAgICAgICAgPlxuICAgICAgICAgICAgQ2FuY2VsXG4gICAgICAgICAgPC9idXR0b24+XG4gICAgICAgICAgPGJ1dHRvblxuICAgICAgICAgICAgb25DbGljaz17aGFuZGxlU2F2ZX1cbiAgICAgICAgICAgIGNsYXNzTmFtZT1cInB4LTYgcHktMiB0ZXh0LXdoaXRlIHJvdW5kZWQtbGcgdHJhbnNpdGlvbi1jb2xvcnMgZHVyYXRpb24tMjAwXCJcbiAgICAgICAgICAgIHN0eWxlPXt7IGJhY2tncm91bmRDb2xvcjogJyM2ZTQ0ZmYnIH19XG4gICAgICAgICAgICBvbk1vdXNlRW50ZXI9eyhlKSA9PiBlLmN1cnJlbnRUYXJnZXQuc3R5bGUuYmFja2dyb3VuZENvbG9yID0gJyM1YTM3ZDknfVxuICAgICAgICAgICAgb25Nb3VzZUxlYXZlPXsoZSkgPT4gZS5jdXJyZW50VGFyZ2V0LnN0eWxlLmJhY2tncm91bmRDb2xvciA9ICcjNmU0NGZmJ31cbiAgICAgICAgICA+XG4gICAgICAgICAgICBTYXZlIFRhcmdldHNcbiAgICAgICAgICA8L2J1dHRvbj5cbiAgICAgICAgPC9kaXY+XG4gICAgICA8L2Rpdj5cbiAgICA8L2Rpdj5cbiAgKTtcbn1cbiJdLCJuYW1lcyI6WyJUYXJnZXRzTW9kYWwiLCJpc09wZW4iLCJvbkNsb3NlIiwidGFyZ2V0SW5wdXQiLCJvbklucHV0Q2hhbmdlIiwib25TYXZlIiwiY2FsY3VsYXRlTWFjcm9DYWxvcmllcyIsInByb3RlaW5DYWxvcmllcyIsInByb3RlaW4iLCJjYXJiQ2Fsb3JpZXMiLCJjYXJicyIsImZhdENhbG9yaWVzIiwiZmF0IiwibWFjcm9DYWxvcmllcyIsImNhbG9yaWVzTWlzbWF0Y2giLCJNYXRoIiwiYWJzIiwiY2Fsb3JpZXMiLCJoYW5kbGVJbnB1dENoYW5nZSIsImZpZWxkIiwidmFsdWUiLCJudW1WYWx1ZSIsInBhcnNlRmxvYXQiLCJpc05hTiIsImhhbmRsZVNhdmUiLCJkaXYiLCJjbGFzc05hbWUiLCJzdHlsZSIsImJhY2tncm91bmRDb2xvciIsIm9uQ2xpY2siLCJoMiIsImJ1dHRvbiIsIm9uTW91c2VFbnRlciIsImUiLCJjdXJyZW50VGFyZ2V0Iiwib25Nb3VzZUxlYXZlIiwiYXJpYS1sYWJlbCIsInNwYW4iLCJpZCIsInAiLCJsYWJlbCIsImlucHV0IiwidHlwZSIsIm9uQ2hhbmdlIiwidGFyZ2V0IiwidXNlclNlbGVjdCIsIldlYmtpdFVzZXJTZWxlY3QiLCJhcmlhLWRlc2NyaWJlZGJ5IiwidW5kZWZpbmVkIl0sIm1hcHBpbmdzIjoiQUFBQTs7Ozs7K0JBb0JBOzs7ZUFBd0JBOzs7OzhEQWxCTjs7Ozs7O0FBa0JILFNBQVNBLGFBQWEsRUFDbkNDLE1BQU0sRUFDTkMsT0FBTyxFQUNQQyxXQUFXLEVBQ1hDLGFBQWEsRUFDYkMsTUFBTSxFQUNZO0lBQ2xCLElBQUksQ0FBQ0osUUFBUSxPQUFPO0lBRXBCLCtDQUErQztJQUMvQyxNQUFNSyx5QkFBeUI7UUFDN0IsTUFBTUMsa0JBQWtCSixZQUFZSyxPQUFPLEdBQUcsR0FBRyxrQkFBa0I7UUFDbkUsTUFBTUMsZUFBZU4sWUFBWU8sS0FBSyxHQUFHLEdBQUcsa0JBQWtCO1FBQzlELE1BQU1DLGNBQWNSLFlBQVlTLEdBQUcsR0FBRyxHQUFHLGtC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
