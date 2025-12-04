@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -9,7 +9,8 @@ interface UseFoodRowDragProps {
 }
 
 export function useFoodRowDrag({ id, activeId, disabled = false }: UseFoodRowDragProps) {
-  const wasDraggingRef = useRef(false);
+  // Use state instead of ref to avoid accessing ref.current during render
+  const [wasDragging, setWasDragging] = useState(false);
   const isCurrentlyBeingDragged = activeId === id;
 
   const {
@@ -31,10 +32,10 @@ export function useFoodRowDrag({ id, activeId, disabled = false }: UseFoodRowDra
   // Track drag state - immediate reset for better responsiveness
   useEffect(() => {
     if (isCurrentlyBeingDragged) {
-      wasDraggingRef.current = true;
+      setWasDragging(true);
     } else {
       // Immediate reset for smoother interaction
-      wasDraggingRef.current = false;
+      setWasDragging(false);
     }
   }, [isCurrentlyBeingDragged]);
 
@@ -52,7 +53,7 @@ export function useFoodRowDrag({ id, activeId, disabled = false }: UseFoodRowDra
     dragStyle: style,
     dragHandleProps,
     isDragging: isCurrentlyBeingDragged,
-    wasDragging: wasDraggingRef.current,
-    resetDragState: () => { wasDraggingRef.current = false; }
+    wasDragging,
+    resetDragState: () => { setWasDragging(false); }
   };
 }

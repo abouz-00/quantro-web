@@ -9,6 +9,30 @@ interface ModalLayoutProps {
   bottomSection?: React.ReactNode;
 }
 
+// Move TabButton outside to avoid creating components during render
+const TabButton = ({ 
+  tab, 
+  label,
+  activeTab,
+  setActiveTab
+}: { 
+  tab: "search" | "favorites" | "custom"; 
+  label: string;
+  activeTab: "search" | "favorites" | "custom";
+  setActiveTab: (tab: "search" | "favorites" | "custom") => void;
+}) => (
+  <button
+    onClick={() => setActiveTab(tab)}
+    className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ${
+      activeTab === tab 
+        ? "bg-white text-violet-600 shadow-sm" 
+        : "text-gray-700 hover:text-gray-900"
+    }`}
+  >
+    {label}
+  </button>
+);
+
 export const ModalLayout: React.FC<ModalLayoutProps> = ({
   onClose,
   activeTab,
@@ -45,25 +69,6 @@ export const ModalLayout: React.FC<ModalLayoutProps> = ({
     };
   }, []);
 
-  const TabButton = ({ 
-    tab, 
-    label 
-  }: { 
-    tab: "search" | "favorites" | "custom"; 
-    label: string 
-  }) => (
-    <button
-      onClick={() => setActiveTab(tab)}
-      className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ${
-        activeTab === tab 
-          ? "bg-white text-violet-600 shadow-sm" 
-          : "text-gray-700 hover:text-gray-900"
-      }`}
-    >
-      {label}
-    </button>
-  );
-
   return (
     <div 
       className="fixed inset-0 flex items-center justify-center z-50 p-4" 
@@ -99,9 +104,9 @@ export const ModalLayout: React.FC<ModalLayoutProps> = ({
           
           {/* Tab Navigation */}
           <div className="flex space-x-1 bg-gray-100 rounded-sm p-1">
-            <TabButton tab="search" label="Search" />
-            <TabButton tab="favorites" label="Favorites" />
-            <TabButton tab="custom" label="Custom" />
+            <TabButton tab="search" label="Search" activeTab={activeTab} setActiveTab={setActiveTab} />
+            <TabButton tab="favorites" label="Favorites" activeTab={activeTab} setActiveTab={setActiveTab} />
+            <TabButton tab="custom" label="Custom" activeTab={activeTab} setActiveTab={setActiveTab} />
           </div>
         </div>
 
