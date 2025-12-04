@@ -1,0 +1,29 @@
+8340e7d18b4fe76661579df8a7a41599
+/**
+ * Checks if two dates are the same day (ignores time)
+ */ "use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: Object.getOwnPropertyDescriptor(all, name).get
+    });
+}
+_export(exports, {
+    get generateEntryId () {
+        return generateEntryId;
+    },
+    get sameDay () {
+        return sameDay;
+    }
+});
+const sameDay = (d1, d2)=>{
+    return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
+};
+const generateEntryId = ()=>{
+    return Date.now().toString() + Math.random().toString(36).substr(2, 9);
+};
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvLXdlYi9xdWFudHJvLWJhY2tlbmQvc3JjL3V0aWxzL2RhdGVVdGlscy50cyJdLCJzb3VyY2VzQ29udGVudCI6WyIvKipcbiAqIENoZWNrcyBpZiB0d28gZGF0ZXMgYXJlIHRoZSBzYW1lIGRheSAoaWdub3JlcyB0aW1lKVxuICovXG5leHBvcnQgY29uc3Qgc2FtZURheSA9IChkMTogRGF0ZSwgZDI6IERhdGUpOiBib29sZWFuID0+IHtcbiAgcmV0dXJuIChcbiAgICBkMS5nZXRGdWxsWWVhcigpID09PSBkMi5nZXRGdWxsWWVhcigpICYmXG4gICAgZDEuZ2V0TW9udGgoKSA9PT0gZDIuZ2V0TW9udGgoKSAmJlxuICAgIGQxLmdldERhdGUoKSA9PT0gZDIuZ2V0RGF0ZSgpXG4gICk7XG59O1xuXG4vKipcbiAqIEdlbmVyYXRlcyBhIHVuaXF1ZSBJRCBmb3IgbmV3IGZvb2QgZW50cmllc1xuICovXG5leHBvcnQgY29uc3QgZ2VuZXJhdGVFbnRyeUlkID0gKCk6IHN0cmluZyA9PiB7XG4gIHJldHVybiBEYXRlLm5vdygpLnRvU3RyaW5nKCkgKyBNYXRoLnJhbmRvbSgpLnRvU3RyaW5nKDM2KS5zdWJzdHIoMiwgOSk7XG59O1xuIl0sIm5hbWVzIjpbImdlbmVyYXRlRW50cnlJZCIsInNhbWVEYXkiLCJkMSIsImQyIiwiZ2V0RnVsbFllYXIiLCJnZXRNb250aCIsImdldERhdGUiLCJEYXRlIiwibm93IiwidG9TdHJpbmciLCJNYXRoIiwicmFuZG9tIiwic3Vic3RyIl0sIm1hcHBpbmdzIjoiQUFBQTs7Q0FFQzs7Ozs7Ozs7Ozs7UUFZWUE7ZUFBQUE7O1FBWEFDO2VBQUFBOzs7QUFBTixNQUFNQSxVQUFVLENBQUNDLElBQVVDO0lBQ2hDLE9BQ0VELEdBQUdFLFdBQVcsT0FBT0QsR0FBR0MsV0FBVyxNQUNuQ0YsR0FBR0csUUFBUSxPQUFPRixHQUFHRSxRQUFRLE1BQzdCSCxHQUFHSSxPQUFPLE9BQU9ILEdBQUdHLE9BQU87QUFFL0I7QUFLTyxNQUFNTixrQkFBa0I7SUFDN0IsT0FBT08sS0FBS0MsR0FBRyxHQUFHQyxRQUFRLEtBQUtDLEtBQUtDLE1BQU0sR0FBR0YsUUFBUSxDQUFDLElBQUlHLE1BQU0sQ0FBQyxHQUFHO0FBQ3RFIn0=
