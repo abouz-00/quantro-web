@@ -45,6 +45,30 @@ interface FoodSearchModalProps {
   selectedDate: Date;
 }
 
+// Move TabButton outside to avoid creating components during render
+const TabButton = ({ 
+  tab,
+  label,
+  activeTab,
+  setActiveTab
+}: { 
+  tab: "search" | "favorites" | "custom"; 
+  label: string;
+  activeTab: "search" | "favorites" | "custom";
+  setActiveTab: (tab: "search" | "favorites" | "custom") => void;
+}) => (
+  <button
+    onClick={() => setActiveTab(tab)}
+    className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ${
+      activeTab === tab 
+        ? "bg-white text-violet-600 shadow-sm" 
+        : "text-gray-700 hover:text-gray-900"
+    }`}
+  >
+    {label}
+  </button>
+);
+
 function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalProps) {
   const [activeTab, setActiveTab] = useState<"search" | "favorites" | "custom">("search");
   const [localQuery, setLocalQuery] = useState("");
@@ -57,10 +81,16 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
   useFoodSearchStyles();
   const { createFoodEntry } = useNutrientCalculator();
 
-  // Reset selectedFood when query is cleared or tab changes
-  useEffect(() => {
+  // Track previous values to detect changes
+  const [prevQuery, setPrevQuery] = useState(localQuery);
+  const [prevTab, setPrevTab] = useState(activeTab);
+
+  // Reset selectedFood when query is cleared or tab changes (with guard)
+  if (prevQuery !== localQuery || prevTab !== activeTab) {
+    setPrevQuery(localQuery);
+    setPrevTab(activeTab);
     setSelectedFood(null);
-  }, [localQuery, activeTab]);
+  }
 
   // Hooks for search, favorites, custom foods
   const { suggestions, loading: searchLoading, error: searchError } = useFoodSearch(localQuery, activeTab === "search");
@@ -142,25 +172,6 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
     onClose();
   };
 
-  const TabButton = ({ 
-    tab, 
-    label 
-  }: { 
-    tab: "search" | "favorites" | "custom"; 
-    label: string 
-  }) => (
-    <button
-      onClick={() => setActiveTab(tab)}
-      className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ${
-        activeTab === tab 
-          ? "bg-white text-violet-600 shadow-sm" 
-          : "text-gray-700 hover:text-gray-900"
-      }`}
-    >
-      {label}
-    </button>
-  );
-
   return (
     <Modal 
       isOpen={true}
@@ -170,9 +181,9 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
       <div className="p-4 h-full flex flex-col">
         {/* Tab Navigation */}
         <div className="flex space-x-1 bg-gray-100 rounded-sm p-1 mb-4">
-          <TabButton tab="search" label="Search" />
-          <TabButton tab="favorites" label="Favorites" />
-          <TabButton tab="custom" label="Custom" />
+          <TabButton tab="search" label="Search" activeTab={activeTab} setActiveTab={setActiveTab} />
+          <TabButton tab="favorites" label="Favorites" activeTab={activeTab} setActiveTab={setActiveTab} />
+          <TabButton tab="custom" label="Custom" activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
 
         {/* Tab Content */}
