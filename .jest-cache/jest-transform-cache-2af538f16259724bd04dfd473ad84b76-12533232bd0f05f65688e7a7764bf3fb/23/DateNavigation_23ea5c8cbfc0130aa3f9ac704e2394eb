@@ -1,0 +1,38 @@
+875c34d22ba788261fd8f3ff67a1fab9
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "DateNavigation", {
+    enumerable: true,
+    get: function() {
+        return DateNavigation;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = /*#__PURE__*/ _interop_require_default(require("react"));
+const _DatePicker = /*#__PURE__*/ _interop_require_default(require("../ui/DatePicker"));
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+const DateNavigation = ({ selectedDate, onDateChange })=>{
+    return /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+        className: "flex justify-center mb-8",
+        children: /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+            className: "flex items-center space-x-2 bg-white rounded-full shadow-lg px-3 py-2",
+            style: {
+                backgroundColor: '#F8F5F0',
+                border: '1px solid #EDE6DC'
+            },
+            children: /*#__PURE__*/ (0, _jsxruntime.jsx)(_DatePicker.default, {
+                selectedDate: selectedDate,
+                onDateChange: onDateChange,
+                className: ""
+            })
+        })
+    });
+};
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvLXdlYi9zcmMvY29tcG9uZW50cy9sb2cvRGF0ZU5hdmlnYXRpb24udHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XG5pbXBvcnQgRGF0ZVBpY2tlckNvbXBvbmVudCBmcm9tICcuLi91aS9EYXRlUGlja2VyJztcblxuaW50ZXJmYWNlIERhdGVOYXZpZ2F0aW9uUHJvcHMge1xuICBzZWxlY3RlZERhdGU6IERhdGU7XG4gIG9uRGF0ZUNoYW5nZTogKGRhdGU6IERhdGUpID0+IHZvaWQ7XG59XG5cbmV4cG9ydCBjb25zdCBEYXRlTmF2aWdhdGlvbjogUmVhY3QuRkM8RGF0ZU5hdmlnYXRpb25Qcm9wcz4gPSAoe1xuICBzZWxlY3RlZERhdGUsXG4gIG9uRGF0ZUNoYW5nZVxufSkgPT4ge1xuICByZXR1cm4gKFxuICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleCBqdXN0aWZ5LWNlbnRlciBtYi04XCI+XG4gICAgICA8ZGl2IFxuICAgICAgICBjbGFzc05hbWU9XCJmbGV4IGl0ZW1zLWNlbnRlciBzcGFjZS14LTIgYmctd2hpdGUgcm91bmRlZC1mdWxsIHNoYWRvdy1sZyBweC0zIHB5LTJcIiBcbiAgICAgICAgc3R5bGU9e3sgYmFja2dyb3VuZENvbG9yOiAnI0Y4RjVGMCcsIGJvcmRlcjogJzFweCBzb2xpZCAjRURFNkRDJyB9fVxuICAgICAgPlxuICAgICAgICA8RGF0ZVBpY2tlckNvbXBvbmVudFxuICAgICAgICAgIHNlbGVjdGVkRGF0ZT17c2VsZWN0ZWREYXRlfVxuICAgICAgICAgIG9uRGF0ZUNoYW5nZT17b25EYXRlQ2hhbmdlfVxuICAgICAgICAgIGNsYXNzTmFtZT1cIlwiXG4gICAgICAgIC8+XG4gICAgICA8L2Rpdj5cbiAgICA8L2Rpdj5cbiAgKTtcbn07XG4iXSwibmFtZXMiOlsiRGF0ZU5hdmlnYXRpb24iLCJzZWxlY3RlZERhdGUiLCJvbkRhdGVDaGFuZ2UiLCJkaXYiLCJjbGFzc05hbWUiLCJzdHlsZSIsImJhY2tncm91bmRDb2xvciIsImJvcmRlciIsIkRhdGVQaWNrZXJDb21wb25lbnQiXSwibWFwcGluZ3MiOiI7Ozs7K0JBUWFBOzs7ZUFBQUE7Ozs7OERBUks7bUVBQ2M7Ozs7OztBQU96QixNQUFNQSxpQkFBZ0QsQ0FBQyxFQUM1REMsWUFBWSxFQUNaQyxZQUFZLEVBQ2I7SUFDQyxxQkFDRSxxQkFBQ0M7UUFBSUMsV0FBVTtrQkFDYixjQUFBLHFCQUFDRDtZQUNDQyxXQUFVO1lBQ1ZDLE9BQU87Z0JBQUVDLGlCQUFpQjtnQkFBV0MsUUFBUTtZQUFvQjtzQkFFakUsY0FBQSxxQkFBQ0MsbUJBQW1CO2dCQUNsQlAsY0FBY0E7Z0JBQ2RDLGNBQWNBO2dCQUNkRSxXQUFVOzs7O0FBS3BCIn0=
