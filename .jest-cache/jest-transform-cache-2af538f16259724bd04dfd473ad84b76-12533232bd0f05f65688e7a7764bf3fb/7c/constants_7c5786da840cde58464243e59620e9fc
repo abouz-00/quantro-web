@@ -1,0 +1,319 @@
+53cc4ae39ecdbd26690c225a9bf91f4c
+// Re-export constants from ui
+"use strict";
+
+/* istanbul ignore next */
+function cov_1136h6781m() {
+  var path = "/Users/ayman/quantro-web/src/components/landing/constants.ts";
+  var hash = "2fa4b29c0865fd231a2be1f7f3a9476d2fd32ecd";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/ayman/quantro-web/src/components/landing/constants.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 7,
+          column: 4
+        },
+        end: {
+          line: 10,
+          column: 7
+        }
+      },
+      "2": {
+        start: {
+          line: 7,
+          column: 24
+        },
+        end: {
+          line: 10,
+          column: 7
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 0
+        },
+        end: {
+          line: 25,
+          column: 3
+        }
+      },
+      "4": {
+        start: {
+          line: 14,
+          column: 8
+        },
+        end: {
+          line: 14,
+          column: 38
+        }
+      },
+      "5": {
+        start: {
+          line: 17,
+          column: 8
+        },
+        end: {
+          line: 17,
+          column: 26
+        }
+      },
+      "6": {
+        start: {
+          line: 20,
+          column: 8
+        },
+        end: {
+          line: 20,
+          column: 31
+        }
+      },
+      "7": {
+        start: {
+          line: 23,
+          column: 8
+        },
+        end: {
+          line: 23,
+          column: 36
+        }
+      },
+      "8": {
+        start: {
+          line: 26,
+          column: 12
+        },
+        end: {
+          line: 26,
+          column: 41
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "_export",
+        decl: {
+          start: {
+            line: 6,
+            column: 9
+          },
+          end: {
+            line: 6,
+            column: 16
+          }
+        },
+        loc: {
+          start: {
+            line: 6,
+            column: 30
+          },
+          end: {
+            line: 11,
+            column: 1
+          }
+        },
+        line: 6
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 13,
+            column: 4
+          },
+          end: {
+            line: 13,
+            column: 5
+          }
+        },
+        loc: {
+          start: {
+            line: 13,
+            column: 30
+          },
+          end: {
+            line: 15,
+            column: 5
+          }
+        },
+        line: 13
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 16,
+            column: 4
+          },
+          end: {
+            line: 16,
+            column: 5
+          }
+        },
+        loc: {
+          start: {
+            line: 16,
+            column: 18
+          },
+          end: {
+            line: 18,
+            column: 5
+          }
+        },
+        line: 16
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 19,
+            column: 4
+          },
+          end: {
+            line: 19,
+            column: 5
+          }
+        },
+        loc: {
+          start: {
+            line: 19,
+            column: 23
+          },
+          end: {
+            line: 21,
+            column: 5
+          }
+        },
+        line: 19
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 22,
+            column: 4
+          },
+          end: {
+            line: 22,
+            column: 5
+          }
+        },
+        loc: {
+          start: {
+            line: 22,
+            column: 28
+          },
+          end: {
+            line: 24,
+            column: 5
+          }
+        },
+        line: 22
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/Users/ayman/quantro-web/src/components/landing/constants.ts"],
+      sourcesContent: ["// Re-export constants from ui\nexport { COLORS, NO_SELECT_STYLES, ANIMATION_VARIANTS, FOOD_EMOJIS } from '../../constants/ui';"],
+      names: ["ANIMATION_VARIANTS", "COLORS", "FOOD_EMOJIS", "NO_SELECT_STYLES"],
+      mappings: "AAAA,8BAA8B;;;;;;;;;;;;QACKA;eAAAA,sBAAkB;;QAA5CC;eAAAA,UAAM;;QAAwCC;eAAAA,eAAW;;QAAjDC;eAAAA,oBAAgB;;;oBAAyC"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "2fa4b29c0865fd231a2be1f7f3a9476d2fd32ecd"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1136h6781m = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1136h6781m();
+cov_1136h6781m().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function _export(target, all) {
+  /* istanbul ignore next */
+  cov_1136h6781m().f[0]++;
+  cov_1136h6781m().s[1]++;
+  for (var name in all) {
+    /* istanbul ignore next */
+    cov_1136h6781m().s[2]++;
+    Object.defineProperty(target, name, {
+      enumerable: true,
+      get: Object.getOwnPropertyDescriptor(all, name).get
+    });
+  }
+}
+/* istanbul ignore next */
+cov_1136h6781m().s[3]++;
+_export(exports, {
+  get ANIMATION_VARIANTS() {
+    /* istanbul ignore next */
+    cov_1136h6781m().f[1]++;
+    cov_1136h6781m().s[4]++;
+    return _ui.ANIMATION_VARIANTS;
+  },
+  get COLORS() {
+    /* istanbul ignore next */
+    cov_1136h6781m().f[2]++;
+    cov_1136h6781m().s[5]++;
+    return _ui.COLORS;
+  },
+  get FOOD_EMOJIS() {
+    /* istanbul ignore next */
+    cov_1136h6781m().f[3]++;
+    cov_1136h6781m().s[6]++;
+    return _ui.FOOD_EMOJIS;
+  },
+  get NO_SELECT_STYLES() {
+    /* istanbul ignore next */
+    cov_1136h6781m().f[4]++;
+    cov_1136h6781m().s[7]++;
+    return _ui.NO_SELECT_STYLES;
+  }
+});
+const _ui =
+/* istanbul ignore next */
+(cov_1136h6781m().s[8]++, require("../../constants/ui"));
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMTEzNmg2NzgxbSIsImFjdHVhbENvdmVyYWdlIiwicyIsIkFOSU1BVElPTl9WQVJJQU5UUyIsImYiLCJfdWkiLCJDT0xPUlMiLCJGT09EX0VNT0pJUyIsIk5PX1NFTEVDVF9TVFlMRVMiXSwic291cmNlcyI6WyIvVXNlcnMvYXltYW4vcXVhbnRyby13ZWIvc3JjL2NvbXBvbmVudHMvbGFuZGluZy9jb25zdGFudHMudHMiXSwic291cmNlc0NvbnRlbnQiOlsiLy8gUmUtZXhwb3J0IGNvbnN0YW50cyBmcm9tIHVpXG5leHBvcnQgeyBDT0xPUlMsIE5PX1NFTEVDVF9TVFlMRVMsIEFOSU1BVElPTl9WQVJJQU5UUywgRk9PRF9FTU9KSVMgfSBmcm9tICcuLi8uLi9jb25zdGFudHMvdWknOyJdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztJQUNTO0lBQUFBLGNBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUFDLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUFELGNBQUE7QUFBQUEsY0FBQSxHQUFBRSxDQUFBOzs7Ozs7Ozs7Ozs7Ozs7Ozs7OztNQUEwQkMsbUJBQUE7SUFBQTtJQUFBSCxjQUFBLEdBQUFJLENBQUE7SUFBQUosY0FBQSxHQUFBRSxDQUFBO1dBQUFHLEdBQUEsQ0FBQUYsa0JBQWtCOztNQUE1Q0csT0FBQTtJQUFBO0lBQUFOLGNBQUEsR0FBQUksQ0FBQTtJQUFBSixjQUFBLEdBQUFFLENBQUE7V0FBQUcsR0FBQSxDQUFBQyxNQUFNOztNQUF3Q0MsWUFBQTtJQUFBO0lBQUFQLGNBQUEsR0FBQUksQ0FBQTtJQUFBSixjQUFBLEdBQUFFLENBQUE7V0FBQUcsR0FBQSxDQUFBRSxXQUFXOztNQUFqREMsaUJBQUE7SUFBQTtJQUFBUixjQUFBLEdBQUFJLENBQUE7SUFBQUosY0FBQSxHQUFBRSxDQUFBO1dBQUFHLEdBQUEsQ0FBQUcsZ0JBQWdCOzs7OztrQ0FBeUMiLCJpZ25vcmVMaXN0IjpbXX0=
