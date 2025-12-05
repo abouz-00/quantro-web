@@ -45,7 +45,8 @@ jobs:
       - name: Label major updates for manual review
         if: contains(steps.metadata.outputs.update-type, 'version-update:semver-major')
         run: |
-          gh pr edit "$PR_URL" --add-label "major-update" --add-label "needs-review"
+          # Try to add labels, but don't fail if they don't exist
+          gh pr edit "$PR_URL" --add-label "major-update" --add-label "needs-review" || echo "⚠️ Labels not found, skipping..."
           gh pr comment "$PR_URL" --body "🚨 This is a major version update that requires manual review before merging."
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
