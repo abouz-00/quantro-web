@@ -1,3 +1,10 @@
+/* Load DM Sans directly - must be at the top */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Hide number input arrows (spinners) for all browsers */
 input.hide-number-spin::-webkit-outer-spin-button,
 input.hide-number-spin::-webkit-inner-spin-button {
@@ -9,13 +16,6 @@ input.hide-number-spin[type=number] {
   -moz-appearance: textfield !important;
   -webkit-appearance: none !important;
 }
-
-/* Load DM Sans directly */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Force DM Sans on all elements */
 html, body, div, span, applet, object, iframe,

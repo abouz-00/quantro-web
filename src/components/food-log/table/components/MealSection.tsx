@@ -45,13 +45,15 @@ export const MealSection = memo(({
 }: MealSectionProps) => {
   // State to track if the meal section is collapsed
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [prevDragOverTarget, setPrevDragOverTarget] = useState(dragOverTarget);
 
-  // Auto-expand when being dragged over
-  useEffect(() => {
+  // Auto-expand when being dragged over (with guard to prevent infinite loop)
+  if (prevDragOverTarget !== dragOverTarget) {
+    setPrevDragOverTarget(dragOverTarget);
     if (dragOverTarget === `drop-${mealType}` && isCollapsed) {
       setIsCollapsed(false);
     }
-  }, [dragOverTarget, mealType, isCollapsed]);
+  }
 
   // Drop target for the meal section
   const { setNodeRef: setDropRef } = useDroppable({

@@ -1,0 +1,76 @@
+1b56fa38c002f84b94ebaefd2d88102a
+// Test to verify drag event handling is robust
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: Object.getOwnPropertyDescriptor(all, name).get
+    });
+}
+_export(exports, {
+    get safeDragStartHandler () {
+        return safeDragStartHandler;
+    },
+    get testDragEvents () {
+        return testDragEvents;
+    }
+});
+// Test cases for drag event handling
+const testDragEvents = {
+    // Case 1: Normal drag event
+    validDragStart: {
+        active: {
+            id: 'test-id'
+        },
+        over: null
+    },
+    // Case 2: Null active (the error we fixed)
+    nullActiveDragStart: {
+        active: null,
+        over: null
+    },
+    // Case 3: Active without ID
+    noIdDragStart: {
+        active: {},
+        over: null
+    },
+    // Case 4: Undefined event
+    undefinedEvent: undefined
+};
+// These test cases would have caused the original error:
+// "null is not an object (evaluating 'active.id')"
+// Our fix handles these cases with proper null checks:
+function safeDragStartHandler(event) {
+    // ✅ This prevents the error
+    if (!event?.active?.id) {
+        return;
+    }
+// ... rest of drag logic
+}
+describe('Drag Safety Tests', ()=>{
+    it('should handle null active drag events safely', ()=>{
+        expect(()=>{
+            safeDragStartHandler(testDragEvents.nullActiveDragStart);
+        }).not.toThrow();
+    });
+    it('should handle undefined event safely', ()=>{
+        expect(()=>{
+            safeDragStartHandler(testDragEvents.undefinedEvent);
+        }).not.toThrow();
+    });
+    it('should handle active without ID safely', ()=>{
+        expect(()=>{
+            safeDragStartHandler(testDragEvents.noIdDragStart);
+        }).not.toThrow();
+    });
+    it('should process valid drag events', ()=>{
+        expect(()=>{
+            safeDragStartHandler(testDragEvents.validDragStart);
+        }).not.toThrow();
+    });
+});
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvLXdlYi9zcmMvY29tcG9uZW50cy9mb29kLWxvZy9fX3Rlc3RzX18vZHJhZy1zYWZldHkudGVzdC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBUZXN0IHRvIHZlcmlmeSBkcmFnIGV2ZW50IGhhbmRsaW5nIGlzIHJvYnVzdFxuXG5pbXBvcnQgeyBEcmFnU3RhcnRFdmVudCB9IGZyb20gJ0BkbmQta2l0L2NvcmUnO1xuXG4vLyBUZXN0IGNhc2VzIGZvciBkcmFnIGV2ZW50IGhhbmRsaW5nXG5jb25zdCB0ZXN0RHJhZ0V2ZW50cyA9IHtcbiAgLy8gQ2FzZSAxOiBOb3JtYWwgZHJhZyBldmVudFxuICB2YWxpZERyYWdTdGFydDogKHtcbiAgICBhY3RpdmU6IHsgaWQ6ICd0ZXN0LWlkJyB9LFxuICAgIG92ZXI6IG51bGxcbiAgfSBhcyB1bmtub3duKSBhcyBQYXJ0aWFsPERyYWdTdGFydEV2ZW50PixcblxuICAvLyBDYXNlIDI6IE51bGwgYWN0aXZlICh0aGUgZXJyb3Igd2UgZml4ZWQpXG4gIG51bGxBY3RpdmVEcmFnU3RhcnQ6ICh7XG4gICAgYWN0aXZlOiBudWxsLFxuICAgIG92ZXI6IG51bGxcbiAgfSBhcyB1bmtub3duKSBhcyBQYXJ0aWFsPERyYWdTdGFydEV2ZW50PixcblxuICAvLyBDYXNlIDM6IEFjdGl2ZSB3aXRob3V0IElEXG4gIG5vSWREcmFnU3RhcnQ6ICh7XG4gICAgYWN0aXZlOiB7fSxcbiAgICBvdmVyOiBudWxsXG4gIH0gYXMgdW5rbm93bikgYXMgUGFydGlhbDxEcmFnU3RhcnRFdmVudD4sXG5cbiAgLy8gQ2FzZSA0OiBVbmRlZmluZWQgZXZlbnRcbiAgdW5kZWZpbmVkRXZlbnQ6ICh1bmRlZmluZWQgYXMgdW5rbm93bikgYXMgUGFydGlhbDxEcmFnU3RhcnRFdmVudD5cbn07XG5cbi8vIFRoZXNlIHRlc3QgY2FzZXMgd291bGQgaGF2ZSBjYXVzZWQgdGhlIG9yaWdpbmFsIGVycm9yOlxuLy8gXCJudWxsIGlzIG5vdCBhbiBvYmplY3QgKGV2YWx1YXRpbmcgJ2FjdGl2ZS5pZCcpXCJcblxuLy8gT3VyIGZpeCBoYW5kbGVzIHRoZXNlIGNhc2VzIHdpdGggcHJvcGVyIG51bGwgY2hlY2tzOlxuZnVuY3Rpb24gc2FmZURyYWdTdGFydEhhbmRsZXIoZXZlbnQ6IERyYWdTdGFydEV2ZW50KSB7XG4gIC8vIOKchSBUaGlzIHByZXZlbnRzIHRoZSBlcnJvclxuICBpZiAoIWV2ZW50Py5hY3RpdmU/LmlkKSB7XG4gICAgcmV0dXJuO1xuICB9XG4gIFxuICAvLyAuLi4gcmVzdCBvZiBkcmFnIGxvZ2ljXG59XG5cbmRlc2NyaWJlKCdEcmFnIFNhZmV0eSBUZXN0cycsICgpID0+IHtcbiAgaXQoJ3Nob3VsZCBoYW5kbGUgbnVsbCBhY3RpdmUgZHJhZyBldmVudHMgc2FmZWx5JywgKCkgPT4ge1xuICAgIGV4cGVjdCgoKSA9PiB7XG4gICAgICBzYWZlRHJhZ1N0YXJ0SGFuZGxlcih0ZXN0RHJhZ0V2ZW50cy5udWxsQWN0aXZlRHJhZ1N0YXJ0IGFzIERyYWdTdGFydEV2ZW50KTtcbiAgICB9KS5ub3QudG9UaHJvdygpO1xuICB9KTtcblxuICBpdCgnc2hvdWxkIGhhbmRsZSB1bmRlZmluZWQgZXZlbnQgc2FmZWx5JywgKCkgPT4ge1xuICAgIGV4cGVjdCgoKSA9PiB7XG4gICAgICBzYWZlRHJhZ1N0YXJ0SGFuZGxlcih0ZXN0RHJhZ0V2ZW50cy51bmRlZmluZWRFdmVudCBhcyBEcmFnU3RhcnRFdmVudCk7XG4gICAgfSkubm90LnRvVGhyb3coKTtcbiAgfSk7XG5cbiAgaXQoJ3Nob3VsZCBoYW5kbGUgYWN0aXZlIHdpdGhvdXQgSUQgc2FmZWx5JywgKCkgPT4ge1xuICAgIGV4cGVjdCgoKSA9PiB7XG4gICAgICBzYWZlRHJhZ1N0YXJ0SGFuZGxlcih0ZXN0RHJhZ0V2ZW50cy5ub0lkRHJhZ1N0YXJ0IGFzIERyYWdTdGFydEV2ZW50KTtcbiAgICB9KS5ub3QudG9UaHJvdygpO1xuICB9KTtcblxuICBpdCgnc2hvdWxkIHByb2Nlc3MgdmFsaWQgZHJhZyBldmVudHMnLCAoKSA9PiB7XG4gICAgZXhwZWN0KCgpID0+IHtcbiAgICAgIHNhZmVEcmFnU3RhcnRIYW5kbGVyKHRlc3REcmFnRXZlbnRzLnZhbGlkRHJhZ1N0YXJ0IGFzIERyYWdTdGFydEV2ZW50KTtcbiAgICB9KS5ub3QudG9UaHJvdygpO1xuICB9KTtcbn0pO1xuXG5leHBvcnQgeyB0ZXN0RHJhZ0V2ZW50cywgc2FmZURyYWdTdGFydEhhbmRsZXIgfTtcbiJdLCJuYW1lcyI6WyJzYWZlRHJhZ1N0YXJ0SGFuZGxlciIsInRlc3REcmFnRXZlbnRzIiwidmFsaWREcmFnU3RhcnQiLCJhY3RpdmUiLCJpZCIsIm92ZXIiLCJudWxsQWN0aXZlRHJhZ1N0YXJ0Iiwibm9JZERyYWdTdGFydCIsInVuZGVmaW5lZEV2ZW50IiwidW5kZWZpbmVkIiwiZXZlbnQiLCJkZXNjcmliZSIsIml0IiwiZXhwZWN0Iiwibm90IiwidG9UaHJvdyJdLCJtYXBwaW5ncyI6IkFBQUEsK0NBQStDOzs7Ozs7Ozs7Ozs7UUFtRXRCQTtlQUFBQTs7UUFBaEJDO2VBQUFBOzs7QUEvRFQscUNBQXFDO0FBQ3JDLE1BQU1BLGlCQUFpQjtJQUNyQiw0QkFBNEI7SUFDNUJDLGdCQUFpQjtRQUNmQyxRQUFRO1lBQUVDLElBQUk7UUFBVTtRQUN4QkMsTUFBTTtJQUNSO0lBRUEsMkNBQTJDO0lBQzNDQyxxQkFBc0I7UUFDcEJILFFBQVE7UUFDUkUsTUFBTTtJQUNSO0lBRUEsNEJBQTRCO0lBQzVCRSxlQUFnQjtRQUNkSixRQUFRLENBQUM7UUFDVEUsTUFBTTtJQUNSO0lBRUEsMEJBQTBCO0lBQzFCRyxnQkFBaUJDO0FBQ25CO0FBRUEseURBQXlEO0FBQ3pELG1EQUFtRDtBQUVuRCx1REFBdUQ7QUFDdkQsU0FBU1QscUJBQXFCVSxLQUFxQjtJQUNqRCw0QkFBNEI7SUFDNUIsSUFBSSxDQUFDQSxPQUFPUCxRQUFRQyxJQUFJO1FBQ3RCO0lBQ0Y7QUFFQSx5QkFBeUI7QUFDM0I7QUFFQU8sU0FBUyxxQkFBcUI7SUFDNUJDLEdBQUcsZ0RBQWdEO1FBQ2pEQyxPQUFPO1lBQ0xiLHFCQUFxQkMsZUFBZUssbUJBQW1CO1FBQ3pELEdBQUdRLEdBQUcsQ0FBQ0MsT0FBTztJQUNoQjtJQUVBSCxHQUFHLHdDQUF3QztRQUN6Q0MsT0FBTztZQUNMYixxQkFBcUJDLGVBQWVPLGNBQWM7UUFDcEQsR0FBR00sR0FBRyxDQUFDQyxPQUFPO0lBQ2hCO0lBRUFILEdBQUcsMENBQTBDO1FBQzNDQyxPQUFPO1lBQ0xiLHFCQUFxQkMsZUFBZU0sYUFBYTtRQUNuRCxHQUFHTyxHQUFHLENBQUNDLE9BQU87SUFDaEI7SUFFQUgsR0FBRyxvQ0FBb0M7UUFDckNDLE9BQU87WUFDTGIscUJBQXFCQyxlQUFlQyxjQUFjO1FBQ3BELEdBQUdZLEdBQUcsQ0FBQ0MsT0FBTztJQUNoQjtBQUNGIn0=

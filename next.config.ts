@@ -9,15 +9,15 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: process.env.NODE_ENV === 'development',
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   // Performance optimizations for faster dev startup
   experimental: {
     // Optimize bundling
     optimizePackageImports: ['@dnd-kit/core', '@dnd-kit/sortable', '@radix-ui/react-select', 'lucide-react'],
   },
-  // Webpack optimizations
+  // Turbopack configuration (Next.js 16 default)
+  // Empty config silences the warning and uses Turbopack defaults
+  turbopack: {},
+  // Webpack fallback (only used when explicitly passing --webpack flag)
   webpack: (config, { dev }) => {
     // Fix for next-auth/react module resolution issue
     config.resolve.alias = {
