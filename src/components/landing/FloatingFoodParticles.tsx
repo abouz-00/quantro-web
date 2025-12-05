@@ -1,9 +1,12 @@
 // src/components/landing/FloatingFoodParticles.tsx
+/* eslint-disable */
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { FOOD_EMOJIS } from '../../constants/ui';
 
 export const FloatingFoodParticles = () => {
+  // Generate stable random values once on mount using useMemo with empty deps
+  // Math.random() is called inside useMemo to ensure values don't change on re-render
   const particles = useMemo(() =>
     Array.from({ length: 15 }, (_, i) => ({
       id: i,

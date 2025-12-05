@@ -1,0 +1,52 @@
+c3c7b6180139b81ddf9bf8aa7c4c620b
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+const _dateUtils = require("../dateUtils");
+describe('dateUtils', ()=>{
+    describe('generateEntryId', ()=>{
+        it('generates unique IDs', ()=>{
+            const id1 = (0, _dateUtils.generateEntryId)();
+            const id2 = (0, _dateUtils.generateEntryId)();
+            expect(id1).toBeDefined();
+            expect(id2).toBeDefined();
+            expect(id1).not.toBe(id2);
+        });
+        it('generates IDs with correct format', ()=>{
+            const id = (0, _dateUtils.generateEntryId)();
+            // Should be a string with timestamp and random component
+            expect(typeof id).toBe('string');
+            expect(id.length).toBeGreaterThan(10);
+        });
+    });
+    describe('sameDay', ()=>{
+        it('returns true for same dates', ()=>{
+            const date1 = new Date('2023-01-15T10:30:00Z');
+            const date2 = new Date('2023-01-15T18:45:00Z');
+            expect((0, _dateUtils.sameDay)(date1, date2)).toBe(true);
+        });
+        it('returns false for different dates', ()=>{
+            const date1 = new Date('2023-01-15T10:30:00Z');
+            const date2 = new Date('2023-01-16T10:30:00Z');
+            expect((0, _dateUtils.sameDay)(date1, date2)).toBe(false);
+        });
+        it('handles year differences', ()=>{
+            const date1 = new Date('2023-01-15T10:30:00Z');
+            const date2 = new Date('2024-01-15T10:30:00Z');
+            expect((0, _dateUtils.sameDay)(date1, date2)).toBe(false);
+        });
+        it('handles month differences', ()=>{
+            const date1 = new Date('2023-01-15T10:30:00Z');
+            const date2 = new Date('2023-02-15T10:30:00Z');
+            expect((0, _dateUtils.sameDay)(date1, date2)).toBe(false);
+        });
+        it('handles day differences', ()=>{
+            const date1 = new Date('2023-01-15T10:30:00Z');
+            const date2 = new Date('2023-01-16T10:30:00Z');
+            expect((0, _dateUtils.sameDay)(date1, date2)).toBe(false);
+        });
+    });
+});
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvLXdlYi9zcmMvdXRpbHMvX190ZXN0c19fL2RhdGVVdGlscy50ZXN0LnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IFxuICBnZW5lcmF0ZUVudHJ5SWQsIFxuICBzYW1lRGF5XG59IGZyb20gJy4uL2RhdGVVdGlscydcblxuZGVzY3JpYmUoJ2RhdGVVdGlscycsICgpID0+IHtcbiAgZGVzY3JpYmUoJ2dlbmVyYXRlRW50cnlJZCcsICgpID0+IHtcbiAgICBpdCgnZ2VuZXJhdGVzIHVuaXF1ZSBJRHMnLCAoKSA9PiB7XG4gICAgICBjb25zdCBpZDEgPSBnZW5lcmF0ZUVudHJ5SWQoKVxuICAgICAgY29uc3QgaWQyID0gZ2VuZXJhdGVFbnRyeUlkKClcbiAgICAgIFxuICAgICAgZXhwZWN0KGlkMSkudG9CZURlZmluZWQoKVxuICAgICAgZXhwZWN0KGlkMikudG9CZURlZmluZWQoKVxuICAgICAgZXhwZWN0KGlkMSkubm90LnRvQmUoaWQyKVxuICAgIH0pXG5cbiAgICBpdCgnZ2VuZXJhdGVzIElEcyB3aXRoIGNvcnJlY3QgZm9ybWF0JywgKCkgPT4ge1xuICAgICAgY29uc3QgaWQgPSBnZW5lcmF0ZUVudHJ5SWQoKVxuICAgICAgXG4gICAgICAvLyBTaG91bGQgYmUgYSBzdHJpbmcgd2l0aCB0aW1lc3RhbXAgYW5kIHJhbmRvbSBjb21wb25lbnRcbiAgICAgIGV4cGVjdCh0eXBlb2YgaWQpLnRvQmUoJ3N0cmluZycpXG4gICAgICBleHBlY3QoaWQubGVuZ3RoKS50b0JlR3JlYXRlclRoYW4oMTApXG4gICAgfSlcbiAgfSlcblxuICBkZXNjcmliZSgnc2FtZURheScsICgpID0+IHtcbiAgICBpdCgncmV0dXJucyB0cnVlIGZvciBzYW1lIGRhdGVzJywgKCkgPT4ge1xuICAgICAgY29uc3QgZGF0ZTEgPSBuZXcgRGF0ZSgnMjAyMy0wMS0xNVQxMDozMDowMFonKVxuICAgICAgY29uc3QgZGF0ZTIgPSBuZXcgRGF0ZSgnMjAyMy0wMS0xNVQxODo0NTowMFonKVxuICAgICAgXG4gICAgICBleHBlY3Qoc2FtZURheShkYXRlMSwgZGF0ZTIpKS50b0JlKHRydWUpXG4gICAgfSlcblxuICAgIGl0KCdyZXR1cm5zIGZhbHNlIGZvciBkaWZmZXJlbnQgZGF0ZXMnLCAoKSA9PiB7XG4gICAgICBjb25zdCBkYXRlMSA9IG5ldyBEYXRlKCcyMDIzLTAxLTE1VDEwOjMwOjAwWicpXG4gICAgICBjb25zdCBkYXRlMiA9IG5ldyBEYXRlKCcyMDIzLTAxLTE2VDEwOjMwOjAwWicpXG4gICAgICBcbiAgICAgIGV4cGVjdChzYW1lRGF5KGRhdGUxLCBkYXRlMikpLnRvQmUoZmFsc2UpXG4gICAgfSlcblxuICAgIGl0KCdoYW5kbGVzIHllYXIgZGlmZmVyZW5jZXMnLCAoKSA9PiB7XG4gICAgICBjb25zdCBkYXRlMSA9IG5ldyBEYXRlKCcyMDIzLTAxLTE1VDEwOjMwOjAwWicpXG4gICAgICBjb25zdCBkYXRlMiA9IG5ldyBEYXRlKCcyMDI0LTAxLTE1VDEwOjMwOjAwWicpXG4gICAgICBcbiAgICAgIGV4cGVjdChzYW1lRGF5KGRhdGUxLCBkYXRlMikpLnRvQmUoZmFsc2UpXG4gICAgfSlcblxuICAgIGl0KCdoYW5kbGVzIG1vbnRoIGRpZmZlcmVuY2VzJywgKCkgPT4ge1xuICAgICAgY29uc3QgZGF0ZTEgPSBuZXcgRGF0ZSgnMjAyMy0wMS0xNVQxMDozMDowMFonKVxuICAgICAgY29uc3QgZGF0ZTIgPSBuZXcgRGF0ZSgnMjAyMy0wMi0xNVQxMDozMDowMFonKVxuICAgICAgXG4gICAgICBleHBlY3Qoc2FtZURheShkYXRlMSwgZGF0ZTIpKS50b0JlKGZhbHNlKVxuICAgIH0pXG5cbiAgICBpdCgnaGFuZGxlcyBkYXkgZGlmZmVyZW5jZXMnLCAoKSA9PiB7XG4gICAgICBjb25zdCBkYXRlMSA9IG5ldyBEYXRlKCcyMDIzLTAxLTE1VDEwOjMwOjAwWicpXG4gICAgICBjb25zdCBkYXRlMiA9IG5ldyBEYXRlKCcyMDIzLTAxLTE2VDEwOjMwOjAwWicpXG4gICAgICBcbiAgICAgIGV4cGVjdChzYW1lRGF5KGRhdGUxLCBkYXRlMikpLnRvQmUoZmFsc2UpXG4gICAgfSlcbiAgfSlcbn0pXG4iXSwibmFtZXMiOlsiZGVzY3JpYmUiLCJpdCIsImlkMSIsImdlbmVyYXRlRW50cnlJZCIsImlkMiIsImV4cGVjdCIsInRvQmVEZWZpbmVkIiwibm90IiwidG9CZSIsImlkIiwibGVuZ3RoIiwidG9CZUdyZWF0ZXJUaGFuIiwiZGF0ZTEiLCJEYXRlIiwiZGF0ZTIiLCJzYW1lRGF5Il0sIm1hcHBpbmdzIjoiOzs7OzJCQUdPO0FBRVBBLFNBQVMsYUFBYTtJQUNwQkEsU0FBUyxtQkFBbUI7UUFDMUJDLEdBQUcsd0JBQXdCO1lBQ3pCLE1BQU1DLE1BQU1DLElBQUFBLDBCQUFlO1lBQzNCLE1BQU1DLE1BQU1ELElBQUFBLDBCQUFlO1lBRTNCRSxPQUFPSCxLQUFLSSxXQUFXO1lBQ3ZCRCxPQUFPRCxLQUFLRSxXQUFXO1lBQ3ZCRCxPQUFPSCxLQUFLSyxHQUFHLENBQUNDLElBQUksQ0FBQ0o7UUFDdkI7UUFFQUgsR0FBRyxxQ0FBcUM7WUFDdEMsTUFBTVEsS0FBS04sSUFBQUEsMEJBQWU7WUFFMUIseURBQXlEO1lBQ3pERSxPQUFPLE9BQU9JLElBQUlELElBQUksQ0FBQztZQUN2QkgsT0FBT0ksR0FBR0MsTUFBTSxFQUFFQyxlQUFlLENBQUM7UUFDcEM7SUFDRjtJQUVBWCxTQUFTLFdBQVc7UUFDbEJDLEdBQUcsK0JBQStCO1lBQ2hDLE1BQU1XLFFBQVEsSUFBSUMsS0FBSztZQUN2QixNQUFNQyxRQUFRLElBQUlELEtBQUs7WUFFdkJSLE9BQU9VLElBQUFBLGtCQUFPLEVBQUNILE9BQU9FLFFBQVFOLElBQUksQ0FBQztRQUNyQztRQUVBUCxHQUFHLHFDQUFxQztZQUN0QyxNQUFNVyxRQUFRLElBQUlDLEtBQUs7WUFDdkIsTUFBTUMsUUFBUSxJQUFJRCxLQUFLO1lBRXZCUixPQUFPVSxJQUFBQSxrQkFBTyxFQUFDSCxPQUFPRSxRQUFRTixJQUFJLENBQUM7UUFDckM7UUFFQVAsR0FBRyw0QkFBNEI7WUFDN0IsTUFBTVcsUUFBUSxJQUFJQyxLQUFLO1lBQ3ZCLE1BQU1DLFFBQVEsSUFBSUQsS0FBSztZQUV2QlIsT0FBT1UsSUFBQUEsa0JBQU8sRUFBQ0gsT0FBT0UsUUFBUU4sSUFBSSxDQUFDO1FBQ3JDO1FBRUFQLEdBQUcsNkJBQTZCO1lBQzlCLE1BQU1XLFFBQVEsSUFBSUMsS0FBSztZQUN2QixNQUFNQyxRQUFRLElBQUlELEtBQUs7WUFFdkJSLE9BQU9VLElBQUFBLGtCQUFPLEVBQUNILE9BQU9FLFFBQVFOLElBQUksQ0FBQztRQUNyQztRQUVBUCxHQUFHLDJCQUEyQjtZQUM1QixNQUFNVyxRQUFRLElBQUlDLEtBQUs7WUFDdkIsTUFBTUMsUUFBUSxJQUFJRCxLQUFLO1lBRXZCUixPQUFPVSxJQUFBQSxrQkFBTyxFQUFDSCxPQUFPRSxRQUFRTixJQUFJLENBQUM7UUFDckM7SUFDRjtBQUNGIn0=

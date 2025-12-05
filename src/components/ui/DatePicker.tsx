@@ -22,12 +22,8 @@ export default function DatePickerComponent({
   className = ""
 }: DatePickerComponentProps) {
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
-  const [isMounted, setIsMounted] = useState<boolean>(false);
-
-  // Handle client-side mounting to avoid SSR issues
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  // Initialize as true since we're in client component ("use client")
+  const [isMounted, setIsMounted] = useState<boolean>(typeof window !== 'undefined');
 
   // Add escape key handler and body scroll lock
   useEffect(() => {
