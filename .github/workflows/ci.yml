@@ -50,6 +50,9 @@ jobs:
         export NODE_ENV=test
         export DATABASE_URL="file:./test.db"
         
+        echo "Creating directories for Prisma client..."
+        mkdir -p generated/prisma
+        
         echo "Generating Prisma client..."
         npx prisma generate || { echo "❌ Prisma generate failed"; exit 1; }
         echo "✅ Prisma client generated successfully"
