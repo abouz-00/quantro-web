@@ -35,7 +35,7 @@ jobs:
         DATABASE_URL: "file:./test.db"
       
     - name: Cache Prisma
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: |
           ~/.cache/prisma
@@ -149,7 +149,7 @@ jobs:
         DATABASE_URL: "file:./build.db"
       
     - name: Cache Prisma
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: |
           ~/.cache/prisma
