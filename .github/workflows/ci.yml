@@ -22,6 +22,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v6
       
+    - name: Remove backend folder to avoid Prisma conflicts
+      run: rm -rf quantro-backend
+      
     - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v6
       with:
@@ -92,6 +95,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v6
       
+    - name: Remove backend folder to avoid Prisma conflicts
+      run: rm -rf quantro-backend
+      
     - name: Setup Node.js
       uses: actions/setup-node@v6
       with:
@@ -135,6 +141,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v6
+      
+    - name: Remove backend folder to avoid Prisma conflicts
+      run: rm -rf quantro-backend
       
     - name: Setup Node.js
       uses: actions/setup-node@v6
