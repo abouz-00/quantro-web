@@ -50,8 +50,8 @@ jobs:
         export NODE_ENV=test
         export DATABASE_URL="file:./test.db"
         
-        echo "Ensuring Prisma client package is ready..."
-        cd node_modules/@prisma/client && npm run postinstall && cd ../../..
+        echo "Verifying Prisma client package..."
+        ls -la node_modules/@prisma/client/ || echo "Warning: @prisma/client not found"
         
         echo "Generating Prisma client..."
         npx prisma generate || { echo "❌ Prisma generate failed"; exit 1; }
