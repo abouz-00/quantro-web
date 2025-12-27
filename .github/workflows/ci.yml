@@ -37,16 +37,6 @@ jobs:
       env:
         DATABASE_URL: "file:./test.db"
       
-    - name: Cache Prisma
-      uses: actions/cache@v5
-      with:
-        path: |
-          ~/.cache/prisma
-          ./node_modules/.prisma
-        key: ${{ runner.os }}-prisma-${{ hashFiles('**/schema.prisma') }}
-        restore-keys: |
-          ${{ runner.os }}-prisma-
-      
     - name: Set up test database
       run: |
         echo "Setting up test environment..."
@@ -163,18 +153,11 @@ jobs:
       env:
         DATABASE_URL: "file:./build.db"
       
-    - name: Cache Prisma
-      uses: actions/cache@v5
-      with:
-        path: |
-          ~/.cache/prisma
-          ./node_modules/.prisma
-        key: ${{ runner.os }}-prisma-${{ hashFiles('**/schema.prisma') }}
-        restore-keys: |
-          ${{ runner.os }}-prisma-
-      
     - name: Generate Prisma client
       run: |
+        echo "Cleaning any cached Prisma config..."
+        rm -rf generated/prisma .prisma ~/.cache/prisma
+        
         echo "Generating Prisma client..."
         npx prisma generate --schema=./prisma/schema.prisma || { echo "❌ Prisma generate failed"; exit 1; }
         echo "✅ Prisma client generated successfully"
