@@ -99,9 +99,7 @@ jobs:
       uses: actions/checkout@v6
       
     - name: Remove backend folder to avoid Prisma conflicts
-      run: |
-        rm -rf quantro-backend
-        rm -f prisma.config.ts
+      run: rm -rf quantro-backend
       
     - name: Setup Node.js
       uses: actions/setup-node@v6
@@ -148,9 +146,7 @@ jobs:
       uses: actions/checkout@v6
       
     - name: Remove backend folder to avoid Prisma conflicts
-      run: |
-        rm -rf quantro-backend
-        rm -f prisma.config.ts
+      run: rm -rf quantro-backend
       
     - name: Setup Node.js
       uses: actions/setup-node@v6
