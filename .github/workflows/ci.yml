@@ -54,11 +54,11 @@ jobs:
         ls -la node_modules/@prisma/client/ || echo "Warning: @prisma/client not found"
         
         echo "Generating Prisma client..."
-        npx prisma generate || { echo "❌ Prisma generate failed"; exit 1; }
+        npx prisma generate --schema=./prisma/schema.prisma || { echo "❌ Prisma generate failed"; exit 1; }
         echo "✅ Prisma client generated successfully"
         
         echo "Setting up test database..."
-        npx prisma db push --force-reset || { echo "❌ Database push failed"; exit 1; }
+        npx prisma db push --force-reset --schema=./prisma/schema.prisma || { echo "❌ Database push failed"; exit 1; }
         echo "✅ Test database setup complete"
       timeout-minutes: 8
         
@@ -161,13 +161,13 @@ jobs:
     - name: Generate Prisma client
       run: |
         echo "Generating Prisma client..."
-        npx prisma generate || { echo "❌ Prisma generate failed"; exit 1; }
+        npx prisma generate --schema=./prisma/schema.prisma || { echo "❌ Prisma generate failed"; exit 1; }
         echo "✅ Prisma client generated successfully"
         
     - name: Set up build database
       run: |
         echo "Setting up build database..."
-        npx prisma db push --force-reset || { echo "❌ Database setup failed"; exit 1; }
+        npx prisma db push --force-reset --schema=./prisma/schema.prisma || { echo "❌ Database setup failed"; exit 1; }
         echo "✅ Build database setup complete"
         
     - name: Build application
