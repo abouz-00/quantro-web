@@ -53,6 +53,9 @@ jobs:
         export NODE_ENV=test
         export DATABASE_URL="file:./test.db"
         
+        echo "Cleaning any cached Prisma config..."
+        rm -rf generated/prisma .prisma
+        
         echo "Verifying Prisma client package..."
         ls -la node_modules/@prisma/client/ || echo "Warning: @prisma/client not found"
         
