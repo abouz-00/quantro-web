@@ -46,6 +46,9 @@ jobs:
         echo "Cleaning any cached Prisma config..."
         rm -rf generated/prisma .prisma
         
+        echo "Verifying schema file content..."
+        cat prisma/schema.prisma | head -15
+        
         echo "Verifying Prisma client package..."
         ls -la node_modules/@prisma/client/ || echo "Warning: @prisma/client not found"
         
