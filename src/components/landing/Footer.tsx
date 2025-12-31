@@ -47,7 +47,7 @@ export const Footer = () => {
       {/* Copyright notice */}
       <div className="max-w-7xl mx-auto text-center">
         <p className={`text-white/70 text-sm ${poppins.className}`}>
-          © 2025 Quantro LLC. All rights reserved.
+          © 2026 Quantro LLC. All rights reserved.
         </p>
       </div>
     </footer>
