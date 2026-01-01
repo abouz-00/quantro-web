@@ -186,7 +186,7 @@ jobs:
         echo "- NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:0:5}..."
         echo "Running build with SQLite schema..."
         # Use SQLite schema for CI builds
-        npx prisma generate --schema=./prisma/schema.prisma && next build || { echo "❌ Build failed"; exit 1; }
+        npx prisma generate --schema=./prisma/schema.prisma && npx next build || { echo "❌ Build failed"; exit 1; }
         echo "✅ Build completed successfully"
         echo "Build output size:"
         du -sh .next/ || echo "No .next directory found"
