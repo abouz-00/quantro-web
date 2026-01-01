@@ -52,6 +52,9 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   
+  // Email preferences
+  emailUnsubscribed Boolean @default(false)
+  
   // Nutrition tracking preferences
   dailyCalorieGoal    Int?      @default(2000)
   dailyProteinGoal    Float?    @default(150)
