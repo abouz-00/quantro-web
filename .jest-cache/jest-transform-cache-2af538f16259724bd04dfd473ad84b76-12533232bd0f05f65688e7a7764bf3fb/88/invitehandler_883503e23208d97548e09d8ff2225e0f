@@ -1,0 +1,55 @@
+9e9baab9a3d83423179e29c2daa88d4b
+'use client';
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "default", {
+    enumerable: true,
+    get: function() {
+        return InviteHandler;
+    }
+});
+const _react = require("react");
+const _navigation = require("next/navigation");
+const _react1 = require("next-auth/react");
+function InviteHandler() {
+    const searchParams = (0, _navigation.useSearchParams)();
+    const { data: session } = (0, _react1.useSession)();
+    const inviteCode = searchParams.get('inviteCode');
+    (0, _react.useEffect)(()=>{
+        async function markInviteAsUsed() {
+            if (inviteCode && session?.user?.email) {
+                try {
+                    const response = await fetch('/api/mark-invite-used', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            code: inviteCode,
+                            email: session.user.email
+                        })
+                    });
+                    if (response?.ok) {
+                        console.log('Invite marked as used successfully');
+                        // Remove the inviteCode from URL
+                        const url = new URL(window.location.href);
+                        url.searchParams.delete('inviteCode');
+                        window.history.replaceState({}, '', url.pathname);
+                    }
+                } catch (error) {
+                    console.error('Failed to mark invite as used:', error);
+                }
+            }
+        }
+        markInviteAsUsed();
+    }, [
+        inviteCode,
+        session
+    ]);
+    return null // This component doesn't render anything
+    ;
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvLXdlYi9zcmMvYXBwL2Rhc2hib2FyZC9pbnZpdGUtaGFuZGxlci50c3giXSwic291cmNlc0NvbnRlbnQiOlsiJ3VzZSBjbGllbnQnXG5cbmltcG9ydCB7IHVzZUVmZmVjdCB9IGZyb20gJ3JlYWN0J1xuaW1wb3J0IHsgdXNlU2VhcmNoUGFyYW1zIH0gZnJvbSAnbmV4dC9uYXZpZ2F0aW9uJ1xuaW1wb3J0IHsgdXNlU2Vzc2lvbiB9IGZyb20gJ25leHQtYXV0aC9yZWFjdCdcblxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gSW52aXRlSGFuZGxlcigpIHtcbiAgY29uc3Qgc2VhcmNoUGFyYW1zID0gdXNlU2VhcmNoUGFyYW1zKClcbiAgY29uc3QgeyBkYXRhOiBzZXNzaW9uIH0gPSB1c2VTZXNzaW9uKClcbiAgY29uc3QgaW52aXRlQ29kZSA9IHNlYXJjaFBhcmFtcy5nZXQoJ2ludml0ZUNvZGUnKVxuXG4gIHVzZUVmZmVjdCgoKSA9PiB7XG4gICAgYXN5bmMgZnVuY3Rpb24gbWFya0ludml0ZUFzVXNlZCgpIHtcbiAgICAgIGlmIChpbnZpdGVDb2RlICYmIHNlc3Npb24/LnVzZXI/LmVtYWlsKSB7XG4gICAgICAgIHRyeSB7XG4gICAgICAgICAgY29uc3QgcmVzcG9uc2UgPSBhd2FpdCBmZXRjaCgnL2FwaS9tYXJrLWludml0ZS11c2VkJywge1xuICAgICAgICAgICAgbWV0aG9kOiAnUE9TVCcsXG4gICAgICAgICAgICBoZWFkZXJzOiB7XG4gICAgICAgICAgICAgICdDb250ZW50LVR5cGUnOiAnYXBwbGljYXRpb24vanNvbicsXG4gICAgICAgICAgICB9LFxuICAgICAgICAgICAgYm9keTogSlNPTi5zdHJpbmdpZnkoe1xuICAgICAgICAgICAgICBjb2RlOiBpbnZpdGVDb2RlLFxuICAgICAgICAgICAgICBlbWFpbDogc2Vzc2lvbi51c2VyLmVtYWlsXG4gICAgICAgICAgICB9KSxcbiAgICAgICAgICB9KVxuXG4gICAgICAgICAgaWYgKHJlc3BvbnNlPy5vaykge1xuICAgICAgICAgICAgY29uc29sZS5sb2coJ0ludml0ZSBtYXJrZWQgYXMgdXNlZCBzdWNjZXNzZnVsbHknKVxuICAgICAgICAgICAgLy8gUmVtb3ZlIHRoZSBpbnZpdGVDb2RlIGZyb20gVVJMXG4gICAgICAgICAgICBjb25zdCB1cmwgPSBuZXcgVVJMKHdpbmRvdy5sb2NhdGlvbi5ocmVmKVxuICAgICAgICAgICAgdXJsLnNlYXJjaFBhcmFtcy5kZWxldGUoJ2ludml0ZUNvZGUnKVxuICAgICAgICAgICAgd2luZG93Lmhpc3RvcnkucmVwbGFjZVN0YXRlKHt9LCAnJywgdXJsLnBhdGhuYW1lKVxuICAgICAgICAgIH1cbiAgICAgICAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICAgICAgICBjb25zb2xlLmVycm9yKCdGYWlsZWQgdG8gbWFyayBpbnZpdGUgYXMgdXNlZDonLCBlcnJvcilcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cblxuICAgIG1hcmtJbnZpdGVBc1VzZWQoKVxuICB9LCBbaW52aXRlQ29kZSwgc2Vzc2lvbl0pXG5cbiAgcmV0dXJuIG51bGwgLy8gVGhpcyBjb21wb25lbnQgZG9lc24ndCByZW5kZXIgYW55dGhpbmdcbn1cbiJdLCJuYW1lcyI6WyJJbnZpdGVIYW5kbGVyIiwic2VhcmNoUGFyYW1zIiwidXNlU2VhcmNoUGFyYW1zIiwiZGF0YSIsInNlc3Npb24iLCJ1c2VTZXNzaW9uIiwiaW52aXRlQ29kZSIsImdldCIsInVzZUVmZmVjdCIsIm1hcmtJbnZpdGVBc1VzZWQiLCJ1c2VyIiwiZW1haWwiLCJyZXNwb25zZSIsImZldGNoIiwibWV0aG9kIiwiaGVhZGVycyIsImJvZHkiLCJKU09OIiwic3RyaW5naWZ5IiwiY29kZSIsIm9rIiwiY29uc29sZSIsImxvZyIsInVybCIsIlVSTCIsIndpbmRvdyIsImxvY2F0aW9uIiwiaHJlZiIsImRlbGV0ZSIsImhpc3RvcnkiLCJyZXBsYWNlU3RhdGUiLCJwYXRobmFtZSIsImVycm9yIl0sIm1hcHBpbmdzIjoiQUFBQTs7Ozs7K0JBTUE7OztlQUF3QkE7Ozt1QkFKRTs0QkFDTTt3QkFDTDtBQUVaLFNBQVNBO0lBQ3RCLE1BQU1DLGVBQWVDLElBQUFBLDJCQUFlO0lBQ3BDLE1BQU0sRUFBRUMsTUFBTUMsT0FBTyxFQUFFLEdBQUdDLElBQUFBLGtCQUFVO0lBQ3BDLE1BQU1DLGFBQWFMLGFBQWFNLEdBQUcsQ0FBQztJQUVwQ0MsSUFBQUEsZ0JBQVMsRUFBQztRQUNSLGVBQWVDO1lBQ2IsSUFBSUgsY0FBY0YsU0FBU00sTUFBTUMsT0FBTztnQkFDdEMsSUFBSTtvQkFDRixNQUFNQyxXQUFXLE1BQU1DLE1BQU0seUJBQXlCO3dCQUNwREMsUUFBUTt3QkFDUkMsU0FBUzs0QkFDUCxnQkFBZ0I7d0JBQ2xCO3dCQUNBQyxNQUFNQyxLQUFLQyxTQUFTLENBQUM7NEJBQ25CQyxNQUFNYjs0QkFDTkssT0FBT1AsUUFBUU0sSUFBSSxDQUFDQyxLQUFLO3dCQUMzQjtvQkFDRjtvQkFFQSxJQUFJQyxVQUFVUSxJQUFJO3dCQUNoQkMsUUFBUUMsR0FBRyxDQUFDO3dCQUNaLGlDQUFpQzt3QkFDakMsTUFBTUMsTUFBTSxJQUFJQyxJQUFJQyxPQUFPQyxRQUFRLENBQUNDLElBQUk7d0JBQ3hDSixJQUFJdEIsWUFBWSxDQUFDMkIsTUFBTSxDQUFDO3dCQUN4QkgsT0FBT0ksT0FBTyxDQUFDQyxZQUFZLENBQUMsQ0FBQyxHQUFHLElBQUlQLElBQUlRLFFBQVE7b0JBQ2xEO2dCQUNGLEVBQUUsT0FBT0MsT0FBTztvQkFDZFgsUUFBUVcsS0FBSyxDQUFDLGtDQUFrQ0E7Z0JBQ2xEO1lBQ0Y7UUFDRjtRQUVBdkI7SUFDRixHQUFHO1FBQUNIO1FBQVlGO0tBQVE7SUFFeEIsT0FBTyxLQUFLLHlDQUF5Qzs7QUFDdkQifQ==
