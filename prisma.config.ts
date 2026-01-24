@@ -10,10 +10,10 @@ export default defineConfig({
     path: 'prisma/migrations',
   },
   
-  // The database URL
+  // The database URL - fallback to Postgres URL for production builds
   datasource: {
     // Type Safe env() helper
     // Does not replace the need for dotenv
-    url: env('DATABASE_URL'),
+    url: env('DATABASE_URL') || env('POSTGRES_PRISMA_URL') || 'file:./prisma/dev.db',
   },
 })
