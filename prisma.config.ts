@@ -1,5 +1,10 @@
 import 'dotenv/config'
-import { defineConfig, env } from 'prisma/config'
+import { defineConfig } from 'prisma/config'
+
+// Get database URL from environment, with fallbacks
+const getDatabaseUrl = () => {
+  return process.env.DATABASE_URL || process.env.POSTGRES_PRISMA_URL || 'file:./prisma/dev.db'
+}
 
 export default defineConfig({
   // The main entry for your schema
@@ -10,10 +15,8 @@ export default defineConfig({
     path: 'prisma/migrations',
   },
   
-  // The database URL - fallback to Postgres URL for production builds
+  // The database URL - using process.env for safe fallback handling
   datasource: {
-    // Type Safe env() helper
-    // Does not replace the need for dotenv
-    url: env('DATABASE_URL') || env('POSTGRES_PRISMA_URL') || 'file:./prisma/dev.db',
+    url: getDatabaseUrl(),
   },
 })
