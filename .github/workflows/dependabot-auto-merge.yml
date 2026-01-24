@@ -42,11 +42,20 @@ jobs:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
+      - name: Create labels if they don't exist
+        if: contains(steps.metadata.outputs.update-type, 'version-update:semver-major')
+        run: |
+          # Create labels if they don't exist (idempotent operation)
+          gh label create "major-update" --description "Major version update requiring manual review" --color "d73a4a" --force || true
+          gh label create "needs-review" --description "Requires manual review before merging" --color "fbca04" --force || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Label major updates for manual review
         if: contains(steps.metadata.outputs.update-type, 'version-update:semver-major')
         run: |
-          # Try to add labels, but don't fail if they don't exist
-          gh pr edit "$PR_URL" --add-label "major-update" --add-label "needs-review" || echo "⚠️ Labels not found, skipping..."
+          # Add labels to PR
+          gh pr edit "$PR_URL" --add-label "major-update" --add-label "needs-review" || echo "⚠️ Could not add labels"
           gh pr comment "$PR_URL" --body "🚨 This is a major version update that requires manual review before merging."
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
