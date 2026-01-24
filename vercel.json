@@ -1,7 +1,9 @@
 {
+  "buildCommand": "npm run build:vercel",
   "build": {
     "env": {
-      "SKIP_ENV_VALIDATION": "1"
+      "SKIP_ENV_VALIDATION": "1",
+      "NODE_ENV": "production"
     }
   },
   "functions": {
