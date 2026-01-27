@@ -1,0 +1,85 @@
+7a7b17112313b0e0cbbabf1b646c9294
+// src/components/landing/LogoSection.tsx
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "LogoSection", {
+    enumerable: true,
+    get: function() {
+        return LogoSection;
+    }
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = /*#__PURE__*/ _interop_require_default(require("react"));
+const _image = /*#__PURE__*/ _interop_require_default(require("next/image"));
+const _framermotion = require("framer-motion");
+const _google = require("next/font/google");
+const _ui = require("../../constants/ui");
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+const poppins = (0, _google.Poppins)({
+    subsets: [
+        'latin'
+    ],
+    weight: [
+        '400',
+        '500',
+        '600',
+        '700'
+    ]
+});
+const LogoSection = ()=>{
+    return /*#__PURE__*/ (0, _jsxruntime.jsxs)(_framermotion.motion.div, {
+        className: "w-full max-w-6xl text-center mb-20",
+        initial: "hidden",
+        animate: "visible",
+        variants: {
+            ..._ui.ANIMATION_VARIANTS.fadeInDown,
+            visible: {
+                ..._ui.ANIMATION_VARIANTS.fadeInDown.visible,
+                transition: {
+                    duration: 0.8,
+                    ease: "easeOut"
+                }
+            }
+        },
+        children: [
+            /*#__PURE__*/ (0, _jsxruntime.jsx)("div", {
+                children: /*#__PURE__*/ (0, _jsxruntime.jsx)(_image.default, {
+                    src: "/header.svg",
+                    alt: "Quantro Logo",
+                    className: "w-auto mx-auto",
+                    width: 576,
+                    height: 576,
+                    style: {
+                        height: '8rem',
+                        ..._ui.NO_SELECT_STYLES,
+                        filter: 'drop-shadow(0 4px 20px rgba(0,0,0,0.1))'
+                    }
+                })
+            }),
+            /*#__PURE__*/ (0, _jsxruntime.jsx)(_framermotion.motion.p, {
+                className: `text-white/90 text-xl mt-6 ${poppins.className}`,
+                initial: {
+                    opacity: 0,
+                    y: 20
+                },
+                animate: {
+                    opacity: 1,
+                    y: 0
+                },
+                transition: {
+                    duration: 0.8,
+                    delay: 0.3
+                },
+                children: "Smart nutrition tracking, reimagined"
+            })
+        ]
+    });
+};
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvLXdlYi9zcmMvY29tcG9uZW50cy9sYW5kaW5nL0xvZ29TZWN0aW9uLnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyIvLyBzcmMvY29tcG9uZW50cy9sYW5kaW5nL0xvZ29TZWN0aW9uLnRzeFxuaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JztcbmltcG9ydCBJbWFnZSBmcm9tICduZXh0L2ltYWdlJztcbmltcG9ydCB7IG1vdGlvbiB9IGZyb20gJ2ZyYW1lci1tb3Rpb24nO1xuaW1wb3J0IHsgUG9wcGlucyB9IGZyb20gJ25leHQvZm9udC9nb29nbGUnO1xuaW1wb3J0IHsgQU5JTUFUSU9OX1ZBUklBTlRTLCBOT19TRUxFQ1RfU1RZTEVTIH0gZnJvbSAnLi4vLi4vY29uc3RhbnRzL3VpJztcblxuY29uc3QgcG9wcGlucyA9IFBvcHBpbnMoeyBzdWJzZXRzOiBbJ2xhdGluJ10sIHdlaWdodDogWyc0MDAnLCAnNTAwJywgJzYwMCcsICc3MDAnXSB9KTtcblxuZXhwb3J0IGNvbnN0IExvZ29TZWN0aW9uID0gKCkgPT4ge1xuICByZXR1cm4gKFxuICAgIDxtb3Rpb24uZGl2XG4gICAgICBjbGFzc05hbWU9XCJ3LWZ1bGwgbWF4LXctNnhsIHRleHQtY2VudGVyIG1iLTIwXCJcbiAgICAgIGluaXRpYWw9XCJoaWRkZW5cIlxuICAgICAgYW5pbWF0ZT1cInZpc2libGVcIlxuICAgICAgdmFyaWFudHM9e3tcbiAgICAgICAgLi4uQU5JTUFUSU9OX1ZBUklBTlRTLmZhZGVJbkRvd24sXG4gICAgICAgIHZpc2libGU6IHtcbiAgICAgICAgICAuLi5BTklNQVRJT05fVkFSSUFOVFMuZmFkZUluRG93bi52aXNpYmxlLFxuICAgICAgICAgIHRyYW5zaXRpb246IHsgZHVyYXRpb246IDAuOCwgZWFzZTogXCJlYXNlT3V0XCIgfVxuICAgICAgICB9XG4gICAgICB9fVxuICAgID5cbiAgICAgIDxkaXY+XG4gICAgICAgIDxJbWFnZVxuICAgICAgICAgIHNyYz1cIi9oZWFkZXIuc3ZnXCJcbiAgICAgICAgICBhbHQ9XCJRdWFudHJvIExvZ29cIlxuICAgICAgICAgIGNsYXNzTmFtZT1cInctYXV0byBteC1hdXRvXCJcbiAgICAgICAgICB3aWR0aD17NTc2fVxuICAgICAgICAgIGhlaWdodD17NTc2fVxuICAgICAgICAgIHN0eWxlPXt7XG4gICAgICAgICAgICBoZWlnaHQ6ICc4cmVtJyxcbiAgICAgICAgICAgIC4uLk5PX1NFTEVDVF9TVFlMRVMsXG4gICAgICAgICAgICBmaWx0ZXI6ICdkcm9wLXNoYWRvdygwIDRweCAyMHB4IHJnYmEoMCwwLDAsMC4xKSknXG4gICAgICAgICAgfX1cbiAgICAgICAgLz5cbiAgICAgIDwvZGl2PlxuXG4gICAgICB7LyogQW5pbWF0ZWQgc3VidGl0bGUgKi99XG4gICAgICA8bW90aW9uLnBcbiAgICAgICAgY2xhc3NOYW1lPXtgdGV4dC13aGl0ZS85MCB0ZXh0LXhsIG10LTYgJHtwb3BwaW5zLmNsYXNzTmFtZX1gfVxuICAgICAgICBpbml0aWFsPXt7IG9wYWNpdHk6IDAsIHk6IDIwIH19XG4gICAgICAgIGFuaW1hdGU9e3sgb3BhY2l0eTogMSwgeTogMCB9fVxuICAgICAgICB0cmFuc2l0aW9uPXt7IGR1cmF0aW9uOiAwLjgsIGRlbGF5OiAwLjMgfX1cbiAgICAgID5cbiAgICAgICAgU21hcnQgbnV0cml0aW9uIHRyYWNraW5nLCByZWltYWdpbmVkXG4gICAgICA8L21vdGlvbi5wPlxuICAgIDwvbW90aW9uLmRpdj5cbiAgKTtcbn07XG4iXSwibmFtZXMiOlsiTG9nb1NlY3Rpb24iLCJwb3BwaW5zIiwiUG9wcGlucyIsInN1YnNldHMiLCJ3ZWlnaHQiLCJtb3Rpb24iLCJkaXYiLCJjbGFzc05hbWUiLCJpbml0aWFsIiwiYW5pbWF0ZSIsInZhcmlhbnRzIiwiQU5JTUFUSU9OX1ZBUklBTlRTIiwiZmFkZUluRG93biIsInZpc2libGUiLCJ0cmFuc2l0aW9uIiwiZHVyYXRpb24iLCJlYXNlIiwiSW1hZ2UiLCJzcmMiLCJhbHQiLCJ3aWR0aCIsImhlaWdodCIsInN0eWxlIiwiTk9fU0VMRUNUX1NUWUxFUyIsImZpbHRlciIsInAiLCJvcGFjaXR5IiwieSIsImRlbGF5Il0sIm1hcHBpbmdzIjoiQUFBQSx5Q0FBeUM7Ozs7OytCQVM1QkE7OztlQUFBQTs7Ozs4REFSSzs4REFDQTs4QkFDSzt3QkFDQztvQkFDNkI7Ozs7OztBQUVyRCxNQUFNQyxVQUFVQyxJQUFBQSxlQUFPLEVBQUM7SUFBRUMsU0FBUztRQUFDO0tBQVE7SUFBRUMsUUFBUTtRQUFDO1FBQU87UUFBTztRQUFPO0tBQU07QUFBQztBQUU1RSxNQUFNSixjQUFjO0lBQ3pCLHFCQUNFLHNCQUFDSyxvQkFBTSxDQUFDQyxHQUFHO1FBQ1RDLFdBQVU7UUFDVkMsU0FBUTtRQUNSQyxTQUFRO1FBQ1JDLFVBQVU7WUFDUixHQUFHQyxzQkFBa0IsQ0FBQ0MsVUFBVTtZQUNoQ0MsU0FBUztnQkFDUCxHQUFHRixzQkFBa0IsQ0FBQ0MsVUFBVSxDQUFDQyxPQUFPO2dCQUN4Q0MsWUFBWTtvQkFBRUMsVUFBVTtvQkFBS0MsTUFBTTtnQkFBVTtZQUMvQztRQUNGOzswQkFFQSxxQkFBQ1Y7MEJBQ0MsY0FBQSxxQkFBQ1csY0FBSztvQkFDSkMsS0FBSTtvQkFDSkMsS0FBSTtvQkFDSlosV0FBVTtvQkFDVmEsT0FBTztvQkFDUEMsUUFBUTtvQkFDUkMsT0FBTzt3QkFDTEQsUUFBUTt3QkFDUixHQUFHRSxvQkFBZ0I7d0JBQ25CQyxRQUFRO29CQUNWOzs7MEJBS0oscUJBQUNuQixvQkFBTSxDQUFDb0IsQ0FBQztnQkFDUGxCLFdBQVcsQ0FBQywyQkFBMkIsRUFBRU4sUUFBUU0sU0FBUyxFQUFFO2dCQUM1REMsU0FBUztvQkFBRWtCLFNBQVM7b0JBQUdDLEdBQUc7Z0JBQUc7Z0JBQzdCbEIsU0FBUztvQkFBRWlCLFNBQVM7b0JBQUdDLEdBQUc7Z0JBQUU7Z0JBQzVCYixZQUFZO29CQUFFQyxVQUFVO29CQUFLYSxPQUFPO2dCQUFJOzBCQUN6Qzs7OztBQUtQIn0=

@@ -1,0 +1,23 @@
+e4ed4c31f333707d0fb008aef52e29a9
+// Export all services
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+_export_star(require("./foodLogService"), exports);
+_export_star(require("./errorService"), exports);
+function _export_star(from, to) {
+    Object.keys(from).forEach(function(k) {
+        if (k !== "default" && !Object.prototype.hasOwnProperty.call(to, k)) {
+            Object.defineProperty(to, k, {
+                enumerable: true,
+                get: function() {
+                    return from[k];
+                }
+            });
+        }
+    });
+    return from;
+}
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvLXdlYi9zcmMvc2VydmljZXMvaW5kZXgudHMiXSwic291cmNlc0NvbnRlbnQiOlsiLy8gRXhwb3J0IGFsbCBzZXJ2aWNlc1xuZXhwb3J0ICogZnJvbSAnLi9mb29kTG9nU2VydmljZSc7XG5leHBvcnQgKiBmcm9tICcuL2Vycm9yU2VydmljZSc7XG4iXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsc0JBQXNCOzs7OztxQkFDUjtxQkFDQSJ9
