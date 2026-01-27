@@ -63,7 +63,7 @@ describe('DateNavigation Component', () => {
     
     // Check outer div styling
     const outerDiv = container.firstElementChild
-    expect(outerDiv).toHaveClass('flex', 'justify-center', 'mb-8')
+    expect(outerDiv).toHaveClass('flex', 'justify-center', 'py-4')
     
     // Check inner div styling - the second child div with the background styles
     const innerDiv = outerDiv?.firstElementChild
