@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import './jest-setup.js';
 import { POST } from '../mark-invite-used/route';
 import { NextRequest } from 'next/server';

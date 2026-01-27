@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import './jest-setup.js';
 import { NextRequest } from 'next/server';
 import { GET, POST, PUT, DELETE } from '../food-logs/route';

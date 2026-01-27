@@ -110,7 +110,7 @@ interface MockRequestInit {
   body?: string
 }
 
-/* eslint-disable @typescript-eslint/no-namespace */
+ 
 // Extend Jest matchers with global declaration
 declare global {
   namespace jest {
@@ -119,7 +119,7 @@ declare global {
     }
   }
 }
-/* eslint-enable @typescript-eslint/no-namespace */
+ 
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
