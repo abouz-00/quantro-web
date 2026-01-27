@@ -1,47 +1,48 @@
 import { useState, useEffect, useCallback } from "react";
+import { apiClient } from "../../../../lib/apiClient";
 
-// Move nutrientMapping outside the component to avoid recreating it on every render
-// Comprehensive USDA nutrient ID mapping for micronutrients
-const nutrientMapping: { [key: number]: string } = {
+// Comprehensive nutrient name mapping for display
+const nutrientDisplayNames: { [key: string]: string } = {
   // Macronutrients
-  1008: "Energy",
-  1003: "Protein", 
-  1004: "Total lipid (fat)",
-  1005: "Carbohydrate, by difference",
-  1079: "Fiber, total dietary",
+  "Energy": "Calories",
+  "Protein": "Protein", 
+  "Total lipid (fat)": "Fat",
+  "Carbohydrate, by difference": "Carbs",
+  "Fiber, total dietary": "Fiber",
+  "Total Sugars": "Sugar",
   
   // B Vitamins
-  1165: "Thiamine", // B1
-  1166: "Riboflavin", // B2  
-  1167: "Niacin", // B3
-  1170: "Pantothenic acid", // B5
-  1175: "Vitamin B-6", // B6
-  1178: "Vitamin B-12", // B12
-  1176: "Biotin",
-  1177: "Folate, total", // Folate
+  "Thiamine": "Vitamin B1",
+  "Riboflavin": "Vitamin B2",  
+  "Niacin": "Vitamin B3",
+  "Pantothenic acid": "Vitamin B5",
+  "Vitamin B-6": "Vitamin B6",
+  "Vitamin B-12": "Vitamin B12",
+  "Biotin": "Biotin",
+  "Folate, total": "Folate",
   
   // Fat-Soluble Vitamins
-  1106: "Vitamin A, RAE", // Vitamin A (Retinol Activity Equivalents)
-  1162: "Vitamin C, total ascorbic acid", // Vitamin C
-  1114: "Vitamin D (D2 + D3)", // Vitamin D
-  1185: "Vitamin K (phylloquinone)", // Vitamin K
+  "Vitamin A, RAE": "Vitamin A",
+  "Vitamin C, total ascorbic acid": "Vitamin C",
+  "Vitamin D (D2 + D3)": "Vitamin D",
+  "Vitamin K (phylloquinone)": "Vitamin K",
   
   // Minerals
-  1087: "Calcium, Ca",
-  1098: "Copper, Cu", 
-  1089: "Iron, Fe",
-  1090: "Magnesium, Mg",
-  1101: "Manganese, Mn",
-  1091: "Phosphorus, P",
-  1092: "Potassium, K",
-  1103: "Selenium, Se",
-  1093: "Sodium, Na",
-  1095: "Zinc, Zn",
+  "Calcium, Ca": "Calcium",
+  "Copper, Cu": "Copper", 
+  "Iron, Fe": "Iron",
+  "Magnesium, Mg": "Magnesium",
+  "Manganese, Mn": "Manganese",
+  "Phosphorus, P": "Phosphorus",
+  "Potassium, K": "Potassium",
+  "Selenium, Se": "Selenium",
+  "Sodium, Na": "Sodium",
+  "Zinc, Zn": "Zinc",
   
   // Essential Fatty Acids
-  1404: "EPA", // Eicosapentaenoic acid
-  1405: "DHA", // Docosahexaenoic acid
-  1456: "ALA", // Alpha-linolenic acid
+  "EPA": "EPA",
+  "DHA": "DHA",
+  "ALA": "ALA",
 };
 
 // Cache interface
@@ -50,22 +51,10 @@ interface CacheEntry {
   timestamp: number;
 }
 
-interface FoodNutrient {
-  nutrientId: number;
-  value: number;
-}
-
-interface ApiFood {
-  fdcId: number;
-  description: string;
-  foodCategory?: string;
-  servingSize?: number;
-  servingSizeUnit?: string;
-  foodNutrients?: FoodNutrient[];
-}
-
 interface FoodSuggestion {
-  fdcId: number;
+  fdcId?: number;
+  fatSecretId?: string;
+  source: 'usda' | 'fatsecret';
   description: string;
   foodNutrients: {
     nutrientName: string;
@@ -75,6 +64,37 @@ interface FoodSuggestion {
   servingSize?: number;
   servingSizeUnit?: string;
   uniqueId?: string;
+  brand?: string;
+}
+
+interface UnifiedFoodItem {
+  id: string;
+  source: 'usda' | 'fatsecret';
+  name: string;
+  brand?: string;
+  description?: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+  fiber: number;
+  sugar: number;
+  sodium: number;
+  servingSize?: number;
+  servingSizeUnit?: string;
+  foodNutrients: Array<{ nutrientName: string; value: number }>;
+  fdcId?: number;
+  fatSecretId?: string;
+}
+
+interface UnifiedSearchResponse {
+  query: string;
+  totalResults: number;
+  results: UnifiedFoodItem[];
+  sources: {
+    usda: { count: number; available: boolean };
+    fatsecret: { count: number; available: boolean };
+  };
 }
 
 // Simple in-memory cache with localStorage persistence
@@ -163,16 +183,19 @@ export function useFoodSearch(query: string, active: boolean) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const transformApiData = useCallback((apiFood: ApiFood): FoodSuggestion => {
+  const transformApiData = useCallback((item: UnifiedFoodItem): FoodSuggestion => {
     return {
-      fdcId: apiFood.fdcId,
-      description: apiFood.description,
-      foodCategory: apiFood.foodCategory,
-      servingSize: apiFood.servingSize,
-      servingSizeUnit: apiFood.servingSizeUnit,
-      uniqueId: `${apiFood.fdcId}`,
-      foodNutrients: (apiFood.foodNutrients || []).map((nutrient: FoodNutrient) => ({
-        nutrientName: nutrientMapping[nutrient.nutrientId] || `Nutrient ${nutrient.nutrientId}`,
+      fdcId: item.fdcId,
+      fatSecretId: item.fatSecretId,
+      source: item.source,
+      description: item.name,
+      foodCategory: item.brand,
+      servingSize: item.servingSize,
+      servingSizeUnit: item.servingSizeUnit,
+      uniqueId: item.id,
+      brand: item.brand,
+      foodNutrients: item.foodNutrients.map((nutrient) => ({
+        nutrientName: nutrientDisplayNames[nutrient.nutrientName] || nutrient.nutrientName,
         value: nutrient.value
       }))
     };
@@ -201,13 +224,12 @@ export function useFoodSearch(query: string, active: boolean) {
             return;
           }
 
-          const apiKey = process.env.NEXT_PUBLIC_USDA_API_KEY || 'DEMO_KEY';
-          const response = await fetch(
-            `https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(query)}&pageSize=5&api_key=${apiKey}`
+          // Use the unified food search endpoint
+          const data = await apiClient.get<UnifiedSearchResponse>(
+            `/food-search-unified?query=${encodeURIComponent(query)}&pageSize=10&source=all`
           );
-          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-          const data = await response.json();
-          const transformedFoods = (data.foods || []).map(transformApiData);
+          
+          const transformedFoods = data.results.map(transformApiData);
           
           // Cache the result
           foodSearchCache.set(query, transformedFoods);
