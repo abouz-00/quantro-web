@@ -1,0 +1,53 @@
+20ec097eda920e9ddcd4c2c071097d60
+/**
+ * Hook to sync NextAuth session with Zustand store
+ * This bridges NextAuth's session management with our global Zustand store
+ */ "use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "useAuthSync", {
+    enumerable: true,
+    get: function() {
+        return useAuthSync;
+    }
+});
+const _react = require("react");
+const _react1 = require("next-auth/react");
+const _userStore = require("../stores/userStore");
+const useAuthSync = ()=>{
+    const { data: session, status } = (0, _react1.useSession)();
+    const { setUser, setStatus, setSessionExpiry, logout } = (0, _userStore.useUserStore)();
+    (0, _react.useEffect)(()=>{
+        // Sync NextAuth session with Zustand store
+        if (status === 'loading') {
+            setStatus('loading');
+        } else if (status === 'authenticated' && session?.user) {
+            // User is authenticated, update store
+            setUser({
+                id: session.user.id || '',
+                email: session.user.email || '',
+                name: session.user.name,
+                image: session.user.image
+            });
+            setSessionExpiry(session.expires || null);
+            setStatus('authenticated');
+        } else if (status === 'unauthenticated') {
+            // User is not authenticated, clear store
+            logout();
+        }
+    }, [
+        session,
+        status,
+        setUser,
+        setStatus,
+        setSessionExpiry,
+        logout
+    ]);
+    return {
+        session,
+        status
+    };
+};
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9heW1hbi9xdWFudHJvLXdlYi9zcmMvaG9va3MvdXNlQXV0aFN5bmMudHMiXSwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBIb29rIHRvIHN5bmMgTmV4dEF1dGggc2Vzc2lvbiB3aXRoIFp1c3RhbmQgc3RvcmVcbiAqIFRoaXMgYnJpZGdlcyBOZXh0QXV0aCdzIHNlc3Npb24gbWFuYWdlbWVudCB3aXRoIG91ciBnbG9iYWwgWnVzdGFuZCBzdG9yZVxuICovXG5cbmltcG9ydCB7IHVzZUVmZmVjdCB9IGZyb20gJ3JlYWN0JztcbmltcG9ydCB7IHVzZVNlc3Npb24gfSBmcm9tICduZXh0LWF1dGgvcmVhY3QnO1xuaW1wb3J0IHsgdXNlVXNlclN0b3JlIH0gZnJvbSAnLi4vc3RvcmVzL3VzZXJTdG9yZSc7XG5cbmV4cG9ydCBjb25zdCB1c2VBdXRoU3luYyA9ICgpID0+IHtcbiAgY29uc3QgeyBkYXRhOiBzZXNzaW9uLCBzdGF0dXMgfSA9IHVzZVNlc3Npb24oKTtcbiAgY29uc3QgeyBzZXRVc2VyLCBzZXRTdGF0dXMsIHNldFNlc3Npb25FeHBpcnksIGxvZ291dCB9ID0gdXNlVXNlclN0b3JlKCk7XG5cbiAgdXNlRWZmZWN0KCgpID0+IHtcbiAgICAvLyBTeW5jIE5leHRBdXRoIHNlc3Npb24gd2l0aCBadXN0YW5kIHN0b3JlXG4gICAgaWYgKHN0YXR1cyA9PT0gJ2xvYWRpbmcnKSB7XG4gICAgICBzZXRTdGF0dXMoJ2xvYWRpbmcnKTtcbiAgICB9IGVsc2UgaWYgKHN0YXR1cyA9PT0gJ2F1dGhlbnRpY2F0ZWQnICYmIHNlc3Npb24/LnVzZXIpIHtcbiAgICAgIC8vIFVzZXIgaXMgYXV0aGVudGljYXRlZCwgdXBkYXRlIHN0b3JlXG4gICAgICBzZXRVc2VyKHtcbiAgICAgICAgaWQ6IHNlc3Npb24udXNlci5pZCB8fCAnJyxcbiAgICAgICAgZW1haWw6IHNlc3Npb24udXNlci5lbWFpbCB8fCAnJyxcbiAgICAgICAgbmFtZTogc2Vzc2lvbi51c2VyLm5hbWUsXG4gICAgICAgIGltYWdlOiBzZXNzaW9uLnVzZXIuaW1hZ2UsXG4gICAgICB9KTtcbiAgICAgIHNldFNlc3Npb25FeHBpcnkoc2Vzc2lvbi5leHBpcmVzIHx8IG51bGwpO1xuICAgICAgc2V0U3RhdHVzKCdhdXRoZW50aWNhdGVkJyk7XG4gICAgfSBlbHNlIGlmIChzdGF0dXMgPT09ICd1bmF1dGhlbnRpY2F0ZWQnKSB7XG4gICAgICAvLyBVc2VyIGlzIG5vdCBhdXRoZW50aWNhdGVkLCBjbGVhciBzdG9yZVxuICAgICAgbG9nb3V0KCk7XG4gICAgfVxuICB9LCBbc2Vzc2lvbiwgc3RhdHVzLCBzZXRVc2VyLCBzZXRTdGF0dXMsIHNldFNlc3Npb25FeHBpcnksIGxvZ291dF0pO1xuXG4gIHJldHVybiB7XG4gICAgc2Vzc2lvbixcbiAgICBzdGF0dXMsXG4gIH07XG59O1xuIl0sIm5hbWVzIjpbInVzZUF1dGhTeW5jIiwiZGF0YSIsInNlc3Npb24iLCJzdGF0dXMiLCJ1c2VTZXNzaW9uIiwic2V0VXNlciIsInNldFN0YXR1cyIsInNldFNlc3Npb25FeHBpcnkiLCJsb2dvdXQiLCJ1c2VVc2VyU3RvcmUiLCJ1c2VFZmZlY3QiLCJ1c2VyIiwiaWQiLCJlbWFpbCIsIm5hbWUiLCJpbWFnZSIsImV4cGlyZXMiXSwibWFwcGluZ3MiOiJBQUFBOzs7Q0FHQzs7OzsrQkFNWUE7OztlQUFBQTs7O3VCQUphO3dCQUNDOzJCQUNFO0FBRXRCLE1BQU1BLGNBQWM7SUFDekIsTUFBTSxFQUFFQyxNQUFNQyxPQUFPLEVBQUVDLE1BQU0sRUFBRSxHQUFHQyxJQUFBQSxrQkFBVTtJQUM1QyxNQUFNLEVBQUVDLE9BQU8sRUFBRUMsU0FBUyxFQUFFQyxnQkFBZ0IsRUFBRUMsTUFBTSxFQUFFLEdBQUdDLElBQUFBLHVCQUFZO0lBRXJFQyxJQUFBQSxnQkFBUyxFQUFDO1FBQ1IsMkNBQTJDO1FBQzNDLElBQUlQLFdBQVcsV0FBVztZQUN4QkcsVUFBVTtRQUNaLE9BQU8sSUFBSUgsV0FBVyxtQkFBbUJELFNBQVNTLE1BQU07WUFDdEQsc0NBQXNDO1lBQ3RDTixRQUFRO2dCQUNOTyxJQUFJVixRQUFRUyxJQUFJLENBQUNDLEVBQUUsSUFBSTtnQkFDdkJDLE9BQU9YLFFBQVFTLElBQUksQ0FBQ0UsS0FBSyxJQUFJO2dCQUM3QkMsTUFBTVosUUFBUVMsSUFBSSxDQUFDRyxJQUFJO2dCQUN2QkMsT0FBT2IsUUFBUVMsSUFBSSxDQUFDSSxLQUFLO1lBQzNCO1lBQ0FSLGlCQUFpQkwsUUFBUWMsT0FBTyxJQUFJO1lBQ3BDVixVQUFVO1FBQ1osT0FBTyxJQUFJSCxXQUFXLG1CQUFtQjtZQUN2Qyx5Q0FBeUM7WUFDekNLO1FBQ0Y7SUFDRixHQUFHO1FBQUNOO1FBQVNDO1FBQVFFO1FBQVNDO1FBQVdDO1FBQWtCQztLQUFPO0lBRWxFLE9BQU87UUFDTE47UUFDQUM7SUFDRjtBQUNGIn0=
