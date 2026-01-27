@@ -7,8 +7,9 @@ Food log entries were not persisting because the application was using the wrong
 ### Root Cause
 
 The `.env` file was pointing to `test.db` instead of `prisma/dev.db`. This happens when:
+
 1. Test scripts run (`npm run test`, `npm run test:fast`, etc.)
-2. The test scripts switch `.env` to point to `test.db` 
+2. The test scripts switch `.env` to point to `test.db`
 3. If the dev server is restarted or Prisma is regenerated, it picks up the test database
 
 ## Symptoms
@@ -51,6 +52,7 @@ sqlite3 prisma/dev.db "SELECT COUNT(*) FROM User;"
 ### Test Script Improvements
 
 The test setup script (`scripts/setup-test-db.sh`) already has cleanup logic that restores `.env` on exit, but this can fail if:
+
 - The script is interrupted (Ctrl+C)
 - The terminal crashes
 - The cleanup trap doesn't execute
@@ -85,11 +87,13 @@ cp .env.local .env && npx prisma generate && npm run dev:safe
 ## Architecture Note
 
 This issue highlights the separation between:
+
 - **Development Database**: `prisma/dev.db` - Used by dev server and UI
 - **Test Database**: `test.db` - Used only during automated tests
 - **Production Database**: PostgreSQL on Vercel
 
 The test database is intentionally separate to:
+
 1. Prevent test data pollution
 2. Allow parallel test execution
 3. Enable fast test database resets
@@ -105,6 +109,7 @@ The test database is intentionally separate to:
 ## Future Improvements
 
 Consider:
+
 1. Add a pre-dev check that validates `DATABASE_URL` in `.env`
 2. Create a `scripts/restore-dev-env.sh` recovery script
 3. Add a warning in dev server if test database is detected

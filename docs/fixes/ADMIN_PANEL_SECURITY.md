@@ -6,6 +6,7 @@
 ## Problem
 
 The beta testing admin panel at `/admin/beta-invites` was **completely unprotected** and publicly accessible. Anyone could:
+
 - Create beta invites
 - View all invites and codes
 - Revoke invites
@@ -16,6 +17,7 @@ This was a **critical security vulnerability** that needed to be fixed before an
 ## Solution Overview
 
 Implemented a comprehensive role-based access control (RBAC) system for the admin panel with:
+
 1. Database schema changes to support admin role
 2. Middleware protection for admin routes
 3. API-level authorization checks
@@ -29,6 +31,7 @@ Implemented a comprehensive role-based access control (RBAC) system for the admi
 Added `isAdmin` field to User model in all schema files:
 
 **Files Modified:**
+
 - `prisma/schema.prisma`
 - `prisma/schema.test.prisma`
 - `prisma/schema.production.prisma`
@@ -50,6 +53,7 @@ model User {
 ```
 
 **Migration:**
+
 ```bash
 # Added column to existing database
 sqlite3 prisma/dev.db "ALTER TABLE User ADD COLUMN isAdmin INTEGER NOT NULL DEFAULT 0;"
@@ -123,6 +127,7 @@ export async function POST(req: NextRequest) {
 **Applied to all API methods**: `GET`, `POST`, `PATCH`
 
 **HTTP Status Codes:**
+
 - `401 Unauthorized` - Not signed in
 - `403 Forbidden` - Signed in but not admin
 
@@ -161,7 +166,8 @@ export default function AdminBetaInvites() {
 }
 ```
 
-**Behavior**: 
+**Behavior**:
+
 - Shows loading spinner while checking auth
 - Redirects to homepage if not authenticated
 - API calls will still fail if user is not admin (double protection)
@@ -227,7 +233,7 @@ it('should throw error on 500 error', async () => {
 
 ### Admin Access Flow
 
-```
+```text
 User Request → Middleware Check → Auth Check → Admin Check → Allow/Deny
      ↓              ↓                ↓             ↓             ↓
   /admin/*    Is Signed In?   Has Session?   isAdmin=true?   Access
@@ -236,23 +242,27 @@ User Request → Middleware Check → Auth Check → Admin Check → Allow/Deny
 
 ## How to Grant Admin Access
 
-### For Development:
+### For Development
+
 ```bash
 sqlite3 prisma/dev.db "UPDATE User SET isAdmin = 1 WHERE email = 'user@example.com';"
 ```
 
-### For Production (PostgreSQL):
+### For Production (PostgreSQL)
+
 ```sql
 UPDATE "User" SET "isAdmin" = true WHERE email = 'user@example.com';
 ```
 
-### Recommended Admin Users:
+### Recommended Admin Users
+
 - `hello@quantro.fit` - Main admin
 - `aymanbouzelfane1@gmail.com` - Your admin account
 
 ## Testing the Security
 
 ### Test 1: Unauthenticated Access
+
 ```bash
 # Should redirect to homepage or show 401
 curl http://localhost:3000/admin/beta-invites
@@ -260,18 +270,21 @@ curl http://localhost:3000/api/admin/beta-invites
 ```
 
 ### Test 2: Non-Admin Authenticated Access
+
 1. Sign in with a non-admin account
 2. Try to access `/admin/beta-invites`
 3. Should see 403 Forbidden error
 
 ### Test 3: Admin Access
+
 1. Sign in with your admin account (`aymanbouzelfane1@gmail.com`)
 2. Access `/admin/beta-invites`
 3. Should see admin panel ✅
 
 ## Files Modified
 
-### Core Changes:
+### Core Changes
+
 1. `prisma/schema.prisma` - Added isAdmin field
 2. `prisma/schema.test.prisma` - Added isAdmin field
 3. `prisma/schema.production.prisma` - Added isAdmin field
@@ -279,9 +292,10 @@ curl http://localhost:3000/api/admin/beta-invites
 5. `src/app/api/admin/beta-invites/route.ts` - Added admin authorization
 6. `src/app/admin/beta-invites/page.tsx` - Added client-side protection
 
-### Test Changes:
-7. `src/app/api/__tests__/admin-beta-invites.test.ts` - Mocked auth
-8. `src/services/__tests__/foodLogService.test.ts` - Fixed 15 failing tests
+### Test Changes
+
+1. `src/app/api/__tests__/admin-beta-invites.test.ts` - Mocked auth
+2. `src/services/__tests__/foodLogService.test.ts` - Fixed 15 failing tests
 
 ## Production Deployment Checklist
 

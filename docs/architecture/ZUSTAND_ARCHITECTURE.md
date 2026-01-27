@@ -2,7 +2,7 @@
 
 ## 🏗️ Architecture Diagram
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                       App Root (layout.tsx)                      │
 │                                                                   │
@@ -60,7 +60,7 @@
 
 ### 1. User Login Flow
 
-```
+```text
 User clicks "Sign In"
        ↓
 NextAuth handles OAuth
@@ -97,7 +97,7 @@ function MyComponent() {
 
 ### 3. State Update Flow
 
-```
+```text
 NextAuth session changes (login/logout/refresh)
        ↓
 useAuthSync useEffect triggered
@@ -220,7 +220,7 @@ const store = useUserStore(); // Don't do this!
 
 When Redux DevTools browser extension is installed:
 
-```
+```text
 Action: login
 Payload: {
   user: { id: "...", email: "...", name: "..." },
@@ -290,21 +290,25 @@ const unsubscribe = useUserStore.subscribe(
 ## 🎓 Key Concepts
 
 ### 1. Single Source of Truth
+
 - User data lives in ONE place (Zustand store)
 - NextAuth syncs TO the store (not the other way)
 - Components read FROM the store
 
 ### 2. Automatic Synchronization
+
 - useAuthSync runs automatically (in SessionWrapper)
 - You don't need to manually sync anything
 - Login/logout just work™
 
 ### 3. Selective Subscriptions
+
 - Components only re-render when their selected state changes
 - More efficient than context or prop drilling
 - Better performance for large apps
 
 ### 4. Type Safety
+
 - Full TypeScript support
 - Autocomplete for all state and actions
 - Compile-time error checking

@@ -26,15 +26,18 @@ You need to **log in** to the application before adding food entries.
 ### Step 2: Choose Your Login Method
 
 #### Option A: Google Sign-In (Recommended)
+
 - Click "Sign in with Google"
 - Use your Google account: `aymanbouzelfane1@gmail.com`
 - This will create a proper session
 
 #### Option B: Apple Sign-In
+
 - Click "Sign in with Apple"
 - Use your Apple ID
 
 #### Option C: Development Credentials (If in dev mode)
+
 - Email: `aymanbouzelfane1@gmail.com`  
 - Password: Check `.env.local` for `DEV_SIGNIN_PASSWORD` (default: `quantro-dev-2024`)
 
@@ -76,12 +79,14 @@ export async function POST(request: NextRequest) {
 ```
 
 Without authentication:
+
 - ❌ API returns 401
 - ❌ No data saved to database  
 - ⚠️ Data saved to localStorage (temporary)
 - ❌ Lost on page refresh if localStorage is cleared
 
 With authentication:
+
 - ✅ API accepts requests
 - ✅ Data saved to database
 - ✅ Persists across sessions
@@ -99,6 +104,7 @@ If you see `{"error":"Unauthorized"}`, you need to log in.
 ## Middleware Protection
 
 The middleware protects these routes:
+
 - `/dashboard` - Requires auth
 - `/log` - Requires auth
 - `/api/user` - Requires auth
@@ -131,6 +137,7 @@ curl -s "http://localhost:3000/api/food-logs?date=2025-10-09"
 2. **Add a test food entry**
 3. **Refresh the page** - entry should persist
 4. **Check the database**:
+
    ```bash
    sqlite3 prisma/dev.db "SELECT id, foodName, quantity, date FROM FoodLog ORDER BY createdAt DESC LIMIT 5;"
    ```

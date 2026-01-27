@@ -9,24 +9,28 @@ import { useUserStore } from '@/stores/userStore';
 ## 🎯 Basic Usage
 
 ### Get User Data
+
 ```typescript
 const user = useUserStore(state => state.user);
 // { id, email, name, image }
 ```
 
 ### Check Authentication
+
 ```typescript
 const isAuthenticated = useUserStore(state => state.isAuthenticated);
 // true | false
 ```
 
 ### Get Status
+
 ```typescript
 const status = useUserStore(state => state.status);
 // 'loading' | 'authenticated' | 'unauthenticated'
 ```
 
 ### Multiple Values
+
 ```typescript
 const { user, isAuthenticated, status } = useUserStore(state => ({
   user: state.user,
@@ -38,12 +42,14 @@ const { user, isAuthenticated, status } = useUserStore(state => ({
 ## 🔧 Actions
 
 ### Update User
+
 ```typescript
 const updateUser = useUserStore(state => state.updateUser);
 updateUser({ name: 'New Name' });
 ```
 
 ### Manual Login
+
 ```typescript
 const login = useUserStore(state => state.login);
 login(
@@ -53,6 +59,7 @@ login(
 ```
 
 ### Logout
+
 ```typescript
 const logout = useUserStore(state => state.logout);
 logout();
@@ -61,6 +68,7 @@ logout();
 ## 💡 Common Patterns
 
 ### Protected Component
+
 ```typescript
 function ProtectedComponent() {
   const { user, status } = useUserStore();
@@ -73,6 +81,7 @@ function ProtectedComponent() {
 ```
 
 ### Conditional Rendering
+
 ```typescript
 function Header() {
   const isAuthenticated = useUserStore(state => state.isAuthenticated);
@@ -86,6 +95,7 @@ function Header() {
 ```
 
 ### User Display
+
 ```typescript
 function UserProfile() {
   const user = useUserStore(state => state.user);
@@ -103,6 +113,7 @@ function UserProfile() {
 ## 🚀 Outside React
 
 ### In Services
+
 ```typescript
 // Get current state
 const currentUser = useUserStore.getState().user;
@@ -113,6 +124,7 @@ useUserStore.getState().updateUser({ name: 'New Name' });
 ```
 
 ### In Utilities
+
 ```typescript
 export function getUserId(): string | null {
   return useUserStore.getState().user?.id || null;
@@ -122,6 +134,7 @@ export function getUserId(): string | null {
 ## 🎨 Using Selectors
 
 ### Pre-defined
+
 ```typescript
 import { selectUser, selectIsAuthenticated } from '@/stores/userStore';
 
@@ -130,6 +143,7 @@ const isAuth = useUserStore(selectIsAuthenticated);
 ```
 
 ### Custom
+
 ```typescript
 const selectUserName = (state) => state.user?.name || 'Guest';
 const userName = useUserStore(selectUserName);
@@ -154,6 +168,7 @@ const userName = useUserStore(selectUserName);
 ## ⚡ Performance Tips
 
 ### ✅ DO
+
 ```typescript
 // Subscribe to specific values
 const user = useUserStore(state => state.user);
@@ -161,6 +176,7 @@ const name = useUserStore(state => state.user?.name);
 ```
 
 ### ❌ DON'T
+
 ```typescript
 // Subscribe to entire store
 const store = useUserStore(); // Re-renders on ANY change!
@@ -169,6 +185,7 @@ const store = useUserStore(); // Re-renders on ANY change!
 ## 🐛 Debugging
 
 ### Console
+
 ```typescript
 // Check current state
 console.log(useUserStore.getState());
@@ -179,11 +196,13 @@ const unsub = useUserStore.subscribe(console.log);
 ```
 
 ### Redux DevTools
+
 Install browser extension → Open DevTools → Redux tab
 
 ## 🔄 Migration from useSession
 
 ### Before
+
 ```typescript
 const { data: session, status } = useSession();
 if (status === 'loading') return <Loading />;
@@ -192,6 +211,7 @@ return <div>Hello {session.user.name}</div>;
 ```
 
 ### After
+
 ```typescript
 const { user, status } = useUserStore();
 if (status === 'loading') return <Loading />;
@@ -202,7 +222,7 @@ return <div>Hello {user.name}</div>;
 ## 🎯 When to Use What
 
 | Use Case | Solution |
-|----------|----------|
+| -------- | -------- |
 | Read user data | `useUserStore(state => state.user)` |
 | Check if logged in | `useUserStore(state => state.isAuthenticated)` |
 | Update user profile | `useUserStore(state => state.updateUser)` |

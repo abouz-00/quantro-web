@@ -1,8 +1,10 @@
 # Quick Reference - New API Endpoints
 
 ## 🔐 Authentication
+
 All endpoints require JWT authentication:
-```
+
+```text
 Authorization: Bearer <your-jwt-token>
 ```
 
@@ -11,6 +13,7 @@ Authorization: Bearer <your-jwt-token>
 ## 📝 Food Log Endpoints (Enhanced with Validation)
 
 ### Create Food Log
+
 ```http
 POST /food-logs
 Content-Type: application/json
@@ -33,11 +36,13 @@ Content-Type: application/json
 ```
 
 ### Get Food Logs
+
 ```http
 GET /food-logs?date=2025-10-09      // date is optional
 ```
 
 ### Update Food Log
+
 ```http
 PUT /food-logs
 Content-Type: application/json
@@ -51,11 +56,13 @@ Content-Type: application/json
 ```
 
 ### Delete Food Log
+
 ```http
 DELETE /food-logs?id=clx123abc
 ```
 
 ### Reorder Food Logs
+
 ```http
 POST /food-logs/reorder
 Content-Type: application/json
@@ -70,11 +77,13 @@ Content-Type: application/json
 ## 🔍 USDA Food Search Endpoints (NEW!)
 
 ### Search Foods
+
 ```http
 GET /food-search?query=chicken&pageSize=10
 ```
 
 **Response:**
+
 ```json
 [
   {
@@ -94,10 +103,12 @@ GET /food-search?query=chicken&pageSize=10
 ```
 
 **Query Parameters:**
+
 - `query` (required): Search term, min 2 characters
 - `pageSize` (optional): Results per page, 1-50, default 10
 
 ### Get Food Details
+
 ```http
 GET /food-search/1234567
 ```
@@ -109,6 +120,7 @@ GET /food-search/1234567
 ## ⚠️ Error Responses
 
 ### Validation Error (400)
+
 ```json
 {
   "statusCode": 400,
@@ -121,6 +133,7 @@ GET /food-search/1234567
 ```
 
 ### Unauthorized (401)
+
 ```json
 {
   "statusCode": 401,
@@ -129,6 +142,7 @@ GET /food-search/1234567
 ```
 
 ### Not Found (404)
+
 ```json
 {
   "statusCode": 404,
@@ -142,12 +156,14 @@ GET /food-search/1234567
 ## 📊 What's New?
 
 ### ✅ Input Validation
+
 - All food log endpoints validate input
 - Clear error messages for invalid data
 - Automatic type conversion
 - Whitelist mode (strips unknown fields)
 
 ### ✅ USDA Integration
+
 - Server-side API calls (secure)
 - 1-hour intelligent caching
 - Standardized nutrition data
@@ -180,6 +196,7 @@ curl -X POST http://localhost:3001/food-logs \
 ## 🔧 Environment Variables
 
 Backend `.env` file needs:
+
 ```bash
 USDA_API_KEY=your-usda-api-key-here
 DATABASE_URL=your-database-url

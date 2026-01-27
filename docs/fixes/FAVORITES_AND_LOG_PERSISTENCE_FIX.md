@@ -16,12 +16,14 @@ When refreshing the page, both the favorites section and the food log entries wo
 **Location:** `/src/services/foodLogService.ts` - `loadFoodData()` method
 
 **Problem:**
+
 - When loading food data, the service prioritizes API calls over localStorage
 - On a 404 response (no data found for that date), it immediately returned an empty array `[]`
 - This empty array overwrote any existing localStorage data
 - On page refresh, if the API was slow, unavailable, or returned 404, all food entries would disappear
 
 **Code Flow:**
+
 ```typescript
 // BEFORE (Problematic)
 } else if (errorMessage.includes('HTTP 404')) {
@@ -35,6 +37,7 @@ When refreshing the page, both the favorites section and the food log entries wo
 **Location:** `/src/components/food-log/search/hooks/useFavorites.ts`
 
 **Problem:**
+
 - While favorites were being saved to localStorage correctly, there was no error handling
 - No loading state tracking could cause race conditions
 - Saved data immediately after loading could create conflicts
@@ -47,7 +50,9 @@ When refreshing the page, both the favorites section and the food log entries wo
 **File:** `/src/services/foodLogService.ts`
 
 **Changes:**
+
 1. **Added localStorage backup on successful API load:**
+
    ```typescript
    // Save to localStorage as backup
    if (entries.length > 0) {
@@ -56,6 +61,7 @@ When refreshing the page, both the favorites section and the food log entries wo
    ```
 
 2. **Check localStorage before returning empty on 404:**
+
    ```typescript
    } else if (errorMessage.includes('HTTP 404')) {
      console.log('No food logs found for date:', dateParam);
@@ -74,6 +80,7 @@ When refreshing the page, both the favorites section and the food log entries wo
    - Shows count of cached entries found
 
 **Benefits:**
+
 - ✅ Food log entries persist across page refreshes
 - ✅ Works offline after initial load
 - ✅ Graceful fallback on API errors
@@ -84,12 +91,15 @@ When refreshing the page, both the favorites section and the food log entries wo
 **File:** `/src/components/food-log/search/hooks/useFavorites.ts`
 
 **Changes:**
+
 1. **Added loading state tracking:**
+
    ```typescript
    const [isLoaded, setIsLoaded] = useState(false);
    ```
 
 2. **Added error handling for localStorage operations:**
+
    ```typescript
    try {
      const saved = localStorage.getItem('favoriteFoods');
@@ -103,6 +113,7 @@ When refreshing the page, both the favorites section and the food log entries wo
    ```
 
 3. **Prevent save before initial load:**
+
    ```typescript
    useEffect(() => {
      if (isLoaded) { // Only save after initial load completes
@@ -117,6 +128,7 @@ When refreshing the page, both the favorites section and the food log entries wo
    - Logs errors
 
 **Benefits:**
+
 - ✅ Prevents race conditions
 - ✅ Better error handling
 - ✅ Easier debugging
@@ -155,14 +167,16 @@ To verify the fix works:
 ## 📊 Expected Console Output
 
 **On Initial Load (with API success):**
-```
+
+```text
 🌐 FoodLogService: About to fetch /food-logs?date=2025-10-09
 📋 FoodLogService: API returned 5 entries
 ✅ Loaded 3 favorites from localStorage
 ```
 
 **On Refresh (with API 404 but localStorage available):**
-```
+
+```text
 🌐 FoodLogService: About to fetch /food-logs?date=2025-10-09
 No food logs found for date: 2025-10-09
 🔄 Checking localStorage for cached data
@@ -171,7 +185,8 @@ No food logs found for date: 2025-10-09
 ```
 
 **On Favorites Save:**
-```
+
+```text
 💾 Saved 4 favorites to localStorage
 ```
 

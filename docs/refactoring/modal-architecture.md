@@ -11,6 +11,7 @@ Refactored the modal system from a monolithic component into a proper **separati
 **Location**: `/src/components/ui/Modal.tsx`
 
 A reusable, "dumb" modal shell that handles:
+
 - Background overlay with click-to-close
 - Scroll locking (prevents background page from scrolling)
 - ESC key handling for accessibility
@@ -18,6 +19,7 @@ A reusable, "dumb" modal shell that handles:
 - Proper overflow handling to prevent scroll chaining
 
 **Key Features**:
+
 - Completely agnostic to content - doesn't know anything about "food search"
 - Can be reused for any modal in the application
 - Handles all the tricky parts: scroll lock, overscroll prevention, cleanup
@@ -27,6 +29,7 @@ A reusable, "dumb" modal shell that handles:
 **Location**: `/src/components/food-log/search/FoodSearchModal.tsx`
 
 Now a "smart" component that:
+
 - Uses the generic `Modal` component as its shell
 - Contains only food-search-specific logic
 - Manages tabs, search state, favorites, custom foods
@@ -37,13 +40,15 @@ Now a "smart" component that:
 **Location**: `/src/components/food-log/search/components/ModalLayout.tsx`
 
 This component is now deprecated and can be removed. Its functionality has been split into:
+
 - Generic parts → `Modal.tsx`
 - Specific parts → directly in `FoodSearchModal.tsx`
 
 ## Architecture Benefits
 
 ### Before (Monolithic)
-```
+
+```text
 FoodSearchModal
 └── ModalLayout (contains modal chrome + food-specific layout)
     ├── Header with tabs
@@ -52,19 +57,22 @@ FoodSearchModal
 ```
 
 Problems:
+
 - Mixed concerns (modal behavior + food search UI)
 - Not reusable for other modals
 - Hard to maintain (one bug affects everything)
 - Difficult to test in isolation
 
 ### After (Separated)
-```
+
+```text
 FoodSearchModal (feature-specific)
 └── Modal (generic shell)
     └── Feature content (tabs, search, etc.)
 ```
 
 Benefits:
+
 - **Reusability**: `Modal` can be used for any modal in the app
 - **Maintainability**: Bug fixes in `Modal` benefit all modals
 - **Testability**: Can test modal behavior independently
@@ -85,6 +93,7 @@ The `Modal` component implements a comprehensive scroll-locking solution:
 ### Height Constraint Fix
 
 The key to making scrolling work:
+
 ```tsx
 <div className="flex-1 overflow-hidden" style={{ minHeight: 0 }}>
   <div className="h-full">
@@ -94,6 +103,7 @@ The key to making scrolling work:
 ```
 
 This ensures:
+
 - Flex item respects container height (`minHeight: 0`)
 - Child has defined height for overflow to work (`h-full`)
 - Scrollable content inside children can properly calculate boundaries
@@ -123,6 +133,7 @@ function MyNewModal({ isOpen, onClose }) {
 ```
 
 That's it! No need to implement:
+
 - Scroll locking
 - Overlay handling
 - ESC key handling
@@ -164,6 +175,7 @@ It's all handled by the generic `Modal` component.
 ## Future Improvements
 
 With this pattern in place, we can easily:
+
 1. Create confirmation dialogs using `Modal`
 2. Create settings modals using `Modal`
 3. Create image viewers using `Modal`

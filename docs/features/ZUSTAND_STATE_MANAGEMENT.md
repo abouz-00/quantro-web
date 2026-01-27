@@ -6,7 +6,7 @@ We've implemented **Zustand** as our global state management solution for handli
 
 ## Architecture
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    SessionProvider (NextAuth)                │
 │                                                               │
@@ -36,17 +36,20 @@ We've implemented **Zustand** as our global state management solution for handli
 ## Files Created
 
 ### 1. **Store** (`src/stores/userStore.ts`)
+
 - Main Zustand store for user state
 - Includes persist middleware (saves to localStorage)
 - Includes devtools middleware (for Redux DevTools)
 - Type-safe with TypeScript
 
 ### 2. **Sync Hook** (`src/hooks/useAuthSync.ts`)
+
 - Bridges NextAuth session with Zustand store
 - Automatically syncs when session changes
 - Called once at the app root level
 
 ### 3. **Updated SessionWrapper** (`src/components/shared/SessionWrapper.tsx`)
+
 - Now includes `AuthSyncWrapper` component
 - Automatically syncs auth state globally
 
@@ -193,6 +196,7 @@ export default function AuthButton() {
 ### 🎯 **State Management**
 
 The store manages:
+
 - `user`: User profile data (id, email, name, image)
 - `isAuthenticated`: Boolean flag for quick auth checks
 - `status`: Current authentication status ('loading' | 'authenticated' | 'unauthenticated')
@@ -201,6 +205,7 @@ The store manages:
 ### 🔧 **Actions**
 
 Available actions:
+
 - `setUser(user)`: Manually set user data
 - `setStatus(status)`: Update authentication status
 - `setSessionExpiry(expiry)`: Update session expiry
@@ -210,7 +215,8 @@ Available actions:
 
 ## Migration Path
 
-### Before (Direct NextAuth usage):
+### Before (Direct NextAuth usage)
+
 ```tsx
 import { useSession } from 'next-auth/react';
 
@@ -224,7 +230,8 @@ export default function MyComponent() {
 }
 ```
 
-### After (Zustand store):
+### After (Zustand store)
+
 ```tsx
 import { useUserStore } from '@/stores/userStore';
 
@@ -238,7 +245,8 @@ export default function MyComponent() {
 }
 ```
 
-### Note: Both approaches work!
+### Note - Both approaches work
+
 - ✅ You can **gradually migrate** - NextAuth still works as before
 - ✅ New components can use Zustand for simpler, cleaner code
 - ✅ Old components continue to work with `useSession()`

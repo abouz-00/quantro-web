@@ -3,6 +3,7 @@
 ## Problem
 
 In the "Add Food" modal (search and favorites tabs), users could type non-numerical characters in the quantity input field, such as:
+
 - Special characters: `-`, `=`, `[`, `]`, etc.
 - Letters: `a`, `b`, `c`, etc.
 - Symbols: `!`, `@`, `#`, etc.
@@ -14,9 +15,11 @@ This could lead to invalid input and potential errors when calculating nutrition
 Added comprehensive input validation to the quantity field with three layers of protection:
 
 ### 1. `onKeyDown` Event Handler
+
 Prevents non-numeric characters from being typed:
 
 **Allowed Keys:**
+
 - Numbers: `0-9`
 - Decimal point: `.`
 - Navigation: `Backspace`, `Delete`, `ArrowLeft`, `ArrowRight`, `Tab`
@@ -24,17 +27,21 @@ Prevents non-numeric characters from being typed:
 - Submit: `Enter` (to add food)
 
 **Blocked Keys:**
+
 - Special characters: `-`, `=`, `[`, `]`, `(`, `)`, etc.
 - Letters: `a-z`, `A-Z`
 - Symbols: `!`, `@`, `#`, `$`, `%`, etc.
 
 ### 2. `onPaste` Event Handler
+
 Prevents pasting non-numeric content:
+
 - Validates clipboard text with regex: `/^[0-9.]*$/`
 - Only allows numbers and decimal points
 - Blocks pasting text like "abc", "123abc", "test", etc.
 
 ### 3. HTML Attributes
+
 - `type="number"` - Native browser validation
 - `min="0"` - Prevents negative numbers
 - `step="any"` - Allows decimal values
@@ -44,6 +51,7 @@ Prevents pasting non-numeric content:
 ### File: `src/components/food-log/search/components/FoodSelectionSection.tsx`
 
 **Before:**
+
 ```tsx
 <input
   type="number"
@@ -55,6 +63,7 @@ Prevents pasting non-numeric content:
 ```
 
 **After:**
+
 ```tsx
 <input
   type="number"
@@ -93,6 +102,7 @@ Prevents pasting non-numeric content:
 ## User Experience
 
 ### What Works Now ✅
+
 - Type numbers: `1`, `2`, `3`, etc.
 - Type decimal: `1.5`, `2.75`, `100.25`
 - Use backspace/delete to edit
@@ -102,6 +112,7 @@ Prevents pasting non-numeric content:
 - Press Enter to submit
 
 ### What's Blocked ❌
+
 - Type letters: `a`, `b`, `c`
 - Type special chars: `-`, `=`, `[`, `]`
 - Type symbols: `!`, `@`, `#`
@@ -139,6 +150,7 @@ Prevents pasting non-numeric content:
 ## Browser Compatibility
 
 Works in all modern browsers:
+
 - ✅ Chrome/Edge (Chromium)
 - ✅ Firefox
 - ✅ Safari
