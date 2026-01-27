@@ -345,7 +345,7 @@ describe('LogPage', () => {
     });
 
     // Check that the main page structure is rendered
-    const mainContainer = document.querySelector('.min-h-screen');
+    const mainContainer = document.querySelector('.h-screen.flex.flex-col');
     expect(mainContainer).toBeInTheDocument();
     expect(mainContainer).toHaveStyle({ backgroundColor: 'rgb(245, 240, 231)' });
   });
@@ -381,8 +381,8 @@ describe('LogPage', () => {
       render(<LogPage />);
     });
     
-    // Check for main content structure
-    const contentArea = document.querySelector('.flex.rounded-t-3xl');
+    // Check for main content structure (scrollable content area)
+    const contentArea = document.querySelector('.flex-1.overflow-y-auto');
     expect(contentArea).toBeInTheDocument();
     
     // Check for container
