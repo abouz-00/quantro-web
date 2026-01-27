@@ -161,7 +161,7 @@ export default function LogPage() {
   });
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F5F0E7' }}>
+    <div className="h-screen flex flex-col overflow-hidden" style={{ backgroundColor: '#F5F0E7' }}>
       {/* Debug Panel - only in development */}
       {process.env.NODE_ENV === 'development' && (
         <Suspense fallback={null}>
@@ -169,21 +169,24 @@ export default function LogPage() {
         </Suspense>
       )}
       
-      <Suspense fallback={<div>Loading header...</div>}>
-        <FoodLogHeader
-          isMainMenuOpen={isMainMenuOpen}
-          setIsMainMenuOpen={setIsMainMenuOpen}
-          setIsTargetsModalOpen={setIsTargetsModalOpen}
-          selectedDate={selectedDate}
-          onDateChange={setSelectedDate}
-        />
-      </Suspense>
+      {/* Fixed Header Area */}
+      <div className="flex-shrink-0">
+        <Suspense fallback={<div>Loading header...</div>}>
+          <FoodLogHeader
+            isMainMenuOpen={isMainMenuOpen}
+            setIsMainMenuOpen={setIsMainMenuOpen}
+            setIsTargetsModalOpen={setIsTargetsModalOpen}
+            selectedDate={selectedDate}
+            onDateChange={setSelectedDate}
+          />
+        </Suspense>
+      </div>
       
-      {/* Content Area with Flex Layout */}
-      <div className="flex rounded-t-3xl bg-inherit" style={{ height: 'calc(100vh - 4rem)' }}>
+      {/* Scrollable Content Area */}
+      <div className="flex-1 overflow-y-auto">
         {/* Main Content Area */}
         <div 
-          className="flex-1 transition-all duration-300 ease-out overflow-y-auto rounded-t-3xl"
+          className="transition-all duration-300 ease-out"
           style={{ minWidth: 0, backgroundColor: '#F5F0E7' }}
         >
           <div className="container mx-auto px-4 py-8 pb-40">
