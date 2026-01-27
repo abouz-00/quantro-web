@@ -67,7 +67,7 @@ describe('DateNavigation Component', () => {
     
     // Check inner div styling - the second child div with the background styles
     const innerDiv = outerDiv?.firstElementChild
-    expect(innerDiv).toHaveClass('flex', 'items-center', 'space-x-2', 'bg-white', 'rounded-full', 'shadow-lg', 'px-3', 'py-2')
+    expect(innerDiv).toHaveClass('flex', 'items-center', 'space-x-2', 'rounded-full', 'shadow-lg', 'px-3', 'py-2')
     
     // Check that inner div has the inline styles
     expect(innerDiv).toHaveStyle('background-color: #F8F5F0')
