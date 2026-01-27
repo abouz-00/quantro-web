@@ -267,4 +267,10 @@
   font-weight: 900 !important;
 }
 
+/* Ensure hidden neighboring month days still take up grid space */
+.react-calendar__month-view__days__day--neighboringMonth {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 /* Grid lines are now created by the grid-gap and background color */
