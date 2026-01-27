@@ -7,11 +7,29 @@ PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LOG_DIR="$PROJECT_DIR/logs"
 PID_FILE="$LOG_DIR/forever-dev.pid"
 LOG_FILE="$LOG_DIR/forever-dev.log"
+DEV_LOCK_FILE="$PROJECT_DIR/.dev-server.lock"
 
 mkdir -p "$LOG_DIR"
 
+# Check if dev server is already running
+if [ -f "$DEV_LOCK_FILE" ]; then
+    LOCK_PID=$(cat "$DEV_LOCK_FILE")
+    if ps -p "$LOCK_PID" > /dev/null 2>&1; then
+        echo "✅ Dev server is already running (PID: $LOCK_PID)"
+        echo "   Use 'npm run dev:stop' to stop it first"
+        exit 0
+    fi
+fi
+
 # Save our main process PID
 echo $$ > "$PID_FILE"
+echo $$ > "$DEV_LOCK_FILE"
+
+# Cleanup on exit
+cleanup() {
+    rm -f "$PID_FILE" "$DEV_LOCK_FILE"
+}
+trap cleanup EXIT INT TERM
 
 cd "$PROJECT_DIR"
 
@@ -20,8 +38,12 @@ echo "PID: $$" | tee -a "$LOG_FILE"
 echo "Project: $PROJECT_DIR" | tee -a "$LOG_FILE"
 echo "----------------------------------------" | tee -a "$LOG_FILE"
 
-# Kill any existing process on port 3000
-lsof -ti:3000 | xargs kill -9 2>/dev/null || true
+# Only kill if port is occupied by something other than us
+OTHER_PID=$(lsof -ti:3000 2>/dev/null || true)
+if [ -n "$OTHER_PID" ] && [ "$OTHER_PID" != "$$" ]; then
+    echo "Killing existing process on port 3000 (PID: $OTHER_PID)..." | tee -a "$LOG_FILE"
+    echo "$OTHER_PID" | xargs kill -9 2>/dev/null || true
+fi
 
 # Run dev server in an infinite loop with auto-restart
 while true; do
@@ -44,5 +66,4 @@ while true; do
     sleep 3
 done
 
-rm -f "$PID_FILE"
 echo "$(date): Forever dev server stopped." | tee -a "$LOG_FILE"
