@@ -118,7 +118,9 @@
 .react-calendar__month-view__days__day--neighboringMonth,
 .react-calendar__decade-view__years__year--neighboringDecade,
 .react-calendar__century-view__decades__decade--neighboringCentury {
-  color: #d1d5db;
+  color: transparent !important;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .react-calendar__year-view .react-calendar__tile,
@@ -265,12 +267,6 @@
   align-items: center;
   justify-content: center;
   font-weight: 900 !important;
-}
-
-/* Ensure hidden neighboring month days still take up grid space */
-.react-calendar__month-view__days__day--neighboringMonth {
-  visibility: hidden;
-  pointer-events: none;
 }
 
 /* Grid lines are now created by the grid-gap and background color */

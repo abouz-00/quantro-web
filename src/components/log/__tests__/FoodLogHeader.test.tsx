@@ -11,8 +11,6 @@ describe('FoodLogHeader', () => {
     isMainMenuOpen: false,
     setIsMainMenuOpen: jest.fn(),
     setIsTargetsModalOpen: jest.fn(),
-    selectedDate: new Date(2023, 5, 15),
-    onDateChange: jest.fn(),
   };
 
   beforeEach(() => {
@@ -25,15 +23,11 @@ describe('FoodLogHeader', () => {
     }).not.toThrow();
   });
 
-  it('renders Header and DateNavigation components', () => {
+  it('renders Header component with logo', () => {
     render(<FoodLogHeader {...defaultProps} />);
     
     // Check for header logo
     expect(screen.getByAltText('Quantro Logo')).toBeInTheDocument();
-    
-    // Check for date navigation elements
-    expect(screen.getByLabelText('Previous day')).toBeInTheDocument();
-    expect(screen.getByLabelText('Next day')).toBeInTheDocument();
   });
 
   it('passes props correctly to Header', () => {
@@ -53,24 +47,11 @@ describe('FoodLogHeader', () => {
     expect(screen.getByAltText('Quantro Logo')).toBeInTheDocument();
   });
 
-  it('passes props correctly to DateNavigation', () => {
-    const mockOnDateChange = jest.fn();
-    const testDate = new Date(2023, 5, 15); // June 15, 2023
+  it('renders menu button', () => {
+    render(<FoodLogHeader {...defaultProps} />);
     
-    render(
-      <FoodLogHeader 
-        {...defaultProps} 
-        selectedDate={testDate}
-        onDateChange={mockOnDateChange}
-      />
-    );
-    
-    // Check that the date is displayed (formatted as "Jun 15, 2023")
-    expect(screen.getByText('Jun 15, 2023')).toBeInTheDocument();
-    
-    // Check that date navigation buttons are present
-    expect(screen.getByLabelText('Previous day')).toBeInTheDocument();
-    expect(screen.getByLabelText('Next day')).toBeInTheDocument();
+    // Check that the menu button is present
+    expect(screen.getByLabelText('Open main menu')).toBeInTheDocument();
   });
 
   it('handles menu state changes', () => {

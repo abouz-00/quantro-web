@@ -14,6 +14,7 @@ import { generateEntryId } from "../../utils/dateUtils";
 
 // Dynamic imports for better performance
 const FoodLogHeader = dynamic(() => import('./FoodLogHeader'));
+const DateNavigation = dynamic(() => import('./DateNavigation').then(mod => ({ default: mod.DateNavigation })));
 const FoodLogStats = dynamic(() => import('./FoodLogStats'));
 const FoodLogControls = dynamic(() => import('./FoodLogControls'));
 const DynamicFoodLogTable = dynamic(() => import('../food-log').then(mod => mod.FoodLogTable));
@@ -170,20 +171,25 @@ export default function LogPage() {
       )}
       
       {/* Fixed Header - only the purple bar */}
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 relative z-[100]">
         <Suspense fallback={<div>Loading header...</div>}>
           <FoodLogHeader
             isMainMenuOpen={isMainMenuOpen}
             setIsMainMenuOpen={setIsMainMenuOpen}
             setIsTargetsModalOpen={setIsTargetsModalOpen}
-            selectedDate={selectedDate}
-            onDateChange={setSelectedDate}
           />
         </Suspense>
       </div>
       
       {/* Scrollable Content Area */}
       <div className="flex-1 overflow-y-auto">
+        {/* Date Navigation - scrolls with content */}
+        <Suspense fallback={null}>
+          <DateNavigation
+            selectedDate={selectedDate}
+            onDateChange={setSelectedDate}
+          />
+        </Suspense>
         {/* Main Content Area */}
         <div 
           className="transition-all duration-300 ease-out"
