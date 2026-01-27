@@ -9,6 +9,7 @@ Sign-in was failing with "no beta access" error when using the email `aymanbouze
 The email `aymanbouzelfane1@gmail.com` was not in the `BETA_EMAILS` whitelist in `src/lib/betaAccess.ts`.
 
 The beta access check runs for ALL sign-in methods:
+
 - Google OAuth
 - Apple Sign-In  
 - Development Credentials
@@ -46,12 +47,14 @@ const BETA_EMAILS = [
 The app has a two-tier beta access system:
 
 ### Tier 1: Hardcoded Whitelist (BETA_EMAILS)
+
 - Checked first
 - Immediate access
 - No database query needed
 - Located in `src/lib/betaAccess.ts`
 
 ### Tier 2: Database Invites (BetaInvite table)
+
 - Checked if not in whitelist
 - Requires valid, unexpired, non-revoked invite
 - Can be managed via admin interface
@@ -59,7 +62,9 @@ The app has a two-tier beta access system:
 ## Adding More Beta Testers
 
 ### Option 1: Add to Whitelist (Quick)
+
 Edit `src/lib/betaAccess.ts`:
+
 ```typescript
 const BETA_EMAILS = [
   'hello@quantro.fit',
@@ -70,6 +75,7 @@ const BETA_EMAILS = [
 ```
 
 ### Option 2: Create Database Invite (Scalable)
+
 ```bash
 # Access the database
 sqlite3 prisma/dev.db

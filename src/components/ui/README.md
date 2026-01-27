@@ -42,7 +42,7 @@ function MyFeatureModal({ isOpen, onClose }) {
 #### Props
 
 | Prop | Type | Default | Description |
-|------|------|---------|-------------|
+| ---- | ---- | ------- | ----------- |
 | `isOpen` | `boolean` | required | Controls modal visibility |
 | `onClose` | `() => void` | required | Called when modal should close |
 | `children` | `ReactNode` | required | Modal content |
@@ -70,6 +70,7 @@ Instead of creating monolithic modal components, we follow this pattern:
 ### Example: Before vs After
 
 ❌ **Before** (monolithic):
+
 ```tsx
 // FoodSearchModal.tsx - knows about modal behavior AND food search logic
 function FoodSearchModal() {
@@ -83,6 +84,7 @@ function FoodSearchModal() {
 ```
 
 ✅ **After** (separated):
+
 ```tsx
 // ui/Modal.tsx - only knows about being a modal
 function Modal({ isOpen, onClose, children }) {
@@ -114,6 +116,7 @@ When adding a new component to this directory, ask yourself:
 If yes to all three, it belongs here!
 
 ### Good Candidates for `ui/`
+
 - Modal, Dialog, Drawer
 - Button, Input, Select
 - Card, Panel, Container
@@ -122,6 +125,7 @@ If yes to all three, it belongs here!
 - Toast, Alert, Banner
 
 ### Bad Candidates for `ui/`
+
 - FoodSearchModal (feature-specific)
 - UserProfileCard (domain-specific)
 - DashboardStats (business logic)

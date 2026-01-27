@@ -19,6 +19,7 @@ const user = {
 ```
 
 **Flow:**
+
 1. User signs in with dev password
 2. Auth creates session with user ID: `dev-aymanbouzelfane1@gmail.com`
 3. User tries to add food entry
@@ -55,6 +56,7 @@ const user = {
 ```
 
 **Flow:**
+
 1. User signs in with dev password
 2. Auth queries database for user by email
 3. Finds existing user with ID: `cmebw3oxf0000itxmiq2es02u`
@@ -71,9 +73,11 @@ const user = {
 **Lines 111-129** (in Credentials provider authorize function)
 
 **Removed:**
+
 - Mock user ID generation: `id: \`dev-${email}\``
 
 **Added:**
+
 - Database user lookup: `prisma.user.findUnique()`
 - User creation if not exists: `prisma.user.create()`
 - Return actual database user with real ID
@@ -104,7 +108,8 @@ console.log(window.__foodDataDebug);
 ```
 
 Look for logs like:
-```
+
+```text
 Found existing user: cmebw3oxf0000itxmiq2es02u
 Dev sign-in successful for: aymanbouzelfane1@gmail.com with ID: cmebw3oxf0000itxmiq2es02u
 ```
@@ -150,6 +155,7 @@ The original dev sign-in implementation was designed to be **stateless** - it cr
 ### Why JWT Strategy?
 
 The app uses JWT strategy (line 186 in auth.ts):
+
 ```typescript
 session: {
   strategy: "jwt",
@@ -158,6 +164,7 @@ session: {
 ```
 
 This is because:
+
 - SQLite doesn't support concurrent writes well
 - JWT tokens are stored in cookies, not database
 - Better for development with file-based database

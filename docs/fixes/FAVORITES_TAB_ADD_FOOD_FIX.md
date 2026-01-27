@@ -52,6 +52,7 @@ Changed the conditional rendering to include both "search" and "favorites" tabs:
 ## Testing
 
 To test:
+
 1. Go to the log page
 2. Click "Add Food" button
 3. Switch to the "Favorites" tab

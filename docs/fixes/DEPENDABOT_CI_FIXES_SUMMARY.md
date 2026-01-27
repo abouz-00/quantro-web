@@ -184,13 +184,13 @@ Both repos need these GitHub settings:
 
 ## Related Files
 
-### quantro-web
+### quantro-web Files
 
 - `.github/workflows/dependabot-auto-merge.yml` (FIXED)
 - `.github/workflows/ci.yml` (already correct)
 - `.github/dependabot.yml` (configuration)
 
-### quantro-backend
+### quantro-backend Files
 
 - `.github/workflows/ci.yml` (FIXED)
 - `.github/workflows/dependabot-auto-merge.yml` (already correct)

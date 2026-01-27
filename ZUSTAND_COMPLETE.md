@@ -78,6 +78,7 @@ Time:        0.739 s
 ## 🎯 Features Implemented
 
 ### Core Features
+
 - ✅ **Global User State** - Access user data from anywhere
 - ✅ **Automatic Sync** - NextAuth session auto-syncs with Zustand
 - ✅ **Type Safety** - Full TypeScript support
@@ -164,6 +165,7 @@ const isAuthenticated = useUserStore.getState().isAuthenticated;
 ### New vs Old Pattern
 
 **Before (NextAuth):**
+
 ```tsx
 const { data: session, status } = useSession();
 if (!session?.user) return <div>Not authenticated</div>;
@@ -171,6 +173,7 @@ return <div>Hello {session.user.name}</div>;
 ```
 
 **After (Zustand):**
+
 ```tsx
 const { user, status } = useUserStore();
 if (!user) return <div>Not authenticated</div>;

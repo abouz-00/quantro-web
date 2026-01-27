@@ -61,7 +61,7 @@ Replaced the `quantro-web` workflow to match the working `quantro-backend` patte
 ### Before vs After
 
 | Aspect | Before (Broken) | After (Fixed) |
-|--------|----------------|---------------|
+| ------ | --------------- | ------------- |
 | Trigger | `workflow_run` on `main` | `pull_request` (any branch) |
 | PR Context | Manual lookup via GH API | Direct from event |
 | CI Wait | Implicit (after completion) | Explicit wait action |
@@ -114,10 +114,8 @@ For auto-merge to work, the repository settings must have:
 1. **Branch Protection** (Settings → Branches → main):
    - ✅ Require status checks to pass before merging
    - ✅ Status checks: CI/CD Pipeline (test, security, build)
-   
+
 2. **GitHub Actions Permissions** (Settings → Actions):
-   - ✅ Allow GitHub Actions to create and approve pull requests
-   
 3. **Dependabot Permissions**:
    - Auto-merge uses PR write permissions from the workflow
 
