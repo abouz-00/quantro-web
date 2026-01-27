@@ -23,7 +23,7 @@ const mockFetch = jest.fn(() =>
     json: () => Promise.resolve({}),
   })
 );
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 (global as any).fetch = mockFetch;
 
 describe('InviteHandler', () => {

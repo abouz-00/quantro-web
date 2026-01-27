@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import './jest-setup.js';
 import { GET } from '@/app/api/test-prisma/route';
 import { prisma } from '@/lib/prisma';

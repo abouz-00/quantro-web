@@ -211,7 +211,7 @@ jest.mock('../../food-log', () => ({
 }));
 
 // Create mock FoodEntry data
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 const mockFoodEntry: FoodEntry = {
   id: 'entry-1',
   description: 'Test Food',
@@ -228,7 +228,7 @@ const mockFoodEntry: FoodEntry = {
 
 // Create mock ContextMenuState
 // Mock context menu state
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 const mockContextMenuState: ContextMenuState = {
   visible: true,
   x: 100,
@@ -237,7 +237,7 @@ const mockContextMenuState: ContextMenuState = {
 };
 
 // Create mock ContextMenuState with null target
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 const mockContextMenuStateNull: ContextMenuState = {
   visible: false,
   x: 0,
@@ -426,7 +426,7 @@ describe('LogPage', () => {
     });
 
     it('handles copy entries when entries are selected', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
       const mockCopyEntries = jest.fn();
       
 
@@ -438,7 +438,7 @@ describe('LogPage', () => {
     });
 
     it('handles copy entries when context menu has target entry', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
       const mockCopyEntries = jest.fn();
       
       
@@ -453,7 +453,7 @@ describe('LogPage', () => {
 
   describe('Copy to Today Functionality', () => {
     it('handles copy to today when there are filtered entries', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
       const mockAddFoodEntry = jest.fn<(entry: FoodEntry, overrideDate?: Date) => Promise<void>>();
       
 
@@ -476,7 +476,7 @@ describe('LogPage', () => {
 
   describe('Delete Functionality', () => {
     it('handles delete selected entries when entries are selected', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
       const mockRemoveFoodEntry = jest.fn<(id: string) => Promise<void>>();
       
 
@@ -488,7 +488,7 @@ describe('LogPage', () => {
     });
 
     it('handles delete selected entries when context menu has target entry', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
       const mockRemoveFoodEntry = jest.fn<(id: string) => Promise<void>>();
       
       
@@ -503,7 +503,7 @@ describe('LogPage', () => {
 
   describe('Copy Selected Items Functionality', () => {
     it('handles copy selected items when entries are selected', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
       const mockCopyEntries = jest.fn();
 
 
@@ -524,7 +524,7 @@ describe('LogPage', () => {
     });
 
     it('does not copy when no entries are selected', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
       const mockCopyEntries = jest.fn();
       
       
@@ -543,7 +543,7 @@ describe('LogPage', () => {
 
   describe('Delete Selected Functionality', () => {
     it('handles delete selected when entries are selected', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
       const mockRemoveFoodEntry = jest.fn<(id: string) => Promise<void>>();
       
 
@@ -563,7 +563,7 @@ describe('LogPage', () => {
     });
 
     it('does not delete when no entries are selected', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
       const mockRemoveFoodEntry = jest.fn<(id: string) => Promise<void>>();
       
 

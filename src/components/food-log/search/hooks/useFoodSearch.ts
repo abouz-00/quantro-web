@@ -179,8 +179,8 @@ class FoodSearchCache {
 const foodSearchCache = new FoodSearchCache();
 
 export function useFoodSearch(query: string, active: boolean) {
-  const [suggestions, setSuggestions] = useState<FoodSuggestion[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [fetchedSuggestions, setFetchedSuggestions] = useState<FoodSuggestion[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState("");
 
   const transformApiData = useCallback((item: UnifiedFoodItem): FoodSuggestion => {
@@ -201,54 +201,73 @@ export function useFoodSearch(query: string, active: boolean) {
     };
   }, []);
 
+  // Check cache synchronously - derive suggestions from cache or fetched state
+  const cachedResult = active && query.length > 1 ? foodSearchCache.get(query) : null;
+  
+  // Use cached result if available, otherwise use fetched suggestions
+  const suggestions = cachedResult ?? fetchedSuggestions;
+  
+  // Loading is false if we have cached data or query is too short
+  const loading = !cachedResult && active && query.length > 1 ? isFetching : false;
+
   useEffect(() => {
-    if (active && query.length > 1) {
-      // Check cache first
-      const cachedResult = foodSearchCache.get(query);
-      if (cachedResult) {
-        setSuggestions(cachedResult);
-        setLoading(false);
-        setError("");
-        return;
-      }
-
-      setLoading(true);
-      setError("");
-      const timeoutId = setTimeout(async () => {
-        try {
-          // Double-check cache in case another request cached it
-          const cachedResult = foodSearchCache.get(query);
-          if (cachedResult) {
-            setSuggestions(cachedResult);
-            setLoading(false);
-            return;
-          }
-
-          // Use the unified food search endpoint
-          const data = await apiClient.get<UnifiedSearchResponse>(
-            `/food-search-unified?query=${encodeURIComponent(query)}&pageSize=10&source=all`
-          );
-          
-          const transformedFoods = data.results.map(transformApiData);
-          
-          // Cache the result
-          foodSearchCache.set(query, transformedFoods);
-          
-          setSuggestions(transformedFoods);
-          setLoading(false);
-        } catch (err: unknown) {
-          setSuggestions([]);
-          setError(err instanceof Error ? err.message : "Failed to fetch food data.");
-          setLoading(false);
-        }
-      }, 150); // Reduced debounce time for better responsiveness
-      return () => clearTimeout(timeoutId);
-    } else {
-      setSuggestions([]);
-      setLoading(false);
-      setError("");
+    // Skip fetch if we have cached data or query is too short
+    if (cachedResult || !active || query.length <= 1) {
+      return;
     }
-  }, [query, active, transformApiData]);
+
+    // Use setTimeout to batch all state updates in callback
+    const initTimeoutId = setTimeout(() => {
+      setIsFetching(true);
+      setError("");
+    }, 0);
+
+    const fetchTimeoutId = setTimeout(async () => {
+      try {
+        // Double-check cache in case another request cached it
+        const freshCachedResult = foodSearchCache.get(query);
+        if (freshCachedResult) {
+          setFetchedSuggestions(freshCachedResult);
+          setIsFetching(false);
+          return;
+        }
+
+        // Use the unified food search endpoint
+        const data = await apiClient.get<UnifiedSearchResponse>(
+          `/food-search-unified?query=${encodeURIComponent(query)}&pageSize=10&source=all`
+        );
+        
+        const transformedFoods = data.results.map(transformApiData);
+        
+        // Cache the result
+        foodSearchCache.set(query, transformedFoods);
+        
+        setFetchedSuggestions(transformedFoods);
+        setIsFetching(false);
+      } catch (err: unknown) {
+        setFetchedSuggestions([]);
+        setError(err instanceof Error ? err.message : "Failed to fetch food data.");
+        setIsFetching(false);
+      }
+    }, 150); // Debounce time for better responsiveness
+
+    return () => {
+      clearTimeout(initTimeoutId);
+      clearTimeout(fetchTimeoutId);
+    };
+  }, [query, active, transformApiData, cachedResult]);
+
+  // Reset state when query becomes inactive or too short
+  useEffect(() => {
+    if (!active || query.length <= 1) {
+      const resetTimeoutId = setTimeout(() => {
+        setFetchedSuggestions([]);
+        setIsFetching(false);
+        setError("");
+      }, 0);
+      return () => clearTimeout(resetTimeoutId);
+    }
+  }, [active, query.length]);
 
   return { suggestions, loading, error };
 }
