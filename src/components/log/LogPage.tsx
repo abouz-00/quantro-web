@@ -169,7 +169,7 @@ export default function LogPage() {
         </Suspense>
       )}
       
-      {/* Fixed Header Area */}
+      {/* Fixed Header - only the purple bar */}
       <div className="flex-shrink-0">
         <Suspense fallback={<div>Loading header...</div>}>
           <FoodLogHeader
