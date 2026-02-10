@@ -52,7 +52,10 @@ model User {
   // Quantro specific fields
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  
+
+  // Email preferences
+  emailUnsubscribed Boolean @default(false)
+
   // Nutrition tracking preferences
   dailyCalorieGoal    Int?      @default(2000)
   dailyProteinGoal    Float?    @default(150)
@@ -113,4 +116,6 @@ model FoodLog {
   updatedAt   DateTime @updatedAt
   
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date])
 }

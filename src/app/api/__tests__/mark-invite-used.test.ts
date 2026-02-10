@@ -1,4 +1,4 @@
- 
+
 import './jest-setup.js';
 import { POST } from '../mark-invite-used/route';
 import { NextRequest } from 'next/server';
@@ -7,10 +7,13 @@ import { NextRequest } from 'next/server';
 const mockConsoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
 
 // Mock dependencies
+jest.mock('@/lib/auth');
 jest.mock('@/lib/prisma');
 
+import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
+const mockAuth = auth as jest.MockedFunction<any>;
 const mockPrisma = prisma as any;
 
 // Add proper typing for mock functions
@@ -18,6 +21,14 @@ const mockFindFirst = mockPrisma.betaInvite.findFirst as jest.MockedFunction<any
 const mockUpdate = mockPrisma.betaInvite.update as jest.MockedFunction<any>;
 
 describe('Mark Invite Used API', () => {
+  const mockSession = {
+    user: {
+      id: 'user-123',
+      name: 'Test User',
+      email: 'test@example.com',
+    },
+  };
+
   const mockInvite = {
     id: 'invite-123',
     code: 'test-code-123',
@@ -31,6 +42,7 @@ describe('Mark Invite Used API', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockConsoleError.mockClear();
+    mockAuth.mockResolvedValue(mockSession);
   });
 
   afterAll(() => {
@@ -38,6 +50,25 @@ describe('Mark Invite Used API', () => {
   });
 
   describe('POST /api/mark-invite-used', () => {
+    it('should return 401 when not authenticated', async () => {
+      mockAuth.mockResolvedValue(null);
+
+      const request = new NextRequest('http://localhost:3000/api/mark-invite-used', {
+        method: 'POST',
+        body: JSON.stringify({
+          code: 'test-code-123',
+          email: 'test@example.com',
+        }),
+      });
+
+      const response = await POST(request);
+      const data = await response.json();
+
+      expect(response.status).toBe(401);
+      expect(data.error).toBe('Unauthorized');
+      expect(mockFindFirst).not.toHaveBeenCalled();
+    });
+
     it('should successfully mark invite as used', async () => {
       mockFindFirst.mockResolvedValue(mockInvite);
       mockUpdate.mockResolvedValue({ ...mockInvite, used: true, usedAt: new Date() });
