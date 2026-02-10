@@ -3,11 +3,10 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: 'standalone',
   images: {
-    domains: [],
     unoptimized: true,
   },
   typescript: {
-    ignoreBuildErrors: process.env.NODE_ENV === 'development',
+    ignoreBuildErrors: false,
   },
   // Performance optimizations for faster dev startup
   experimental: {

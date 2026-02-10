@@ -24,6 +24,12 @@ export default auth((req) => {
     console.log('❌ Unauthorized access to /api/food-logs');
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
+  if (!req.auth && req.nextUrl.pathname.startsWith('/admin')) {
+    return Response.redirect(new URL('/', req.url))
+  }
+  if (!req.auth && req.nextUrl.pathname.startsWith('/api/admin')) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
 })
 
 export const config = {
