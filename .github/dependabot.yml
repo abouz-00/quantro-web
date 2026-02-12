@@ -15,17 +15,26 @@ updates:
       prefix-development: "chore"
       include: "scope"
     groups:
+      prisma:
+        patterns:
+          - "prisma"
+          - "@prisma/*"
+        update-types:
+          - "patch"
+          - "minor"
       grouped-prod-updates:
         dependency-type: "production"
-        patterns:
-          - "*"
+        exclude-patterns:
+          - "prisma"
+          - "@prisma/*"
         update-types:
           - "patch"
           - "minor"
       grouped-dev-updates:
         dependency-type: "development"
-        patterns:
-          - "*"
+        exclude-patterns:
+          - "prisma"
+          - "@prisma/*"
         update-types:
           - "patch"
           - "minor"
