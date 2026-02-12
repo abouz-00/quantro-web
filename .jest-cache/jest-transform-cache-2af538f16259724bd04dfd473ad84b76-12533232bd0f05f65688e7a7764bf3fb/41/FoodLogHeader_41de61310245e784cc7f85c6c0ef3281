@@ -1,0 +1,333 @@
+93be0b9643cec3250f6f8f9a40fb2daa
+"use client";
+"use strict";
+
+/* istanbul ignore next */
+function cov_2g3yxalbyc() {
+  var path = "/Users/ayman/quantro-web/src/components/log/FoodLogHeader.tsx";
+  var hash = "661231b4ea200ad4d2a1e21a9be2cfca2550f559";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/ayman/quantro-web/src/components/log/FoodLogHeader.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 11,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 9,
+          column: 8
+        },
+        end: {
+          line: 9,
+          column: 29
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 12,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 29
+        },
+        end: {
+          line: 13,
+          column: 71
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 16
+        },
+        end: {
+          line: 14,
+          column: 35
+        }
+      },
+      "6": {
+        start: {
+          line: 16,
+          column: 4
+        },
+        end: {
+          line: 18,
+          column: 6
+        }
+      },
+      "7": {
+        start: {
+          line: 21,
+          column: 4
+        },
+        end: {
+          line: 26,
+          column: 7
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 8,
+            column: 9
+          },
+          end: {
+            line: 8,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 20
+          },
+          end: {
+            line: 10,
+            column: 5
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 15,
+            column: 9
+          },
+          end: {
+            line: 15,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 15,
+            column: 39
+          },
+          end: {
+            line: 19,
+            column: 1
+          }
+        },
+        line: 15
+      },
+      "2": {
+        name: "FoodLogHeader",
+        decl: {
+          start: {
+            line: 20,
+            column: 9
+          },
+          end: {
+            line: 20,
+            column: 22
+          }
+        },
+        loc: {
+          start: {
+            line: 20,
+            column: 85
+          },
+          end: {
+            line: 27,
+            column: 1
+          }
+        },
+        line: 20
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 16,
+            column: 11
+          },
+          end: {
+            line: 18,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 16,
+            column: 35
+          },
+          end: {
+            line: 16,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 16,
+            column: 41
+          },
+          end: {
+            line: 18,
+            column: 5
+          }
+        }],
+        line: 16
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 16,
+            column: 11
+          },
+          end: {
+            line: 16,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 16,
+            column: 11
+          },
+          end: {
+            line: 16,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 16,
+            column: 18
+          },
+          end: {
+            line: 16,
+            column: 32
+          }
+        }],
+        line: 16
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/Users/ayman/quantro-web/src/components/log/FoodLogHeader.tsx"],
+      sourcesContent: ["\"use client\";\n\nimport React from \"react\";\nimport { Header } from \"./Header\";\n\ninterface FoodLogHeaderProps {\n  isMainMenuOpen: boolean;\n  setIsMainMenuOpen: (open: boolean) => void;\n  setIsTargetsModalOpen: (open: boolean) => void;\n}\n\nexport default function FoodLogHeader({\n  isMainMenuOpen,\n  setIsMainMenuOpen,\n  setIsTargetsModalOpen\n}: FoodLogHeaderProps) {\n  return (\n    <Header\n      isMainMenuOpen={isMainMenuOpen}\n      setIsMainMenuOpen={setIsMainMenuOpen}\n      setIsTargetsModalOpen={setIsTargetsModalOpen}\n      data-testid=\"header\"\n    />\n  );\n}\n"],
+      names: ["FoodLogHeader", "isMainMenuOpen", "setIsMainMenuOpen", "setIsTargetsModalOpen", "Header", "data-testid"],
+      mappings: "AAAA;;;;;+BAWA;;;eAAwBA;;;;8DATN;wBACK;;;;;;AAQR,SAASA,cAAc,EACpCC,cAAc,EACdC,iBAAiB,EACjBC,qBAAqB,EACF;IACnB,qBACE,qBAACC,cAAM;QACLH,gBAAgBA;QAChBC,mBAAmBA;QACnBC,uBAAuBA;QACvBE,eAAY;;AAGlB"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "661231b4ea200ad4d2a1e21a9be2cfca2550f559"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_2g3yxalbyc = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_2g3yxalbyc();
+cov_2g3yxalbyc().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_2g3yxalbyc().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_2g3yxalbyc().f[0]++;
+    cov_2g3yxalbyc().s[2]++;
+    return FoodLogHeader;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_2g3yxalbyc().s[3]++, require("react/jsx-runtime"));
+const _react =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_2g3yxalbyc().s[4]++, _interop_require_default(require("react")));
+const _Header =
+/* istanbul ignore next */
+(cov_2g3yxalbyc().s[5]++, require("./Header"));
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_2g3yxalbyc().f[1]++;
+  cov_2g3yxalbyc().s[6]++;
+  return /* istanbul ignore next */(cov_2g3yxalbyc().b[1][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_2g3yxalbyc().b[1][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_2g3yxalbyc().b[0][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_2g3yxalbyc().b[0][1]++, {
+    default: obj
+  });
+}
+function FoodLogHeader({
+  isMainMenuOpen,
+  setIsMainMenuOpen,
+  setIsTargetsModalOpen
+}) {
+  /* istanbul ignore next */
+  cov_2g3yxalbyc().f[2]++;
+  cov_2g3yxalbyc().s[7]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsx)(_Header.Header, {
+    isMainMenuOpen: isMainMenuOpen,
+    setIsMainMenuOpen: setIsMainMenuOpen,
+    setIsTargetsModalOpen: setIsTargetsModalOpen,
+    "data-testid": "header"
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJGb29kTG9nSGVhZGVyIiwiaXNNYWluTWVudU9wZW4iLCJzZXRJc01haW5NZW51T3BlbiIsInNldElzVGFyZ2V0c01vZGFsT3BlbiIsImNvdl8yZzN5eGFsYnljIiwiZiIsInMiLCJfanN4cnVudGltZSIsImpzeCIsIl9IZWFkZXIiLCJIZWFkZXIiXSwic291cmNlcyI6WyIvVXNlcnMvYXltYW4vcXVhbnRyby13ZWIvc3JjL2NvbXBvbmVudHMvbG9nL0Zvb2RMb2dIZWFkZXIudHN4Il0sInNvdXJjZXNDb250ZW50IjpbIlwidXNlIGNsaWVudFwiO1xuXG5pbXBvcnQgUmVhY3QgZnJvbSBcInJlYWN0XCI7XG5pbXBvcnQgeyBIZWFkZXIgfSBmcm9tIFwiLi9IZWFkZXJcIjtcblxuaW50ZXJmYWNlIEZvb2RMb2dIZWFkZXJQcm9wcyB7XG4gIGlzTWFpbk1lbnVPcGVuOiBib29sZWFuO1xuICBzZXRJc01haW5NZW51T3BlbjogKG9wZW46IGJvb2xlYW4pID0+IHZvaWQ7XG4gIHNldElzVGFyZ2V0c01vZGFsT3BlbjogKG9wZW46IGJvb2xlYW4pID0+IHZvaWQ7XG59XG5cbmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIEZvb2RMb2dIZWFkZXIoe1xuICBpc01haW5NZW51T3BlbixcbiAgc2V0SXNNYWluTWVudU9wZW4sXG4gIHNldElzVGFyZ2V0c01vZGFsT3BlblxufTogRm9vZExvZ0hlYWRlclByb3BzKSB7XG4gIHJldHVybiAoXG4gICAgPEhlYWRlclxuICAgICAgaXNNYWluTWVudU9wZW49e2lzTWFpbk1lbnVPcGVufVxuICAgICAgc2V0SXNNYWluTWVudU9wZW49e3NldElzTWFpbk1lbnVPcGVufVxuICAgICAgc2V0SXNUYXJnZXRzTW9kYWxPcGVuPXtzZXRJc1RhcmdldHNNb2RhbE9wZW59XG4gICAgICBkYXRhLXRlc3RpZD1cImhlYWRlclwiXG4gICAgLz5cbiAgKTtcbn1cbiJdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OytCQVdBOzs7Ozs7V0FBd0JBLGFBQUE7Ozs7Ozs7O3dFQVROOzs7a0NBQ0s7Ozs7Ozs7Ozs7Ozs7OztBQVFSLFNBQVNBLGNBQWM7RUFDcENDLGNBQWM7RUFDZEMsaUJBQWlCO0VBQ2pCQztBQUFxQixDQUNGO0VBQUE7RUFBQUMsY0FBQSxHQUFBQyxDQUFBO0VBQUFELGNBQUEsR0FBQUUsQ0FBQTtFQUNuQixvQkFDRSxJQUFBQyxXQUFBLENBQUFDLEdBQUEsRUFBQ0MsT0FBQSxDQUFBQyxNQUFNO0lBQ0xULGNBQUEsRUFBZ0JBLGNBQUE7SUFDaEJDLGlCQUFBLEVBQW1CQSxpQkFBQTtJQUNuQkMscUJBQUEsRUFBdUJBLHFCQUFBO0lBQ3ZCLGVBQVk7O0FBR2xCIiwiaWdub3JlTGlzdCI6W119

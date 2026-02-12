@@ -1,0 +1,358 @@
+2381b30d9f559112a434113b583eb1b5
+"use strict";
+
+/* istanbul ignore next */
+function cov_1a9mbr9mrl() {
+  var path = "/Users/ayman/quantro-web/src/app/terms-of-service/page.tsx";
+  var hash = "e3dc174cf19f221866461464a7290128449bc88c";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/ayman/quantro-web/src/app/terms-of-service/page.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 4
+        },
+        end: {
+          line: 9,
+          column: 7
+        }
+      },
+      "2": {
+        start: {
+          line: 6,
+          column: 24
+        },
+        end: {
+          line: 9,
+          column: 7
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 0
+        },
+        end: {
+          line: 18,
+          column: 3
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 8
+        },
+        end: {
+          line: 13,
+          column: 30
+        }
+      },
+      "5": {
+        start: {
+          line: 16,
+          column: 8
+        },
+        end: {
+          line: 16,
+          column: 24
+        }
+      },
+      "6": {
+        start: {
+          line: 19,
+          column: 20
+        },
+        end: {
+          line: 19,
+          column: 48
+        }
+      },
+      "7": {
+        start: {
+          line: 20,
+          column: 17
+        },
+        end: {
+          line: 23,
+          column: 1
+        }
+      },
+      "8": {
+        start: {
+          line: 25,
+          column: 4
+        },
+        end: {
+          line: 119,
+          column: 7
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "_export",
+        decl: {
+          start: {
+            line: 5,
+            column: 9
+          },
+          end: {
+            line: 5,
+            column: 16
+          }
+        },
+        loc: {
+          start: {
+            line: 5,
+            column: 30
+          },
+          end: {
+            line: 10,
+            column: 1
+          }
+        },
+        line: 5
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 12,
+            column: 4
+          },
+          end: {
+            line: 12,
+            column: 5
+          }
+        },
+        loc: {
+          start: {
+            line: 12,
+            column: 19
+          },
+          end: {
+            line: 14,
+            column: 5
+          }
+        },
+        line: 12
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 15,
+            column: 4
+          },
+          end: {
+            line: 15,
+            column: 5
+          }
+        },
+        loc: {
+          start: {
+            line: 15,
+            column: 20
+          },
+          end: {
+            line: 17,
+            column: 5
+          }
+        },
+        line: 15
+      },
+      "3": {
+        name: "TermsOfService",
+        decl: {
+          start: {
+            line: 24,
+            column: 9
+          },
+          end: {
+            line: 24,
+            column: 23
+          }
+        },
+        loc: {
+          start: {
+            line: 24,
+            column: 26
+          },
+          end: {
+            line: 120,
+            column: 1
+          }
+        },
+        line: 24
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/Users/ayman/quantro-web/src/app/terms-of-service/page.tsx"],
+      sourcesContent: ["import { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n  title: 'Terms of Service | Quantro',\n  description: 'Terms of service for Quantro nutrition tracking app',\n}\n\nexport default function TermsOfService() {\n  return (\n    <div className=\"min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8\">\n      <div className=\"max-w-3xl mx-auto\">\n        <h1 className=\"text-3xl font-bold text-gray-900 mb-8\">Terms of Service</h1>\n\n        <div className=\"bg-white shadow rounded-lg p-6 space-y-6\">\n          <section>\n            <h2 className=\"text-xl font-semibold text-gray-900 mb-4\">Acceptance of Terms</h2>\n            <p className=\"text-gray-600\">\n              By accessing and using Quantro, you accept and agree to be bound by the terms and\n              provision of this agreement.\n            </p>\n          </section>\n\n          <section>\n            <h2 className=\"text-xl font-semibold text-gray-900 mb-4\">Use License</h2>\n            <p className=\"text-gray-600\">\n              Permission is granted to temporarily use Quantro for personal, non-commercial transitory\n              viewing only. This is the grant of a license, not a transfer of title.\n            </p>\n          </section>\n\n          <section>\n            <h2 className=\"text-xl font-semibold text-gray-900 mb-4\">User Responsibilities</h2>\n            <p className=\"text-gray-600\">\n              You are responsible for maintaining the confidentiality of your account and password.\n              You agree to accept responsibility for all activities that occur under your account.\n            </p>\n          </section>\n\n          <section>\n            <h2 className=\"text-xl font-semibold text-gray-900 mb-4\">Prohibited Uses</h2>\n            <p className=\"text-gray-600\">\n              You may not use our services for any unlawful purpose or to solicit others to perform\n              unlawful acts. You may not violate any international laws or regulations.\n            </p>\n          </section>\n\n          <section>\n            <h2 className=\"text-xl font-semibold text-gray-900 mb-4\">Disclaimer</h2>\n            <p className=\"text-gray-600\">\n              The information on this service is provided on an &apos;as is&apos; basis. To the fullest extent\n              permitted by law, this Company excludes all representations, warranties, conditions\n              and terms.\n            </p>\n          </section>\n\n          <section>\n            <h2 className=\"text-xl font-semibold text-gray-900 mb-4\">Contact Information</h2>\n            <p className=\"text-gray-600\">\n              If you have questions about these Terms of Service, please contact us at legal@quantro.fit\n            </p>\n          </section>\n\n          <section>\n            <p className=\"text-sm text-gray-500\">\n              Last updated: September 5, 2025\n            </p>\n          </section>\n        </div>\n      </div>\n    </div>\n  )\n}\n"],
+      names: ["TermsOfService", "metadata", "title", "description", "div", "className", "h1", "section", "h2", "p"],
+      mappings: ";;;;;;;;;;;QAOA;eAAwBA;;QALXC;eAAAA;;;;AAAN,MAAMA,WAAqB;IAChCC,OAAO;IACPC,aAAa;AACf;AAEe,SAASH;IACtB,qBACE,qBAACI;QAAIC,WAAU;kBACb,cAAA,sBAACD;YAAIC,WAAU;;8BACb,qBAACC;oBAAGD,WAAU;8BAAwC;;8BAEtD,sBAACD;oBAAIC,WAAU;;sCACb,sBAACE;;8CACC,qBAACC;oCAAGH,WAAU;8CAA2C;;8CACzD,qBAACI;oCAAEJ,WAAU;8CAAgB;;;;sCAM/B,sBAACE;;8CACC,qBAACC;oCAAGH,WAAU;8CAA2C;;8CACzD,qBAACI;oCAAEJ,WAAU;8CAAgB;;;;sCAM/B,sBAACE;;8CACC,qBAACC;oCAAGH,WAAU;8CAA2C;;8CACzD,qBAACI;oCAAEJ,WAAU;8CAAgB;;;;sCAM/B,sBAACE;;8CACC,qBAACC;oCAAGH,WAAU;8CAA2C;;8CACzD,qBAACI;oCAAEJ,WAAU;8CAAgB;;;;sCAM/B,sBAACE;;8CACC,qBAACC;oCAAGH,WAAU;8CAA2C;;8CACzD,qBAACI;oCAAEJ,WAAU;8CAAgB;;;;sCAO/B,sBAACE;;8CACC,qBAACC;oCAAGH,WAAU;8CAA2C;;8CACzD,qBAACI;oCAAEJ,WAAU;8CAAgB;;;;sCAK/B,qBAACE;sCACC,cAAA,qBAACE;gCAAEJ,WAAU;0CAAwB;;;;;;;;AAQjD"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "e3dc174cf19f221866461464a7290128449bc88c"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1a9mbr9mrl = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1a9mbr9mrl();
+cov_1a9mbr9mrl().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function _export(target, all) {
+  /* istanbul ignore next */
+  cov_1a9mbr9mrl().f[0]++;
+  cov_1a9mbr9mrl().s[1]++;
+  for (var name in all) {
+    /* istanbul ignore next */
+    cov_1a9mbr9mrl().s[2]++;
+    Object.defineProperty(target, name, {
+      enumerable: true,
+      get: Object.getOwnPropertyDescriptor(all, name).get
+    });
+  }
+}
+/* istanbul ignore next */
+cov_1a9mbr9mrl().s[3]++;
+_export(exports, {
+  get default() {
+    /* istanbul ignore next */
+    cov_1a9mbr9mrl().f[1]++;
+    cov_1a9mbr9mrl().s[4]++;
+    return TermsOfService;
+  },
+  get metadata() {
+    /* istanbul ignore next */
+    cov_1a9mbr9mrl().f[2]++;
+    cov_1a9mbr9mrl().s[5]++;
+    return metadata;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_1a9mbr9mrl().s[6]++, require("react/jsx-runtime"));
+const metadata =
+/* istanbul ignore next */
+(cov_1a9mbr9mrl().s[7]++, {
+  title: 'Terms of Service | Quantro',
+  description: 'Terms of service for Quantro nutrition tracking app'
+});
+function TermsOfService() {
+  /* istanbul ignore next */
+  cov_1a9mbr9mrl().f[3]++;
+  cov_1a9mbr9mrl().s[8]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+    className: "min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8",
+    children: /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+      className: "max-w-3xl mx-auto",
+      children: [/*#__PURE__*/(0, _jsxruntime.jsx)("h1", {
+        className: "text-3xl font-bold text-gray-900 mb-8",
+        children: "Terms of Service"
+      }), /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+        className: "bg-white shadow rounded-lg p-6 space-y-6",
+        children: [/*#__PURE__*/(0, _jsxruntime.jsxs)("section", {
+          children: [/*#__PURE__*/(0, _jsxruntime.jsx)("h2", {
+            className: "text-xl font-semibold text-gray-900 mb-4",
+            children: "Acceptance of Terms"
+          }), /*#__PURE__*/(0, _jsxruntime.jsx)("p", {
+            className: "text-gray-600",
+            children: "By accessing and using Quantro, you accept and agree to be bound by the terms and provision of this agreement."
+          })]
+        }), /*#__PURE__*/(0, _jsxruntime.jsxs)("section", {
+          children: [/*#__PURE__*/(0, _jsxruntime.jsx)("h2", {
+            className: "text-xl font-semibold text-gray-900 mb-4",
+            children: "Use License"
+          }), /*#__PURE__*/(0, _jsxruntime.jsx)("p", {
+            className: "text-gray-600",
+            children: "Permission is granted to temporarily use Quantro for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title."
+          })]
+        }), /*#__PURE__*/(0, _jsxruntime.jsxs)("section", {
+          children: [/*#__PURE__*/(0, _jsxruntime.jsx)("h2", {
+            className: "text-xl font-semibold text-gray-900 mb-4",
+            children: "User Responsibilities"
+          }), /*#__PURE__*/(0, _jsxruntime.jsx)("p", {
+            className: "text-gray-600",
+            children: "You are responsible for maintaining the confidentiality of your account and password. You agree to accept responsibility for all activities that occur under your account."
+          })]
+        }), /*#__PURE__*/(0, _jsxruntime.jsxs)("section", {
+          children: [/*#__PURE__*/(0, _jsxruntime.jsx)("h2", {
+            className: "text-xl font-semibold text-gray-900 mb-4",
+            children: "Prohibited Uses"
+          }), /*#__PURE__*/(0, _jsxruntime.jsx)("p", {
+            className: "text-gray-600",
+            children: "You may not use our services for any unlawful purpose or to solicit others to perform unlawful acts. You may not violate any international laws or regulations."
+          })]
+        }), /*#__PURE__*/(0, _jsxruntime.jsxs)("section", {
+          children: [/*#__PURE__*/(0, _jsxruntime.jsx)("h2", {
+            className: "text-xl font-semibold text-gray-900 mb-4",
+            children: "Disclaimer"
+          }), /*#__PURE__*/(0, _jsxruntime.jsx)("p", {
+            className: "text-gray-600",
+            children: "The information on this service is provided on an 'as is' basis. To the fullest extent permitted by law, this Company excludes all representations, warranties, conditions and terms."
+          })]
+        }), /*#__PURE__*/(0, _jsxruntime.jsxs)("section", {
+          children: [/*#__PURE__*/(0, _jsxruntime.jsx)("h2", {
+            className: "text-xl font-semibold text-gray-900 mb-4",
+            children: "Contact Information"
+          }), /*#__PURE__*/(0, _jsxruntime.jsx)("p", {
+            className: "text-gray-600",
+            children: "If you have questions about these Terms of Service, please contact us at legal@quantro.fit"
+          })]
+        }), /*#__PURE__*/(0, _jsxruntime.jsx)("section", {
+          children: /*#__PURE__*/(0, _jsxruntime.jsx)("p", {
+            className: "text-sm text-gray-500",
+            children: "Last updated: September 5, 2025"
+          })
+        })]
+      })]
+    })
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJkZWZhdWx0IiwiY292XzFhOW1icjltcmwiLCJmIiwicyIsIlRlcm1zT2ZTZXJ2aWNlIiwibWV0YWRhdGEiLCJ0aXRsZSIsImRlc2NyaXB0aW9uIiwiX2pzeHJ1bnRpbWUiLCJqc3giLCJjbGFzc05hbWUiLCJqc3hzIl0sInNvdXJjZXMiOlsiL1VzZXJzL2F5bWFuL3F1YW50cm8td2ViL3NyYy9hcHAvdGVybXMtb2Ytc2VydmljZS9wYWdlLnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBNZXRhZGF0YSB9IGZyb20gJ25leHQnXG5cbmV4cG9ydCBjb25zdCBtZXRhZGF0YTogTWV0YWRhdGEgPSB7XG4gIHRpdGxlOiAnVGVybXMgb2YgU2VydmljZSB8IFF1YW50cm8nLFxuICBkZXNjcmlwdGlvbjogJ1Rlcm1zIG9mIHNlcnZpY2UgZm9yIFF1YW50cm8gbnV0cml0aW9uIHRyYWNraW5nIGFwcCcsXG59XG5cbmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIFRlcm1zT2ZTZXJ2aWNlKCkge1xuICByZXR1cm4gKFxuICAgIDxkaXYgY2xhc3NOYW1lPVwibWluLWgtc2NyZWVuIGJnLWdyYXktNTAgcHktMTIgcHgtNCBzbTpweC02IGxnOnB4LThcIj5cbiAgICAgIDxkaXYgY2xhc3NOYW1lPVwibWF4LXctM3hsIG14LWF1dG9cIj5cbiAgICAgICAgPGgxIGNsYXNzTmFtZT1cInRleHQtM3hsIGZvbnQtYm9sZCB0ZXh0LWdyYXktOTAwIG1iLThcIj5UZXJtcyBvZiBTZXJ2aWNlPC9oMT5cblxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImJnLXdoaXRlIHNoYWRvdyByb3VuZGVkLWxnIHAtNiBzcGFjZS15LTZcIj5cbiAgICAgICAgICA8c2VjdGlvbj5cbiAgICAgICAgICAgIDxoMiBjbGFzc05hbWU9XCJ0ZXh0LXhsIGZvbnQtc2VtaWJvbGQgdGV4dC1ncmF5LTkwMCBtYi00XCI+QWNjZXB0YW5jZSBvZiBUZXJtczwvaDI+XG4gICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LWdyYXktNjAwXCI+XG4gICAgICAgICAgICAgIEJ5IGFjY2Vzc2luZyBhbmQgdXNpbmcgUXVhbnRybywgeW91IGFjY2VwdCBhbmQgYWdyZWUgdG8gYmUgYm91bmQgYnkgdGhlIHRlcm1zIGFuZFxuICAgICAgICAgICAgICBwcm92aXNpb24gb2YgdGhpcyBhZ3JlZW1lbnQuXG4gICAgICAgICAgICA8L3A+XG4gICAgICAgICAgPC9zZWN0aW9uPlxuXG4gICAgICAgICAgPHNlY3Rpb24+XG4gICAgICAgICAgICA8aDIgY2xhc3NOYW1lPVwidGV4dC14bCBmb250LXNlbWlib2xkIHRleHQtZ3JheS05MDAgbWItNFwiPlVzZSBMaWNlbnNlPC9oMj5cbiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cInRleHQtZ3JheS02MDBcIj5cbiAgICAgICAgICAgICAgUGVybWlzc2lvbiBpcyBncmFudGVkIHRvIHRlbXBvcmFyaWx5IHVzZSBRdWFudHJvIGZvciBwZXJzb25hbCwgbm9uLWNvbW1lcmNpYWwgdHJhbnNpdG9yeVxuICAgICAgICAgICAgICB2aWV3aW5nIG9ubHkuIFRoaXMgaXMgdGhlIGdyYW50IG9mIGEgbGljZW5zZSwgbm90IGEgdHJhbnNmZXIgb2YgdGl0bGUuXG4gICAgICAgICAgICA8L3A+XG4gICAgICAgICAgPC9zZWN0aW9uPlxuXG4gICAgICAgICAgPHNlY3Rpb24+XG4gICAgICAgICAgICA8aDIgY2xhc3NOYW1lPVwidGV4dC14bCBmb250LXNlbWlib2xkIHRleHQtZ3JheS05MDAgbWItNFwiPlVzZXIgUmVzcG9uc2liaWxpdGllczwvaDI+XG4gICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LWdyYXktNjAwXCI+XG4gICAgICAgICAgICAgIFlvdSBhcmUgcmVzcG9uc2libGUgZm9yIG1haW50YWluaW5nIHRoZSBjb25maWRlbnRpYWxpdHkgb2YgeW91ciBhY2NvdW50IGFuZCBwYXNzd29yZC5cbiAgICAgICAgICAgICAgWW91IGFncmVlIHRvIGFjY2VwdCByZXNwb25zaWJpbGl0eSBmb3IgYWxsIGFjdGl2aXRpZXMgdGhhdCBvY2N1ciB1bmRlciB5b3VyIGFjY291bnQuXG4gICAgICAgICAgICA8L3A+XG4gICAgICAgICAgPC9zZWN0aW9uPlxuXG4gICAgICAgICAgPHNlY3Rpb24+XG4gICAgICAgICAgICA8aDIgY2xhc3NOYW1lPVwidGV4dC14bCBmb250LXNlbWlib2xkIHRleHQtZ3JheS05MDAgbWItNFwiPlByb2hpYml0ZWQgVXNlczwvaDI+XG4gICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LWdyYXktNjAwXCI+XG4gICAgICAgICAgICAgIFlvdSBtYXkgbm90IHVzZSBvdXIgc2VydmljZXMgZm9yIGFueSB1bmxhd2Z1bCBwdXJwb3NlIG9yIHRvIHNvbGljaXQgb3RoZXJzIHRvIHBlcmZvcm1cbiAgICAgICAgICAgICAgdW5sYXdmdWwgYWN0cy4gWW91IG1heSBub3QgdmlvbGF0ZSBhbnkgaW50ZXJuYXRpb25hbCBsYXdzIG9yIHJlZ3VsYXRpb25zLlxuICAgICAgICAgICAgPC9wPlxuICAgICAgICAgIDwvc2VjdGlvbj5cblxuICAgICAgICAgIDxzZWN0aW9uPlxuICAgICAgICAgICAgPGgyIGNsYXNzTmFtZT1cInRleHQteGwgZm9udC1zZW1pYm9sZCB0ZXh0LWdyYXktOTAwIG1iLTRcIj5EaXNjbGFpbWVyPC9oMj5cbiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT1cInRleHQtZ3JheS02MDBcIj5cbiAgICAgICAgICAgICAgVGhlIGluZm9ybWF0aW9uIG9uIHRoaXMgc2VydmljZSBpcyBwcm92aWRlZCBvbiBhbiAmYXBvczthcyBpcyZhcG9zOyBiYXNpcy4gVG8gdGhlIGZ1bGxlc3QgZXh0ZW50XG4gICAgICAgICAgICAgIHBlcm1pdHRlZCBieSBsYXcsIHRoaXMgQ29tcGFueSBleGNsdWRlcyBhbGwgcmVwcmVzZW50YXRpb25zLCB3YXJyYW50aWVzLCBjb25kaXRpb25zXG4gICAgICAgICAgICAgIGFuZCB0ZXJtcy5cbiAgICAgICAgICAgIDwvcD5cbiAgICAgICAgICA8L3NlY3Rpb24+XG5cbiAgICAgICAgICA8c2VjdGlvbj5cbiAgICAgICAgICAgIDxoMiBjbGFzc05hbWU9XCJ0ZXh0LXhsIGZvbnQtc2VtaWJvbGQgdGV4dC1ncmF5LTkwMCBtYi00XCI+Q29udGFjdCBJbmZvcm1hdGlvbjwvaDI+XG4gICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LWdyYXktNjAwXCI+XG4gICAgICAgICAgICAgIElmIHlvdSBoYXZlIHF1ZXN0aW9ucyBhYm91dCB0aGVzZSBUZXJtcyBvZiBTZXJ2aWNlLCBwbGVhc2UgY29udGFjdCB1cyBhdCBsZWdhbEBxdWFudHJvLmZpdFxuICAgICAgICAgICAgPC9wPlxuICAgICAgICAgIDwvc2VjdGlvbj5cblxuICAgICAgICAgIDxzZWN0aW9uPlxuICAgICAgICAgICAgPHAgY2xhc3NOYW1lPVwidGV4dC1zbSB0ZXh0LWdyYXktNTAwXCI+XG4gICAgICAgICAgICAgIExhc3QgdXBkYXRlZDogU2VwdGVtYmVyIDUsIDIwMjVcbiAgICAgICAgICAgIDwvcD5cbiAgICAgICAgICA8L3NlY3Rpb24+XG4gICAgICAgIDwvZGl2PlxuICAgICAgPC9kaXY+XG4gICAgPC9kaXY+XG4gIClcbn1cbiJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7TUFPQUEsUUFBQTtJQUFBO0lBQUFDLGNBQUEsR0FBQUMsQ0FBQTtJQUFBRCxjQUFBLEdBQUFFLENBQUE7V0FBd0JDLGNBQUE7O01BTFhDLFNBQUE7SUFBQTtJQUFBSixjQUFBLEdBQUFDLENBQUE7SUFBQUQsY0FBQSxHQUFBRSxDQUFBO1dBQUFFLFFBQUE7Ozs7OztBQUFOLE1BQU1BLFFBQUE7QUFBQTtBQUFBLENBQUFKLGNBQUEsR0FBQUUsQ0FBQSxPQUFxQjtFQUNoQ0csS0FBQSxFQUFPO0VBQ1BDLFdBQUEsRUFBYTtBQUNmO0FBRWUsU0FBU0gsZUFBQTtFQUFBO0VBQUFILGNBQUEsR0FBQUMsQ0FBQTtFQUFBRCxjQUFBLEdBQUFFLENBQUE7RUFDdEIsb0JBQ0UsSUFBQUssV0FBQSxDQUFBQyxHQUFBLEVBQUM7SUFBSUMsU0FBQSxFQUFVO2NBQ2IsaUJBQUFGLFdBQUEsQ0FBQUcsSUFBQSxFQUFDO01BQUlELFNBQUEsRUFBVTs4QkFDYixJQUFBRixXQUFBLENBQUFDLEdBQUEsRUFBQztRQUFHQyxTQUFBLEVBQVU7a0JBQXdDO3VCQUV0RCxJQUFBRixXQUFBLENBQUFHLElBQUEsRUFBQztRQUFJRCxTQUFBLEVBQVU7Z0NBQ2IsSUFBQUYsV0FBQSxDQUFBRyxJQUFBLEVBQUM7a0NBQ0MsSUFBQUgsV0FBQSxDQUFBQyxHQUFBLEVBQUM7WUFBR0MsU0FBQSxFQUFVO3NCQUEyQzsyQkFDekQsSUFBQUYsV0FBQSxDQUFBQyxHQUFBLEVBQUM7WUFBRUMsU0FBQSxFQUFVO3NCQUFnQjs7eUJBTS9CLElBQUFGLFdBQUEsQ0FBQUcsSUFBQSxFQUFDO2tDQUNDLElBQUFILFdBQUEsQ0FBQUMsR0FBQSxFQUFDO1lBQUdDLFNBQUEsRUFBVTtzQkFBMkM7MkJBQ3pELElBQUFGLFdBQUEsQ0FBQUMsR0FBQSxFQUFDO1lBQUVDLFNBQUEsRUFBVTtzQkFBZ0I7O3lCQU0vQixJQUFBRixXQUFBLENBQUFHLElBQUEsRUFBQztrQ0FDQyxJQUFBSCxXQUFBLENBQUFDLEdBQUEsRUFBQztZQUFHQyxTQUFBLEVBQVU7c0JBQTJDOzJCQUN6RCxJQUFBRixXQUFBLENBQUFDLEdBQUEsRUFBQztZQUFFQyxTQUFBLEVBQVU7c0JBQWdCOzt5QkFNL0IsSUFBQUYsV0FBQSxDQUFBRyxJQUFBLEVBQUM7a0NBQ0MsSUFBQUgsV0FBQSxDQUFBQyxHQUFBLEVBQUM7WUFBR0MsU0FBQSxFQUFVO3NCQUEyQzsyQkFDekQsSUFBQUYsV0FBQSxDQUFBQyxHQUFBLEVBQUM7WUFBRUMsU0FBQSxFQUFVO3NCQUFnQjs7eUJBTS9CLElBQUFGLFdBQUEsQ0FBQUcsSUFBQSxFQUFDO2tDQUNDLElBQUFILFdBQUEsQ0FBQUMsR0FBQSxFQUFDO1lBQUdDLFNBQUEsRUFBVTtzQkFBMkM7MkJBQ3pELElBQUFGLFdBQUEsQ0FBQUMsR0FBQSxFQUFDO1lBQUVDLFNBQUEsRUFBVTtzQkFBZ0I7O3lCQU8vQixJQUFBRixXQUFBLENBQUFHLElBQUEsRUFBQztrQ0FDQyxJQUFBSCxXQUFBLENBQUFDLEdBQUEsRUFBQztZQUFHQyxTQUFBLEVBQVU7c0JBQTJDOzJCQUN6RCxJQUFBRixXQUFBLENBQUFDLEdBQUEsRUFBQztZQUFFQyxTQUFBLEVBQVU7c0JBQWdCOzt5QkFLL0IsSUFBQUYsV0FBQSxDQUFBQyxHQUFBLEVBQUM7b0JBQ0MsaUJBQUFELFdBQUEsQ0FBQUMsR0FBQSxFQUFDO1lBQUVDLFNBQUEsRUFBVTtzQkFBd0I7Ozs7OztBQVFqRCIsImlnbm9yZUxpc3QiOltdfQ==
