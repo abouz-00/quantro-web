@@ -19,12 +19,10 @@ const customJestConfig = {
     '<rootDir>/node_modules/',
     '<rootDir>/.next/',
     '<rootDir>/src/app/api/__tests__/jest-setup.js',
-    '<rootDir>/quantro-backend/'
   ],
   modulePathIgnorePatterns: [
     '<rootDir>/node_modules/',
     '<rootDir>/.next/',
-    '<rootDir>/quantro-backend/'
   ],
   transformIgnorePatterns: [
     'node_modules/(?!(jose|openid-client|@panva/hkdf|preact-render-to-string|@babel/runtime|uuid|oauth|oidc-token-hash|@auth/prisma-adapter|react-calendar|react-calendar/dist)/)'

@@ -13,8 +13,6 @@ const eslintConfig = [
       "*.min.js",
       "public/**",
       "prisma/migrations/**",
-      "quantro-backend/generated/**",
-      "quantro-backend/prisma/generated/**",
       "**/generated/prisma/**",
       "test.db",
       "dev.db",
