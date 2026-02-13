@@ -71,7 +71,7 @@ npx prisma generate --schema=./prisma/schema.test.prisma || {
 
 # Push the test schema to create the database with timeout
 echo "📦 Creating test database schema..."
-npx prisma db push --schema=./prisma/schema.test.prisma --force-reset --skip-generate || {
+npx prisma db push --schema=./prisma/schema.test.prisma --url="file:./test.db" --force-reset || {
     echo "❌ Database schema creation failed"
     exit 1
 }
