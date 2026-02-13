@@ -1,6 +1,10 @@
 // Jest environment setup
 // This file sets up environment variables for testing
 
+const { TextEncoder, TextDecoder } = require('util')
+global.TextEncoder = global.TextEncoder || TextEncoder
+global.TextDecoder = global.TextDecoder || TextDecoder
+
 process.env.NODE_ENV = 'test'
 process.env.DATABASE_URL = 'file:./test.db'
 process.env.NEXTAUTH_URL = 'http://localhost:3000'
