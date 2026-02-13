@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3000",
-    "dev:clean": "./restart-dev.sh",
+    "dev:clean": "npm run clean && npm run dev",
     "dev:safe": "./scripts/safe-dev-start.sh",
     "dev:check": "./scripts/check-port-3000.sh",
     "dev:forever": "nohup ./scripts/forever-dev.sh > /dev/null 2>&1 &",

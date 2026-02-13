@@ -8,10 +8,10 @@ Quantro is a modern nutrition tracking application built with a component-based 
 
 ### **Frontend**
 
-- **Framework**: Next.js 15 with App Router
+- **Framework**: Next.js 16 with App Router
 - **UI Library**: React 19 with TypeScript
 - **Styling**: Tailwind CSS + shadcn/ui components
-- **State Management**: React Hooks + Context API
+- **State Management**: Zustand with persist middleware
 - **Icons**: Lucide React + React Icons
 - **Charts**: Chart.js + react-chartjs-2
 
@@ -20,7 +20,7 @@ Quantro is a modern nutrition tracking application built with a component-based 
 - **API**: Next.js API Routes (Server-side)
 - **Database**: Prisma ORM with SQLite (dev) / PostgreSQL (prod)
 - **Authentication**: NextAuth.js (Google & Apple OAuth)
-- **External APIs**: USDA FoodData Central API
+- **External APIs**: USDA FoodData Central + FatSecret Platform API
 
 ### **Development & Deployment**
 
@@ -103,7 +103,7 @@ User Action → Component → Custom Hook → Service → API → Database
 
 1. **Local State**: React `useState` for component-specific state
 2. **Shared State**: Custom hooks for cross-component state
-3. **Global State**: React Context for app-wide state (auth, themes)
+3. **Global State**: Zustand store with persist middleware
 4. **Server State**: API responses cached in localStorage
 5. **Form State**: Controlled components with validation
 
