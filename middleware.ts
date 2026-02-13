@@ -20,6 +20,9 @@ export default auth((req) => {
   if (!req.auth && req.nextUrl.pathname.startsWith('/api/admin')) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
+  if (!req.auth && req.nextUrl.pathname.startsWith('/api/food-search-unified')) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
 })
 
 export const config = {
@@ -29,6 +32,7 @@ export const config = {
     '/api/user/:path*',
     '/api/food-logs/:path*',
     '/admin/:path*',
-    '/api/admin/:path*'
+    '/api/admin/:path*',
+    '/api/food-search-unified/:path*'
   ]
 }
