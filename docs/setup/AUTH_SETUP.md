@@ -44,7 +44,7 @@ Update your `.env.local` file with your provider credentials:
 
 ```bash
 # NextAuth Configuration
-NEXTAUTH_URL=http://localhost:3001
+NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=your-super-secret-key-change-this-in-production
 
 # Apple Sign In Configuration (Required for Apple Sign-In)
@@ -70,7 +70,7 @@ DATABASE_URL="file:./prisma/dev.db"
 3. Enable Google+ API
 4. Go to "Credentials" → "Create Credentials" → "OAuth 2.0 Client IDs"
 5. Set application type to "Web application"
-6. Add authorized redirect URI: `http://localhost:3001/api/auth/callback/google`
+6. Add authorized redirect URI: `http://localhost:3000/api/auth/callback/google`
 7. Copy Client ID and Client Secret to `.env.local`
 
 ### 3. Apple Sign-In Setup
@@ -78,7 +78,7 @@ DATABASE_URL="file:./prisma/dev.db"
 1. Go to [Apple Developer Portal](https://developer.apple.com/)
 2. Create a new Service ID in "Certificates, Identifiers & Profiles"
 3. Configure Sign In with Apple
-4. Add redirect URI: `http://localhost:3001/api/auth/callback/apple`
+4. Add redirect URI: `http://localhost:3000/api/auth/callback/apple`
 5. Create a private key for Sign In with Apple
 6. Add all credentials to `.env.local`
 
@@ -99,7 +99,7 @@ The SQLite database is already configured and ready. The schema includes:
 npm run dev
 ```
 
-The app will run on `http://localhost:3001`
+The app will run on `http://localhost:3000`
 
 ### 2. User Flow
 
@@ -193,7 +193,7 @@ npx prisma generate
 
 ### Common Issues
 
-1. **Port 3000 in use** - App automatically uses port 3001
+1. **Port 3000 in use** - Run `npm run dev:safe` to auto-kill and restart
 2. **Missing environment variables** - Check `.env.local` configuration
 3. **OAuth errors** - Verify redirect URIs match provider configuration
 4. **Database errors** - Run `npx prisma db push` to sync schema
