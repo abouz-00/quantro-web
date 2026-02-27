@@ -25,6 +25,14 @@ export default function DatePickerComponent({
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
   const savedOverflow = useRef<string>("");
 
+  const closeCalendar = useCallback(() => {
+    setIsAnimatingOut(true);
+    setTimeout(() => {
+      setIsCalendarOpen(false);
+      setIsAnimatingOut(false);
+    }, 150);
+  }, []);
+
   // Escape key handler + body scroll lock with proper cleanup on unmount
   useEffect(() => {
     if (!isCalendarOpen) return;
@@ -41,20 +49,12 @@ export default function DatePickerComponent({
       document.body.style.overflow = savedOverflow.current;
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [isCalendarOpen]);
+  }, [isCalendarOpen, closeCalendar]);
 
   const formatDateDisplay = useCallback(
     (date: Date) => dateHelpers.formatDisplayDate(date),
     []
   );
-
-  const closeCalendar = useCallback(() => {
-    setIsAnimatingOut(true);
-    setTimeout(() => {
-      setIsCalendarOpen(false);
-      setIsAnimatingOut(false);
-    }, 150);
-  }, []);
 
   const handleDateChange = useCallback(
     (value: Value) => {
