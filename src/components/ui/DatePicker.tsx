@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../../styles/react-calendar.css";
@@ -21,177 +21,166 @@ export default function DatePickerComponent({
   onDateChange, 
   className = ""
 }: DatePickerComponentProps) {
-  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
-  // Initialize as true since we're in client component ("use client")
-  const [isMounted, setIsMounted] = useState<boolean>(typeof window !== 'undefined');
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
+  const savedOverflow = useRef<string>("");
 
-  // Add escape key handler and body scroll lock
+  // Escape key handler + body scroll lock with proper cleanup on unmount
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isCalendarOpen) {
-        setIsCalendarOpen(false);
-      }
-    };
+    if (!isCalendarOpen) return;
 
-    if (isCalendarOpen) {
-      // Prevent body scroll when modal is open
-      document.body.style.overflow = 'hidden';
-      document.addEventListener('keydown', handleEscape);
-      
-      return () => {
-        document.body.style.overflow = 'unset';
-        document.removeEventListener('keydown', handleEscape);
-      };
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+    savedOverflow.current = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeCalendar();
+    };
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.body.style.overflow = savedOverflow.current;
+      document.removeEventListener("keydown", handleEscape);
+    };
   }, [isCalendarOpen]);
 
-  // Helper function to format date display
-  const formatDateDisplay = useCallback((date: Date) => {
-    return dateHelpers.formatDisplayDate(date);
-  }, []);
+  const formatDateDisplay = useCallback(
+    (date: Date) => dateHelpers.formatDisplayDate(date),
+    []
+  );
 
-  const handleDateChange = useCallback((value: Value) => {
-    if (value && !Array.isArray(value)) {
-      // Normalize date to remove time component
-      const normalizedDate = new Date(value.getFullYear(), value.getMonth(), value.getDate());
-      onDateChange(normalizedDate);
+  const closeCalendar = useCallback(() => {
+    setIsAnimatingOut(true);
+    setTimeout(() => {
       setIsCalendarOpen(false);
-    }
-  }, [onDateChange]);
-
-  const handleCalendarToggle = useCallback(() => {
-    setIsCalendarOpen(prev => !prev);
+      setIsAnimatingOut(false);
+    }, 150);
   }, []);
+
+  const handleDateChange = useCallback(
+    (value: Value) => {
+      if (value && !Array.isArray(value)) {
+        const d = new Date(value.getFullYear(), value.getMonth(), value.getDate());
+        onDateChange(d);
+        closeCalendar();
+      }
+    },
+    [onDateChange, closeCalendar]
+  );
+
+  const openCalendar = useCallback(() => setIsCalendarOpen(true), []);
 
   const handleGoToToday = useCallback(() => {
-    const today = new Date();
-    const normalizedToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    onDateChange(normalizedToday);
-  }, [onDateChange]);
+    const t = new Date();
+    onDateChange(new Date(t.getFullYear(), t.getMonth(), t.getDate()));
+    closeCalendar();
+  }, [onDateChange, closeCalendar]);
 
   const handlePreviousDay = useCallback(() => {
-    const newDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
-    newDate.setDate(newDate.getDate() - 1);
-    onDateChange(newDate);
+    const d = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
+    d.setDate(d.getDate() - 1);
+    onDateChange(d);
   }, [selectedDate, onDateChange]);
 
   const handleNextDay = useCallback(() => {
-    const newDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
-    newDate.setDate(newDate.getDate() + 1);
-    onDateChange(newDate);
+    const d = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
+    d.setDate(d.getDate() + 1);
+    onDateChange(d);
   }, [selectedDate, onDateChange]);
-
-  // Fallback if not mounted
-  if (!isMounted) {
-    return (
-      <div className={`flex items-center space-x-4 ${className}`}>
-        <div className="w-64 h-10 bg-gray-200 animate-pulse rounded"></div>
-      </div>
-    );
-  }
 
   return (
     <>
       <div className={`flex items-center space-x-4 ${className}`}>
-        {/* Previous Day Button */}
+        {/* Previous Day */}
         <button
           onClick={handlePreviousDay}
-          className="p-2 hover:bg-gray-100 rounded-full transition-all duration-200 group cursor-pointer"
+          className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 cursor-pointer"
           aria-label="Previous day"
-          style={{ cursor: 'pointer' }}
         >
-          <HiChevronLeft className="h-6 w-6 text-gray-600 group-hover:text-gray-800 transition-colors" />
+          <HiChevronLeft className="h-6 w-6 text-gray-600" />
         </button>
-        
-        {/* Date Display with Calendar */}
-        <div 
-          className="flex items-center space-x-2" 
-          style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
-        >
-          <HiCalendar 
-            className="h-6 w-6 text-gray-600 cursor-pointer hover:text-gray-700 transition-all duration-200" 
-            onClick={handleCalendarToggle}
-            title="Open calendar"
-            style={{ cursor: 'pointer' }}
-          />
-          <button
-            type="button"
-            className="border-none bg-transparent text-xl font-bold text-center cursor-pointer text-gray-800 px-0 hover:text-gray-700 transition-all duration-200 select-none rounded-md hover:bg-gray-100"
-            style={{ 
-              minWidth: '200px', 
-              cursor: 'pointer !important',
-              userSelect: 'none',
-              WebkitUserSelect: 'none',
-              MozUserSelect: 'none',
-              msUserSelect: 'none',
-              padding: '4px 8px',
-              pointerEvents: 'auto',
-              outline: 'none',
-              border: 'none'
-            }}
-            onClick={handleCalendarToggle}
-            onDoubleClick={handleGoToToday}
-            title={formatDateDisplay(selectedDate) === "Today" ? "Click to open calendar • Double-click to confirm today" : "Click to open calendar • Double-click to go to today"}
-          >
-            {formatDateDisplay(selectedDate)}
-          </button>
-        </div>
 
-        {/* Next Day Button */}
+        {/* Date Display */}
+        <button
+          type="button"
+          className="flex items-center space-x-2 select-none cursor-pointer bg-transparent border-none outline-none rounded-md px-2 py-1 hover:bg-gray-100 transition-colors duration-200"
+          onClick={openCalendar}
+          title="Open calendar"
+        >
+          <HiCalendar className="h-5 w-5 text-gray-500" />
+          <span className="text-xl font-bold text-gray-800 min-w-[180px] text-center">
+            {formatDateDisplay(selectedDate)}
+          </span>
+        </button>
+
+        {/* Next Day */}
         <button
           onClick={handleNextDay}
-          className="p-2 hover:bg-gray-100 rounded-full transition-all duration-200 group cursor-pointer"
+          className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 cursor-pointer"
           aria-label="Next day"
-          style={{ cursor: 'pointer' }}
         >
-          <HiChevronRight className="h-6 w-6 text-gray-600 group-hover:text-gray-800 transition-colors" />
+          <HiChevronRight className="h-6 w-6 text-gray-600" />
         </button>
       </div>
 
-      {/* Modal Calendar Overlay */}
+      {/* Calendar Modal */}
       {isCalendarOpen && (
-        <div 
-          className="fixed inset-0 flex items-center justify-center z-50" 
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }}
+        <div
+          className={`fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-150 ${
+            isAnimatingOut ? "opacity-0" : "opacity-100"
+          }`}
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}
           onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              setIsCalendarOpen(false);
-            }
+            if (e.target === e.currentTarget) closeCalendar();
           }}
         >
-          <div className="relative" onClick={(e) => e.stopPropagation()}>
-            {/* Calendar */}
+          <div
+            className={`relative transition-all duration-150 ${
+              isAnimatingOut
+                ? "opacity-0 scale-95"
+                : "opacity-100 scale-100"
+            }`}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              borderRadius: '16px',
+              overflow: 'hidden',
+              boxShadow: '0 20px 60px -12px rgba(0, 0, 0, 0.25)',
+              background: '#ffffff',
+              maxWidth: '340px',
+            }}
+          >
             <Calendar
               onChange={handleDateChange}
               value={selectedDate}
               locale="en-US"
               calendarType="gregory"
               showNeighboringMonth={true}
+              showFixedNumberOfWeeks={true}
               showNavigation={true}
+              minDetail="decade"
               prev2Label={null}
               next2Label={null}
               prevLabel={<HiChevronLeft className="w-4 h-4" />}
               nextLabel={<HiChevronRight className="w-4 h-4" />}
               minDate={new Date(2021, 0, 1)}
               maxDate={new Date(2040, 11, 31)}
-              tileClassName={({ date, view }) => {
-                if (view === 'month') {
-                  const isSelected = dateHelpers.isSameDate(date, selectedDate);
-                  const isToday = dateHelpers.isToday(date);
-                  
-                  if (isSelected && isToday) {
-                    return 'selected-today';
-                  } else if (isSelected) {
-                    return 'selected-day';
-                  } else if (isToday) {
-                    return 'today-only';
-                  }
-                }
-                return null;
-              }}
             />
+
+            {/* Today Button */}
+            <div style={{ padding: '0 16px 16px 16px' }}>
+              <button
+                type="button"
+                onClick={handleGoToToday}
+                className="w-full py-2.5 text-sm font-semibold rounded-xl transition-colors duration-150 cursor-pointer border-none outline-none"
+                style={{
+                  backgroundColor: 'rgba(110, 68, 255, 0.08)',
+                  color: '#6e44ff',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(110, 68, 255, 0.15)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(110, 68, 255, 0.08)'}
+              >
+                Go to Today
+              </button>
+            </div>
           </div>
         </div>
       )}

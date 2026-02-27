@@ -9,7 +9,7 @@
     "dev:check": "./scripts/check-port-3000.sh",
     "dev:forever": "nohup ./scripts/forever-dev.sh > /dev/null 2>&1 &",
     "build:vercel": "prisma generate --schema=prisma/schema.production.prisma && next build",
-    "postinstall": "[ -f \"prisma/schema.production.prisma\" ] && prisma generate --schema=prisma/schema.production.prisma || prisma generate || true",
+    "postinstall": "if [ \"$VERCEL\" = \"1\" ] || [ \"$NODE_ENV\" = \"production\" ]; then prisma generate --schema=prisma/schema.production.prisma; else prisma generate --schema=prisma/schema.prisma; fi || true",
     "dev:daemon": "./scripts/start-dev-daemon.sh start",
     "dev:stop": "./scripts/start-dev-daemon.sh stop",
     "dev:restart": "./scripts/start-dev-daemon.sh restart",
