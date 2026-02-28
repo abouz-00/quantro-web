@@ -277,7 +277,7 @@ jobs:
         DATABASE_URL: "file:./staging.db"
       
     - name: Download build artifacts
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: build-artifacts
         path: ./
@@ -285,7 +285,7 @@ jobs:
         
     - name: Download standalone build (fallback)
       if: failure()
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: standalone-build
         path: ./
