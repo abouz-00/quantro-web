@@ -49,6 +49,11 @@
       "groupName": "ESLint"
     },
     {
+      "description": "Block ESLint 10 until eslint-plugin-react and eslint-config-next support it",
+      "matchPackageNames": ["eslint"],
+      "allowedVersions": "<10.0.0"
+    },
+    {
       "matchPackagePatterns": ["jest", "@testing-library/"],
       "groupName": "Testing tools"
     },
