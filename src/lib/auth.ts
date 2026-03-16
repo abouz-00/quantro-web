@@ -1,10 +1,10 @@
 import NextAuth from "next-auth"
-import Google from "next-auth/providers/google"
 import Apple from "next-auth/providers/apple"
 import Credentials from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/prisma"
 import { checkBetaAccess } from "@/lib/betaAccess"
+import { authConfig } from "@/lib/auth.config"
 import jwt from 'jsonwebtoken'
 
 declare module "next-auth" {
@@ -58,15 +58,11 @@ function generateAppleJWT() {
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
-    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET && process.env.GOOGLE_CLIENT_ID !== 'your-google-client-id' ? [
-      Google({
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      })
-    ] : []),
+    ...authConfig.providers,
     ...(() => {
       // Generate Apple JWT and only include Apple provider if successful
       const appleJWT = generateAppleJWT();
@@ -152,6 +148,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     ] : []),
   ],
   callbacks: {
+    ...authConfig.callbacks,
     async signIn({ user }) {
       if (!user.email) return false;
       
@@ -190,27 +187,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       
       return true;
     },
-    async session({ session, token }) {
-      if (session?.user && token?.uid && typeof token.uid === 'string') {
-        session.user.id = token.uid;
-      }
-      return session;
-    },
-    async jwt({ user, token }) {
-      if (user && user.id) {
-        // Let PrismaAdapter handle user creation and ID assignment
-        // The token will be populated with the correct user ID from the database
-        token.uid = user.id;
-      }
-      return token;
-    },
-  },
-  session: {
-    strategy: "jwt", // Use JWT strategy for development with SQLite
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-  },
-  pages: {
-    signIn: "/",
-    error: "/auth/error",
   },
 })
