@@ -82,6 +82,29 @@ export async function POST(request: NextRequest) {
       fiber,
       sodium,
       date,
+      // Micronutrients
+      vitaminB1,
+      vitaminB2,
+      vitaminB3,
+      vitaminB5,
+      vitaminB6,
+      vitaminB12,
+      biotin,
+      folate,
+      vitaminA,
+      vitaminC,
+      vitaminD,
+      vitaminK,
+      calcium,
+      copper,
+      iron,
+      magnesium,
+      manganese,
+      phosphorus,
+      potassium,
+      selenium,
+      zinc,
+      omega3,
     } = body;
 
     // Calculate the next orderIndex for this meal type and date
@@ -127,8 +150,31 @@ export async function POST(request: NextRequest) {
         fat,
         fiber: fiber || 0,
         sodium: sodium || 0,
-        date: targetDate, // Preserve the actual timestamp when the entry was created
+        date: targetDate,
         orderIndex: nextOrderIndex,
+        // Micronutrients
+        vitaminB1: vitaminB1 || null,
+        vitaminB2: vitaminB2 || null,
+        vitaminB3: vitaminB3 || null,
+        vitaminB5: vitaminB5 || null,
+        vitaminB6: vitaminB6 || null,
+        vitaminB12: vitaminB12 || null,
+        biotin: biotin || null,
+        folate: folate || null,
+        vitaminA: vitaminA || null,
+        vitaminC: vitaminC || null,
+        vitaminD: vitaminD || null,
+        vitaminK: vitaminK || null,
+        calcium: calcium || null,
+        copper: copper || null,
+        iron: iron || null,
+        magnesium: magnesium || null,
+        manganese: manganese || null,
+        phosphorus: phosphorus || null,
+        potassium: potassium || null,
+        selenium: selenium || null,
+        zinc: zinc || null,
+        omega3: omega3 || null,
       },
     });
 
@@ -197,7 +243,11 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { id, quantity, calories, protein, carbs, fat, mealType, orderIndex } = body;
+    const { id, quantity, calories, protein, carbs, fat, mealType, orderIndex,
+      vitaminB1, vitaminB2, vitaminB3, vitaminB5, vitaminB6, vitaminB12,
+      biotin, folate, vitaminA, vitaminC, vitaminD, vitaminK,
+      calcium, copper, iron, magnesium, manganese, phosphorus,
+      potassium, selenium, zinc, omega3 } = body;
     
     if (!id) {
       return NextResponse.json({ error: 'Food log ID is required' }, { status: 400 });
@@ -225,6 +275,28 @@ export async function PUT(request: NextRequest) {
         ...(fat !== undefined && { fat }),
         ...(mealType !== undefined && { mealType }),
         ...(orderIndex !== undefined && { orderIndex }),
+        ...(vitaminB1 !== undefined && { vitaminB1 }),
+        ...(vitaminB2 !== undefined && { vitaminB2 }),
+        ...(vitaminB3 !== undefined && { vitaminB3 }),
+        ...(vitaminB5 !== undefined && { vitaminB5 }),
+        ...(vitaminB6 !== undefined && { vitaminB6 }),
+        ...(vitaminB12 !== undefined && { vitaminB12 }),
+        ...(biotin !== undefined && { biotin }),
+        ...(folate !== undefined && { folate }),
+        ...(vitaminA !== undefined && { vitaminA }),
+        ...(vitaminC !== undefined && { vitaminC }),
+        ...(vitaminD !== undefined && { vitaminD }),
+        ...(vitaminK !== undefined && { vitaminK }),
+        ...(calcium !== undefined && { calcium }),
+        ...(copper !== undefined && { copper }),
+        ...(iron !== undefined && { iron }),
+        ...(magnesium !== undefined && { magnesium }),
+        ...(manganese !== undefined && { manganese }),
+        ...(phosphorus !== undefined && { phosphorus }),
+        ...(potassium !== undefined && { potassium }),
+        ...(selenium !== undefined && { selenium }),
+        ...(zinc !== undefined && { zinc }),
+        ...(omega3 !== undefined && { omega3 }),
         updatedAt: new Date(),
       },
     });

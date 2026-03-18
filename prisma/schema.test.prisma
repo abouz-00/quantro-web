@@ -112,6 +112,36 @@ model FoodLog {
   sugar       Float?
   sodium      Float?
   
+  // Micronutrients - B Vitamins
+  vitaminB1   Float?   // Thiamine (mg)
+  vitaminB2   Float?   // Riboflavin (mg)
+  vitaminB3   Float?   // Niacin (mg)
+  vitaminB5   Float?   // Pantothenic Acid (mg)
+  vitaminB6   Float?   // Pyridoxine (mg)
+  vitaminB12  Float?   // Cobalamin (μg)
+  biotin      Float?   // Biotin (μg)
+  folate      Float?   // Folate (μg)
+  
+  // Micronutrients - Fat-Soluble Vitamins
+  vitaminA    Float?   // Retinol Activity Equivalents (μg)
+  vitaminC    Float?   // Ascorbic Acid (mg)
+  vitaminD    Float?   // Cholecalciferol (μg)
+  vitaminK    Float?   // Phylloquinone (μg)
+  
+  // Micronutrients - Minerals
+  calcium     Float?   // mg
+  copper      Float?   // mg
+  iron        Float?   // mg
+  magnesium   Float?   // mg
+  manganese   Float?   // mg
+  phosphorus  Float?   // mg
+  potassium   Float?   // mg
+  selenium    Float?   // μg
+  zinc        Float?   // mg
+  
+  // Essential Fatty Acids
+  omega3      Float?   // g (EPA + DHA + ALA)
+  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   

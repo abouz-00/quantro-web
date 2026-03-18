@@ -2,6 +2,7 @@ const USDA_API_URL = 'https://api.nal.usda.gov/fdc/v1';
 
 // USDA nutrient IDs to standard names
 const NUTRIENT_MAP: Record<number, string> = {
+  // Macronutrients
   1008: 'Energy',
   2047: 'Energy',  // Energy (Atwater General Factors)
   2048: 'Energy',  // Energy (Atwater Specific Factors)
@@ -10,7 +11,34 @@ const NUTRIENT_MAP: Record<number, string> = {
   1004: 'Total lipid (fat)',
   1079: 'Fiber, total dietary',
   2000: 'Total Sugars',
+  
+  // B Vitamins
+  1165: 'Thiamin',
+  1166: 'Riboflavin',
+  1167: 'Niacin',
+  1170: 'Pantothenic acid',
+  1175: 'Vitamin B-6',
+  1178: 'Vitamin B-12',
+  1176: 'Biotin',
+  1177: 'Folate, total',
+  
+  // Fat-Soluble Vitamins
+  1106: 'Vitamin A, RAE',
+  1162: 'Vitamin C, total ascorbic acid',
+  1114: 'Vitamin D (D2 + D3)',
+  1185: 'Vitamin K (phylloquinone)',
+  
+  // Minerals
+  1087: 'Calcium, Ca',
+  1098: 'Copper, Cu',
+  1089: 'Iron, Fe',
+  1090: 'Magnesium, Mg',
+  1101: 'Manganese, Mn',
+  1091: 'Phosphorus, P',
+  1092: 'Potassium, K',
+  1103: 'Selenium, Se',
   1093: 'Sodium, Na',
+  1095: 'Zinc, Zn',
 };
 
 interface USDAFoodNutrient {
