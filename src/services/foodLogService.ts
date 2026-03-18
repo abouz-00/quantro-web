@@ -17,6 +17,7 @@ interface ApiData {
   createdAt?: string;
   date?: string;
   mealType?: "breakfast" | "lunch" | "dinner" | "snack" | "other";
+  orderIndex?: number;
 }
 
 /**
@@ -128,6 +129,7 @@ export class FoodLogService {
         carbs: updates.carbs,
         fat: updates.fat,
         mealType: updates.mealType,
+        orderIndex: updates.orderIndex,
       };
       await apiClient.put('/food-logs', updateData);
       return true;

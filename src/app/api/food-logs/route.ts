@@ -22,14 +22,12 @@ export async function GET(request: NextRequest) {
     };
 
     if (date) {
-      // Parse date and create date range for the entire day in local timezone
-      const targetDate = new Date(date);
-      // Normalize to start of day in local timezone
-      const normalizedDate = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
-      
-      const startOfDay = new Date(normalizedDate);
-      const endOfDay = new Date(normalizedDate);
-      endOfDay.setHours(23, 59, 59, 999);
+      // Parse YYYY-MM-DD string as local date components to avoid UTC shift.
+      // new Date("YYYY-MM-DD") parses as UTC midnight, which gives the wrong
+      // local date for timezones west of UTC (e.g. PDT: Mar 18 UTC = Mar 17 local).
+      const [year, month, day] = date.split('-').map(Number);
+      const startOfDay = new Date(year, month - 1, day, 0, 0, 0, 0);
+      const endOfDay = new Date(year, month - 1, day, 23, 59, 59, 999);
       
       console.log('🔍 [DEBUG] Date range:', { startOfDay: startOfDay.toISOString(), endOfDay: endOfDay.toISOString() });
       
