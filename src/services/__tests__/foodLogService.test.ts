@@ -87,6 +87,7 @@ describe('FoodLogService', () => {
       fiber: entry.fiber || 0,
       sodium: entry.sodium || 0,
       date: entry.date,
+      orderIndex: entry.orderIndex,
     }));
   });
 
