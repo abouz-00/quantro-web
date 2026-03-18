@@ -102,10 +102,34 @@ interface ApiData {
   carbs: number;
   fat: number;
   fiber?: number;
+  sodium?: number;
   createdAt?: string;
   date?: string;
   mealType?: "breakfast" | "lunch" | "dinner" | "snack" | "other";
   orderIndex?: number;
+  // Micronutrients
+  vitaminB1?: number;
+  vitaminB2?: number;
+  vitaminB3?: number;
+  vitaminB5?: number;
+  vitaminB6?: number;
+  vitaminB12?: number;
+  biotin?: number;
+  folate?: number;
+  vitaminA?: number;
+  vitaminC?: number;
+  vitaminD?: number;
+  vitaminK?: number;
+  calcium?: number;
+  copper?: number;
+  iron?: number;
+  magnesium?: number;
+  manganese?: number;
+  phosphorus?: number;
+  potassium?: number;
+  selenium?: number;
+  zinc?: number;
+  omega3?: number;
 }
 
 export const transformApiDataToFoodEntry = (apiData: ApiData): FoodEntry => {
@@ -114,7 +138,7 @@ export const transformApiDataToFoodEntry = (apiData: ApiData): FoodEntry => {
     description: apiData.foodName + (apiData.brand ? ` (${apiData.brand})` : ''),
     amount: apiData.quantity.toString(),
     unit: apiData.unit,
-    date: apiData.date ? new Date(apiData.date).toISOString() : new Date().toISOString(), // Keep full DateTime
+    date: apiData.date ? new Date(apiData.date).toISOString() : new Date().toISOString(),
     mealType: apiData.mealType || "other",
     orderIndex: apiData.orderIndex,
     calories: apiData.calories,
@@ -122,6 +146,30 @@ export const transformApiDataToFoodEntry = (apiData: ApiData): FoodEntry => {
     carbs: apiData.carbs,
     fat: apiData.fat,
     fiber: apiData.fiber || 0,
+    sodium: apiData.sodium || 0,
+    // Micronutrients
+    vitaminB1: apiData.vitaminB1 || 0,
+    vitaminB2: apiData.vitaminB2 || 0,
+    vitaminB3: apiData.vitaminB3 || 0,
+    vitaminB5: apiData.vitaminB5 || 0,
+    vitaminB6: apiData.vitaminB6 || 0,
+    vitaminB12: apiData.vitaminB12 || 0,
+    biotin: apiData.biotin || 0,
+    folate: apiData.folate || 0,
+    vitaminA: apiData.vitaminA || 0,
+    vitaminC: apiData.vitaminC || 0,
+    vitaminD: apiData.vitaminD || 0,
+    vitaminK: apiData.vitaminK || 0,
+    calcium: apiData.calcium || 0,
+    copper: apiData.copper || 0,
+    iron: apiData.iron || 0,
+    magnesium: apiData.magnesium || 0,
+    manganese: apiData.manganese || 0,
+    phosphorus: apiData.phosphorus || 0,
+    potassium: apiData.potassium || 0,
+    selenium: apiData.selenium || 0,
+    zinc: apiData.zinc || 0,
+    omega3: apiData.omega3 || 0,
   };
 };
 
@@ -130,7 +178,7 @@ export const transformApiDataToFoodEntry = (apiData: ApiData): FoodEntry => {
  */
 export const transformFoodEntryToApiData = (entry: FoodEntry) => {
   return {
-    foodName: entry.description.split(' (')[0], // Extract food name before brand
+    foodName: entry.description.split(' (')[0],
     brand: entry.description.includes(' (') ? entry.description.split(' (')[1].replace(')', '') : null,
     quantity: parseFloat(entry.amount),
     unit: entry.unit,
@@ -141,7 +189,30 @@ export const transformFoodEntryToApiData = (entry: FoodEntry) => {
     fat: entry.fat,
     fiber: entry.fiber || 0,
     sodium: entry.sodium || 0,
-    date: entry.date, // Include the date from the entry
+    date: entry.date,
     orderIndex: entry.orderIndex,
+    // Micronutrients
+    vitaminB1: entry.vitaminB1 || 0,
+    vitaminB2: entry.vitaminB2 || 0,
+    vitaminB3: entry.vitaminB3 || 0,
+    vitaminB5: entry.vitaminB5 || 0,
+    vitaminB6: entry.vitaminB6 || 0,
+    vitaminB12: entry.vitaminB12 || 0,
+    biotin: entry.biotin || 0,
+    folate: entry.folate || 0,
+    vitaminA: entry.vitaminA || 0,
+    vitaminC: entry.vitaminC || 0,
+    vitaminD: entry.vitaminD || 0,
+    vitaminK: entry.vitaminK || 0,
+    calcium: entry.calcium || 0,
+    copper: entry.copper || 0,
+    iron: entry.iron || 0,
+    magnesium: entry.magnesium || 0,
+    manganese: entry.manganese || 0,
+    phosphorus: entry.phosphorus || 0,
+    potassium: entry.potassium || 0,
+    selenium: entry.selenium || 0,
+    zinc: entry.zinc || 0,
+    omega3: entry.omega3 || 0,
   };
 };

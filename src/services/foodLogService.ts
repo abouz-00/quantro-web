@@ -14,10 +14,34 @@ interface ApiData {
   carbs: number;
   fat: number;
   fiber?: number;
+  sodium?: number;
   createdAt?: string;
   date?: string;
   mealType?: "breakfast" | "lunch" | "dinner" | "snack" | "other";
   orderIndex?: number;
+  // Micronutrients
+  vitaminB1?: number;
+  vitaminB2?: number;
+  vitaminB3?: number;
+  vitaminB5?: number;
+  vitaminB6?: number;
+  vitaminB12?: number;
+  biotin?: number;
+  folate?: number;
+  vitaminA?: number;
+  vitaminC?: number;
+  vitaminD?: number;
+  vitaminK?: number;
+  calcium?: number;
+  copper?: number;
+  iron?: number;
+  magnesium?: number;
+  manganese?: number;
+  phosphorus?: number;
+  potassium?: number;
+  selenium?: number;
+  zinc?: number;
+  omega3?: number;
 }
 
 /**
@@ -130,6 +154,28 @@ export class FoodLogService {
         fat: updates.fat,
         mealType: updates.mealType,
         orderIndex: updates.orderIndex,
+        vitaminB1: updates.vitaminB1,
+        vitaminB2: updates.vitaminB2,
+        vitaminB3: updates.vitaminB3,
+        vitaminB5: updates.vitaminB5,
+        vitaminB6: updates.vitaminB6,
+        vitaminB12: updates.vitaminB12,
+        biotin: updates.biotin,
+        folate: updates.folate,
+        vitaminA: updates.vitaminA,
+        vitaminC: updates.vitaminC,
+        vitaminD: updates.vitaminD,
+        vitaminK: updates.vitaminK,
+        calcium: updates.calcium,
+        copper: updates.copper,
+        iron: updates.iron,
+        magnesium: updates.magnesium,
+        manganese: updates.manganese,
+        phosphorus: updates.phosphorus,
+        potassium: updates.potassium,
+        selenium: updates.selenium,
+        zinc: updates.zinc,
+        omega3: updates.omega3,
       };
       await apiClient.put('/food-logs', updateData);
       return true;
