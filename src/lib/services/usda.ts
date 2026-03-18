@@ -3,6 +3,8 @@ const USDA_API_URL = 'https://api.nal.usda.gov/fdc/v1';
 // USDA nutrient IDs to standard names
 const NUTRIENT_MAP: Record<number, string> = {
   1008: 'Energy',
+  2047: 'Energy',  // Energy (Atwater General Factors)
+  2048: 'Energy',  // Energy (Atwater Specific Factors)
   1003: 'Protein',
   1005: 'Carbohydrate, by difference',
   1004: 'Total lipid (fat)',
@@ -56,7 +58,7 @@ function getNutrientValue(nutrients: USDAFoodNutrient[], nutrientId: number): nu
 
 function transformFood(food: USDAFoodItem): TransformedFoodItem {
   const nutrients = food.foodNutrients;
-  const calories = getNutrientValue(nutrients, 1008);
+  const calories = getNutrientValue(nutrients, 1008) || getNutrientValue(nutrients, 2047) || getNutrientValue(nutrients, 2048);
   const protein = getNutrientValue(nutrients, 1003);
   const carbs = getNutrientValue(nutrients, 1005);
   const fat = getNutrientValue(nutrients, 1004);
@@ -65,10 +67,12 @@ function transformFood(food: USDAFoodItem): TransformedFoodItem {
   const sodium = getNutrientValue(nutrients, 1093);
 
   const foodNutrients: Array<{ nutrientName: string; value: number }> = [];
+  const addedNames = new Set<string>();
   for (const nutrient of nutrients) {
     const name = NUTRIENT_MAP[nutrient.nutrientId];
-    if (name && nutrient.value > 0) {
+    if (name && nutrient.value > 0 && !addedNames.has(name)) {
       foodNutrients.push({ nutrientName: name, value: nutrient.value });
+      addedNames.add(name);
     }
   }
 
@@ -109,7 +113,8 @@ export async function searchUSDA(query: string, pageSize: number = 10): Promise<
   }
 
   const data = (await response.json()) as USDASearchResponse;
-  const results = (data.foods || []).map(transformFood);
+  // Filter out foods with no calorie data (e.g. Foundation foods that only have fatty acid profiles)
+  const results = (data.foods || []).map(transformFood).filter((food) => food.calories > 0);
 
   // Cache with LRU eviction
   if (cache.size >= MAX_CACHE_SIZE) {
