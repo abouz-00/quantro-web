@@ -168,6 +168,29 @@ describe('Food Logs API', () => {
           sodium: 0, // sodium defaults to 0
           date: expect.any(Date), // date is set to current date
           orderIndex: 0, // orderIndex is calculated
+          // Micronutrients default to null when not provided
+          vitaminB1: null,
+          vitaminB2: null,
+          vitaminB3: null,
+          vitaminB5: null,
+          vitaminB6: null,
+          vitaminB12: null,
+          biotin: null,
+          folate: null,
+          vitaminA: null,
+          vitaminC: null,
+          vitaminD: null,
+          vitaminK: null,
+          calcium: null,
+          copper: null,
+          iron: null,
+          magnesium: null,
+          manganese: null,
+          phosphorus: null,
+          potassium: null,
+          selenium: null,
+          zinc: null,
+          omega3: null,
         },
       });
     });
