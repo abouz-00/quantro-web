@@ -22,29 +22,29 @@ export const useNutrientCalculator = () => {
   };
 
   const calculateNutrients = (selectedFood: USDAFood, quantity: string, unit: string) => {
-    // Get nutrient values from USDA data
+    // Get nutrient values - search by both display names and original API names
     const nutrients = {
-      calories: findNutrient(selectedFood.foodNutrients, "energy"),
+      calories: findNutrient(selectedFood.foodNutrients, "calorie") || findNutrient(selectedFood.foodNutrients, "energy"),
       protein: findNutrient(selectedFood.foodNutrients, "protein"),
-      carbs: findNutrient(selectedFood.foodNutrients, "carbohydrate"),
-      fat: findNutrient(selectedFood.foodNutrients, "total lipid (fat)"),
+      carbs: findNutrient(selectedFood.foodNutrients, "carb") || findNutrient(selectedFood.foodNutrients, "carbohydrate"),
+      fat: findNutrient(selectedFood.foodNutrients, "fat") || findNutrient(selectedFood.foodNutrients, "total lipid"),
       fiber: findNutrient(selectedFood.foodNutrients, "fiber"),
       
       // B Vitamins
-      vitaminB1: findNutrient(selectedFood.foodNutrients, "thiamine"),
-      vitaminB2: findNutrient(selectedFood.foodNutrients, "riboflavin"),
-      vitaminB3: findNutrient(selectedFood.foodNutrients, "niacin"),
-      vitaminB5: findNutrient(selectedFood.foodNutrients, "pantothenic acid"),
-      vitaminB6: findNutrient(selectedFood.foodNutrients, "vitamin b-6"),
-      vitaminB12: findNutrient(selectedFood.foodNutrients, "vitamin b-12"),
+      vitaminB1: findNutrient(selectedFood.foodNutrients, "vitamin b1") || findNutrient(selectedFood.foodNutrients, "thiamine"),
+      vitaminB2: findNutrient(selectedFood.foodNutrients, "vitamin b2") || findNutrient(selectedFood.foodNutrients, "riboflavin"),
+      vitaminB3: findNutrient(selectedFood.foodNutrients, "vitamin b3") || findNutrient(selectedFood.foodNutrients, "niacin"),
+      vitaminB5: findNutrient(selectedFood.foodNutrients, "vitamin b5") || findNutrient(selectedFood.foodNutrients, "pantothenic acid"),
+      vitaminB6: findNutrient(selectedFood.foodNutrients, "vitamin b-6") || findNutrient(selectedFood.foodNutrients, "vitamin b6"),
+      vitaminB12: findNutrient(selectedFood.foodNutrients, "vitamin b-12") || findNutrient(selectedFood.foodNutrients, "vitamin b12"),
       biotin: findNutrient(selectedFood.foodNutrients, "biotin"),
       folate: findNutrient(selectedFood.foodNutrients, "folate"),
       
       // Fat-Soluble Vitamins
-      vitaminA: findNutrient(selectedFood.foodNutrients, "vitamin a, rae"),
-      vitaminC: findNutrient(selectedFood.foodNutrients, "vitamin c, total ascorbic acid"),
-      vitaminD: findNutrient(selectedFood.foodNutrients, "vitamin d (d2 + d3)"),
-      vitaminK: findNutrient(selectedFood.foodNutrients, "vitamin k (phylloquinone)"),
+      vitaminA: findNutrient(selectedFood.foodNutrients, "vitamin a"),
+      vitaminC: findNutrient(selectedFood.foodNutrients, "vitamin c"),
+      vitaminD: findNutrient(selectedFood.foodNutrients, "vitamin d"),
+      vitaminK: findNutrient(selectedFood.foodNutrients, "vitamin k"),
       
       // Minerals
       calcium: findNutrient(selectedFood.foodNutrients, "calcium"),

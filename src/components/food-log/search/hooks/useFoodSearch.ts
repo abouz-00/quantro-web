@@ -102,15 +102,23 @@ class FoodSearchCache {
   private cache: Map<string, CacheEntry> = new Map();
   private readonly CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days
   private readonly MAX_CACHE_SIZE = 200;
+  private readonly CACHE_KEY = 'foodSearchCache_v2'; // Bump version to invalidate old cache
 
   constructor() {
+    this.clearLegacyCache();
     this.loadFromStorage();
+  }
+
+  private clearLegacyCache() {
+    if (typeof window === 'undefined') return;
+    // Remove old unversioned cache that had incorrect nutrient name lookups
+    localStorage.removeItem('foodSearchCache');
   }
 
   private loadFromStorage() {
     if (typeof window === 'undefined') return;
     try {
-      const stored = localStorage.getItem('foodSearchCache');
+      const stored = localStorage.getItem(this.CACHE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored) as Record<string, CacheEntry>;
         // Only load recent entries
@@ -133,7 +141,7 @@ class FoodSearchCache {
       this.cache.forEach((value, key) => {
         cacheObject[key] = value;
       });
-      localStorage.setItem('foodSearchCache', JSON.stringify(cacheObject));
+      localStorage.setItem(this.CACHE_KEY, JSON.stringify(cacheObject));
     } catch (error) {
       console.warn('Failed to save food search cache:', error);
     }
@@ -171,7 +179,7 @@ class FoodSearchCache {
   clear() {
     this.cache.clear();
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('foodSearchCache');
+      localStorage.removeItem(this.CACHE_KEY);
     }
   }
 }
