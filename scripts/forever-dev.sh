@@ -55,8 +55,10 @@ while true; do
     
     echo "$(date): Dev server exited with code $EXIT_CODE" | tee -a "$LOG_FILE"
     
-    # If we get a clean exit (Ctrl+C or intentional stop), break the loop
-    if [ $EXIT_CODE -eq 0 ] || [ $EXIT_CODE -eq 130 ] || [ $EXIT_CODE -eq 143 ]; then
+    # Only stop on clean exit (exit 0) or user Ctrl+C (SIGINT=130)
+    # Do NOT stop on SIGTERM (143) or SIGKILL (137) — those come from
+    # external processes (e.g. brew upgrade, OOM killer) and should auto-restart
+    if [ $EXIT_CODE -eq 0 ] || [ $EXIT_CODE -eq 130 ]; then
         echo "$(date): Clean exit detected. Stopping forever loop." | tee -a "$LOG_FILE"
         break
     fi

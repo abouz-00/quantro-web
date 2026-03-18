@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { FoodEntry } from '../types/food';
 import { FoodLogService } from '../services/foodLogService';
 import { calculateTotals } from '../utils/foodEntryUtils';
@@ -47,6 +47,7 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
   const [foodData, setFoodData] = useState<FoodEntry[]>([]);
   const [selectedEntries, setSelectedEntries] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const loadedDateRef = useRef<string | null>(null);
 
   // Helper to get localStorage key for a specific date
   const getStorageKey = (date: Date) => {
@@ -59,8 +60,8 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
     const loadData = async () => {
       // Move setIsLoaded here to avoid synchronous setState in effect
       if (!cancelled) setIsLoaded(false);
+      const dateParam = formatApiDate();
       try {
-        const dateParam = formatApiDate();
         console.log('🚀 useFoodData: Loading data for date:', dateParam, 'selectedDate:', selectedDate.toISOString());
         
         // Add window debug info
@@ -98,12 +99,15 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
           };
         }
         
+        loadedDateRef.current = dateParam;
         setFoodData(filteredData);
         setIsLoaded(true);
       } catch (error) {
+        if (cancelled) return;
         console.error('❌ Error loading food data:', error);
         
         // Try to load from localStorage as fallback
+        loadedDateRef.current = dateParam;
         const storageKey = getStorageKey(selectedDate);
         try {
           const cached = localStorage.getItem(storageKey);
@@ -139,18 +143,20 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
     loadData();
   }, [selectedDate, formatApiDate]);
 
-  // Save to localStorage whenever foodData changes (but only after initial load)
+  // Save to localStorage whenever foodData changes (but only after initial load).
+  // Uses loadedDateRef instead of selectedDate to prevent saving stale data
+  // to the wrong date's key during date transitions.
   useEffect(() => {
-    if (isLoaded) {
-      const storageKey = getStorageKey(selectedDate);
+    if (isLoaded && loadedDateRef.current) {
+      const storageKey = `foodData_${loadedDateRef.current}`;
       try {
         localStorage.setItem(storageKey, JSON.stringify(foodData));
-        console.log('💾 Saved', foodData.length, 'food entries to localStorage for', selectedDate.toISOString().split('T')[0]);
+        console.log('💾 Saved', foodData.length, 'food entries to localStorage for', loadedDateRef.current);
       } catch (error) {
         console.error('Failed to save food entries to localStorage:', error);
       }
     }
-  }, [foodData, isLoaded, selectedDate]);
+  }, [foodData, isLoaded]);
 
   const addFoodEntry = useCallback(async (entry: FoodEntry, overrideDate?: Date) => {
     try {
@@ -256,6 +262,12 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
   const displayTotals = selectedEntries.length > 0 ? selectedEntriesTotals : totals;
 
   const handleReorderEntries = useCallback(async (newOrder: FoodEntry[]) => {
+    // Assign orderIndex to each entry so local state and localStorage cache preserve order
+    const orderedEntries = newOrder.map((entry, index) => ({
+      ...entry,
+      orderIndex: index,
+    }));
+
     // Update local state immediately for responsive UI
     setFoodData(prevFoodData => {
       const otherEntries = prevFoodData.filter((entry: FoodEntry) => {
@@ -263,32 +275,30 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
         return !sameDay(entryDate, selectedDate);
       });
       
-      return [...otherEntries, ...newOrder];
+      return [...otherEntries, ...orderedEntries];
     });
 
     // Persist the order to the database
     try {
-      const entryIds = newOrder.map(entry => entry.id);
+      const entryIds = orderedEntries.map(entry => entry.id);
       const response = await fetch('/api/food-logs/reorder', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ entryIds }),
       });
 
       if (!response) {
         console.error('Failed to persist entry order: No response received');
-        // Optionally show a toast notification to the user
       } else if (!response.ok) {
         console.error('Failed to persist entry order:', response.statusText);
-        // Optionally show a toast notification to the user
       } else {
         console.log('Entry order persisted successfully');
       }
     } catch (error) {
       console.error('Error persisting entry order:', error);
-      // Optionally show a toast notification to the user
     }
   }, [selectedDate]);
 

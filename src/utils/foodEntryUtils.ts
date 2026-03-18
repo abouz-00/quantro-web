@@ -105,6 +105,7 @@ interface ApiData {
   createdAt?: string;
   date?: string;
   mealType?: "breakfast" | "lunch" | "dinner" | "snack" | "other";
+  orderIndex?: number;
 }
 
 export const transformApiDataToFoodEntry = (apiData: ApiData): FoodEntry => {
@@ -115,6 +116,7 @@ export const transformApiDataToFoodEntry = (apiData: ApiData): FoodEntry => {
     unit: apiData.unit,
     date: apiData.date ? new Date(apiData.date).toISOString() : new Date().toISOString(), // Keep full DateTime
     mealType: apiData.mealType || "other",
+    orderIndex: apiData.orderIndex,
     calories: apiData.calories,
     protein: apiData.protein,
     carbs: apiData.carbs,
@@ -140,5 +142,6 @@ export const transformFoodEntryToApiData = (entry: FoodEntry) => {
     fiber: entry.fiber || 0,
     sodium: entry.sodium || 0,
     date: entry.date, // Include the date from the entry
+    orderIndex: entry.orderIndex,
   };
 };
