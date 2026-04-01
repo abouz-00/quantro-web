@@ -39,6 +39,11 @@ const NUTRIENT_MAP: Record<number, string> = {
   1103: 'Selenium, Se',
   1093: 'Sodium, Na',
   1095: 'Zinc, Zn',
+
+  // Omega-3 fatty acids
+  1270: 'ALA',   // 18:3 n-3 c,c,c (alpha-linolenic)
+  1272: 'DHA',   // 22:6 n-3 (docosahexaenoic)
+  1292: 'EPA',   // 20:5 n-3 (eicosapentaenoic)
 };
 
 interface USDAFoodNutrient {
