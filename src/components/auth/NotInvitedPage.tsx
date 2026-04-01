@@ -22,7 +22,7 @@ export default function NotInvitedPage({
   onSubmitCode
 }: NotInvitedPageProps) {
   return (
-    <div className="h-screen w-screen flex items-center justify-center overflow-hidden fixed inset-0" style={{ backgroundColor: '#6e44ff', userSelect: 'none', WebkitUserSelect: 'none' }}>
+    <div className="h-screen w-screen flex items-center justify-center overflow-hidden fixed inset-0 bg-primary" style={{ userSelect: 'none', WebkitUserSelect: 'none' }}>
       <div className="text-center px-6 py-4 w-full max-w-md mx-auto h-full flex flex-col justify-center">
         {/* Logo */}
         <div className="mb-8 flex justify-center">

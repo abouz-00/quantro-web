@@ -104,9 +104,13 @@ export const MealSection = memo(({
         </button>
       </div>
       
-      {/* Entries container - only show if there are entries and not collapsed */}
-      {entries.length > 0 && !isCollapsed && (
-        <div className={`bg-white border-l border-r border-b border-gray-300 ${isLastSection ? 'rounded-b-lg' : ''}`}>
+      {/* Entries container - animated collapse */}
+      {entries.length > 0 && (
+        <div
+          className={`grid transition-[grid-template-rows] duration-200 ease-out ${isCollapsed ? 'grid-rows-[0fr]' : 'grid-rows-[1fr]'}`}
+        >
+          <div className="overflow-hidden">
+            <div className={`bg-white border-l border-r border-b border-gray-300 ${isLastSection ? 'rounded-b-lg' : ''}`}>
           <table className="w-full table-fixed">
             <colgroup>
               <col className="w-auto" />
@@ -141,6 +145,8 @@ export const MealSection = memo(({
               </SortableContext>
             </tbody>
           </table>
+        </div>
+          </div>
         </div>
       )}
     </div>

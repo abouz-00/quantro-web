@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React, { useState, useCallback, Suspense } from "react";
 import dynamic from 'next/dynamic';
 import { useDateManager } from "../../hooks/useDateManager";
 import { useFoodData } from "../../hooks/useFoodData";
@@ -11,6 +11,7 @@ import { useGoals } from "../../hooks/useGoals";
 import { useDragContainment } from "../../hooks/useDragContainment";
 import { FoodEntry } from "../../types/food";
 import { generateEntryId } from "../../utils/dateUtils";
+import { UndoDeleteToast } from "./UndoDeleteToast";
 
 // Dynamic imports for better performance
 const FoodLogHeader = dynamic(() => import('./FoodLogHeader'));
@@ -26,6 +27,10 @@ export default function LogPage() {
   const [isMainMenuOpen, setIsMainMenuOpen] = useState<boolean>(false);
   const [isTargetsModalOpen, setIsTargetsModalOpen] = useState<boolean>(false);
   const [editModalEntry, setEditModalEntry] = useState<FoodEntry | null>(null);
+
+  // Undo delete state
+  const [deletedEntries, setDeletedEntries] = useState<FoodEntry[]>([]);
+  const [showUndoToast, setShowUndoToast] = useState(false);
 
   // Date management
   const {
@@ -134,21 +139,41 @@ export default function LogPage() {
   };
 
   const handleDeleteSelectedEntries = () => {
-    const entriesToDelete = selectedEntries.length > 0 
+    const idsToDelete = selectedEntries.length > 0 
       ? selectedEntries
       : contextMenu.targetEntryId 
         ? [contextMenu.targetEntryId]
         : [];
     
-    entriesToDelete.forEach(id => removeFoodEntry(id));
+    const entriesToDelete = foodData.filter(entry => idsToDelete.includes(entry.id));
+    if (entriesToDelete.length === 0) { closeContextMenu(); return; }
+
+    setDeletedEntries(entriesToDelete);
+    setShowUndoToast(true);
+    idsToDelete.forEach(id => removeFoodEntry(id));
     closeContextMenu();
   };
 
   const handleDeleteSelected = () => {
-    if (selectedEntries.length > 0) {
-      selectedEntries.forEach(id => removeFoodEntry(id));
-    }
+    if (selectedEntries.length === 0) return;
+    const entriesToDelete = foodData.filter(entry => selectedEntries.includes(entry.id));
+    setDeletedEntries(entriesToDelete);
+    setShowUndoToast(true);
+    selectedEntries.forEach(id => removeFoodEntry(id));
   };
+
+  const handleUndoDelete = useCallback(() => {
+    deletedEntries.forEach(entry => {
+      addFoodEntry({ ...entry, id: generateEntryId() }, new Date(entry.date));
+    });
+    setShowUndoToast(false);
+    setDeletedEntries([]);
+  }, [deletedEntries, addFoodEntry]);
+
+  const handleDismissUndo = useCallback(() => {
+    setShowUndoToast(false);
+    setDeletedEntries([]);
+  }, []);
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
@@ -158,11 +183,11 @@ export default function LogPage() {
     onGoToToday: goToToday,
     onCopy: selectedEntries.length > 0 ? handleCopySelectedItems : undefined,
     onPaste: clipboardEntries.length > 0 ? handlePasteEntries : undefined,
-    onDelete: selectedEntries.length > 0 ? () => selectedEntries.forEach(id => removeFoodEntry(id)) : undefined
+    onDelete: selectedEntries.length > 0 ? handleDeleteSelected : undefined
   });
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden" style={{ backgroundColor: '#F5F0E7' }}>
+    <div className="h-screen flex flex-col overflow-hidden bg-page">
       {/* Debug Panel - only in development */}
       {process.env.NODE_ENV === 'development' && (
         <Suspense fallback={null}>
@@ -172,7 +197,7 @@ export default function LogPage() {
       
       {/* Fixed Header - only the purple bar */}
       <div className="flex-shrink-0 relative z-[100]">
-        <Suspense fallback={<div>Loading header...</div>}>
+        <Suspense fallback={<div className="w-full h-16 bg-primary/80 rounded-b-3xl animate-pulse" />}>
           <FoodLogHeader
             isMainMenuOpen={isMainMenuOpen}
             setIsMainMenuOpen={setIsMainMenuOpen}
@@ -192,11 +217,11 @@ export default function LogPage() {
         </Suspense>
         {/* Main Content Area */}
         <div 
-          className="transition-all duration-300 ease-out"
-          style={{ minWidth: 0, backgroundColor: '#F5F0E7' }}
+          className="transition-all duration-300 ease-out bg-page"
+          style={{ minWidth: 0 }}
         >
           <div className="container mx-auto px-4 py-8 pb-40">
-            <Suspense fallback={<div>Loading controls...</div>}>
+            <Suspense fallback={<div className="flex justify-end mb-6"><div className="h-10 w-28 bg-gray-200 rounded-full animate-pulse" /></div>}>
               <FoodLogControls
                 onAddFood={() => setIsModalOpen(true)}
                 clipboardEntries={clipboardEntries}
@@ -231,7 +256,18 @@ export default function LogPage() {
             
             {/* Food entries table */}
             <div className="mb-6">
-              <Suspense fallback={<div>Loading table...</div>}>
+              <Suspense fallback={
+                <div className="space-y-1 animate-pulse">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i}>
+                      <div className="h-9 bg-gray-300 rounded-t-lg" />
+                      <div className="space-y-px">
+                        {[...Array(2)].map((_, j) => <div key={j} className="h-10 bg-gray-100" />)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              }>
                 <DynamicFoodLogTable 
                   foodData={foodData}
                   filteredEntries={filteredEntries}
@@ -247,7 +283,16 @@ export default function LogPage() {
               </Suspense>
             </div>
             
-            <Suspense fallback={<div>Loading stats...</div>}>
+            <Suspense fallback={
+              <div className="space-y-6 animate-pulse">
+                <div className="bg-white rounded-lg p-5 shadow-lg">
+                  <div className="h-5 w-32 bg-gray-200 rounded mb-3" />
+                  <div className="flex space-x-4">
+                    {[...Array(4)].map((_, i) => <div key={i} className="flex-1 h-36 bg-gray-100 rounded-lg" />)}
+                  </div>
+                </div>
+              </div>
+            }>
               <FoodLogStats
                 displayTotals={displayTotals}
                 customGoals={customGoals}
@@ -258,6 +303,13 @@ export default function LogPage() {
           </div>
         </div>
       </div>
+
+      <UndoDeleteToast
+        show={showUndoToast}
+        itemCount={deletedEntries.length}
+        onUndo={handleUndoDelete}
+        onDismiss={handleDismissUndo}
+      />
     </div>
   );
 }

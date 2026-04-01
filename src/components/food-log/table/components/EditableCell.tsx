@@ -183,7 +183,7 @@ export const EditableCell = memo(({
           onChange={e => setEditUnit(e.target.value)}
           onKeyDown={e => handleKeyDown(e, true)}
           onBlur={handleBlur}
-          className="p-1 border rounded text-sm bg-white cursor-pointer focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-16 border-gray-300"
+          className="p-1 border rounded text-sm bg-white cursor-pointer focus:ring-2 focus:ring-violet-500 focus:border-violet-500 w-16 border-gray-300"
           aria-label="Edit unit"
           onClick={stopPropagation}
           onPointerDown={stopPropagation}

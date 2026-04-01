@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState, useLayoutEffect } from 'react';
 import { ContextMenuState, FoodEntry } from '../../types/food';
 
 interface ContextMenuProps {
@@ -20,6 +20,20 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   onPasteEntries,
   onDeleteSelectedEntries
 }) => {
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ left: 0, top: 0 });
+
+  useLayoutEffect(() => {
+    if (!contextMenu.visible) return;
+    const el = menuRef.current;
+    const menuWidth = el?.offsetWidth ?? 200;
+    const menuHeight = el?.offsetHeight ?? 200;
+    setPosition({
+      left: Math.min(contextMenu.x, window.innerWidth - menuWidth - 8),
+      top: Math.min(contextMenu.y, window.innerHeight - menuHeight - 8),
+    });
+  }, [contextMenu.visible, contextMenu.x, contextMenu.y]);
+
   if (!contextMenu.visible) return null;
 
   // Use selectedEntries for accessibility/data attributes without displaying count
@@ -27,10 +41,11 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
 
   return (
     <div
+      ref={menuRef}
       className="fixed bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1 min-w-48"
       style={{
-        left: Math.min(contextMenu.x, window.innerWidth - 200),
-        top: Math.min(contextMenu.y, window.innerHeight - 200),
+        left: position.left,
+        top: position.top,
       }}
       onClick={(e) => e.stopPropagation()}
       data-has-selection={hasSelection}

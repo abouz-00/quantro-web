@@ -19,8 +19,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header 
-      className="w-full h-16 flex items-center justify-between px-6 shadow-sm relative transition-all duration-300 rounded-b-3xl" 
-      style={{ backgroundColor: '#6e44ff' }}
+      className="w-full h-16 flex items-center justify-between px-6 shadow-sm relative transition-all duration-300 rounded-b-3xl bg-primary"
     >
       <div className="flex items-center">
         <button
@@ -59,7 +58,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Backdrop */}
             <div 
               className="fixed inset-0 transition-opacity duration-300 z-40"
-              style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}
+              style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }}
               onClick={() => setIsMainMenuOpen(false)}
               data-testid="menu-backdrop"
             />
@@ -82,7 +81,7 @@ export const Header: React.FC<HeaderProps> = ({
                     }}
                     className="w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
                   >
-                    <span className="font-medium text-base flex items-center gap-2" style={{ color: '#6e44ff' }}>
+                    <span className="font-medium text-base flex items-center gap-2 text-primary">
                       🏠 Dashboard
                     </span>
                   </button>
@@ -93,7 +92,7 @@ export const Header: React.FC<HeaderProps> = ({
                     }}
                     className="w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
                   >
-                    <span className="font-medium text-base flex items-center gap-2" style={{ color: '#6e44ff' }}>
+                    <span className="font-medium text-base flex items-center gap-2 text-primary">
                       🎯 Set Targets
                     </span>
                   </button>
@@ -107,7 +106,7 @@ export const Header: React.FC<HeaderProps> = ({
                     }}
                     className="w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
                   >
-                    <span className="font-medium text-base flex items-center gap-2" style={{ color: '#6e44ff' }}>
+                    <span className="font-medium text-base flex items-center gap-2 text-primary">
                       🚪 Sign Out
                     </span>
                   </button>

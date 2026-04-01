@@ -170,13 +170,10 @@ export default function DatePickerComponent({
               <button
                 type="button"
                 onClick={handleGoToToday}
-                className="w-full py-2.5 text-sm font-semibold rounded-xl transition-colors duration-150 cursor-pointer border-none outline-none"
+                className="w-full py-2.5 text-sm font-semibold rounded-xl transition-colors duration-150 cursor-pointer border-none outline-none hover:!bg-[rgba(110,68,255,0.15)] text-primary"
                 style={{
                   backgroundColor: 'rgba(110, 68, 255, 0.08)',
-                  color: '#6e44ff',
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(110, 68, 255, 0.15)'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(110, 68, 255, 0.08)'}
               >
                 Go to Today
               </button>
