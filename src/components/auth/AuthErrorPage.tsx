@@ -24,7 +24,7 @@ export default function AuthErrorPage({ error }: AuthErrorPageProps) {
   };
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center" style={{ backgroundColor: '#6e44ff' }}>
+    <div className="h-screen w-screen flex items-center justify-center bg-primary">
       <div className="text-center px-6 py-8 max-w-md mx-auto">
         <div className="bg-white rounded-xl p-8 shadow-lg">
           <div className="mb-6">

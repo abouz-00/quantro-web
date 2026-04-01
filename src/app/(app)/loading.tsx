@@ -1,8 +1,8 @@
 export default function AppLoading() {
   return (
-    <div className="min-h-screen animate-pulse" style={{ backgroundColor: '#F5F0E7' }}>
+    <div className="min-h-screen animate-pulse bg-page">
       {/* Header skeleton */}
-      <div className="sticky top-0 z-50 shadow-sm" style={{ backgroundColor: '#6e44ff' }}>
+      <div className="sticky top-0 z-50 shadow-sm bg-primary">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="h-10 w-28 bg-white/20 rounded-lg" />
           <div className="h-9 w-20 bg-white/20 rounded-lg" />

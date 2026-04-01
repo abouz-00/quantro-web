@@ -8,7 +8,7 @@
   background: white;
   color: #111827;
   cursor: pointer;
-  transition: none !important;
+  transition: background-color 0.15s ease;
   transform-origin: center center;
   box-shadow: none !important;
   z-index: auto !important;
@@ -42,6 +42,9 @@
 }
 .foodTableRow:nth-child(even):not(.selected):not(.draggingItem) {
   background: #f3f4f6 !important; /* lighter gray-100 */
+}
+.foodTableRow:not(.selected):not(.draggingItem):hover {
+  background: #ede9fe !important; /* violet-100 */
 }
 .foodTableRow.selected {
   background-color: #c4b5fd !important; /* lighter purple */

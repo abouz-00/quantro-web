@@ -10,6 +10,7 @@ const config = {
       },
       colors: {
         primary: '#6E44FF',
+        page: '#F5F0E7',
         success: '#7EE081',
         danger: '#E55640',
         warning: '#F0E15B',

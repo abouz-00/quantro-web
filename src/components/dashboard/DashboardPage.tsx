@@ -53,9 +53,9 @@ export default function DashboardPage({ session }: DashboardPageProps) {
   const hasLoggedToday = totals.calories > 0;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F5F0E7' }}>
+    <div className="min-h-screen bg-page">
       {/* Sticky Header */}
-      <header className="sticky top-0 z-50 w-full h-16 flex items-center justify-between px-6 shadow-sm rounded-b-3xl" style={{ backgroundColor: '#6e44ff' }}>
+      <header className="sticky top-0 z-50 w-full h-16 flex items-center justify-between px-6 shadow-sm rounded-b-3xl bg-primary">
         <button
           onClick={() => router.push('/dashboard')}
           className="p-1 rounded-lg transition-all duration-200 cursor-pointer"

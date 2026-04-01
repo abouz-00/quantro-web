@@ -35,10 +35,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
         <Button
           onClick={onAddFood}
           variant="default"
-          className="flex items-center text-white px-4 py-2 rounded-full text-sm font-medium cursor-pointer"
-          style={{ backgroundColor: '#6e44ff' }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#5a37d9'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#6e44ff'}
+          className="flex items-center text-white px-4 py-2 rounded-full text-sm font-medium cursor-pointer bg-primary hover:bg-[#5a37d9] active:bg-[#4e2fc7]"
         >
           <HiPlus className="mr-1 h-5 w-5" />
           Add Food

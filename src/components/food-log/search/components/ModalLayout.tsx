@@ -23,7 +23,7 @@ const TabButton = ({
 }) => (
   <button
     onClick={() => setActiveTab(tab)}
-    className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ${
+    className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-all duration-200 ${
       activeTab === tab 
         ? "bg-white text-violet-600 shadow-sm" 
         : "text-gray-700 hover:text-gray-900"
@@ -71,8 +71,8 @@ export const ModalLayout: React.FC<ModalLayoutProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 flex items-center justify-center z-50 p-4" 
-      style={{ backgroundColor: 'rgba(0, 0, 0, 0.15)' }}
+      className="fixed inset-0 flex items-center justify-center z-50 p-4 animate-modal-backdrop" 
+      style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }}
       onClick={(e) => {
         // Only close if clicking on the backdrop itself
         if (e.target === e.currentTarget) {
@@ -81,7 +81,7 @@ export const ModalLayout: React.FC<ModalLayoutProps> = ({
       }}
     >
       <div
-        className="bg-white rounded-sm shadow-xl h-[600px] max-h-[90vh] food-search-modal flex flex-col"
+        className="bg-white rounded-sm shadow-xl h-[600px] max-h-[90vh] food-search-modal flex flex-col animate-modal-content"
         style={{
           width: '60vw',
           minWidth: '320px',

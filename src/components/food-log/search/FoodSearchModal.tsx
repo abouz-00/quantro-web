@@ -59,7 +59,7 @@ const TabButton = ({
 }) => (
   <button
     onClick={() => setActiveTab(tab)}
-    className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ${
+    className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-all duration-200 ${
       activeTab === tab 
         ? "bg-white text-violet-600 shadow-sm" 
         : "text-gray-700 hover:text-gray-900"

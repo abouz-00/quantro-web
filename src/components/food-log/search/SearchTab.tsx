@@ -161,7 +161,17 @@ export default function SearchTab({
       <div className="flex-1 overflow-y-auto">
         <div className="bg-white rounded-sm shadow-sm border border-gray-100">
           {loading && (
-            <div className="py-8 text-center text-gray-400">Loading...</div>
+            <div className="py-4 space-y-3 px-3">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="flex items-center space-x-3 animate-pulse">
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-3 bg-gray-100 rounded w-1/2"></div>
+                  </div>
+                  <div className="h-4 w-4 bg-gray-200 rounded-full"></div>
+                </div>
+              ))}
+            </div>
           )}
           {error && !loading && (
             <div className="py-8 text-center text-red-500">{error}</div>

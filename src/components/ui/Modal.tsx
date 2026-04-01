@@ -84,8 +84,8 @@ export function Modal({
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center z-50 p-4"
-      style={{ backgroundColor: "rgba(0, 0, 0, 0.15)" }}
+      className="fixed inset-0 flex items-center justify-center z-50 p-4 animate-modal-backdrop"
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.4)" }}
       onClick={(e) => {
         // Only close if clicking on the backdrop itself
         if (e.target === e.currentTarget) {
@@ -94,7 +94,7 @@ export function Modal({
       }}
     >
       <div
-        className="bg-white rounded-sm shadow-xl flex flex-col"
+        className="bg-white rounded-sm shadow-xl flex flex-col animate-modal-content"
         style={{
           width: "60vw",
           minWidth: "320px",

@@ -14,7 +14,7 @@ function AuthErrorContent() {
 export default function AuthError() {
   return (
     <Suspense fallback={
-      <div className="h-screen w-screen flex items-center justify-center" style={{ backgroundColor: '#6e44ff' }}>
+      <div className="h-screen w-screen flex items-center justify-center bg-primary">
         <div className="text-white text-xl">Loading...</div>
       </div>
     }>
