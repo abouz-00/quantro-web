@@ -77,6 +77,17 @@ export const Header: React.FC<HeaderProps> = ({
                 <nav>
                   <button
                     onClick={() => {
+                      setIsMainMenuOpen(false);
+                      router.push('/dashboard');
+                    }}
+                    className="w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                  >
+                    <span className="font-medium text-base flex items-center gap-2" style={{ color: '#6e44ff' }}>
+                      🏠 Dashboard
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => {
                       setIsTargetsModalOpen(true);
                       setIsMainMenuOpen(false);
                     }}
