@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import Dashboard from '../page';
 
 // Mock the InviteHandler component to avoid useSearchParams issues
@@ -46,41 +45,23 @@ jest.mock('next/image', () => {
   };
 });
 
-// Mock next/font/google
-jest.mock('next/font/google', () => ({
-  Poppins: () => ({
-    className: 'mocked-poppins',
-  }),
-}));
-
 const mockUseSession = useSession as jest.MockedFunction<typeof useSession>;
-const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>;
 
 describe('Dashboard Page', () => {
-  const mockRouter = {
-    push: jest.fn(),
-    replace: jest.fn(),
-    back: jest.fn(),
-    forward: jest.fn(),
-    refresh: jest.fn(),
-    prefetch: jest.fn(),
-  };
-
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUseRouter.mockReturnValue(mockRouter as unknown as ReturnType<typeof useRouter>);
   });
 
-  it('renders loading state when session is loading', () => {
+  it('renders nothing when session is not available', () => {
     mockUseSession.mockReturnValue({
       data: null,
       status: 'loading',
       update: jest.fn(),
     });
 
-    render(<Dashboard />);
+    const { container } = render(<Dashboard />);
     
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(container.firstChild).toBeNull();
   });
 
   it('renders dashboard with authenticated session', () => {
@@ -100,24 +81,20 @@ describe('Dashboard Page', () => {
 
     render(<Dashboard />);
     
-    // The dashboard only shows email, not the name
-    expect(screen.getByText('john@example.com')).toBeInTheDocument();
-    expect(screen.getByText('Signed in as:')).toBeInTheDocument();
+    // The dashboard shows a greeting with the user's first name
+    expect(screen.getByText(/John/)).toBeInTheDocument();
   });
 
-  it('redirects when not authenticated', () => {
-    const mockRouter = { push: jest.fn() };
-    (useRouter as jest.Mock).mockReturnValue(mockRouter);
-
+  it('renders nothing when not authenticated', () => {
     mockUseSession.mockReturnValue({
       data: null,
       status: 'unauthenticated',
       update: jest.fn(),
     });
 
-    render(<Dashboard />);
+    const { container } = render(<Dashboard />);
     
-    expect(mockRouter.push).toHaveBeenCalledWith('/');
+    expect(container.firstChild).toBeNull();
   });
 
   it('displays Quantro logo', () => {
@@ -156,9 +133,7 @@ describe('Dashboard Page', () => {
 
     render(<Dashboard />);
 
-    // Check if sign out button exists
     expect(screen.getByText('Sign Out')).toBeInTheDocument();
-    expect(screen.getByText('john@example.com')).toBeInTheDocument();
   });
 
   it('renders with user image when provided', () => {
@@ -178,8 +153,7 @@ describe('Dashboard Page', () => {
 
     render(<Dashboard />);
     
-    // The dashboard only shows email, not the name
-    expect(screen.getByText('jane@example.com')).toBeInTheDocument();
-    expect(screen.getByText('Signed in as:')).toBeInTheDocument();
+    // The dashboard shows a greeting with the user's first name
+    expect(screen.getByText(/Jane/)).toBeInTheDocument();
   });
 });
