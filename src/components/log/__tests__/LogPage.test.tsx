@@ -347,7 +347,7 @@ describe('LogPage', () => {
     // Check that the main page structure is rendered
     const mainContainer = document.querySelector('.h-screen.flex.flex-col');
     expect(mainContainer).toBeInTheDocument();
-    expect(mainContainer).toHaveStyle({ backgroundColor: 'rgb(245, 240, 231)' });
+    expect(mainContainer).toHaveClass('bg-page');
   });
 
   it('renders essential components', async () => {
