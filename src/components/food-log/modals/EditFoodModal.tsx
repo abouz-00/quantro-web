@@ -46,7 +46,7 @@ export default function EditFoodModal({
     } else if (!isOpen) {
       setEditedEntry(null);
     }
-  }, [entry?.id, isOpen]); // Only depend on entry.id to avoid unnecessary updates
+  }, [entry, isOpen]);
 
   if (!isOpen || !entry || !editedEntry) {
     return null;
