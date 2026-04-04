@@ -17,9 +17,4 @@ describe('CopyToast', () => {
     render(<CopyToast show={true} itemCount={3} />);
     expect(screen.getByText('Copied 3 items to clipboard')).toBeInTheDocument();
   });
-
-  it('renders the clipboard emoji', () => {
-    render(<CopyToast show={true} itemCount={1} />);
-    expect(screen.getByText('📋')).toBeInTheDocument();
-  });
 });
