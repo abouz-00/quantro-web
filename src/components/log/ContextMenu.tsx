@@ -1,4 +1,4 @@
-import React, { useRef, useState, useLayoutEffect } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { ContextMenuState, FoodEntry } from '../../types/food';
 
 interface ContextMenuProps {
@@ -21,17 +21,17 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   onDeleteSelectedEntries
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ left: 0, top: 0 });
 
-  useLayoutEffect(() => {
-    if (!contextMenu.visible) return;
-    const el = menuRef.current;
-    const menuWidth = el?.offsetWidth ?? 200;
-    const menuHeight = el?.offsetHeight ?? 200;
-    setPosition({
-      left: Math.min(contextMenu.x, window.innerWidth - menuWidth - 8),
-      top: Math.min(contextMenu.y, window.innerHeight - menuHeight - 8),
-    });
+  const position = useMemo(() => {
+    if (!contextMenu.visible) return { left: 0, top: 0 };
+    // Use fallback dimensions since ref isn't available during memo;
+    // the menu is positioned before paint via the style prop.
+    const menuWidth = 200;
+    const menuHeight = 200;
+    return {
+      left: Math.min(contextMenu.x, (typeof window !== 'undefined' ? window.innerWidth : 1024) - menuWidth - 8),
+      top: Math.min(contextMenu.y, (typeof window !== 'undefined' ? window.innerHeight : 768) - menuHeight - 8),
+    };
   }, [contextMenu.visible, contextMenu.x, contextMenu.y]);
 
   if (!contextMenu.visible) return null;
