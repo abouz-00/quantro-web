@@ -64,6 +64,7 @@ describe('ActionButtons Component', () => {
     clipboardEntries: [],
     filteredEntries: [mockFoodEntry],
     selectedEntries: [],
+    onCopyPreviousDay: jest.fn(),
     onCopyCurrentDay: jest.fn(),
     onCopySelectedItems: jest.fn(),
     onPasteEntries: jest.fn(),
