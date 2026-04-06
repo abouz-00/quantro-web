@@ -159,20 +159,14 @@ export function useFoodTableDragDrop({
       return overData.mealType && overData.mealType !== activeEntry.mealType ? overData.mealType : null;
     }
     
-    // Dropped on another entry - use filteredEntries for the original mealType
-    // to avoid using mealTypes that were temporarily modified during handleDragOver
-    const overEntry = filteredEntries.find(e => e.id === over.id);
+    // Dropped on another entry
+    const overEntry = entryByIdMap.get(over.id);
     if (overEntry && overEntry.mealType !== activeEntry.mealType) {
       return overEntry.mealType;
     }
     
     return null;
-  }, [filteredEntries]);
-
-  // Build a map from entry ID to original mealType from filteredEntries (source of truth)
-  const originalMealTypeMap = useMemo(() => {
-    return new Map(filteredEntries.map(e => [e.id, e.mealType]));
-  }, [filteredEntries]);
+  }, [entryByIdMap]);
 
   // Handle drag end - finalize changes
   const handleDragEnd = useCallback((event: DragEndEvent) => {
@@ -182,40 +176,24 @@ export function useFoodTableDragDrop({
     const { active, over } = event;
     
     if (!over || active.id === over.id) {
-      // Drag was cancelled or dropped in same position - reset to source of truth
-      // to discard any mealType changes made during handleDragOver preview
-      setCurrentEntries(filteredEntries);
       return;
     }
 
-    // Look up the ORIGINAL entry from filteredEntries (source of truth)
-    const originalEntry = filteredEntries.find(e => e.id === active.id);
-    if (!originalEntry) {
-      setCurrentEntries(filteredEntries);
-      return;
-    }
+    const activeEntry = entryByIdMap.get(active.id as string);
+    if (!activeEntry) return;
 
-    // Check if meal type needs to change based on drop target, using the ORIGINAL mealType
-    const dropTarget = { id: String(over.id), data: over.data };
-    const newMealType = getMealTypeFromDrop(dropTarget, originalEntry);
+    let finalEntries = [...currentEntries];
     
-    // Use currentEntries for ordering (preserves drag preview position),
-    // but restore original mealTypes for ALL non-dragged entries to prevent
-    // handleDragOver preview changes from leaking into persisted state
-    let finalEntries = currentEntries.map(entry => {
-      if (entry.id === active.id) {
-        // For the dragged entry: apply the intended mealType change (or restore original)
-        return { ...entry, mealType: newMealType || originalEntry.mealType };
-      }
-      // For all other entries: restore their original mealType from filteredEntries
-      const origMealType = originalMealTypeMap.get(entry.id);
-      if (origMealType !== undefined && entry.mealType !== origMealType) {
-        return { ...entry, mealType: origMealType };
-      }
-      return entry;
-    });
-
+    // Check if meal type needs to change
+    const dropTarget = { id: String(over.id), data: over.data };
+    const newMealType = getMealTypeFromDrop(dropTarget, activeEntry);
     if (newMealType) {
+      finalEntries = finalEntries.map(entry => 
+        entry.id === active.id 
+          ? { ...entry, mealType: newMealType }
+          : entry
+      );
+      
       // Persist the meal type change
       updateFoodEntry?.(active.id as string, { mealType: newMealType });
     }
@@ -223,7 +201,7 @@ export function useFoodTableDragDrop({
     // Update state and notify parent
     setCurrentEntries(finalEntries);
     onReorderEntries(finalEntries);
-  }, [currentEntries, filteredEntries, getMealTypeFromDrop, updateFoodEntry, onReorderEntries, originalMealTypeMap]);
+  }, [currentEntries, getMealTypeFromDrop, updateFoodEntry, onReorderEntries, entryByIdMap]);
 
   return {
     currentEntries,
