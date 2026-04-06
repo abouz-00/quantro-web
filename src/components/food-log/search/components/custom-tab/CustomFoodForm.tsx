@@ -28,21 +28,20 @@ export const CustomFoodForm: React.FC<CustomFoodFormProps> = ({
   const getInputErrorClass = (field: string) => {
     const hasError = hasFieldError && hasFieldError(field);
     return hasError 
-      ? 'w-full p-2 border rounded-sm border-red-500 bg-red-50'
-      : 'w-full p-2 border rounded-sm border-gray-300';
+      ? 'w-full p-2 border rounded-xl border-red-500 bg-red-50'
+      : 'w-full p-2 border rounded-xl border-gray-300';
   };
 
   // Helper function to get number input error class
   const getNumberInputErrorClass = (field: string) => {
     const hasError = hasFieldError && hasFieldError(field);
     return hasError 
-      ? 'w-full p-2 border rounded-sm border-red-500 bg-red-50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
-      : 'w-full p-2 border rounded-sm border-gray-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none';
+      ? 'w-full p-2 border rounded-xl border-red-500 bg-red-50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+      : 'w-full p-2 border rounded-xl border-gray-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none';
   };
 
   return (
     <div className="mb-6">
-      <h3 className="font-medium mb-3">Create Custom Food</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="md:col-span-2">
           <label className="block text-sm font-medium mb-1">Food Name</label>
@@ -137,7 +136,7 @@ export const CustomFoodForm: React.FC<CustomFoodFormProps> = ({
       <button
         onClick={onSubmit}
         disabled={isLoading}
-        className="mt-4 w-full bg-violet-500 text-white py-2 px-4 rounded-sm hover:bg-violet-600 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors duration-200 flex items-center justify-center"
+        className="mt-4 w-full bg-primary text-white py-2 px-4 rounded-xl hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors duration-200 flex items-center justify-center"
       >
         {isLoading ? (
           <>

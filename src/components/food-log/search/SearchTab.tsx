@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
+import { MdFavorite } from "react-icons/md";
 
 interface USDAFood {
   description: string;
@@ -24,6 +25,7 @@ interface SearchTabProps {
   handleAddFood: () => void;
   loading?: boolean;
   error?: string;
+  favorites?: USDAFood[];
 }
 
 export default function SearchTab({
@@ -38,6 +40,7 @@ export default function SearchTab({
   handleAddFood,
   loading = false,
   error = "",
+  favorites = [],
 }: SearchTabProps) {
   const [highlightedIdx, setHighlightedIdx] = useState<number>(-1);
   const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
@@ -84,11 +87,11 @@ export default function SearchTab({
       id={getRowId(idx)}
       ref={el => { rowRefs.current[idx] = el; }}
       onClick={() => handleSelectFood(food, idx)}
-      className={`food-table-row border-b border-gray-200 last:border-0 transition-colors duration-150 cursor-pointer ${
+      className={`food-table-row transition-colors duration-150 cursor-pointer ${
         selectedFood?.uniqueId === (food.uniqueId || `${food.description}_${idx}`)
           ? "selected bg-violet-50 border-l-4 border-l-violet-500"
           : "hover:bg-violet-50"
-      } ${highlightedIdx === idx ? "ring-2 ring-violet-400" : ""}`}
+      } ${highlightedIdx === idx ? "bg-violet-50" : ""}`}
       role="option"
       aria-selected={highlightedIdx === idx}
       tabIndex={-1}
@@ -119,9 +122,57 @@ export default function SearchTab({
     </tr>
   ), [selectedFood, highlightedIdx, capitalizeWords, isFavorite, toggleFavorite, handleSelectFood]);
 
+  // Whether we're showing search results or favorites
+  const showingSearch = localQuery.length > 1;
+  const memoizedFavorites = useMemo(() => favorites, [favorites]);
+
+  // Render a favorite food row (used when no search query)
+  const renderFavoriteRow = useCallback((food: USDAFood, idx: number) => {
+    const favoriteIdx = idx + 1000; // offset to avoid collision with search indices
+    return (
+      <tr
+        key={`fav-${food.description}_${idx}`}
+        ref={el => { rowRefs.current[idx] = el; }}
+        onClick={() => handleSelectFood(food, favoriteIdx)}
+        className={`food-table-row transition-colors duration-150 cursor-pointer ${
+          selectedFood?.uniqueId === `${food.description}_${favoriteIdx}`
+            ? "selected bg-violet-50 border-l-4 border-l-violet-500"
+            : "hover:bg-violet-50"
+        } ${highlightedIdx === idx ? "bg-violet-50" : ""}`}
+        role="option"
+        aria-selected={highlightedIdx === idx}
+        tabIndex={-1}
+        onMouseEnter={() => setHighlightedIdx(idx)}
+      >
+        <td className="py-2 pl-2 pr-2">
+          <div className="flex items-center space-x-2">
+            <div className="flex-1">
+              <div className="font-medium">{capitalizeWords(food.description)}</div>
+              {food.foodCategory && (
+                <div className="text-sm text-gray-500">{food.foodCategory}</div>
+              )}
+            </div>
+          </div>
+        </td>
+        <td className="py-2 px-2 text-right">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleFavorite(food);
+            }}
+            className="text-yellow-400 hover:text-yellow-500 cursor-pointer star-button transition-colors duration-200"
+            aria-label="Remove from favorites"
+          >
+            <FaStar size={16} />
+          </button>
+        </td>
+      </tr>
+    );
+  }, [selectedFood, highlightedIdx, capitalizeWords, toggleFavorite, handleSelectFood]);
+
   return (
     <div className="h-full flex flex-col">
-      <div className="relative mt-10 mb-10">
+      <div className="relative mb-3">
         <div className="absolute inset-y-0 left-0 flex items-center justify-center z-30 rounded-sm" style={{background: 'rgba(156, 163, 175, 0.15)', width: '36px'}}>
           <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -138,7 +189,8 @@ export default function SearchTab({
               handleAddFood();
             }
           }}
-          className="w-full pl-12 pr-12 py-3 text-sm border border-gray-300 rounded-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 placeholder-gray-400"
+          className="w-full pl-12 pr-12 py-3 text-sm border border-gray-300 rounded-xl bg-white outline-none ring-0 focus:outline-none focus:ring-0 focus:border-gray-300 focus:shadow-none transition-all duration-200 placeholder-gray-400"
+          style={{ boxShadow: 'none' }}
           autoFocus
           aria-label="Search all foods"
           aria-autocomplete="list"
@@ -159,42 +211,72 @@ export default function SearchTab({
         )}
       </div>
       <div className="flex-1 overflow-y-auto">
-        <div className="bg-white rounded-sm shadow-sm border border-gray-100">
-          {loading && (
-            <div className="py-4 space-y-3 px-3">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="flex items-center space-x-3 animate-pulse">
-                  <div className="flex-1 space-y-2">
-                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-3 bg-gray-100 rounded w-1/2"></div>
+        {showingSearch ? (
+          <div className="bg-white rounded-sm shadow-sm border border-gray-100">
+            {loading && (
+              <div className="py-4 space-y-3 px-3">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="flex items-center space-x-3 animate-pulse">
+                    <div className="flex-1 space-y-2">
+                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                      <div className="h-3 bg-gray-100 rounded w-1/2"></div>
+                    </div>
+                    <div className="h-4 w-4 bg-gray-200 rounded-full"></div>
                   </div>
-                  <div className="h-4 w-4 bg-gray-200 rounded-full"></div>
+                ))}
+              </div>
+            )}
+            {error && !loading && (
+              <div className="py-8 text-center text-red-500">{error}</div>
+            )}
+            {!loading && !error && (
+              <>
+                <table className="w-full table-fixed" role="listbox" id="food-suggestion-list" aria-label="Food suggestions">
+                  <colgroup>
+                    <col className="w-auto" />
+                    <col className="w-16" />
+                  </colgroup>
+                  <tbody>
+                    {memoizedSuggestions.length === 0 && localQuery.length > 1 && (
+                      <tr>
+                        <td colSpan={2} className="py-8 text-center text-gray-400">No results found.</td>
+                      </tr>
+                    )}
+                    {memoizedSuggestions.map(renderSuggestionRow)}
+                  </tbody>
+                </table>
+              </>
+            )}
+          </div>
+        ) : (
+          <div>
+            {memoizedFavorites.length > 0 && (
+              <>
+                <h3 className="font-medium mb-2 text-sm text-gray-500 flex items-center gap-1.5">
+                  <FaStar className="text-yellow-400" size={12} />
+                  Favorites
+                </h3>
+                <div className="bg-white rounded-sm shadow-sm border border-gray-100">
+                  <table className="w-full table-fixed" role="listbox" aria-label="Favorite foods">
+                    <colgroup>
+                      <col className="w-auto" />
+                      <col className="w-16" />
+                    </colgroup>
+                    <tbody>
+                      {memoizedFavorites.map(renderFavoriteRow)}
+                    </tbody>
+                  </table>
                 </div>
-              ))}
-            </div>
-          )}
-          {error && !loading && (
-            <div className="py-8 text-center text-red-500">{error}</div>
-          )}
-          {!loading && !error && (
-            <>
-              <table className="w-full table-fixed" role="listbox" id="food-suggestion-list" aria-label="Food suggestions">
-                <colgroup>
-                  <col className="w-auto" />
-                  <col className="w-16" />
-                </colgroup>
-                <tbody>
-                  {memoizedSuggestions.length === 0 && localQuery.length > 1 && (
-                    <tr>
-                      <td colSpan={2} className="py-8 text-center text-gray-400">No results found.</td>
-                    </tr>
-                  )}
-                  {memoizedSuggestions.map(renderSuggestionRow)}
-                </tbody>
-              </table>
-            </>
-          )}
-        </div>
+              </>
+            )}
+            {memoizedFavorites.length === 0 && (
+              <p className="text-gray-500 text-center py-8">
+                No favorites yet.<br />
+                <span className="text-violet-600">Tip:</span> Star foods from search results to add them here!
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

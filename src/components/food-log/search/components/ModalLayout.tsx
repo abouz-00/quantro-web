@@ -3,8 +3,8 @@ import { FaTimes } from "react-icons/fa";
 
 interface ModalLayoutProps {
   onClose: () => void;
-  activeTab: "search" | "favorites" | "custom";
-  setActiveTab: (tab: "search" | "favorites" | "custom") => void;
+  activeTab: "search" | "custom";
+  setActiveTab: (tab: "search" | "custom") => void;
   children: React.ReactNode;
   bottomSection?: React.ReactNode;
 }
@@ -16,17 +16,17 @@ const TabButton = ({
   activeTab,
   setActiveTab
 }: { 
-  tab: "search" | "favorites" | "custom"; 
+  tab: "search" | "custom"; 
   label: string;
-  activeTab: "search" | "favorites" | "custom";
-  setActiveTab: (tab: "search" | "favorites" | "custom") => void;
+  activeTab: "search" | "custom";
+  setActiveTab: (tab: "search" | "custom") => void;
 }) => (
   <button
     onClick={() => setActiveTab(tab)}
-    className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-all duration-200 ${
+    className={`flex-1 py-2 px-4 rounded-xl text-sm font-medium cursor-pointer transition-all duration-200 ${
       activeTab === tab 
-        ? "bg-white text-violet-600 shadow-sm" 
-        : "text-gray-700 hover:text-gray-900"
+        ? "bg-primary text-white shadow-sm" 
+        : "text-gray-600 hover:bg-violet-50 hover:text-violet-700"
     }`}
   >
     {label}
@@ -81,7 +81,7 @@ export const ModalLayout: React.FC<ModalLayoutProps> = ({
       }}
     >
       <div
-        className="bg-white rounded-sm shadow-xl h-[600px] max-h-[90vh] food-search-modal flex flex-col animate-modal-content"
+        className="bg-white rounded-2xl shadow-xl h-[600px] max-h-[90vh] food-search-modal flex flex-col animate-modal-content"
         style={{
           width: '60vw',
           minWidth: '320px',
@@ -103,9 +103,8 @@ export const ModalLayout: React.FC<ModalLayoutProps> = ({
           </div>
           
           {/* Tab Navigation */}
-          <div className="flex space-x-1 bg-gray-100 rounded-sm p-1">
+          <div className="flex space-x-1 bg-gray-100 rounded-xl p-1">
             <TabButton tab="search" label="Search" activeTab={activeTab} setActiveTab={setActiveTab} />
-            <TabButton tab="favorites" label="Favorites" activeTab={activeTab} setActiveTab={setActiveTab} />
             <TabButton tab="custom" label="Custom" activeTab={activeTab} setActiveTab={setActiveTab} />
           </div>
         </div>

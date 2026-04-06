@@ -94,7 +94,7 @@ export function Modal({
       }}
     >
       <div
-        className="bg-white rounded-sm shadow-xl flex flex-col animate-modal-content"
+        className="bg-white rounded-2xl shadow-xl flex flex-col animate-modal-content"
         style={{
           width: "60vw",
           minWidth: "320px",
