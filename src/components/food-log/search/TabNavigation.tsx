@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 
-type TabKey = "search" | "favorites" | "custom";
+type TabKey = "search" | "custom";
 
 interface TabNavigationProps {
   activeTab: TabKey;
@@ -9,7 +9,6 @@ interface TabNavigationProps {
 
 const tabs: { key: TabKey; label: string }[] = [
   { key: "search", label: "Search" },
-  { key: "favorites", label: "Favorites" },
   { key: "custom", label: "Custom" },
 ];
 
@@ -34,7 +33,7 @@ export default function TabNavigation({ activeTab, setActiveTab }: TabNavigation
 
   return (
     <div
-      className="flex space-x-1 bg-gray-100 rounded-sm p-1"
+      className="flex space-x-1 bg-gray-100 rounded-xl p-1"
       role="tablist"
       aria-label="Food search tabs"
       tabIndex={0}
@@ -47,10 +46,10 @@ export default function TabNavigation({ activeTab, setActiveTab }: TabNavigation
             buttonRefs.current[i] = el;
           }}
           onClick={() => setActiveTab(tab.key)}
-          className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-colors duration-200 ${
+          className={`flex-1 py-2 px-4 rounded-xl text-sm font-medium cursor-pointer transition-colors duration-200 ${
             activeTab === tab.key
-              ? "bg-white text-violet-600 shadow-sm"
-              : "text-gray-600 hover:text-gray-800"
+              ? "bg-primary text-white shadow-sm"
+              : "text-gray-600 hover:bg-violet-50 hover:text-violet-700"
           }`}
           role="tab"
           aria-selected={activeTab === tab.key}

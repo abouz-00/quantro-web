@@ -13,7 +13,6 @@ import { FoodSelectionSection } from "./components/FoodSelectionSection";
 import { capitalizeWords } from "./utils/nutritionUtils";
 
 import SearchTab from "./SearchTab";
-import FavoritesTab from "./FavoritesTab";
 import CustomTab from "./CustomTab";
 
 interface Nutrients {
@@ -52,17 +51,17 @@ const TabButton = ({
   activeTab,
   setActiveTab
 }: { 
-  tab: "search" | "favorites" | "custom"; 
+  tab: "search" | "custom"; 
   label: string;
-  activeTab: "search" | "favorites" | "custom";
-  setActiveTab: (tab: "search" | "favorites" | "custom") => void;
+  activeTab: "search" | "custom";
+  setActiveTab: (tab: "search" | "custom") => void;
 }) => (
   <button
     onClick={() => setActiveTab(tab)}
-    className={`flex-1 py-2 px-4 rounded-sm text-sm font-medium cursor-pointer transition-all duration-200 ${
+    className={`flex-1 py-2 px-4 rounded-xl text-sm font-medium cursor-pointer transition-all duration-200 ${
       activeTab === tab 
-        ? "bg-white text-violet-600 shadow-sm" 
-        : "text-gray-700 hover:text-gray-900"
+        ? "bg-primary text-white shadow-sm" 
+        : "text-gray-600 hover:bg-violet-50 hover:text-violet-700"
     }`}
   >
     {label}
@@ -70,10 +69,10 @@ const TabButton = ({
 );
 
 function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalProps) {
-  const [activeTab, setActiveTab] = useState<"search" | "favorites" | "custom">("search");
+  const [activeTab, setActiveTab] = useState<"search" | "custom">("search");
   const [localQuery, setLocalQuery] = useState("");
   const [selectedFood, setSelectedFood] = useState<USDAFood | null>(null);
-  const [quantity, setQuantity] = useState("100");
+  const [quantity, setQuantity] = useState("1");
   const [unit, setUnit] = useState("Grams");
   const [mealType, setMealType] = useState<"breakfast" | "lunch" | "dinner" | "snack" | "other">("breakfast");
 
@@ -180,9 +179,8 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
     >
       <div className="p-4 h-full flex flex-col">
         {/* Tab Navigation */}
-        <div className="flex space-x-1 bg-gray-100 rounded-sm p-1 mb-4">
+        <div className="flex space-x-1 bg-gray-100 rounded-xl p-1 mb-4">
           <TabButton tab="search" label="Search" activeTab={activeTab} setActiveTab={setActiveTab} />
-          <TabButton tab="favorites" label="Favorites" activeTab={activeTab} setActiveTab={setActiveTab} />
           <TabButton tab="custom" label="Custom" activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
 
@@ -201,17 +199,7 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
               handleAddFood={handleAddFood}
               loading={searchLoading}
               error={searchError}
-            />
-          )}
-          {activeTab === "favorites" && (
-            <FavoritesTab
               favorites={favorites}
-              selectedFood={selectedFood}
-              handleSelectFood={handleSelectFood}
-              toggleFavorite={toggleFavorite}
-              capitalizeWords={capitalizeWords}
-              loading={false}
-              error={""}
             />
           )}
           {activeTab === "custom" && (
@@ -234,7 +222,7 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
         </div>
 
         {/* Bottom Section - Food Selection */}
-        {selectedFood && (activeTab === "search" || activeTab === "favorites") && (
+        {selectedFood && activeTab === "search" && (
           <FoodSelectionSection 
             selectedFood={selectedFood}
             quantity={quantity}

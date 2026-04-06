@@ -95,7 +95,7 @@ export default function CustomTab({
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col max-w-xl mx-auto">
       <ErrorDisplay error={error} />
       
       <CustomFoodForm
