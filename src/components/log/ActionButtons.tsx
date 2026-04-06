@@ -9,6 +9,7 @@ interface ActionButtonsProps {
   clipboardEntries: FoodEntry[];
   filteredEntries: FoodEntry[];
   selectedEntries: string[];
+  onCopyPreviousDay: () => void;
   onCopyCurrentDay: () => void;
   onCopySelectedItems: () => void;
   onPasteEntries: () => void;
@@ -22,6 +23,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   clipboardEntries,
   filteredEntries,
   selectedEntries,
+  onCopyPreviousDay,
   onCopyCurrentDay,
   onCopySelectedItems,
   onPasteEntries,
@@ -55,6 +57,16 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
             </Menu.Button>
             <Menu.Items className="absolute right-0 mt-1 w-56 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg z-10">
               <div className="p-1">
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${active ? 'bg-gray-100' : ''} w-full text-left px-4 py-2 cursor-pointer hover:bg-gray-100 transition-colors duration-200 rounded-md`}
+                      onClick={onCopyPreviousDay}
+                    >
+                      Copy Previous Day
+                    </button>
+                  )}
+                </Menu.Item>
                 <Menu.Item>
                   {({ active }) => (
                     <button

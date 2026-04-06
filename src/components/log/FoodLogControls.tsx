@@ -13,6 +13,7 @@ interface FoodLogControlsProps {
   clipboardEntries: FoodEntry[];
   filteredEntries: FoodEntry[];
   selectedEntries: string[];
+  onCopyPreviousDay: () => void;
   onCopyCurrentDay: () => void;
   onCopySelectedItems: () => void;
   onPasteEntries: () => void;
@@ -44,6 +45,7 @@ export default function FoodLogControls({
   clipboardEntries,
   filteredEntries,
   selectedEntries,
+  onCopyPreviousDay,
   onCopyCurrentDay,
   onCopySelectedItems,
   onPasteEntries,
@@ -76,6 +78,7 @@ export default function FoodLogControls({
         clipboardEntries={clipboardEntries}
         filteredEntries={filteredEntries}
         selectedEntries={selectedEntries}
+        onCopyPreviousDay={onCopyPreviousDay}
         onCopyCurrentDay={onCopyCurrentDay}
         onCopySelectedItems={onCopySelectedItems}
         onPasteEntries={onPasteEntries}

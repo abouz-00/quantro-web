@@ -11,6 +11,7 @@ import { useGoals } from "../../hooks/useGoals";
 import { useDragContainment } from "../../hooks/useDragContainment";
 import { FoodEntry } from "../../types/food";
 import { generateEntryId } from "../../utils/dateUtils";
+import { FoodLogService } from "../../services/foodLogService";
 import { UndoDeleteToast } from "./UndoDeleteToast";
 
 // Dynamic imports for better performance
@@ -96,6 +97,33 @@ export default function LogPage() {
     
     copyEntries(entriesToCopy);
     closeContextMenu();
+  };
+
+  const handleCopyPreviousDay = async () => {
+    try {
+      const prevDate = new Date(selectedDate);
+      prevDate.setDate(prevDate.getDate() - 1);
+      const year = prevDate.getFullYear();
+      const month = String(prevDate.getMonth() + 1).padStart(2, '0');
+      const day = String(prevDate.getDate()).padStart(2, '0');
+      const prevDateStr = `${year}-${month}-${day}`;
+
+      const previousEntries = await FoodLogService.loadFoodData(prevDateStr);
+      if (previousEntries.length === 0) return;
+
+      const copyPromises = previousEntries.map((entry, index) => {
+        const newEntry: FoodEntry = {
+          ...entry,
+          id: generateEntryId(),
+          date: selectedDate.toISOString(),
+          orderIndex: index
+        };
+        return addFoodEntry(newEntry);
+      });
+      await Promise.all(copyPromises);
+    } catch (error) {
+      console.error('Error copying previous day entries:', error);
+    }
   };
 
   const handleCopyCurrentDay = () => {
@@ -227,6 +255,7 @@ export default function LogPage() {
                 clipboardEntries={clipboardEntries}
                 filteredEntries={filteredEntries}
                 selectedEntries={selectedEntries}
+                onCopyPreviousDay={handleCopyPreviousDay}
                 onCopyCurrentDay={handleCopyCurrentDay}
                 onCopySelectedItems={handleCopySelectedItems}
                 onPasteEntries={handlePasteEntries}
