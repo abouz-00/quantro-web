@@ -36,8 +36,8 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
       <div className="flex items-center">
         <Button
           onClick={onAddFood}
-          variant="default"
-          className="flex items-center text-white px-4 py-2 rounded-full text-sm font-medium cursor-pointer bg-primary hover:bg-[#5a37d9] active:bg-[#4e2fc7]"
+          variant="ghost"
+          className="flex items-center text-white px-4 py-2 rounded-full text-sm font-medium cursor-pointer !bg-primary hover:!bg-[#5a37d9] active:!bg-[#4e2fc7]"
         >
           <HiPlus className="mr-1 h-5 w-5" />
           Add Food

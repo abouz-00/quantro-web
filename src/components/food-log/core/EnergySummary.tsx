@@ -42,7 +42,7 @@ export default function EnergySummary({ totals, customGoals, selectedEntryCount 
           current={totals.calories}
           goal={customGoals.calories}
           unit="kcal"
-          color="#FF9F1C"
+          color="#5210A6"
           entries={entries}
         />
         <NutrientDonutChart
@@ -50,7 +50,7 @@ export default function EnergySummary({ totals, customGoals, selectedEntryCount 
           current={totals.protein}
           goal={customGoals.protein}
           unit="g"
-          color="#8BC34A"
+          color="#008C79"
           entries={entries}
         />
         <NutrientDonutChart
@@ -58,7 +58,7 @@ export default function EnergySummary({ totals, customGoals, selectedEntryCount 
           current={totals.carbs}
           goal={customGoals.carbs}
           unit="g"
-          color="#4ECDC4"
+          color="#1063A6"
           entries={entries}
         />
         <NutrientDonutChart
@@ -66,7 +66,7 @@ export default function EnergySummary({ totals, customGoals, selectedEntryCount 
           current={totals.fat}
           goal={customGoals.fat}
           unit="g"
-          color="#FF6B6B"
+          color="#A6250E"
           entries={entries}
         />
       </div>
