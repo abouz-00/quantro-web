@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, act } from '@testing-library/react'
 import { signOut } from 'next-auth/react'
 import { Header } from '../Header'
 
@@ -26,6 +26,11 @@ describe('Header Component', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.useFakeTimers()
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
   })
 
   const defaultProps = {
@@ -73,6 +78,9 @@ describe('Header Component', () => {
     fireEvent.click(targetsButton)
     
     expect(mockSetIsTargetsModalOpen).toHaveBeenCalledWith(true)
+    
+    // closeMenu defers setIsMainMenuOpen behind an animation timeout
+    act(() => { jest.advanceTimersByTime(150) })
     expect(mockSetIsMainMenuOpen).toHaveBeenCalledWith(false)
   })
 
@@ -82,6 +90,8 @@ describe('Header Component', () => {
     const signOutButton = screen.getByText('🚪 Sign Out')
     fireEvent.click(signOutButton)
     
+    // closeMenu defers setIsMainMenuOpen behind an animation timeout
+    act(() => { jest.advanceTimersByTime(150) })
     expect(mockSetIsMainMenuOpen).toHaveBeenCalledWith(false)
     expect(signOut).toHaveBeenCalledWith({
       callbackUrl: '/',
@@ -96,6 +106,8 @@ describe('Header Component', () => {
     const backdrop = screen.getByTestId('menu-backdrop')
     fireEvent.click(backdrop)
     
+    // closeMenu defers setIsMainMenuOpen behind an animation timeout
+    act(() => { jest.advanceTimersByTime(150) })
     expect(mockSetIsMainMenuOpen).toHaveBeenCalledWith(false)
   })
 

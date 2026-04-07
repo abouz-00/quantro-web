@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
-import { HiMenu } from 'react-icons/hi';
 import Image from 'next/image';
 
 interface HeaderProps {
@@ -16,6 +15,26 @@ export const Header: React.FC<HeaderProps> = ({
   setIsTargetsModalOpen
 }) => {
   const router = useRouter();
+  // Track whether the menu is mounted in DOM (for exit animation)
+  const [isMenuMounted, setIsMenuMounted] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
+  useEffect(() => {
+    if (isMainMenuOpen) {
+      setIsMenuMounted(true);
+      setIsClosing(false);
+    }
+  }, [isMainMenuOpen]);
+
+  const closeMenu = useCallback(() => {
+    setIsClosing(true);
+    // Wait for exit animation to finish before unmounting
+    setTimeout(() => {
+      setIsMainMenuOpen(false);
+      setIsMenuMounted(false);
+      setIsClosing(false);
+    }, 150);
+  }, [setIsMainMenuOpen]);
 
   return (
     <header 
@@ -44,42 +63,75 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
       
       <div className="relative">
+        {/* Animated hamburger / X button */}
         <button
-          onClick={() => setIsMainMenuOpen(!isMainMenuOpen)}
+          onClick={() => isMainMenuOpen ? closeMenu() : setIsMainMenuOpen(true)}
           className="p-2 rounded-lg transition-colors duration-200 relative z-[60] cursor-pointer"
           aria-label={isMainMenuOpen ? "Close main menu" : "Open main menu"}
         >
-          <HiMenu className="h-6 w-6 text-white" />
+          <div className="w-6 h-5 relative flex flex-col justify-center items-center">
+            <span 
+              className="block absolute h-[2px] w-5 bg-white rounded-full transition-all duration-300 ease-in-out"
+              style={{
+                transform: isMainMenuOpen 
+                  ? 'rotate(45deg)' 
+                  : 'translateY(-6px)',
+              }}
+            />
+            <span 
+              className="block absolute h-[2px] w-5 bg-white rounded-full transition-all duration-300 ease-in-out"
+              style={{
+                opacity: isMainMenuOpen ? 0 : 1,
+                transform: isMainMenuOpen ? 'translateX(10px)' : 'none',
+              }}
+            />
+            <span 
+              className="block absolute h-[2px] w-5 bg-white rounded-full transition-all duration-300 ease-in-out"
+              style={{
+                transform: isMainMenuOpen 
+                  ? 'rotate(-45deg)' 
+                  : 'translateY(6px)',
+              }}
+            />
+          </div>
         </button>
         
         {/* Dropdown Menu */}
-        {isMainMenuOpen && (
+        {isMenuMounted && (
           <>
             {/* Backdrop */}
             <div 
-              className="fixed inset-0 transition-opacity duration-300 z-40"
-              style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }}
-              onClick={() => setIsMainMenuOpen(false)}
+              className="fixed inset-0 z-40"
+              style={{ 
+                backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                animation: isClosing 
+                  ? 'backdropFadeOut 0.15s ease-in forwards' 
+                  : 'backdropFadeIn 0.2s ease-out forwards',
+              }}
+              onClick={closeMenu}
               data-testid="menu-backdrop"
             />
             
             {/* Dropdown Content */}
             <div 
-              className="absolute top-12 right-0 bg-white rounded-lg shadow-xl z-50"
+              className="absolute top-12 right-0 bg-white rounded-xl shadow-xl z-50 overflow-hidden"
               style={{ 
                 width: '12rem', 
                 minWidth: '10rem',
-                animation: 'fadeIn 0.15s ease-out'
+                transformOrigin: 'top right',
+                animation: isClosing
+                  ? 'menuSlideUp 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards'
+                  : 'menuSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
               }}
             >
-              <div className="py-2">
+              <div className="py-1">
                 <nav>
                   <button
                     onClick={() => {
-                      setIsMainMenuOpen(false);
+                      closeMenu();
                       router.push('/dashboard');
                     }}
-                    className="w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                    className="w-full text-left px-4 py-3 transition-colors duration-150 flex items-center hover:bg-gray-50 cursor-pointer"
                   >
                     <span className="font-medium text-base flex items-center gap-2 text-primary">
                       🏠 Dashboard
@@ -88,9 +140,9 @@ export const Header: React.FC<HeaderProps> = ({
                   <button
                     onClick={() => {
                       setIsTargetsModalOpen(true);
-                      setIsMainMenuOpen(false);
+                      closeMenu();
                     }}
-                    className="w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                    className="w-full text-left px-4 py-3 transition-colors duration-150 flex items-center hover:bg-gray-50 cursor-pointer"
                   >
                     <span className="font-medium text-base flex items-center gap-2 text-primary">
                       🎯 Set Targets
@@ -98,13 +150,13 @@ export const Header: React.FC<HeaderProps> = ({
                   </button>
                   <button
                     onClick={async () => {
-                      setIsMainMenuOpen(false);
+                      closeMenu();
                       await signOut({ 
                         callbackUrl: '/',
                         redirect: true 
                       });
                     }}
-                    className="w-full text-left px-4 py-3 transition-colors duration-200 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                    className="w-full text-left px-4 py-3 transition-colors duration-150 flex items-center hover:bg-gray-50 cursor-pointer"
                   >
                     <span className="font-medium text-base flex items-center gap-2 text-primary">
                       🚪 Sign Out

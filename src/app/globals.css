@@ -21,6 +21,73 @@
   animation: modalScaleIn 0.15s ease-out;
 }
 
+/* Dropdown menu animations */
+@keyframes menuSlideDown {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+@keyframes menuSlideUp {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(-8px);
+  }
+}
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes backdropFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Food log content fade on day change */
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-content-fade {
+  animation: contentFadeIn 0.35s ease-out;
+}
+
+/* Popover entrance/exit for donut chart hover */
+@keyframes popoverIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes popoverOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
 /* Hide number input arrows (spinners) for all browsers */
 input.hide-number-spin::-webkit-outer-spin-button,
 input.hide-number-spin::-webkit-inner-spin-button {

@@ -51,6 +51,7 @@ export default function LogPage() {
   // Food data management
   const {
     foodData,
+    isLoaded,
     selectedEntries,
     setSelectedEntries,
     filteredEntries,
@@ -245,7 +246,7 @@ export default function LogPage() {
         </Suspense>
         {/* Main Content Area */}
         <div 
-          className="transition-all duration-300 ease-out bg-page"
+          className="bg-page"
           style={{ minWidth: 0 }}
         >
           <div className="container mx-auto px-4 py-8 pb-40">
@@ -285,6 +286,14 @@ export default function LogPage() {
             
             {/* Food entries table */}
             <div className="mb-6">
+              {!isLoaded ? (
+                <div className="flex items-center justify-center py-8">
+                  <div className="bg-white/80 backdrop-blur-sm rounded-xl px-6 py-3 shadow-sm border border-gray-100 flex items-center gap-3">
+                    <div className="h-4 w-4 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+                    <span className="text-sm text-gray-500 font-medium">Loading...</span>
+                  </div>
+                </div>
+              ) : (
               <Suspense fallback={
                 <div className="space-y-1 animate-pulse">
                   {[...Array(4)].map((_, i) => (
@@ -297,6 +306,7 @@ export default function LogPage() {
                   ))}
                 </div>
               }>
+                <div className="animate-content-fade">
                 <DynamicFoodLogTable 
                   foodData={foodData}
                   filteredEntries={filteredEntries}
@@ -309,7 +319,9 @@ export default function LogPage() {
                   setSelectedEntries={setSelectedEntries}
                   data-testid="food-log-table"
                 />
+                </div>
               </Suspense>
+              )}
             </div>
             
             <Suspense fallback={

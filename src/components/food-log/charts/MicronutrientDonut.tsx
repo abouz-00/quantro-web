@@ -36,15 +36,18 @@ interface MicronutrientDonutProps {
 
 export default function MicronutrientDonut({ label, current, goal, unit, color, entries = [] }: MicronutrientDonutProps) {
   const [showPopout, setShowPopout] = useState<boolean>(false);
+  const [isPopoutMounted, setIsPopoutMounted] = useState<boolean>(false);
+  const [isPopoutClosing, setIsPopoutClosing] = useState<boolean>(false);
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const popoutRef = useRef<HTMLDivElement>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
   // Add an event handler for clicks as a fallback for touch devices
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (showPopout && popoutRef.current && !popoutRef.current.contains(event.target as Node) && 
+      if (isPopoutMounted && popoutRef.current && !popoutRef.current.contains(event.target as Node) && 
           chartContainerRef.current && !chartContainerRef.current.contains(event.target as Node)) {
-        setShowPopout(false);
+        handleClosePopout();
       }
     };
 
@@ -52,7 +55,33 @@ export default function MicronutrientDonut({ label, current, goal, unit, color, 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showPopout]);
+  }, [isPopoutMounted]);
+
+  // Clean up timer on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    };
+  }, []);
+
+  const handleOpenPopout = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setIsPopoutClosing(false);
+    setIsPopoutMounted(true);
+    setShowPopout(true);
+  };
+
+  const handleClosePopout = () => {
+    setIsPopoutClosing(true);
+    closeTimerRef.current = setTimeout(() => {
+      setIsPopoutMounted(false);
+      setIsPopoutClosing(false);
+      setShowPopout(false);
+    }, 150);
+  };
 
   const [popoutPosition, setPopoutPosition] = useState({ left: '50%', bottom: '50%' });
 
@@ -154,8 +183,8 @@ export default function MicronutrientDonut({ label, current, goal, unit, color, 
       {/* Chart container */}
       <div 
         className="h-[80px] w-[80px] mx-auto relative"
-        onMouseEnter={() => setShowPopout(true)}
-        onMouseLeave={() => setShowPopout(false)}
+        onMouseEnter={handleOpenPopout}
+        onMouseLeave={handleClosePopout}
       >
         <div className="h-full w-full cursor-help">
           <Doughnut data={data} options={options} />
@@ -172,11 +201,17 @@ export default function MicronutrientDonut({ label, current, goal, unit, color, 
       </div>
 
       {/* Proper popout with entries breakdown */}
-      {showPopout && (
+      {isPopoutMounted && (
         <div 
           ref={popoutRef}
           className="fixed z-50 w-80 max-h-[500px] overflow-hidden bg-white rounded-md shadow-2xl border border-gray-300"
-          style={popoutPosition}
+          style={{
+            ...popoutPosition,
+            transformOrigin: 'bottom center',
+            animation: isPopoutClosing
+              ? 'popoverOut 0.15s cubic-bezier(0.4, 0, 0.2, 1) forwards'
+              : 'popoverIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+          }}
         >
           {/* Arrow pointing down to the donut */}
           <div 
