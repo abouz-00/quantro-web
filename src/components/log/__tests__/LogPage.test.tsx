@@ -111,6 +111,7 @@ jest.mock('../../../hooks/useDateManager', () => ({
 // Mock useFoodData hook to avoid network calls
 const mockUseFoodData = jest.fn(() => ({
   foodData: [],
+  isLoaded: true,
   selectedEntries: [],
   setSelectedEntries: jest.fn(),
   filteredEntries: [],
@@ -311,6 +312,7 @@ describe('LogPage', () => {
     // Set up mock return values
     mockUseFoodData.mockReturnValue({
       foodData: [],
+      isLoaded: true,
       selectedEntries: [],
       setSelectedEntries: jest.fn(),
       filteredEntries: [],

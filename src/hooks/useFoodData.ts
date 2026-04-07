@@ -353,6 +353,7 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
 
   return {
     foodData,
+    isLoaded,
     selectedEntries,
     setSelectedEntries,
     filteredEntries,
