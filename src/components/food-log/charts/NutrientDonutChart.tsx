@@ -44,7 +44,27 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
   const chartAreaRef = useRef<HTMLDivElement>(null); // New ref for the actual chart area
   const popoutRef = useRef<HTMLDivElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  
+
+  const handleOpenPopout = () => {
+    if (!(entries && entries.length > 0)) return;
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setIsPopoutClosing(false);
+    setIsPopoutMounted(true);
+    setShowPopout(true);
+  };
+
+  const handleClosePopout = () => {
+    setIsPopoutClosing(true);
+    closeTimerRef.current = setTimeout(() => {
+      setIsPopoutMounted(false);
+      setIsPopoutClosing(false);
+      setShowPopout(false);
+    }, 150); // matches popoverOut duration
+  };
+
   // Add an event handler for clicks as a fallback for touch devices
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -66,26 +86,6 @@ export default function NutrientDonutChart({ label, current, goal, unit, color, 
       if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
     };
   }, []);
-
-  const handleOpenPopout = () => {
-    if (!(entries && entries.length > 0)) return;
-    if (closeTimerRef.current) {
-      clearTimeout(closeTimerRef.current);
-      closeTimerRef.current = null;
-    }
-    setIsPopoutClosing(false);
-    setIsPopoutMounted(true);
-    setShowPopout(true);
-  };
-
-  const handleClosePopout = () => {
-    setIsPopoutClosing(true);
-    closeTimerRef.current = setTimeout(() => {
-      setIsPopoutMounted(false);
-      setIsPopoutClosing(false);
-      setShowPopout(false);
-    }, 150); // matches popoverOut duration
-  };
 
   const [popoutPosition, setPopoutPosition] = useState({ left: '50%', top: '50%' });
 

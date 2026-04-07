@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
@@ -15,23 +15,17 @@ export const Header: React.FC<HeaderProps> = ({
   setIsTargetsModalOpen
 }) => {
   const router = useRouter();
-  // Track whether the menu is mounted in DOM (for exit animation)
-  const [isMenuMounted, setIsMenuMounted] = useState(false);
+  // Track closing animation state
   const [isClosing, setIsClosing] = useState(false);
 
-  useEffect(() => {
-    if (isMainMenuOpen) {
-      setIsMenuMounted(true);
-      setIsClosing(false);
-    }
-  }, [isMainMenuOpen]);
+  // Menu stays mounted while open OR during the closing animation
+  const isMenuMounted = isMainMenuOpen || isClosing;
 
   const closeMenu = useCallback(() => {
     setIsClosing(true);
     // Wait for exit animation to finish before unmounting
     setTimeout(() => {
       setIsMainMenuOpen(false);
-      setIsMenuMounted(false);
       setIsClosing(false);
     }, 150);
   }, [setIsMainMenuOpen]);
