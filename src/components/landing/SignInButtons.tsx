@@ -30,14 +30,34 @@ export const SignInButtons: React.FC<SignInButtonsProps> = ({ onDevSignIn }) => 
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) return;
+    const trimmed = email.trim();
+    if (!trimmed) return;
 
     setEmailLoading(true);
     setEmailError('');
 
     try {
+      // Pre-check beta access before sending the magic link email
+      const check = await fetch('/api/auth/check-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: trimmed }),
+      });
+
+      if (check.status === 429) {
+        setEmailError('Too many attempts. Please try again later.');
+        return;
+      }
+
+      const { allowed } = await check.json();
+      if (!allowed) {
+        setEmailError('This email does not have access. Request a beta invite first.');
+        return;
+      }
+
+      // Only now trigger the actual magic link send
       const result = await signIn('resend', {
-        email: email.trim(),
+        email: trimmed,
         callbackUrl: '/dashboard',
         redirect: false,
       });
