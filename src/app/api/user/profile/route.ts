@@ -24,6 +24,8 @@ export async function GET() {
         dailyFatGoal: true,
         weightUnit: true,
         heightUnit: true,
+        goalsUpdatedAt: true,
+        firstLoggedAt: true,
       },
     });
 
@@ -56,6 +58,10 @@ export async function PUT(request: NextRequest) {
       heightUnit,
     } = body;
 
+    // If any goal fields are being updated, set goalsUpdatedAt
+    const isGoalUpdate = dailyCalorieGoal !== undefined || dailyProteinGoal !== undefined ||
+      dailyCarbGoal !== undefined || dailyFatGoal !== undefined;
+
     const updatedUser = await prisma.user.update({
       where: { id: session.user.id },
       data: {
@@ -65,6 +71,7 @@ export async function PUT(request: NextRequest) {
         dailyFatGoal,
         weightUnit,
         heightUnit,
+        ...(isGoalUpdate && { goalsUpdatedAt: new Date() }),
       },
       select: {
         id: true,
@@ -78,6 +85,8 @@ export async function PUT(request: NextRequest) {
         dailyFatGoal: true,
         weightUnit: true,
         heightUnit: true,
+        goalsUpdatedAt: true,
+        firstLoggedAt: true,
       },
     });
 

@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, Suspense } from "react";
 import dynamic from 'next/dynamic';
+import { useSearchParams } from 'next/navigation';
 import { useDateManager } from "../../hooks/useDateManager";
 import { useFoodData } from "../../hooks/useFoodData";
 import { useKeyboardShortcuts } from "../../hooks/useKeyboardShortcuts";
@@ -23,10 +24,14 @@ const DynamicFoodLogTable = dynamic(() => import('../food-log').then(mod => mod.
 const DebugPanel = dynamic(() => import('../debug/DebugPanel'), { ssr: false });
 
 export default function LogPage() {
+  const searchParams = useSearchParams();
+
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isMainMenuOpen, setIsMainMenuOpen] = useState<boolean>(false);
-  const [isTargetsModalOpen, setIsTargetsModalOpen] = useState<boolean>(false);
+  const [isTargetsModalOpen, setIsTargetsModalOpen] = useState<boolean>(
+    () => searchParams.get('openTargets') === 'true'
+  );
   const [editModalEntry, setEditModalEntry] = useState<FoodEntry | null>(null);
 
   // Undo delete state

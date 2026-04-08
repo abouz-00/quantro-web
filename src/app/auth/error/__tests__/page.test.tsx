@@ -97,7 +97,7 @@ describe('AuthError Page', () => {
 
     render(<AuthError />);
     
-    expect(screen.getByText('Access denied. You do not have permission to sign in.')).toBeInTheDocument();
+    expect(screen.getByText(/Access denied\. Your email may not have beta access/)).toBeInTheDocument();
   });
 
   it('displays verification error message', () => {

@@ -1,5 +1,15 @@
-import { renderHook, act } from '@testing-library/react'
+import { renderHook, act, waitFor } from '@testing-library/react'
 import { useGoals } from '../useGoals'
+
+// Mock apiClient
+const mockGet = jest.fn()
+const mockPut = jest.fn()
+jest.mock('../../lib/apiClient', () => ({
+  apiClient: {
+    get: (...args: unknown[]) => mockGet(...args),
+    put: (...args: unknown[]) => mockPut(...args),
+  },
+}))
 
 // Mock localStorage
 const mockLocalStorage = {
@@ -16,12 +26,19 @@ beforeEach(() => {
   jest.clearAllMocks()
   // Reset localStorage mock to return null by default
   mockLocalStorage.getItem.mockReturnValue(null)
+  // Default API response: fail (so tests fall back to localStorage by default)
+  mockGet.mockRejectedValue(new Error('Network error'))
+  mockPut.mockResolvedValue({})
 })
 
 describe('useGoals Hook', () => {
-  it('initializes with default goals', () => {
+  it('initializes with default goals', async () => {
     const { result } = renderHook(() => useGoals())
-    
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
+
     expect(result.current.customGoals).toEqual({
       calories: 2000,
       protein: 150,
@@ -37,7 +54,33 @@ describe('useGoals Hook', () => {
     })
   })
 
-  it('loads goals from localStorage when available', () => {
+  it('loads goals from API when available', async () => {
+    const apiGoals = {
+      dailyCalorieGoal: 2500,
+      dailyProteinGoal: 180,
+      dailyCarbGoal: 250,
+      dailyFatGoal: 80,
+      goalsUpdatedAt: '2026-01-01T00:00:00Z',
+      firstLoggedAt: null,
+    }
+    mockGet.mockResolvedValue(apiGoals)
+
+    const { result } = renderHook(() => useGoals())
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
+
+    expect(result.current.customGoals).toEqual({
+      calories: 2500,
+      protein: 180,
+      carbs: 250,
+      fat: 80,
+    })
+    expect(result.current.hasCustomGoals).toBe(true)
+  })
+
+  it('falls back to localStorage when API fails', async () => {
     const savedGoals = {
       calories: 2500,
       protein: 180,
@@ -46,21 +89,28 @@ describe('useGoals Hook', () => {
     }
     
     mockLocalStorage.getItem.mockReturnValue(JSON.stringify(savedGoals))
+    mockGet.mockRejectedValue(new Error('Network error'))
     
     const { result } = renderHook(() => useGoals())
-    
-    expect(mockLocalStorage.getItem).toHaveBeenCalledWith('customGoals')
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
+
     expect(result.current.customGoals).toEqual(savedGoals)
     expect(result.current.targetInput).toEqual(savedGoals)
   })
 
-  it('handles invalid localStorage data gracefully', () => {
+  it('handles invalid localStorage data gracefully on API failure', async () => {
     mockLocalStorage.getItem.mockReturnValue('invalid-json')
-    
-    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+    mockGet.mockRejectedValue(new Error('Network error'))
     
     const { result } = renderHook(() => useGoals())
-    
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
+
     // Should use default goals when JSON parsing fails
     expect(result.current.customGoals).toEqual({
       calories: 2000,
@@ -68,18 +118,15 @@ describe('useGoals Hook', () => {
       carbs: 200,
       fat: 70
     })
-    
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Failed to parse saved goals from localStorage:', 
-      expect.any(Error)
-    )
-    
-    consoleSpy.mockRestore()
   })
 
-  it('updates target input using handleInputChange', () => {
+  it('updates target input using handleInputChange', async () => {
     const { result } = renderHook(() => useGoals())
     
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
+
     act(() => {
       result.current.handleInputChange('calories', 2500)
     })
@@ -93,9 +140,13 @@ describe('useGoals Hook', () => {
     expect(result.current.targetInput.protein).toBe(200)
   })
 
-  it('saves goals using handleSaveTargets', () => {
+  it('saves goals using handleSaveTargets', async () => {
     const { result } = renderHook(() => useGoals())
     
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
+
     // Update target input
     act(() => {
       result.current.handleInputChange('calories', 2800)
@@ -103,7 +154,7 @@ describe('useGoals Hook', () => {
     })
     
     // Save the goals
-    act(() => {
+    await act(async () => {
       result.current.handleSaveTargets()
     })
     
@@ -111,35 +162,43 @@ describe('useGoals Hook', () => {
     expect(result.current.customGoals.protein).toBe(180)
   })
 
-  it('saves to localStorage when goals are updated', async () => {
+  it('saves to localStorage and API when goals are updated', async () => {
+    mockPut.mockResolvedValue({})
+
     const { result } = renderHook(() => useGoals())
     
-    // Wait for initial load to complete
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
+
     await act(async () => {
-      // Update input first
       result.current.handleInputChange('calories', 2600)
     })
     
-    // Then save the goals in a separate act
     await act(async () => {
-      result.current.handleSaveTargets()
+      await result.current.handleSaveTargets()
     })
 
-    // Wait a bit for the useEffect to run
-    await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 0))
-    })
-
-    // Check that localStorage.setItem was called with the updated goals
     expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
       'customGoals', 
       expect.stringContaining('2600')
     )
+
+    expect(mockPut).toHaveBeenCalledWith('/user/profile', {
+      dailyCalorieGoal: 2600,
+      dailyProteinGoal: 150,
+      dailyCarbGoal: 200,
+      dailyFatGoal: 70,
+    })
   })
 
-  it('handles different input value types', () => {
+  it('handles different input value types', async () => {
     const { result } = renderHook(() => useGoals())
     
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
+
     // Test with zero
     act(() => {
       result.current.handleInputChange('calories', 0)
@@ -155,9 +214,13 @@ describe('useGoals Hook', () => {
     expect(result.current.targetInput.fat).toBe(75.5)
   })
 
-  it('maintains goal state consistency', () => {
+  it('maintains goal state consistency', async () => {
     const { result } = renderHook(() => useGoals())
     
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
+
     const initialGoals = result.current.customGoals
     
     // Update target input but don't save
@@ -170,11 +233,31 @@ describe('useGoals Hook', () => {
     expect(result.current.targetInput.calories).toBe(9999)
     
     // After saving, both should match
-    act(() => {
+    await act(async () => {
       result.current.handleSaveTargets()
     })
     
     expect(result.current.customGoals.calories).toBe(9999)
     expect(result.current.targetInput.calories).toBe(9999)
+  })
+
+  it('reports hasEverLogged from API', async () => {
+    mockGet.mockResolvedValue({
+      dailyCalorieGoal: 2000,
+      dailyProteinGoal: 150,
+      dailyCarbGoal: 200,
+      dailyFatGoal: 70,
+      goalsUpdatedAt: null,
+      firstLoggedAt: '2026-03-15T12:00:00Z',
+    })
+
+    const { result } = renderHook(() => useGoals())
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false)
+    })
+
+    expect(result.current.hasEverLogged).toBe(true)
+    expect(result.current.hasCustomGoals).toBe(false)
   })
 })

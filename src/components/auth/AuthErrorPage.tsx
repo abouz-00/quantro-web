@@ -15,9 +15,11 @@ export default function AuthErrorPage({ error }: AuthErrorPageProps) {
       case 'Configuration':
         return 'There is a problem with the server configuration.';
       case 'AccessDenied':
-        return 'Access denied. You do not have permission to sign in.';
+        return 'Access denied. Your email may not have beta access, or the sign-in provider blocked the request. Check that your OAuth app is published (not in "Testing" mode) and that your email is on the beta list.';
       case 'Verification':
         return 'The verification token has expired or has already been used.';
+      case 'OAuthAccountNotLinked':
+        return 'This email is already associated with a different sign-in method. Please sign in with your original method.';
       default:
         return 'An error occurred during authentication.';
     }

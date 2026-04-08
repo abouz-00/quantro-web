@@ -1,10 +1,12 @@
 import NextAuth from "next-auth"
 import Apple from "next-auth/providers/apple"
+import Resend from "next-auth/providers/resend"
 import Credentials from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/prisma"
 import { checkBetaAccess } from "@/lib/betaAccess"
 import { authConfig } from "@/lib/auth.config"
+import { sendMagicLinkEmail } from "@/lib/emails/magic-link"
 import jwt from 'jsonwebtoken'
 
 declare module "next-auth" {
@@ -18,30 +20,32 @@ declare module "next-auth" {
   }
 }
 
-// Function to generate Apple JWT token
-function generateAppleJWT() {
+// Generate Apple JWT client secret on demand (expires in 6 months per Apple spec).
+// Called per-request to avoid stale secrets in long-lived serverless containers.
+function generateAppleJWT(): string | null {
   if (!process.env.APPLE_PRIVATE_KEY || !process.env.APPLE_TEAM_ID || !process.env.APPLE_PRIVATE_KEY_ID || !process.env.APPLE_ID) {
     return null;
   }
-  
-  // Ensure private key is properly formatted
+
   let privateKey = process.env.APPLE_PRIVATE_KEY;
-  
-  // Handle both encoded and raw private keys
+
+  // Handle escaped newlines from env vars (Vercel stores keys with literal \n)
   if (privateKey.includes('\\n')) {
     privateKey = privateKey.replace(/\\n/g, '\n');
   }
-  
-  // Ensure the key has proper PEM formatting
+
+  // Wrap raw base64 key with PEM headers if missing
   if (!privateKey.includes('-----BEGIN PRIVATE KEY-----')) {
-    return null;
+    // Strip any whitespace/quotes from raw key
+    const raw = privateKey.replace(/[\s"']/g, '');
+    privateKey = `-----BEGIN PRIVATE KEY-----\n${raw}\n-----END PRIVATE KEY-----`;
   }
-  
+
   const now = Math.floor(Date.now() / 1000);
   const payload = {
     iss: process.env.APPLE_TEAM_ID,
     iat: now,
-    exp: now + 15 * 60, // 15 minutes
+    exp: now + 180 * 24 * 60 * 60, // 6 months (Apple max)
     aud: 'https://appleid.apple.com',
     sub: process.env.APPLE_ID,
   };
@@ -63,20 +67,39 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     ...authConfig.providers,
+    // Magic link email auth via Resend
+    ...(process.env.RESEND_API_KEY ? [
+      Resend({
+        apiKey: process.env.RESEND_API_KEY,
+        from: "Quantro <hello@quantro.fit>",
+        maxAge: 10 * 60, // 10 minutes
+        async sendVerificationRequest({ identifier: to, url }) {
+          await sendMagicLinkEmail({ to, url })
+        },
+      })
+    ] : []),
     ...(() => {
-      // Generate Apple JWT and only include Apple provider if successful
-      const appleJWT = generateAppleJWT();
-      return (process.env.APPLE_ID && 
+      // Only include Apple provider if env vars are present
+      const hasAppleConfig = process.env.APPLE_ID && 
               process.env.APPLE_PRIVATE_KEY && 
               process.env.APPLE_TEAM_ID && 
               process.env.APPLE_PRIVATE_KEY_ID && 
-              process.env.APPLE_ID !== 'your-apple-service-id' &&
-              appleJWT) ? [
+              process.env.APPLE_ID !== 'your-apple-service-id';
+      if (!hasAppleConfig) return [];
+
+      // Generate JWT (6-month expiry; regenerated on every cold start)
+      const appleJWT = generateAppleJWT();
+      if (!appleJWT) {
+        console.warn('[Auth] Apple Sign-In disabled: failed to generate JWT from APPLE_PRIVATE_KEY');
+        return [];
+      }
+
+      return [
         Apple({
-          clientId: process.env.APPLE_ID,
+          clientId: process.env.APPLE_ID!,
           clientSecret: appleJWT,
         })
-      ] : [];
+      ];
     })(),
     // Development credentials provider with enhanced security
     ...(process.env.NODE_ENV === 'development' ? [
@@ -149,15 +172,24 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     ...authConfig.callbacks,
-    async signIn({ user }) {
+    async signIn({ user, account }) {
       if (!user.email) return false;
-      
-      // Check if user has beta access
-      const hasAccess = await checkBetaAccess(user.email);
-      
-      if (!hasAccess) {
-        console.log('User does not have beta access:', user.email);
-        return false; // Return false to deny sign-in
+
+      // If Google/Apple OAuth itself returned an error the user object may be
+      // partial but NextAuth still fires the callback.  Log the provider to
+      // help distinguish "provider blocked" from "beta check blocked".
+      console.log(`[Auth] signIn callback: email=${user.email}, provider=${account?.provider ?? 'unknown'}`);
+
+      try {
+        const hasAccess = await checkBetaAccess(user.email);
+
+        if (!hasAccess) {
+          console.log('[Auth] Beta access denied for:', user.email);
+          return false;
+        }
+      } catch (error) {
+        console.error('[Auth] checkBetaAccess threw – denying sign-in:', error);
+        return false;
       }
 
             // For development, ensure user is approved in database

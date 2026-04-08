@@ -92,6 +92,8 @@ describe('User Profile API', () => {
           dailyFatGoal: true,
           weightUnit: true,
           heightUnit: true,
+          goalsUpdatedAt: true,
+          firstLoggedAt: true,
         },
       });
     });
@@ -159,7 +161,7 @@ describe('User Profile API', () => {
       expect(data).toEqual(updatedUser);
       expect(mockPrisma.user.update).toHaveBeenCalledWith({
         where: { id: 'user-123' },
-        data: updateData,
+        data: expect.objectContaining(updateData),
         select: {
           id: true,
           name: true,
@@ -172,6 +174,8 @@ describe('User Profile API', () => {
           dailyFatGoal: true,
           weightUnit: true,
           heightUnit: true,
+          goalsUpdatedAt: true,
+          firstLoggedAt: true,
         },
       });
     });
@@ -208,7 +212,7 @@ describe('User Profile API', () => {
       expect(data.dailyCalorieGoal).toBe(2500);
       expect(mockPrisma.user.update).toHaveBeenCalledWith({
         where: { id: 'user-123' },
-        data: partialUpdate,
+        data: expect.objectContaining(partialUpdate),
         select: expect.any(Object),
       });
     });
