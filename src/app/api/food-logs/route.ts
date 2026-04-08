@@ -179,6 +179,17 @@ export async function POST(request: NextRequest) {
     });
 
     console.log('🔍 [DEBUG] Successfully created food log:', foodLog.id);
+
+    // Set firstLoggedAt if this is the user's first food log
+    try {
+      await prisma.user.updateMany({
+        where: { id: session.user.id, firstLoggedAt: null },
+        data: { firstLoggedAt: new Date() },
+      });
+    } catch (e) {
+      console.error('Failed to set firstLoggedAt:', e);
+    }
+
     return NextResponse.json(foodLog, { status: 201 });
   } catch (error) {
     console.error('Error creating food log:', {

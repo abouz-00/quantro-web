@@ -66,6 +66,10 @@ model User {
   weightUnit          String    @default("lbs") // "lbs" or "kg"
   heightUnit          String    @default("ft")  // "ft" or "cm"
   
+  // Onboarding tracking
+  goalsUpdatedAt      DateTime? // Non-null means user has customized goals at least once
+  firstLoggedAt       DateTime? // Non-null means user has logged at least one meal
+  
   // Food logs
   foodLogs            FoodLog[]
 }

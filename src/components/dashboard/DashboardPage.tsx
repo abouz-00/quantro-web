@@ -4,6 +4,7 @@ import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
 import Image from 'next/image';
+import { useState } from 'react';
 import { useDateManager } from '../../hooks/useDateManager';
 import { useFoodData } from '../../hooks/useFoodData';
 import { useGoals } from '../../hooks/useGoals';
@@ -46,11 +47,26 @@ export default function DashboardPage({ session }: DashboardPageProps) {
 
   const { selectedDate, formatApiDate } = useDateManager({ defaultToTodayOnRefresh: true });
   const { totals } = useFoodData(selectedDate, formatApiDate);
-  const { customGoals } = useGoals();
+  const { customGoals, hasCustomGoals, hasEverLogged } = useGoals();
 
   const firstName = session.user?.name?.split(' ')[0] || session.user?.email?.split('@')[0] || 'there';
   const greeting = getGreeting();
   const hasLoggedToday = totals.calories > 0;
+
+  // Checklist state — dismiss once all steps complete
+  const [checklistDismissed, setChecklistDismissed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('quantro_checklist_dismissed') === 'true';
+    }
+    return false;
+  });
+  const allStepsComplete = hasEverLogged && hasCustomGoals;
+  const showChecklist = !checklistDismissed;
+
+  const dismissChecklist = () => {
+    setChecklistDismissed(true);
+    localStorage.setItem('quantro_checklist_dismissed', 'true');
+  };
 
   return (
     <div className="min-h-screen bg-page">
@@ -146,22 +162,39 @@ export default function DashboardPage({ session }: DashboardPageProps) {
             <p className="text-sm text-gray-400 mt-1">View nutrition insights</p>
           </div>
 
-          <div className="relative bg-white/60 rounded-2xl p-5 shadow-lg">
-            <div className="absolute top-3 right-3">
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-violet-500 bg-violet-100 px-2 py-0.5 rounded-full">Soon</span>
+          <button
+            onClick={() => router.push("/log?openTargets=true")}
+            className="group bg-white rounded-2xl p-5 shadow-lg text-left hover:shadow-xl hover:scale-[1.02] transition-all duration-200 cursor-pointer"
+          >
+            <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center mb-3 group-hover:bg-amber-200 transition-colors">
+              <span className="text-xl">🎯</span>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center mb-3">
-              <span className="text-xl opacity-50">🎯</span>
-            </div>
-            <h3 className="font-semibold text-gray-400">Goals</h3>
-            <p className="text-sm text-gray-400 mt-1">Set and track your targets</p>
-          </div>
+            <h3 className="font-semibold text-gray-900">Goals</h3>
+            <p className="text-sm text-gray-500 mt-1">Set and track your targets</p>
+          </button>
         </div>
 
         {/* Getting Started */}
+        {showChecklist && (
         <div className="bg-white rounded-2xl p-6 shadow-lg">
-          <h3 className="font-semibold text-gray-900 mb-4">Getting Started</h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-gray-900">Getting Started</h3>
+            {allStepsComplete && (
+              <button
+                onClick={dismissChecklist}
+                className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                Dismiss
+              </button>
+            )}
+          </div>
+
+          {allStepsComplete && (
+            <p className="text-sm text-green-600 font-medium mb-4">You&apos;re all set! 🎉</p>
+          )}
+
           <div className="space-y-4">
+            {/* Step 1: Account created — always complete */}
             <div className="flex items-center gap-3">
               <div className="w-7 h-7 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
                 <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -170,9 +203,14 @@ export default function DashboardPage({ session }: DashboardPageProps) {
               </div>
               <span className="text-gray-700">Account created successfully</span>
             </div>
-            <div className="flex items-center gap-3">
-              <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${hasLoggedToday ? 'bg-green-500' : 'bg-[#6e44ff]'}`}>
-                {hasLoggedToday ? (
+
+            {/* Step 2: Log first meal — complete if ever logged */}
+            <button
+              onClick={() => router.push('/log')}
+              className="flex items-center gap-3 w-full text-left group"
+            >
+              <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${hasEverLogged ? 'bg-green-500' : 'bg-[#6e44ff] group-hover:bg-[#5a35d4]'} transition-colors`}>
+                {hasEverLogged ? (
                   <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
@@ -180,20 +218,32 @@ export default function DashboardPage({ session }: DashboardPageProps) {
                   <span className="text-white text-xs font-bold">2</span>
                 )}
               </div>
-              <span className={hasLoggedToday ? 'text-gray-700' : 'text-gray-700 font-medium'}>
+              <span className={`${hasEverLogged ? 'text-gray-700' : 'text-gray-700 font-medium group-hover:text-[#6e44ff]'} transition-colors`}>
                 Log your first meal to get personalized insights
               </span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-gray-400 text-xs font-bold">3</span>
+            </button>
+
+            {/* Step 3: Set nutrition goals — complete if goals ever updated */}
+            <button
+              onClick={() => router.push('/log?openTargets=true')}
+              className="flex items-center gap-3 w-full text-left group"
+            >
+              <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${hasCustomGoals ? 'bg-green-500' : 'bg-gray-200 group-hover:bg-[#6e44ff]'} transition-colors`}>
+                {hasCustomGoals ? (
+                  <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  <span className="text-gray-400 group-hover:text-white text-xs font-bold transition-colors">3</span>
+                )}
               </div>
-              <span className="text-gray-400">
+              <span className={`${hasCustomGoals ? 'text-gray-700' : 'text-gray-400 group-hover:text-[#6e44ff]'} transition-colors`}>
                 Set your nutrition goals and track progress
               </span>
-            </div>
+            </button>
           </div>
         </div>
+        )}
       </main>
     </div>
   );
