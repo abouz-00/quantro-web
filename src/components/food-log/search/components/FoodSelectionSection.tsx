@@ -86,7 +86,7 @@ export const FoodSelectionSection: React.FC<FoodSelectionSectionProps> = ({
             value={unit}
             onChange={(e) => setUnit(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full p-2 border border-gray-300 rounded-sm"
+            className="w-full p-2 border border-gray-300 rounded-sm cursor-pointer"
           >
             <option value="Grams">Grams</option>
             <option value="Ounces">Ounces</option>
@@ -101,7 +101,7 @@ export const FoodSelectionSection: React.FC<FoodSelectionSectionProps> = ({
             value={mealType}
             onChange={(e) => setMealType(e.target.value as "breakfast" | "lunch" | "dinner" | "snack" | "other")}
             onKeyDown={handleKeyDown}
-            className="w-full p-2 border border-gray-300 rounded-sm"
+            className="w-full p-2 border border-gray-300 rounded-sm cursor-pointer"
           >
             <option value="breakfast">Breakfast</option>
             <option value="lunch">Lunch</option>
