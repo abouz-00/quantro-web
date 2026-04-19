@@ -28,7 +28,7 @@ class ApiClient {
     return response.json();
   }
 
-  async get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
+  async get<T>(endpoint: string, params?: Record<string, string>, options?: { signal?: AbortSignal }): Promise<T> {
     try {
       // Build URL - handle both relative (/api) and absolute (http://...) base URLs
       let url: URL;
@@ -53,10 +53,15 @@ class ApiClient {
         method: 'GET',
         headers: this.getHeaders(),
         credentials: 'include', // Include cookies for authentication
+        signal: options?.signal,
       });
 
       return this.handleResponse<T>(response);
     } catch (error) {
+      // Re-throw abort errors so callers can handle cancellation
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        throw error;
+      }
       console.error('GET request failed:', { endpoint, params, error });
       throw new Error(`NetworkError when attempting to fetch resource.`);
     }

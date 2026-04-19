@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { apiClient } from "../../../../lib/apiClient";
 
 // Comprehensive nutrient name mapping for display
@@ -159,6 +159,27 @@ class FoodSearchCache {
     return null;
   }
 
+  /**
+   * Find cached results from a prefix of the query and filter them.
+   * E.g., if "chi" is cached and query is "chicken", return "chi" results
+   * filtered to those containing "chicken". Returns null if no prefix match.
+   */
+  getFromPrefix(query: string): FoodSuggestion[] | null {
+    const q = query.toLowerCase();
+    // Try progressively shorter prefixes (minimum 2 chars)
+    for (let len = q.length - 1; len >= 2; len--) {
+      const prefix = q.substring(0, len);
+      const entry = this.cache.get(prefix);
+      if (entry && Date.now() - entry.timestamp < this.CACHE_DURATION) {
+        // Filter cached results to match the full query
+        return entry.data.filter(item =>
+          item.description.toLowerCase().includes(q)
+        );
+      }
+    }
+    return null;
+  }
+
   set(query: string, data: FoodSuggestion[]) {
     // Limit cache size
     if (this.cache.size >= this.MAX_CACHE_SIZE) {
@@ -190,6 +211,7 @@ export function useFoodSearch(query: string, active: boolean) {
   const [fetchedSuggestions, setFetchedSuggestions] = useState<FoodSuggestion[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState("");
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const transformApiData = useCallback((item: UnifiedFoodItem): FoodSuggestion => {
     return {
@@ -209,19 +231,26 @@ export function useFoodSearch(query: string, active: boolean) {
     };
   }, []);
 
-  // Check cache synchronously - derive suggestions from cache or fetched state
+  // Check cache synchronously - exact match first, then prefix match
   const cachedResult = active && query.length > 1 ? foodSearchCache.get(query) : null;
+  const prefixResult = active && query.length > 1 && !cachedResult ? foodSearchCache.getFromPrefix(query) : null;
   
-  // Use cached result if available, otherwise use fetched suggestions
-  const suggestions = cachedResult ?? fetchedSuggestions;
+  // Use exact cache > prefix cache > fetched results
+  const suggestions = cachedResult ?? prefixResult ?? fetchedSuggestions;
   
-  // Loading is false if we have cached data or query is too short
+  // Loading is false if we have exact cached data or query is too short
+  // Show as loading (but with prefix results visible) if only prefix match
   const loading = !cachedResult && active && query.length > 1 ? isFetching : false;
 
   useEffect(() => {
-    // Skip fetch if we have cached data or query is too short
+    // Skip fetch if we have exact cached data or query is too short
     if (cachedResult || !active || query.length <= 1) {
       return;
+    }
+
+    // Abort any in-flight request for a previous query
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
     }
 
     // Use setTimeout to batch all state updates in callback
@@ -229,6 +258,9 @@ export function useFoodSearch(query: string, active: boolean) {
       setIsFetching(true);
       setError("");
     }, 0);
+
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
 
     const fetchTimeoutId = setTimeout(async () => {
       try {
@@ -242,8 +274,13 @@ export function useFoodSearch(query: string, active: boolean) {
 
         // Use the unified food search endpoint
         const data = await apiClient.get<UnifiedSearchResponse>(
-          `/food-search-unified?query=${encodeURIComponent(query)}&pageSize=10&source=all`
+          `/food-search-unified?query=${encodeURIComponent(query)}&pageSize=10&source=all`,
+          undefined,
+          { signal: controller.signal }
         );
+        
+        // Don't update state if this request was aborted
+        if (controller.signal.aborted) return;
         
         const transformedFoods = data.results.map(transformApiData);
         
@@ -253,17 +290,20 @@ export function useFoodSearch(query: string, active: boolean) {
         setFetchedSuggestions(transformedFoods);
         setIsFetching(false);
       } catch (err: unknown) {
+        // Ignore abort errors
+        if (err instanceof DOMException && err.name === 'AbortError') return;
         setFetchedSuggestions([]);
         setError(err instanceof Error ? err.message : "Failed to fetch food data.");
         setIsFetching(false);
       }
-    }, 150); // Debounce time for better responsiveness
+    }, 75); // Reduced debounce for faster responsiveness
 
     return () => {
       clearTimeout(initTimeoutId);
       clearTimeout(fetchTimeoutId);
+      controller.abort();
     };
-  }, [query, active, transformApiData, cachedResult]);
+  }, [query, active, transformApiData, cachedResult, prefixResult]);
 
   // Reset state when query becomes inactive or too short
   useEffect(() => {
