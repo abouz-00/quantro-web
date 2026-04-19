@@ -23,7 +23,11 @@ export async function GET(request: NextRequest) {
     }
 
     const results = await unifiedFoodSearch(query, pageSize, source);
-    return NextResponse.json(results);
+    return NextResponse.json(results, {
+      headers: {
+        'Cache-Control': 'private, max-age=300, stale-while-revalidate=600',
+      },
+    });
   } catch (error) {
     console.error('Food search error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
