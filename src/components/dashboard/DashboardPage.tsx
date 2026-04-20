@@ -22,20 +22,19 @@ function getGreeting(): string {
 
 function NutrientBar({ label, current, goal, color }: { label: string; current: number; goal: number; color: string }) {
   const percentage = Math.min((current / goal) * 100, 100);
-  const isOver = current > goal;
 
   return (
     <div className="space-y-1.5">
       <div className="flex justify-between items-baseline">
         <span className="text-sm font-medium text-gray-600">{label}</span>
-        <span className={`text-sm tabular-nums ${isOver ? 'text-red-500 font-semibold' : 'text-gray-500'}`}>
+        <span className={`text-sm tabular-nums text-gray-500`}>
           {Math.round(current)} / {goal}{label !== 'Calories' ? 'g' : ''}
         </span>
       </div>
       <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
         <div
           className="h-full rounded-full transition-all duration-700 ease-out"
-          style={{ width: `${percentage}%`, backgroundColor: isOver ? '#ef4444' : color }}
+          style={{ width: `${percentage}%`, backgroundColor: color }}
         />
       </div>
     </div>
