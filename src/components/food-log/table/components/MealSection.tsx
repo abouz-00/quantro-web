@@ -1,6 +1,5 @@
-import React, { useState, memo, useEffect } from 'react';
+import React, { memo, useMemo } from 'react';
 import { useDroppable } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { FoodEntry } from '../types';
 import { FoodTableRow } from './FoodTableRow';
 
@@ -9,7 +8,11 @@ interface MealSectionProps {
   entries: FoodEntry[];
   foodData: FoodEntry[];
   selectedEntries: string[];
-  handleEntrySelect: (id: string, index: number, event: React.MouseEvent | React.KeyboardEvent) => void;
+  handleEntrySelect: (
+    id: string,
+    index: number,
+    event?: React.MouseEvent | React.KeyboardEvent | { ctrlKey?: boolean; metaKey?: boolean; shiftKey?: boolean } | null
+  ) => void;
   updateFoodEntry: (id: string, updated: Partial<FoodEntry>) => void;
   editingEntry: string | null;
   setEditingEntry: (id: string | null) => void;
@@ -22,6 +25,8 @@ interface MealSectionProps {
   activeId: string | null;
   dragOverTarget: string | null;
   isLastSection?: boolean;
+  isCollapsed: boolean;
+  onToggleCollapse: () => void;
 }
 
 export const MealSection = memo(({
@@ -41,55 +46,50 @@ export const MealSection = memo(({
   onContextMenu,
   activeId,
   dragOverTarget,
-  isLastSection = false
+  isLastSection = false,
+  isCollapsed,
+  onToggleCollapse
 }: MealSectionProps) => {
-  // State to track if the meal section is collapsed
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [prevDragOverTarget, setPrevDragOverTarget] = useState(dragOverTarget);
-
-  // Auto-expand when being dragged over (with guard to prevent infinite loop)
-  if (prevDragOverTarget !== dragOverTarget) {
-    setPrevDragOverTarget(dragOverTarget);
-    if (dragOverTarget === `drop-${mealType}` && isCollapsed) {
-      setIsCollapsed(false);
-    }
-  }
-
-  // Drop target for the meal section
-  const { setNodeRef: setDropRef } = useDroppable({
-    id: `drop-${mealType}`,
-    data: { type: 'meal-drop-zone', mealType }
-  });
+  // Drop target for the meal body only. The header is intentionally not droppable
+  // because it steals collision during upward drags and causes reverse jumps.
+  const droppableData = useMemo(
+    () => ({ type: 'meal-drop-zone' as const, mealType }),
+    [mealType]
+  );
+  const droppableConfig = useMemo(
+    () => ({
+      id: `drop-${mealType}`,
+      data: droppableData,
+      resizeObserverConfig: {
+        disabled: true,
+      },
+    }),
+    [droppableData, mealType]
+  );
+  const { setNodeRef: setDropRef } = useDroppable(droppableConfig);
 
   const capitalizedMealType = mealType.charAt(0).toUpperCase() + mealType.slice(1);
 
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
-  // Determine rounded corners based on meal type and whether this is the last section
   const getRoundedClasses = () => {
     if (mealType === 'breakfast') {
-      return 'rounded-t-lg'; // Top rounded corners for breakfast
+      return 'rounded-t-lg';
     } else if (isLastSection) {
-      // If this is the last section and has entries, don't round the heading bottom
-      // If this is the last section and has no entries, round the heading bottom
-      return entries.length > 0 ? '' : 'rounded-b-lg';
+      return (entries.length > 0 && !isCollapsed) ? '' : 'rounded-b-lg';
     }
-    return ''; // No rounded corners for middle sections
+    return '';
   };
 
   return (
     <div>
-      {/* Meal Type Heading - drop target */}
+      {/* Meal Type Heading */}
       <div 
-        ref={setDropRef}
+        data-meal-header={mealType}
         className={`px-4 py-2 text-white font-bold text-sm border border-gray-300 border-b-black cursor-default flex items-center justify-between ${getRoundedClasses()}`}
         style={{ backgroundColor: '#2E2E2E' }}
       >
         <span>{capitalizedMealType}</span>
         <button
-          onClick={toggleCollapse}
+          onClick={onToggleCollapse}
           className="ml-2 p-1 hover:bg-black hover:bg-opacity-20 rounded transition-colors"
           aria-label={isCollapsed ? `Expand ${capitalizedMealType}` : `Collapse ${capitalizedMealType}`}
         >
@@ -104,50 +104,40 @@ export const MealSection = memo(({
         </button>
       </div>
       
-      {/* Entries container - animated collapse */}
-      {entries.length > 0 && (
+      {/* Meal body is the drop target, not the header */}
+      {!isCollapsed && entries.length > 0 && (
         <div
-          className={`grid transition-[grid-template-rows] duration-200 ease-out ${isCollapsed ? 'grid-rows-[0fr]' : 'grid-rows-[1fr]'}`}
+          ref={setDropRef}
+          className={`bg-white border-l border-r border-b border-gray-300 ${isLastSection ? 'rounded-b-lg' : ''}`}
         >
-          <div className="overflow-hidden">
-            <div className={`bg-white border-l border-r border-b border-gray-300 ${isLastSection ? 'rounded-b-lg' : ''}`}>
-          <table className="w-full table-fixed">
-            <colgroup>
-              <col className="w-auto" />
-              <col className="w-24" />
-              <col className="w-20" />
-            </colgroup>
-            <tbody>
-              <SortableContext 
-                items={entries.map(item => item.id)}
-                strategy={verticalListSortingStrategy}
-              >
-                {entries.map((item, index) => (
-                  <FoodTableRow
-                    key={item.id}
-                    item={item}
-                    foodData={foodData}
-                    selectedEntries={selectedEntries}
-                    handleEntrySelect={handleEntrySelect}
-                    updateFoodEntry={updateFoodEntry}
-                    editingEntry={editingEntry}
-                    setEditingEntry={setEditingEntry}
-                    editAmount={editAmount}
-                    setEditAmount={setEditAmount}
-                    editUnit={editUnit}
-                    setEditUnit={setEditUnit}
-                    formatNumber={formatNumber}
-                    onContextMenu={onContextMenu}
-                    activeId={activeId}
-                    isLastRow={isLastSection && index === entries.length - 1}
-                  />
-                ))}
-              </SortableContext>
-            </tbody>
-          </table>
+          {entries.map((item, index) => (
+            <FoodTableRow
+              key={item.id}
+              item={item}
+              foodData={foodData}
+              selectedEntries={selectedEntries}
+              handleEntrySelect={handleEntrySelect}
+              updateFoodEntry={updateFoodEntry}
+              editingEntry={editingEntry}
+              setEditingEntry={setEditingEntry}
+              editAmount={editAmount}
+              setEditAmount={setEditAmount}
+              editUnit={editUnit}
+              setEditUnit={setEditUnit}
+              formatNumber={formatNumber}
+              onContextMenu={onContextMenu}
+              activeId={activeId}
+              isLastRow={isLastSection && index === entries.length - 1}
+            />
+          ))}
         </div>
-          </div>
-        </div>
+      )}
+
+      {!isCollapsed && entries.length === 0 && (
+        <div
+          ref={setDropRef}
+          className={`min-h-12 border-l border-r border-b border-gray-300 bg-white ${isLastSection ? 'rounded-b-lg' : ''}`}
+        />
       )}
     </div>
   );

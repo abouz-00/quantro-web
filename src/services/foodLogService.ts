@@ -55,11 +55,16 @@ export class FoodLogService {
   static async loadFoodData(dateParam: string): Promise<FoodEntry[]> {
     try {
       console.log('🌐 FoodLogService: About to fetch /food-logs?date=' + dateParam);
+      const startTime = performance.now();
       const apiData = await apiClient.get<ApiData[]>('/food-logs', { date: dateParam });
+      const fetchTime = performance.now() - startTime;
 
-      console.log('📋 FoodLogService: API returned', apiData.length, 'entries');
+      console.log(`📋 FoodLogService: API returned ${apiData.length} entries in ${fetchTime.toFixed(0)}ms`);
+      const transformStart = performance.now();
       const entries = apiData.map(transformApiDataToFoodEntry);
+      const transformTime = performance.now() - transformStart;
       
+      console.log(`✅ FoodLogService: Transformation took ${transformTime.toFixed(0)}ms`);
       return entries;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);

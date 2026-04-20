@@ -14,7 +14,11 @@ interface FoodTableRowProps {
   item: FoodEntry;
   foodData: FoodEntry[];
   selectedEntries: string[];
-  handleEntrySelect: (id: string, index: number, event: React.MouseEvent | React.KeyboardEvent) => void;
+  handleEntrySelect: (
+    id: string,
+    index: number,
+    event?: React.MouseEvent | React.KeyboardEvent | { ctrlKey?: boolean; metaKey?: boolean; shiftKey?: boolean } | null
+  ) => void;
   updateFoodEntry: (id: string, updated: Partial<FoodEntry>) => void;
   editingEntry: string | null;
   setEditingEntry: (id: string | null) => void;
@@ -76,7 +80,7 @@ export const FoodTableRow = memo(({
     return () => {
       interactions.cleanup();
     };
-  }, [interactions]);
+  }, [interactions.cleanup]);
 
   // Generate row classes
   const getRowClasses = () => {
@@ -89,39 +93,31 @@ export const FoodTableRow = memo(({
     }
     
     if (isLastRow) {
-      classes.push('rounded-b-lg', styles.lastRow);
+      classes.push(styles.lastRow);
     }
     
     return classes.join(' ');
   };
 
-  // Get cursor style for drag areas
-  const getDragCursor = () => {
-    if (interactions.isEditing) return 'default';
-    if (drag.isDragging) return 'move';
-    return 'move';
-  };
-
   return (
-    <tr
+    <div
       ref={drag.dragRef}
-      style={{ ...drag.dragStyle, position: 'relative' }}
+      style={drag.dragStyle}
       className={getRowClasses()}
       data-id={item.id}
+      role="row"
       aria-selected={interactions.isSelected}
       onClick={interactions.handleClick}
       onDoubleClick={interactions.handleDoubleClick}
       onContextMenu={interactions.handleContextMenu}
       onKeyDown={interactions.handleKeyDown}
       onMouseDown={e => {
-        // Prevent text selection on multiple clicks
         if (e.detail > 1) {
           e.preventDefault();
         }
       }}
       onBlur={contextMenu.closeContextMenu}
       onClickCapture={(e) => {
-        // Don't close context menu if clicking within edit controls
         if (interactions.isEditing && (
           e.target instanceof HTMLInputElement || 
           e.target instanceof HTMLSelectElement ||
@@ -132,13 +128,13 @@ export const FoodTableRow = memo(({
         }
         contextMenu.closeContextMenu();
       }}
+      {...drag.dragHandleProps}
     >
       {/* Food Description Cell */}
-      <td
-        className="py-2 pl-2 pr-2 min-w-[16rem] w-64"
-        style={{ cursor: getDragCursor() }}
+      <div
+        className={styles.cellDescription}
         aria-label={capitalizeWords(item.description)}
-        {...drag.dragHandleProps}
+        role="cell"
       >
         <div className="flex items-center space-x-2">
           {isSupplement(item.description) ? (
@@ -164,10 +160,10 @@ export const FoodTableRow = memo(({
             {capitalizeWords(item.description)}
           </span>
         </div>
-      </td>
+      </div>
 
       {/* Amount/Unit Cell */}
-      <td className="py-2 px-4 text-center" style={{ minWidth: 160 }}>
+      <div className={styles.cellAmount} role="cell">
         <EditableCell
           item={item}
           editingEntry={editingEntry}
@@ -180,20 +176,17 @@ export const FoodTableRow = memo(({
           formatNumber={formatNumber}
           onStartEditing={interactions.startEditing}
         />
-      </td>
+      </div>
 
       {/* Calories Cell */}
-      <td className="py-2 px-8 text-right" style={{ minWidth: 140 }} role="cell">
-        <div
-          className="flex items-center justify-end space-x-2"
-          style={{ cursor: getDragCursor() }}
-          {...drag.dragHandleProps}
-        >
-          <span style={{ fontWeight: 400 }}>{formatNumber(item.calories)}</span>
-          <span className="text-gray-600" style={{ fontWeight: 400 }}>kcal</span>
-        </div>
-      </td>
-    </tr>
+      <div
+        className={styles.cellCalories}
+        role="cell"
+      >
+        <span style={{ fontWeight: 400 }}>{formatNumber(item.calories)}</span>
+        <span className="text-gray-600 ml-1" style={{ fontWeight: 400 }}>kcal</span>
+      </div>
+    </div>
   );
 });
 

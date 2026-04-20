@@ -4,8 +4,12 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET(request: NextRequest) {
   console.log('🔍 [DEBUG] GET /api/food-logs called');
+  const startTime = Date.now();
   try {
+    const authStart = Date.now();
     const session = await auth();
+    const authTime = Date.now() - authStart;
+    console.log(`🔍 [DEBUG] Auth took ${authTime}ms`);
     console.log('🔍 [DEBUG] Session:', session?.user?.id ? `User ID: ${session.user.id}` : 'No session');
     
     if (!session?.user?.id) {
@@ -35,16 +39,27 @@ export async function GET(request: NextRequest) {
         gte: startOfDay,
         lte: endOfDay,
       };
-    }    const foodLogs = await prisma.foodLog.findMany({
+    }    
+    const dbStart = Date.now();
+    const foodLogs = await prisma.foodLog.findMany({
       where: whereClause,
       orderBy: [
         { orderIndex: 'asc' },
         { createdAt: 'asc' }
       ],
     });
+    const dbTime = Date.now() - dbStart;
 
-    console.log('🔍 [DEBUG] Found', foodLogs.length, 'entries');
-    return NextResponse.json(foodLogs);
+    const totalTime = Date.now() - startTime;
+    console.log(`🔍 [DEBUG] Found ${foodLogs.length} entries. DB query: ${dbTime}ms, Total time: ${totalTime}ms`);
+    return NextResponse.json(foodLogs, {
+      headers: {
+        // Cache for 5 minutes on client, allow stale content for 10 minutes for revalidation
+        'Cache-Control': 'private, max-age=300, stale-while-revalidate=600',
+        // Add timing header for client debugging
+        'X-Response-Time': `${totalTime}ms`,
+      },
+    });
   } catch (error) {
     console.error('Error fetching food logs:', {
       message: error instanceof Error ? error.message : 'Unknown error',

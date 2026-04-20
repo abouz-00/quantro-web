@@ -16,6 +16,7 @@ export interface ErrorContext {
 
 export interface ErrorReport {
   message: string;
+  name?: string;
   stack?: string;
   context?: ErrorContext;
   fingerprint?: string;
@@ -32,26 +33,64 @@ class ErrorService {
   /**
    * Log an error to multiple destinations (non-blocking)
    */
-  async logError(error: Error | string, context?: ErrorContext): Promise<void> {
+  async logError(error: unknown, context?: ErrorContext): Promise<void> {
+    const normalizedError = this.normalizeError(error);
+
     const errorReport: ErrorReport = {
-      message: typeof error === 'string' ? error : error.message,
-      stack: typeof error === 'object' ? error.stack : undefined,
+      message: normalizedError.message,
+      name: normalizedError.name,
+      stack: normalizedError.stack,
       context: {
         ...context,
         timestamp: Date.now(),
         url: typeof window !== 'undefined' ? window.location.href : undefined,
         userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined,
       },
-      fingerprint: this.generateFingerprint(error, context),
+      fingerprint: this.generateFingerprint(normalizedError.message, context),
     };
 
     // Log to console in development
     if (this.isDevelopment) {
-      console.error('🚨 Error Report:', errorReport);
+      console.warn('🚨 Error Report:', JSON.stringify(errorReport, null, 2));
     }
 
     // Send to logging services asynchronously without blocking
     this.sendErrorsAsync(errorReport);
+  }
+
+  /**
+   * Normalize unknown error values into a consistent serializable shape.
+   */
+  private normalizeError(error: unknown): { message: string; name?: string; stack?: string } {
+    if (error instanceof Error) {
+      const message = error.message?.trim() || error.name || 'Unknown error';
+      return {
+        message,
+        name: error.name,
+        stack: error.stack,
+      };
+    }
+
+    if (typeof error === 'string') {
+      const message = error.trim() || 'Unknown error';
+      return { message, name: 'Error' };
+    }
+
+    if (error === null || error === undefined) {
+      return { message: 'Unknown error (null or undefined)', name: 'UnknownError' };
+    }
+
+    // Best-effort serialization for non-Error objects/values
+    try {
+      const serialized = JSON.stringify(error);
+      if (serialized && serialized !== '{}') {
+        return { message: `Non-Error throw: ${serialized}`, name: 'NonErrorThrown' };
+      }
+    } catch {
+      // Ignore serialization failures and fall back below.
+    }
+
+    return { message: String(error), name: 'NonErrorThrown' };
   }
 
   /**
@@ -163,8 +202,7 @@ class ErrorService {
   /**
    * Generate a unique fingerprint for error grouping
    */
-  private generateFingerprint(error: Error | string, context?: ErrorContext): string {
-    const message = typeof error === 'string' ? error : error.message;
+  private generateFingerprint(message: string, context?: ErrorContext): string {
     const category = context?.category || 'unknown';
     const url = context?.url || 'unknown';
     
@@ -185,7 +223,7 @@ class ErrorService {
         body: JSON.stringify({ errors }),
       });
     } catch (err) {
-      console.error('Failed to send batch to Sentry:', err);
+      console.warn('Failed to send batch to Sentry:', err);
     }
   }
 
@@ -200,7 +238,7 @@ class ErrorService {
         body: JSON.stringify({ errors }),
       });
     } catch (err) {
-      console.error('Failed to send batch to server logs:', err);
+      console.warn('Failed to send batch to server logs:', err);
     }
   }
 
@@ -223,7 +261,7 @@ class ErrorService {
         }),
       });
     } catch (err) {
-      console.error('Failed to send batch to analytics:', err);
+      console.warn('Failed to send batch to analytics:', err);
     }
   }
 
@@ -242,7 +280,7 @@ class ErrorService {
         body: JSON.stringify(errorReport),
       });
     } catch (err) {
-      console.error('Failed to send error to Sentry:', err);
+      console.warn('Failed to send error to Sentry:', err);
     }
   }
 
@@ -257,7 +295,7 @@ class ErrorService {
         body: JSON.stringify(errorReport),
       });
     } catch (err) {
-      console.error('Failed to send error to server logs:', err);
+      console.warn('Failed to send error to server logs:', err);
       // Store in localStorage as fallback
       this.storeErrorLocally(errorReport);
     }
@@ -277,7 +315,7 @@ class ErrorService {
         body: JSON.stringify(data),
       });
     } catch (err) {
-      console.error('Failed to send to analytics:', err);
+      console.warn('Failed to send to analytics:', err);
     }
   }
 
@@ -297,7 +335,7 @@ class ErrorService {
       
       localStorage.setItem('quantro_errors', JSON.stringify(errors));
     } catch (err) {
-      console.error('Failed to store error locally:', err);
+      console.warn('Failed to store error locally:', err);
     }
   }
 

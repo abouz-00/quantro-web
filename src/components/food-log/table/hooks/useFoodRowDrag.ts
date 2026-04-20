@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { useRef, useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -13,6 +13,17 @@ export function useFoodRowDrag({ id, activeId, disabled = false }: UseFoodRowDra
   // Use state instead of ref to avoid accessing ref.current during render
   const [wasDragging, setWasDragging] = useState(false);
   const isCurrentlyBeingDragged = activeId === id;
+  const sortableData = useMemo(() => ({ type: 'food-entry' as const }), []);
+  const sortableTransition = useMemo(() => ({
+    duration: 150,
+    easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+  }), []);
+  const sortableConfig = useMemo(() => ({
+    id,
+    data: sortableData,
+    disabled,
+    transition: sortableTransition,
+  }), [disabled, id, sortableData, sortableTransition]);
 
   const {
     attributes,
@@ -20,37 +31,33 @@ export function useFoodRowDrag({ id, activeId, disabled = false }: UseFoodRowDra
     setNodeRef,
     transform,
     transition,
-  } = useSortable({ 
-    id,
-    data: { type: 'food-entry' },
-    disabled,
-    transition: {
-      duration: 300, // Reduced for more responsive feel
-      easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)', // Optimized easing for smooth motion
-    },
-  });
+  } = useSortable(sortableConfig);
 
   // Track drag state - immediate reset for better responsiveness
   // This effect synchronizes external drag state from dnd-kit with internal component state
   useEffect(() => {
-    if (isCurrentlyBeingDragged && !wasDragging) {
-      setWasDragging(true);
-    } else if (!isCurrentlyBeingDragged && wasDragging) {
-      // Immediate reset for smoother interaction
-      setWasDragging(false);
-    }
-  }, [isCurrentlyBeingDragged, wasDragging]);
+    setWasDragging((previousWasDragging) =>
+      previousWasDragging === isCurrentlyBeingDragged
+        ? previousWasDragging
+        : isCurrentlyBeingDragged
+    );
+  }, [isCurrentlyBeingDragged]);
 
-  // Memoize style object to avoid recreating on every render
-  // This prevents the linter from flagging dragStyle as a ref access
+  // Row moves inline via CSS transform on div elements (transforms work natively on divs)
   const style = useMemo(() => ({
-    transform: isCurrentlyBeingDragged ? 'none' : CSS.Transform.toString(transform),
+    transform: CSS.Transform.toString(transform),
     transition,
-    zIndex: isCurrentlyBeingDragged ? 1000 : 1,
-    opacity: 1,
+    zIndex: isCurrentlyBeingDragged ? 50 : undefined,
   }), [isCurrentlyBeingDragged, transform, transition]);
 
-  const dragHandleProps = disabled ? {} : { ...listeners, ...attributes };
+  const dragHandleProps = useMemo(
+    () => (disabled ? {} : { ...listeners, ...attributes }),
+    [attributes, disabled, listeners]
+  );
+
+  const resetDragState = useCallback(() => {
+    setWasDragging((previousWasDragging) => (previousWasDragging ? false : previousWasDragging));
+  }, []);
 
   return {
     dragRef: setNodeRef,
@@ -58,6 +65,6 @@ export function useFoodRowDrag({ id, activeId, disabled = false }: UseFoodRowDra
     dragHandleProps,
     isDragging: isCurrentlyBeingDragged,
     wasDragging,
-    resetDragState: () => { setWasDragging(false); }
+    resetDragState,
   };
 }
