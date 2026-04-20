@@ -18,6 +18,7 @@ const customJestConfig = {
   testPathIgnorePatterns: [
     '<rootDir>/node_modules/',
     '<rootDir>/.next/',
+    '<rootDir>/e2e/',
     '<rootDir>/src/app/api/__tests__/jest-setup.js',
   ],
   modulePathIgnorePatterns: [
