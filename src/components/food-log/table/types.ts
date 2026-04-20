@@ -8,7 +8,11 @@ export interface FoodTableProps {
   foodData: FoodEntry[];
   filteredEntries: FoodEntry[];
   selectedEntries: string[];
-  handleEntrySelect: (id: string, index: number, event: React.MouseEvent) => void;
+  handleEntrySelect: (
+    id: string,
+    index: number,
+    event?: React.MouseEvent | React.KeyboardEvent | { ctrlKey?: boolean; metaKey?: boolean; shiftKey?: boolean } | null
+  ) => void;
   removeFoodEntry: (id: string) => void;
   updateFoodEntry?: (id: string, updates: Partial<FoodEntry>) => void;
   onReorderEntries?: (newOrder: FoodEntry[]) => void;
@@ -21,7 +25,11 @@ export interface SortableRowProps {
   foodData: FoodEntry[];
   filteredEntries: FoodEntry[];
   selectedEntries: string[];
-  handleEntrySelect: (id: string, index: number, event: React.MouseEvent) => void;
+  handleEntrySelect: (
+    id: string,
+    index: number,
+    event?: React.MouseEvent | React.KeyboardEvent | { ctrlKey?: boolean; metaKey?: boolean; shiftKey?: boolean } | null
+  ) => void;
   removeFoodEntry: (id: string) => void;
   updateFoodEntry: (id: string, updates: Partial<FoodEntry>) => void;
   editingEntry: string | null;

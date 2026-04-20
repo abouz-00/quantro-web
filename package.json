@@ -16,7 +16,7 @@
     "dev:status": "./scripts/start-dev-daemon.sh status",
     "dev:logs": "tail -f logs/forever-dev.log",
     "dev:install-service": "./scripts/install-dev-service.sh",
-    "build": "prisma generate --schema=prisma/schema.production.prisma && next build",
+    "build": "prisma generate --schema=prisma/schema.prisma && next build",
     "build:safe": "./scripts/safe-build.sh",
     "clean": "./scripts/clean-build.sh",
     "clean:all": "./scripts/comprehensive-clean.sh",

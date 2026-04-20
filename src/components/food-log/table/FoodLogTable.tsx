@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useState, useEffect, useMemo, useRef } from "react";
 import {
   DndContext,
   KeyboardSensor,
+  MeasuringStrategy,
+  Modifier,
   PointerSensor,
   useSensor,
   useSensors,
@@ -57,37 +59,22 @@ export default function FoodLogTable({
     setEditUnit
   } = useFoodTableState();
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
   // =====================
   // Professional Event Adapter Pattern
   // =====================
   
   /**
-   * Clean, type-safe event adapter that bridges the gap between
-   * parent handler (MouseEvent only) and child components (MouseEvent | KeyboardEvent)
-   * 
-   * This follows the Adapter Pattern and avoids any business logic duplication
+   * Pass selection handler directly without modification
+   * Event is already compatible from child components
    */
   const adaptedSelectionHandler = useCallback((
     id: string,
     index: number, 
-    event?: React.MouseEvent | React.KeyboardEvent | null
+    event?: React.MouseEvent | React.KeyboardEvent | { ctrlKey?: boolean; metaKey?: boolean; shiftKey?: boolean } | null
   ) => {
-    // Extract essential modifier keys and create a minimal MouseEvent-compatible object
-    // This is a clean adapter pattern that preserves functionality without duplication
-    const eventAdapter = {
-      ctrlKey: event?.ctrlKey || false,
-      metaKey: event?.metaKey || false,
-      shiftKey: event?.shiftKey || false,
-      preventDefault: event?.preventDefault ? 
-        (typeof event.preventDefault === 'function' ? 
-          (() => event.preventDefault()) : () => {}) : () => {},
-      stopPropagation: event?.stopPropagation ? 
-        (typeof event.stopPropagation === 'function' ? 
-          (() => event.stopPropagation()) : () => {}) : () => {},
-    };
-    
-    // Cast to MouseEvent interface - this is safe because we only use modifier keys
-    handleEntrySelect(id, index, eventAdapter as React.MouseEvent);
+    handleEntrySelect(id, index, event);
   }, [handleEntrySelect]);
 
   // =====================
@@ -111,7 +98,7 @@ export default function FoodLogTable({
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 3, // Reduced for more responsive drag start
+        distance: 8, // Avoid accidental drag on normal row clicks
       },
     }),
     useSensor(KeyboardSensor, {
@@ -120,26 +107,144 @@ export default function FoodLogTable({
   );
 
   // =====================
+  // Collapse State (lifted from MealSection so SortableContext items stay in sync)
+  // =====================
+  const [collapsedMeals, setCollapsedMeals] = useState<Record<string, boolean>>({});
+
+  const toggleCollapse = useCallback((mealType: string) => {
+    // Don't allow collapsing while dragging - this prevents items from disappearing
+    if (!activeId) {
+      setCollapsedMeals(prev => ({ ...prev, [mealType]: !prev[mealType] }));
+    }
+  }, [activeId]);
+
+  // Auto-expand collapsed meals when dragged over
+  useEffect(() => {
+    if (!dragOverTarget) {
+      return;
+    }
+
+    const mealType = dragOverTarget.replace('drop-', '');
+
+    setCollapsedMeals((previousMeals) => {
+      if (!previousMeals[mealType]) {
+        return previousMeals;
+      }
+
+      return { ...previousMeals, [mealType]: false };
+    });
+  }, [dragOverTarget]);
+
+  // =====================
   // Data Processing
   // =====================
   
   // Group entries by meal type
-  const entriesByMealType = MEAL_TYPES.reduce((acc, mealType) => {
-    acc[mealType] = currentEntries.filter(entry => entry.mealType === mealType);
-    return acc;
-  }, {} as Record<FoodEntry['mealType'], FoodEntry[]>);
+  const entriesByMealType = useMemo(() => {
+    return MEAL_TYPES.reduce((acc, mealType) => {
+      acc[mealType] = currentEntries.filter(entry => entry.mealType === mealType);
+      return acc;
+    }, {} as Record<FoodEntry['mealType'], FoodEntry[]>);
+  }, [currentEntries]);
 
-  // Create unified sortable items array containing food entries and meal headers for drag feedback
-  const unifiedSortableItems = [
-    ...MEAL_TYPES.map(mealType => `drop-${mealType}`), // Include meal headers as sortable targets
-    ...currentEntries.map(entry => entry.id)
-  ];
+  // SortableContext items MUST include ALL items (including those in collapsed meals)
+  // because collapsed meals still have DOM entries (just hidden by isCollapsed rendering)
+  // If we exclude them here, drag-drop into collapsed meals breaks and items disappear
+  const orderedItemIds = useMemo(() => {
+    return MEAL_TYPES.flatMap((mealType) =>
+      entriesByMealType[mealType].map((entry) => entry.id)
+    );
+  }, [entriesByMealType]);
+
+  const lastMealTypeWithEntries = useMemo(() => {
+    return MEAL_TYPES.slice().reverse().find(
+      (mealType) => entriesByMealType[mealType] && entriesByMealType[mealType].length > 0
+    );
+  }, [entriesByMealType]);
+
+  const restrictToFoodTableBounds = useMemo<Modifier>(() => {
+    return ({ draggingNodeRect, transform }) => {
+      const containerElement = containerRef.current;
+      const containerRect = containerElement?.getBoundingClientRect();
+      const headerRects = Array.from(
+        containerElement?.querySelectorAll<HTMLElement>('[data-meal-header]') ?? []
+      ).map((header) => ({
+        mealType: header.dataset.mealHeader,
+        rect: header.getBoundingClientRect(),
+      }));
+      const breakfastHeaderRect = headerRects.find(({ mealType }) => mealType === 'breakfast')?.rect;
+
+      if (!draggingNodeRect || !containerRect) {
+        return transform;
+      }
+
+      let nextY = transform.y;
+      const upperBoundary = breakfastHeaderRect?.bottom ?? containerRect.top;
+
+      let nextTop = draggingNodeRect.top + nextY;
+      let nextBottom = draggingNodeRect.bottom + nextY;
+
+      if (nextTop < upperBoundary) {
+        nextY += upperBoundary - nextTop;
+        nextTop = draggingNodeRect.top + nextY;
+        nextBottom = draggingNodeRect.bottom + nextY;
+      }
+
+      if (nextBottom > containerRect.bottom) {
+        nextY -= nextBottom - containerRect.bottom;
+        nextTop = draggingNodeRect.top + nextY;
+        nextBottom = draggingNodeRect.bottom + nextY;
+      }
+
+      const intermediateHeaders = headerRects
+        .filter(({ mealType }) => mealType !== 'breakfast')
+        .sort((left, right) => left.rect.top - right.rect.top);
+
+      if (transform.y > 0) {
+        for (const { rect } of intermediateHeaders) {
+          const overlapsHeader = nextTop < rect.bottom && nextBottom > rect.top;
+
+          if (overlapsHeader) {
+            nextY += rect.bottom - nextTop;
+            nextTop = draggingNodeRect.top + nextY;
+            nextBottom = draggingNodeRect.bottom + nextY;
+          }
+        }
+      } else if (transform.y < 0) {
+        for (const { rect } of intermediateHeaders.slice().reverse()) {
+          const overlapsHeader = nextTop < rect.bottom && nextBottom > rect.top;
+
+          if (overlapsHeader) {
+            nextY -= nextBottom - rect.top;
+            nextTop = draggingNodeRect.top + nextY;
+            nextBottom = draggingNodeRect.bottom + nextY;
+          }
+        }
+      }
+
+      return {
+        ...transform,
+        y: nextY,
+      };
+    };
+  }, []);
+
+  const dndModifiers = useMemo(
+    () => [restrictToVerticalAxis, restrictToFoodTableBounds],
+    [restrictToFoodTableBounds]
+  );
+
+  const dndMeasuring = useMemo(
+    () => ({ droppable: { strategy: MeasuringStrategy.BeforeDragging } }),
+    []
+  );
 
   // =====================
   // Render
   // =====================
   return (
     <div 
+      ref={containerRef}
       className={`w-full overflow-x-auto ${styles.foodTableContainer} ${activeId ? styles.dragging : ''}`}
       style={{ cursor: activeId ? 'move' : 'default' }}
     >
@@ -149,18 +254,15 @@ export default function FoodLogTable({
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
-        modifiers={[restrictToVerticalAxis]}
+        modifiers={dndModifiers}
+        measuring={dndMeasuring}
       >
         <SortableContext 
-          items={unifiedSortableItems}
+          items={orderedItemIds}
           strategy={verticalListSortingStrategy}
         >
           <div>
             {MEAL_TYPES.map((mealType, index) => {
-              // Find the last meal type that has entries
-              const lastMealTypeWithEntries = MEAL_TYPES.slice().reverse().find(
-                type => entriesByMealType[type] && entriesByMealType[type].length > 0
-              );
               // If no meal types have entries, the last meal type in the array should be considered last
               const isLastSection = lastMealTypeWithEntries ? 
                 mealType === lastMealTypeWithEntries : 
@@ -171,7 +273,7 @@ export default function FoodLogTable({
                   key={mealType}
                   mealType={mealType}
                   entries={entriesByMealType[mealType]}
-                  foodData={foodData}
+                  foodData={currentEntries}
                   selectedEntries={selectedEntries}
                   handleEntrySelect={adaptedSelectionHandler}
                   updateFoodEntry={updateFoodEntry}
@@ -186,12 +288,13 @@ export default function FoodLogTable({
                   activeId={activeId}
                   dragOverTarget={dragOverTarget}
                   isLastSection={isLastSection}
+                  isCollapsed={!!collapsedMeals[mealType]}
+                  onToggleCollapse={() => toggleCollapse(mealType)}
                 />
               );
             })}
           </div>
         </SortableContext>
-        {/* No DragOverlay - visual feedback handled by .dragging-item class only */}
       </DndContext>
     </div>
   );

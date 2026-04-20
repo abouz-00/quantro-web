@@ -1,67 +1,43 @@
 import NextAuth from "next-auth"
 import { authConfig } from "@/lib/auth.config"
 import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 
 const { auth } = NextAuth(authConfig)
 
-// ── Rate limiting for auth endpoints ──────────────────────────────
-// Uses a sliding-window counter via Upstash Redis when configured.
-// Falls back to a no-op when UPSTASH_REDIS_REST_URL is not set so the
-// app still works locally / in CI without external dependencies.
-async function authRateLimited(req: Parameters<Parameters<typeof auth>[0]>[0]): Promise<NextResponse | null> {
-  // Skip rate limiting if Upstash is not configured
-  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+// ── Edge-compatible rate limiter for auth endpoints ────────────────
+// 20 requests per IP per 60 s — covers /api/auth/* and /api/auth/check-email
+const authRateMap = new Map<string, { count: number; resetAt: number }>()
+const AUTH_MAX = 20
+const AUTH_WINDOW = 60_000 // 1 minute
+
+function authRateLimited(req: NextRequest): NextResponse | null {
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-real-ip") ||
+    "unknown"
+  const now = Date.now()
+  const entry = authRateMap.get(ip)
+
+  if (!entry || now > entry.resetAt) {
+    authRateMap.set(ip, { count: 1, resetAt: now + AUTH_WINDOW })
     return null
   }
 
-  try {
-    const { Ratelimit } = await import("@upstash/ratelimit")
-    const { Redis } = await import("@upstash/redis")
-
-    const redis = new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN,
-    })
-
-    const ratelimit = new Ratelimit({
-      redis,
-      limiter: Ratelimit.slidingWindow(20, "60 s"),
-      analytics: true,
-      prefix: "ratelimit:auth",
-    })
-
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      req.headers.get("x-real-ip") ||
-      "unknown"
-
-    const { success, remaining, reset } = await ratelimit.limit(ip)
-
-    if (!success) {
-      return NextResponse.json(
-        { error: "Too many requests. Please try again later." },
-        {
-          status: 429,
-          headers: {
-            "X-RateLimit-Remaining": String(remaining),
-            "X-RateLimit-Reset": String(reset),
-            "Retry-After": String(Math.ceil((reset - Date.now()) / 1000)),
-          },
-        },
-      )
-    }
-  } catch {
-    // If rate limiting fails, allow the request through — don't block
-    // users because of a Redis outage.
+  entry.count++
+  if (entry.count > AUTH_MAX) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again later." },
+      { status: 429 },
+    )
   }
-
   return null
 }
 
-export default auth(async (req) => {
+export default auth((req) => {
   // ── Rate-limit all auth-related routes ──────────────────────────
   if (req.nextUrl.pathname.startsWith('/api/auth')) {
-    const blocked = await authRateLimited(req)
+    const blocked = authRateLimited(req)
     if (blocked) return blocked
   }
 

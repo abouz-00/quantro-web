@@ -1,25 +1,16 @@
 .foodTableRow.draggingItem [aria-label="food"] {
-  color: #d1d5db !important; /* gray-300 */
-  filter: grayscale(1);
-  opacity: 0.5;
+  color: inherit !important;
+  filter: none;
+  opacity: 1;
 }
 .foodTableRow {
-  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 160px 140px;
+  align-items: center;
   background: white;
   color: #111827;
-  cursor: pointer;
+  cursor: grab;
   transition: background-color 0.15s ease;
-  transform-origin: center center;
-  box-shadow: none !important;
-  z-index: auto !important;
-  will-change: color, background;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  contain: paint;
-  border-top: none !important;
-  border-bottom: none !important;
   font-family: 'DM Sans', sans-serif !important;
   font-weight: 400 !important;
   user-select: none;
@@ -54,45 +45,32 @@
   transition: none !important; /* Remove transition for smoother drag */
 }
 .foodTableRow.draggingItem {
-  color: #a3a3a3 !important;
-  /* background intentionally not set, so zebra striping remains */
-  opacity: 1 !important;
-  box-shadow: none !important;
-  z-index: auto !important;
-  border-left: none !important;
-  border-right: none !important;
-  border-top: none !important;
-  border-bottom: none !important;
-  border-radius: 0 !important;
-  outline: none !important;
-  transition: color 0.2s ease;
-  will-change: color, background;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  contain: paint;
-  display: table-row !important;
-  visibility: visible !important;
-  pointer-events: none;
+  background: white !important;
+  color: #111827 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 4px !important;
+  outline: 2px solid #a78bfa !important;
+  outline-offset: -1px;
+  transition: none;
+  z-index: 50;
+  position: relative;
 }
 .foodTableRow.draggingItem * {
-  color: #a3a3a3 !important;
+  color: #111827 !important;
   font-family: 'DM Sans', sans-serif !important;
   font-weight: 400 !important;
 }
+
 .foodTableRow.selected.draggingItem, .foodTableRow.draggingItem.selected {
-  background: white !important;
-  color: #a3a3a3 !important;
-  border-left: none !important;
-  border-right: none !important;
-  border-top: none !important;
-  border-bottom: none !important;
-  border-radius: 0 !important;
-  outline: none !important;
+  background: #f5f3ff !important;
+  color: #111827 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 4px !important;
+  outline: 2px solid #a78bfa !important;
+  outline-offset: -1px;
 }
 .foodTableRow.selected.draggingItem *, .foodTableRow.draggingItem.selected * {
-  color: #a3a3a3 !important;
+  color: #111827 !important;
   font-family: 'DM Sans', sans-serif !important;
   font-weight: 400 !important;
 }
@@ -122,74 +100,31 @@ body.dragging * {
 }
 */
 
-/* Last row rounding to match headings */
-.foodTableRow.rounded-b-lg td:first-child {
-  border-bottom-left-radius: 0.5rem !important;
+/* Cell styles for div-based grid rows */
+.cellDescription {
+  padding: 8px 8px 8px 8px;
+  min-width: 0;
+  overflow: hidden;
+  cursor: grab;
 }
 
-.foodTableRow.rounded-b-lg td:last-child {
-  border-bottom-right-radius: 0.5rem !important;
+.cellAmount {
+  padding: 8px 16px;
+  text-align: center;
+  min-width: 0;
 }
 
-/* Ensure last row rounding works with selection state */
-.foodTableRow.selected.rounded-b-lg td:first-child {
-  border-bottom-left-radius: 0.5rem !important;
+.cellCalories {
+  padding: 8px 32px 8px 16px;
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  cursor: grab;
+  min-width: 0;
 }
 
-.foodTableRow.selected.rounded-b-lg td:last-child {
-  border-bottom-right-radius: 0.5rem !important;
-}
-
-/* Last row specific styling */
+/* Last row rounding */
 .lastRow {
   overflow: hidden;
-}
-
-.lastRow td:first-child {
-  border-bottom-left-radius: 0.5rem !important;
-}
-
-.lastRow td:last-child {
-  border-bottom-right-radius: 0.5rem !important;
-}
-
-/* Ensure last row rounding works with selection state */
-.selected.lastRow td:first-child {
-  border-bottom-left-radius: 0.5rem !important;
-}
-
-.selected.lastRow td:last-child {
-  border-bottom-right-radius: 0.5rem !important;
-}
-
-/* Drag overlay styles */
-.dragOverlay {
-  z-index: 1000 !important;
-  pointer-events: none;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
-  border-radius: 4px !important;
-  background: white !important;
-  border: 1px solid #d1d5db !important;
-  opacity: 0.95 !important;
-  min-width: 300px;
-  font-family: "DM Sans", sans-serif !important;
-}
-
-.dragOverlay table {
-  width: 100%;
-  table-layout: fixed;
-}
-
-.dragOverlay td {
-  padding: 8px 12px;
-  font-size: 14px;
-  font-weight: 400;
-  color: #111827 !important;
-  background: white !important;
-}
-
-.dragOverlay .truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }

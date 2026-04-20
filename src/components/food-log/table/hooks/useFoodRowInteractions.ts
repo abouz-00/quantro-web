@@ -7,7 +7,11 @@ interface UseFoodRowInteractionsProps {
   foodData: FoodEntry[];
   selectedEntries: string[];
   editingEntry: string | null;
-  handleEntrySelect: (id: string, index: number, event: React.MouseEvent | React.KeyboardEvent) => void;
+  handleEntrySelect: (
+    id: string,
+    index: number,
+    event?: React.MouseEvent | React.KeyboardEvent | { ctrlKey?: boolean; metaKey?: boolean; shiftKey?: boolean } | null
+  ) => void;
   setEditingEntry: (id: string | null) => void;
   setEditAmount: (amount: string) => void;
   setEditUnit: (unit: string) => void;
@@ -32,30 +36,37 @@ export function useFoodRowInteractions({
   
   const isSelected = selectedEntries.includes(item.id);
   const isEditing = editingEntry === item.id;
-  const itemIndex = foodData.indexOf(item);
+  const itemIndex = foodData.findIndex((entry) => entry.id === item.id);
+
+  const getRowSelectionTarget = useCallback((
+    event?: React.MouseEvent | React.KeyboardEvent
+  ) => {
+    const clickedId =
+      event && 'currentTarget' in event
+        ? (event.currentTarget as HTMLElement | null)?.dataset?.id
+        : undefined;
+
+    const resolvedId = clickedId || item.id;
+    const resolvedIndex = foodData.findIndex((entry) => entry.id === resolvedId);
+
+    return {
+      id: resolvedId,
+      index: resolvedIndex >= 0 ? resolvedIndex : itemIndex,
+    };
+  }, [foodData, item.id, itemIndex]);
 
   // Start editing mode
   const startEditing = useCallback((entry: FoodEntry, e?: React.MouseEvent | React.KeyboardEvent) => {
     if (e) e.stopPropagation();
     
-    // Create synthetic event for selection if needed
-    const syntheticEvent = {
-      type: 'click',
-      button: 0,
-      ctrlKey: false,
-      shiftKey: false,
-      metaKey: false,
-      stopPropagation: () => {},
-      preventDefault: () => {}
-    } as React.MouseEvent;
-    
     // Ensure item is selected
-    handleEntrySelect(entry.id, foodData.indexOf(entry), (e && 'button' in e) ? e as React.MouseEvent : syntheticEvent);
+    const index = foodData.findIndex((candidate) => candidate.id === entry.id);
+    handleEntrySelect(entry.id, index >= 0 ? index : itemIndex, e);
     
     setEditingEntry(entry.id);
     setEditAmount(entry.amount);
     setEditUnit(normalizeUnit(entry.unit));
-  }, [foodData, handleEntrySelect, setEditingEntry, setEditAmount, setEditUnit]);
+  }, [foodData, handleEntrySelect, itemIndex, setEditingEntry, setEditAmount, setEditUnit]);
 
   // Handle row click with improved drag detection
   const handleClick = useCallback((e: React.MouseEvent) => {
@@ -69,30 +80,27 @@ export function useFoodRowInteractions({
     
     // Only handle click if not dragging - check immediately
     if (!wasDragging) {
+      const target = getRowSelectionTarget(e);
+
       if (e.ctrlKey || e.metaKey) {
         // Ctrl+Click: only add to selection, never remove
-        if (!isSelected) {
-          const modifiedEvent = { ...e, isMultiSelectForced: true } as React.MouseEvent & { isMultiSelectForced: boolean };
-          handleEntrySelect(item.id, itemIndex, modifiedEvent);
+        if (!selectedEntries.includes(target.id)) {
+          handleEntrySelect(target.id, target.index, e);
         }
         
         // Handle context menu for Ctrl+Click
         if (onContextMenu) {
-          // Use requestAnimationFrame for smoother performance
-          requestAnimationFrame(() => {
-            const syntheticEvent = { ...e, type: 'contextmenu' } as React.MouseEvent;
-            onContextMenu(syntheticEvent, item.id);
-          });
+          onContextMenu(e, target.id);
         }
       } else {
         // Normal click - handle selection immediately
-        handleEntrySelect(item.id, itemIndex, e);
+        handleEntrySelect(target.id, target.index, e);
       }
     }
     
     // Reset drag state immediately after handling
     resetDragState();
-  }, [item.id, itemIndex, isEditing, isSelected, editingEntry, wasDragging, handleEntrySelect, setEditingEntry, onContextMenu, resetDragState]);
+  }, [editingEntry, getRowSelectionTarget, handleEntrySelect, isEditing, onContextMenu, resetDragState, selectedEntries, setEditingEntry, wasDragging]);
 
   // Handle double click
   const handleDoubleClick = useCallback((e: React.MouseEvent) => {
@@ -103,9 +111,11 @@ export function useFoodRowInteractions({
       setEditingEntry(null);
     }
     
+    const target = getRowSelectionTarget(e);
+
     // Select on double-click
-    handleEntrySelect(item.id, itemIndex, e);
-  }, [item.id, itemIndex, editingEntry, handleEntrySelect, setEditingEntry]);
+    handleEntrySelect(target.id, target.index, e);
+  }, [editingEntry, getRowSelectionTarget, handleEntrySelect, setEditingEntry]);
 
   // Handle context menu
   const handleContextMenu = useCallback((e: React.MouseEvent) => {
@@ -115,11 +125,13 @@ export function useFoodRowInteractions({
       setEditingEntry(null);
     }
     
+    const target = getRowSelectionTarget(e);
+
     // Always select the right-clicked item
-    handleEntrySelect(item.id, itemIndex, e);
+    handleEntrySelect(target.id, target.index, e);
     
-    onContextMenu?.(e, item.id);
-  }, [item.id, itemIndex, editingEntry, handleEntrySelect, setEditingEntry, onContextMenu]);
+    onContextMenu?.(e, target.id);
+  }, [editingEntry, getRowSelectionTarget, handleEntrySelect, onContextMenu, setEditingEntry]);
 
   // Handle keyboard interaction
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {

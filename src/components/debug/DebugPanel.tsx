@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import type { Session } from 'next-auth';
 
@@ -43,6 +43,17 @@ declare global {
 
 export default function DebugPanel() {
   const { data: session, status } = useSession();
+  const sessionSnapshot = useMemo(() => ({
+    status,
+    user: session?.user,
+    expires: session?.expires
+  }), [
+    status,
+    session?.expires,
+    session?.user?.email,
+    session?.user?.name,
+    session?.user?.image
+  ]);
   const [debugInfo, setDebugInfo] = useState<DebugInfo>({
     session: null,
     environment: 'unknown',
@@ -55,6 +66,8 @@ export default function DebugPanel() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    let isActive = true;
+
     const updateDebugInfo = async () => {
       try {
         // Check API status
@@ -75,12 +88,12 @@ export default function DebugPanel() {
           // Keep the default error object
         }
 
+        if (!isActive) {
+          return;
+        }
+
         setDebugInfo({
-          session: {
-            status,
-            user: session?.user,
-            expires: session?.expires
-          },
+          session: sessionSnapshot,
           environment: process.env.NODE_ENV || 'unknown',
           timestamp: new Date().toISOString(),
           localStorage: localStorageData,
@@ -89,6 +102,10 @@ export default function DebugPanel() {
           errors: window.__debugErrors || []
         });
       } catch (error) {
+        if (!isActive) {
+          return;
+        }
+
         setDebugInfo(prev => ({
           ...prev,
           apiStatus: 'error',
@@ -101,8 +118,11 @@ export default function DebugPanel() {
     updateDebugInfo();
     const interval = setInterval(updateDebugInfo, 5000); // Update every 5 seconds
 
-    return () => clearInterval(interval);
-  }, [session, status]);
+    return () => {
+      isActive = false;
+      clearInterval(interval);
+    };
+  }, [sessionSnapshot]);
 
   // Add global error handler
   useEffect(() => {

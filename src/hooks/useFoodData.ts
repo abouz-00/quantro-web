@@ -1,3 +1,9 @@
+  type SelectionModifiers = {
+    ctrlKey?: boolean;
+    metaKey?: boolean;
+    shiftKey?: boolean;
+  };
+
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { FoodEntry } from '../types/food';
 import { FoodLogService } from '../services/foodLogService';
@@ -303,21 +309,25 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
   }, [selectedDate]);
 
   // Handle entry selection with multi-select support
-  const handleEntrySelect = useCallback((id: string, index: number, event: React.MouseEvent) => {
+  const handleEntrySelect = useCallback((id: string, index: number, event?: SelectionModifiers | null) => {
+    const ctrlKey = Boolean(event?.ctrlKey);
+    const metaKey = Boolean(event?.metaKey);
+    const shiftKey = Boolean(event?.shiftKey);
+
     setSelectedEntries(prev => {
       // Fast path for simple deselection - most common case
-      if (!event.ctrlKey && !event.metaKey && !event.shiftKey && prev.length === 1 && prev[0] === id) {
+      if (!ctrlKey && !metaKey && !shiftKey && prev.length === 1 && prev[0] === id) {
         return [];
       }
       
-      if (event.ctrlKey || event.metaKey) {
+      if (ctrlKey || metaKey) {
         // Multi-select with Ctrl/Cmd - toggle selection
         if (prev.includes(id)) {
           return prev.filter(entryId => entryId !== id);
         } else {
           return [...prev, id];
         }
-      } else if (event.shiftKey && prev.length > 0) {
+      } else if (shiftKey && prev.length > 0) {
         // Range selection with Shift
         const lastSelectedIndex = filteredEntries.findIndex((entry: FoodEntry) => 
           entry.id === prev[prev.length - 1]
