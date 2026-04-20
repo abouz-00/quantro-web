@@ -4,6 +4,7 @@ import "./globals.css";
 import "../styles/dm-sans.css";
 import SessionWrapper from '../components/shared/SessionWrapper';
 import ErrorBoundary from '../components/shared/ErrorBoundary';
+import { Analytics } from '@vercel/analytics/react';
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </ErrorWrapper>
         </SessionWrapper>
+        <Analytics />
       </body>
     </html>
   );
