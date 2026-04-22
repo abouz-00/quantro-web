@@ -26,7 +26,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Validate required Vercel secrets
+        id: vercel_secrets
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID" ] && [ -n "$VERCEL_PROJECT_ID" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Setup Node.js
+        if: steps.vercel_secrets.outputs.ready == 'true'
         uses: actions/setup-node@v6
         with:
           node-version: 20.x
@@ -34,18 +48,22 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Install dependencies
+        if: steps.vercel_secrets.outputs.ready == 'true'
         run: npm ci --prefer-offline --no-audit
 
       - name: Install Vercel CLI
+        if: steps.vercel_secrets.outputs.ready == 'true'
         run: npm install --global vercel@latest
 
       - name: Pull Vercel project settings (preview)
+        if: steps.vercel_secrets.outputs.ready == 'true'
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Set up build database
+        if: steps.vercel_secrets.outputs.ready == 'true'
         run: |
           npx prisma generate --schema=./prisma/schema.prisma
           npx prisma db push --force-reset --schema=./prisma/schema.prisma
@@ -53,6 +71,7 @@ jobs:
           DATABASE_URL: "file:./build.db"
 
       - name: Build artifacts with Vercel CLI
+        if: steps.vercel_secrets.outputs.ready == 'true'
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -69,6 +88,7 @@ jobs:
 
       - name: Deploy preview
         id: deploy
+        if: steps.vercel_secrets.outputs.ready == 'true'
         run: |
           url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$url" >> "$GITHUB_OUTPUT"
@@ -77,6 +97,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Comment preview URL on PR
+        if: steps.vercel_secrets.outputs.ready == 'true'
         uses: actions/github-script@v8
         with:
           script: |
@@ -88,6 +109,11 @@ jobs:
               issue_number: context.issue.number,
               body
             });
+
+      - name: Explain skipped deploy (missing secrets)
+        if: steps.vercel_secrets.outputs.ready != 'true'
+        run: |
+          echo "Preview deploy skipped because one or more required Vercel secrets are missing: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID."
 
   deploy-preview-fork-note:
     name: Preview Skipped (Fork PR)
@@ -107,7 +133,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Validate required Vercel secrets
+        id: vercel_secrets
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID" ] && [ -n "$VERCEL_PROJECT_ID" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Setup Node.js
+        if: steps.vercel_secrets.outputs.ready == 'true'
         uses: actions/setup-node@v6
         with:
           node-version: 20.x
@@ -115,18 +155,22 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Install dependencies
+        if: steps.vercel_secrets.outputs.ready == 'true'
         run: npm ci --prefer-offline --no-audit
 
       - name: Install Vercel CLI
+        if: steps.vercel_secrets.outputs.ready == 'true'
         run: npm install --global vercel@latest
 
       - name: Pull Vercel project settings (production)
+        if: steps.vercel_secrets.outputs.ready == 'true'
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Set up build database
+        if: steps.vercel_secrets.outputs.ready == 'true'
         run: |
           npx prisma generate --schema=./prisma/schema.prisma
           npx prisma db push --force-reset --schema=./prisma/schema.prisma
@@ -134,6 +178,7 @@ jobs:
           DATABASE_URL: "file:./build.db"
 
       - name: Build artifacts with Vercel CLI
+        if: steps.vercel_secrets.outputs.ready == 'true'
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -149,7 +194,13 @@ jobs:
           GOOGLE_CLIENT_SECRET: "dummy-google-secret"
 
       - name: Deploy production
+        if: steps.vercel_secrets.outputs.ready == 'true'
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Explain skipped deploy (missing secrets)
+        if: steps.vercel_secrets.outputs.ready != 'true'
+        run: |
+          echo "Production deploy skipped because one or more required Vercel secrets are missing: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID."
