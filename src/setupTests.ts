@@ -67,6 +67,12 @@ if (typeof globalThis !== 'undefined') {
 // Mock HTMLCanvasElement.getContext to avoid Chart.js canvas issues
 HTMLCanvasElement.prototype.getContext = jest.fn(() => null);
 
+// jsdom does not implement scrollTo; provide a no-op for modal cleanup paths.
+Object.defineProperty(window, 'scrollTo', {
+  value: jest.fn(),
+  writable: true,
+});
+
 // Mock DragEvent for drag and drop testing
 global.DragEvent = class MockDragEvent extends Event {
   constructor(type: string, eventInitDict?: DragEventInit) {

@@ -8,13 +8,7 @@ jest.mock('next-auth/react', () => ({
   signIn: jest.fn(),
 }));
 
-// Mock framer-motion
-jest.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => <div {...props}>{children}</div>,
-    button: ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => <button {...props}>{children}</button>,
-  },
-}));
+jest.mock('framer-motion');
 
 // Mock next/font/google
 jest.mock('next/font/google', () => ({

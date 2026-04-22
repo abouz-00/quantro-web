@@ -69,6 +69,7 @@ const defaultProps = {
 describe('FoodLogControls - Integration Test Suite', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.spyOn(console, 'log').mockImplementation(() => undefined);
   });
 
   describe('Basic Rendering', () => {

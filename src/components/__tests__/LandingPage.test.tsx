@@ -23,16 +23,7 @@ jest.mock('next/font/google', () => ({
   Poppins: jest.fn(() => ({ className: 'poppins-mock' })),
 }));
 
-// Mock framer-motion
-jest.mock('framer-motion', () => ({
-  motion: {
-    div: jest.fn(({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => <div {...props}>{children}</div>),
-    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
-    img: jest.fn(({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => <img {...props}>{children}</img>),
-  },
-  useAnimation: jest.fn(() => ({ start: jest.fn() })),
-  useInView: jest.fn(() => true),
-}));
+jest.mock('framer-motion');
 
 // Mock Heroicons
 jest.mock('@heroicons/react/24/outline', () => ({

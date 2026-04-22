@@ -315,6 +315,8 @@ describe('useErrorReporting', () => {
     mockUseSession.mockReturnValue(mockAuthenticatedSession);
     mockErrorService.logError.mockRejectedValue(new Error('Service failure'));
 
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+
     const { result } = renderHook(() => useErrorReporting());
 
     const testError = new Error('Test error');
@@ -323,5 +325,6 @@ describe('useErrorReporting', () => {
     await expect(result.current.reportError(testError)).resolves.toBeUndefined();
 
     expect(mockErrorService.logError).toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalledWith('Error reporting failed:', expect.any(Error));
   });
 });
