@@ -41,7 +41,7 @@ const createPrismaClient = () => {
   }
 
   // For PostgreSQL databases (production or explicit dev override)
-  if (isPostgresUrl) {
+  if (databaseUrl && isPostgresUrl) {
     return createPostgresClient(databaseUrl)
   }
   
