@@ -3,16 +3,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { FeatureCard } from '../FeatureCard';
 
-// Mock framer-motion
-jest.mock('framer-motion', () => ({
-  motion: {
-    div: ({ children, ...props }: { children?: React.ReactNode; [key: string]: unknown }) => <div {...props}>{children}</div>,
-  },
-  useAnimation: () => ({
-    start: jest.fn(),
-  }),
-  useInView: () => true,
-}));
+jest.mock('framer-motion');
 
 // Mock next/font/google
 jest.mock('next/font/google', () => ({

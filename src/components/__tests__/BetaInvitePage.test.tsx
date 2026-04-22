@@ -27,15 +27,7 @@ describe('BetaInvitePage', () => {
   });
 
   it('should render loading state initially', () => {
-    mockFetch.mockResolvedValueOnce({
-      ok: true,
-      json: () => Promise.resolve({
-        valid: true,
-        email: 'test@example.com',
-        code: 'TEST123',
-        expiresAt: '2024-12-31T23:59:59.999Z'
-      })
-    });
+    mockFetch.mockImplementationOnce(() => new Promise(() => undefined));
 
     render(<BetaInvitePage code="TEST123" />);
     
@@ -83,6 +75,7 @@ describe('BetaInvitePage', () => {
   });
 
   it('should handle network error', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
     mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
     render(<BetaInvitePage code="TEST123" />);
@@ -92,6 +85,7 @@ describe('BetaInvitePage', () => {
     });
 
     expect(screen.getByText('Failed to validate invite')).toBeInTheDocument();
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.any(Error));
   });
 
   it('should handle accept invite success', async () => {
@@ -130,6 +124,7 @@ describe('BetaInvitePage', () => {
   });
 
   it('should handle accept invite failure', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
     // Mock initial validation
     mockFetch.mockResolvedValueOnce({
       ok: true,
@@ -156,5 +151,7 @@ describe('BetaInvitePage', () => {
     await waitFor(() => {
       expect(screen.getByText('Failed to accept invite')).toBeInTheDocument();
     });
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.any(Error));
   });
 });

@@ -9,6 +9,37 @@ jest.mock('../invite-handler', () => {
   };
 });
 
+jest.mock('../../../../hooks/useDateManager', () => ({
+  useDateManager: () => ({
+    selectedDate: new Date('2026-04-20T00:00:00.000Z'),
+    formatApiDate: jest.fn(() => '2026-04-20'),
+  }),
+}));
+
+jest.mock('../../../../hooks/useFoodData', () => ({
+  useFoodData: () => ({
+    totals: {
+      calories: 0,
+      protein: 0,
+      carbs: 0,
+      fat: 0,
+    },
+  }),
+}));
+
+jest.mock('../../../../hooks/useGoals', () => ({
+  useGoals: () => ({
+    customGoals: {
+      calories: 2000,
+      protein: 150,
+      carbs: 200,
+      fat: 70,
+    },
+    hasCustomGoals: false,
+    hasEverLogged: false,
+  }),
+}));
+
 // Mock next-auth/react
 jest.mock('next-auth/react', () => ({
   useSession: jest.fn(),
@@ -39,7 +70,7 @@ jest.mock('next/navigation', () => ({
 
 // Mock next/image
 jest.mock('next/image', () => {
-  return function Image({ src, alt, ...props }: { src: string; alt: string; [key: string]: unknown }) {
+  return function Image({ src, alt, priority: _priority, ...props }: { src: string; alt: string; priority?: boolean; [key: string]: unknown }) {
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={src} alt={alt} {...props} />;
   };
