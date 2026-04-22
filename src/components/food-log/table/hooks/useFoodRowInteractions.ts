@@ -33,10 +33,11 @@ export function useFoodRowInteractions({
   wasDragging,
   resetDragState
 }: UseFoodRowInteractionsProps) {
+  const itemId = item.id;
   
-  const isSelected = selectedEntries.includes(item.id);
-  const isEditing = editingEntry === item.id;
-  const itemIndex = foodData.findIndex((entry) => entry.id === item.id);
+  const isSelected = selectedEntries.includes(itemId);
+  const isEditing = editingEntry === itemId;
+  const itemIndex = foodData.findIndex((entry) => entry.id === itemId);
 
   const getRowSelectionTarget = useCallback((
     event?: React.MouseEvent | React.KeyboardEvent
@@ -46,14 +47,14 @@ export function useFoodRowInteractions({
         ? (event.currentTarget as HTMLElement | null)?.dataset?.id
         : undefined;
 
-    const resolvedId = clickedId || item.id;
+    const resolvedId = clickedId || itemId;
     const resolvedIndex = foodData.findIndex((entry) => entry.id === resolvedId);
 
     return {
       id: resolvedId,
       index: resolvedIndex >= 0 ? resolvedIndex : itemIndex,
     };
-  }, [foodData, item.id, itemIndex]);
+  }, [foodData, itemId, itemIndex]);
 
   // Start editing mode
   const startEditing = useCallback((entry: FoodEntry, e?: React.MouseEvent | React.KeyboardEvent) => {
@@ -74,7 +75,7 @@ export function useFoodRowInteractions({
     if (isEditing) return;
     
     // Save any other editing entry
-    if (editingEntry && editingEntry !== item.id) {
+    if (editingEntry && editingEntry !== itemId) {
       setEditingEntry(null);
     }
     
@@ -100,14 +101,14 @@ export function useFoodRowInteractions({
     
     // Reset drag state immediately after handling
     resetDragState();
-  }, [editingEntry, getRowSelectionTarget, handleEntrySelect, isEditing, onContextMenu, resetDragState, selectedEntries, setEditingEntry, wasDragging]);
+  }, [editingEntry, getRowSelectionTarget, handleEntrySelect, isEditing, itemId, onContextMenu, resetDragState, selectedEntries, setEditingEntry, wasDragging]);
 
   // Handle double click
   const handleDoubleClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
-    if (editingEntry && editingEntry !== item.id) {
+    if (editingEntry && editingEntry !== itemId) {
       setEditingEntry(null);
     }
     
@@ -115,13 +116,13 @@ export function useFoodRowInteractions({
 
     // Select on double-click
     handleEntrySelect(target.id, target.index, e);
-  }, [editingEntry, getRowSelectionTarget, handleEntrySelect, setEditingEntry]);
+  }, [editingEntry, getRowSelectionTarget, handleEntrySelect, itemId, setEditingEntry]);
 
   // Handle context menu
   const handleContextMenu = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     
-    if (editingEntry && editingEntry !== item.id) {
+    if (editingEntry && editingEntry !== itemId) {
       setEditingEntry(null);
     }
     
@@ -131,7 +132,7 @@ export function useFoodRowInteractions({
     handleEntrySelect(target.id, target.index, e);
     
     onContextMenu?.(e, target.id);
-  }, [editingEntry, getRowSelectionTarget, handleEntrySelect, onContextMenu, setEditingEntry]);
+  }, [editingEntry, getRowSelectionTarget, handleEntrySelect, itemId, onContextMenu, setEditingEntry]);
 
   // Handle keyboard interaction
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
@@ -142,14 +143,14 @@ export function useFoodRowInteractions({
       if (editingEntry) setEditingEntry(null);
       
       // Select the item
-      handleEntrySelect(item.id, itemIndex, e);
+      handleEntrySelect(itemId, itemIndex, e);
       
       // Start editing if not already editing
       if (!isEditing) {
         startEditing(item, e);
       }
     }
-  }, [item, itemIndex, editingEntry, isEditing, handleEntrySelect, setEditingEntry, startEditing]);
+  }, [item, itemId, itemIndex, editingEntry, isEditing, handleEntrySelect, setEditingEntry, startEditing]);
 
   // Cleanup function (simplified)
   const cleanup = useCallback(() => {

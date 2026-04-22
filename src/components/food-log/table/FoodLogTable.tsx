@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState, useEffect, useMemo, useRef } from "react";
+import React, { useCallback, useState, useMemo, useRef } from "react";
 import {
   DndContext,
   KeyboardSensor,
@@ -62,6 +62,11 @@ export default function FoodLogTable({
   const containerRef = useRef<HTMLDivElement>(null);
 
   // =====================
+  // Collapse State (lifted from MealSection so SortableContext items stay in sync)
+  // =====================
+  const [collapsedMeals, setCollapsedMeals] = useState<Record<string, boolean>>({});
+
+  // =====================
   // Professional Event Adapter Pattern
   // =====================
   
@@ -76,6 +81,22 @@ export default function FoodLogTable({
   ) => {
     handleEntrySelect(id, index, event);
   }, [handleEntrySelect]);
+
+  const handleDragTargetChange = useCallback((nextDragOverTarget: string | null) => {
+    if (!nextDragOverTarget) {
+      return;
+    }
+
+    const mealType = nextDragOverTarget.replace('drop-', '');
+
+    setCollapsedMeals((previousMeals) => {
+      if (!previousMeals[mealType]) {
+        return previousMeals;
+      }
+
+      return { ...previousMeals, [mealType]: false };
+    });
+  }, []);
 
   // =====================
   // Drag & Drop Setup
@@ -92,7 +113,8 @@ export default function FoodLogTable({
     selectedEntries,
     onReorderEntries,
     updateFoodEntry,
-    handleEntrySelect: adaptedSelectionHandler
+    handleEntrySelect: adaptedSelectionHandler,
+    onDragTargetChange: handleDragTargetChange,
   });
 
   const sensors = useSensors(
@@ -106,34 +128,12 @@ export default function FoodLogTable({
     })
   );
 
-  // =====================
-  // Collapse State (lifted from MealSection so SortableContext items stay in sync)
-  // =====================
-  const [collapsedMeals, setCollapsedMeals] = useState<Record<string, boolean>>({});
-
   const toggleCollapse = useCallback((mealType: string) => {
     // Don't allow collapsing while dragging - this prevents items from disappearing
     if (!activeId) {
       setCollapsedMeals(prev => ({ ...prev, [mealType]: !prev[mealType] }));
     }
   }, [activeId]);
-
-  // Auto-expand collapsed meals when dragged over
-  useEffect(() => {
-    if (!dragOverTarget) {
-      return;
-    }
-
-    const mealType = dragOverTarget.replace('drop-', '');
-
-    setCollapsedMeals((previousMeals) => {
-      if (!previousMeals[mealType]) {
-        return previousMeals;
-      }
-
-      return { ...previousMeals, [mealType]: false };
-    });
-  }, [dragOverTarget]);
 
   // =====================
   // Data Processing
