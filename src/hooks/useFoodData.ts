@@ -188,11 +188,16 @@ export const useFoodData = (selectedDate: Date, formatApiDate: () => string) => 
       const savedEntry = await FoodLogService.addFoodEntry(entryWithCorrectDate);
       console.log('✅ Food entry saved:', savedEntry);
       
-      setFoodData(prev => {
-        const newData = [...prev, savedEntry];
-        console.log('📊 Updated foodData, total entries:', newData.length);
-        return newData;
-      });
+      // Only update local state if the entry belongs to the currently selected date.
+      // For cross-date operations like "copy to today", skip the state update to avoid
+      // contaminating the current view with entries that belong to a different date.
+      if (sameDay(targetDate, selectedDate)) {
+        setFoodData(prev => {
+          const newData = [...prev, savedEntry];
+          console.log('📊 Updated foodData, total entries:', newData.length);
+          return newData;
+        });
+      }
       
       // Update window debug info
       if (typeof window !== 'undefined') {

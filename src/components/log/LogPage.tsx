@@ -162,6 +162,8 @@ export default function LogPage() {
       });
       
       await Promise.all(copyPromises);
+      // Navigate to today so the user can see the copied entries
+      goToToday();
     } catch (error) {
       console.error('Error copying entries to today:', error);
     }
