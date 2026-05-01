@@ -54,9 +54,8 @@ export async function GET(request: NextRequest) {
     console.log(`🔍 [DEBUG] Found ${foodLogs.length} entries. DB query: ${dbTime}ms, Total time: ${totalTime}ms`);
     return NextResponse.json(foodLogs, {
       headers: {
-        // Cache for 5 minutes on client, allow stale content for 10 minutes for revalidation
-        'Cache-Control': 'private, max-age=300, stale-while-revalidate=600',
-        // Add timing header for client debugging
+        // Food logs are user-specific and reordered client-side, so stale cache breaks drag persistence.
+        'Cache-Control': 'private, no-store',
         'X-Response-Time': `${totalTime}ms`,
       },
     });

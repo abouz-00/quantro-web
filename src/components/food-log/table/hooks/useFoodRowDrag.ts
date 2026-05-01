@@ -1,4 +1,5 @@
 /* eslint-disable */
+import type { CSSProperties } from 'react';
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -14,23 +15,18 @@ export function useFoodRowDrag({ id, activeId, disabled = false }: UseFoodRowDra
   const [wasDragging, setWasDragging] = useState(false);
   const isCurrentlyBeingDragged = activeId === id;
   const sortableData = useMemo(() => ({ type: 'food-entry' as const }), []);
-  const sortableTransition = useMemo(() => ({
-    duration: 150,
-    easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
-  }), []);
   const sortableConfig = useMemo(() => ({
     id,
     data: sortableData,
     disabled,
-    transition: sortableTransition,
-  }), [disabled, id, sortableData, sortableTransition]);
+    transition: null,
+  }), [disabled, id, sortableData]);
 
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
-    transition,
   } = useSortable(sortableConfig);
 
   // Track drag state - immediate reset for better responsiveness
@@ -43,12 +39,15 @@ export function useFoodRowDrag({ id, activeId, disabled = false }: UseFoodRowDra
     );
   }, [isCurrentlyBeingDragged]);
 
-  // Row moves inline via CSS transform on div elements (transforms work natively on divs)
-  const style = useMemo(() => ({
-    transform: CSS.Transform.toString(transform),
-    transition,
-    zIndex: isCurrentlyBeingDragged ? 50 : undefined,
-  }), [isCurrentlyBeingDragged, transform, transition]);
+  const style = useMemo<CSSProperties>(() => {
+    return {
+      transform: CSS.Transform.toString(null),
+      transition: undefined,
+      zIndex: isCurrentlyBeingDragged ? 50 : undefined,
+      visibility: isCurrentlyBeingDragged ? 'hidden' : undefined,
+      pointerEvents: isCurrentlyBeingDragged ? 'none' : undefined,
+    };
+  }, [isCurrentlyBeingDragged]);
 
   const dragHandleProps = useMemo(
     () => (disabled ? {} : { ...listeners, ...attributes }),
