@@ -55,6 +55,10 @@
   z-index: 50;
   position: relative;
 }
+.dragOverlayRow {
+  width: min(100%, 720px);
+  pointer-events: none;
+}
 .foodTableRow.draggingItem * {
   color: #111827 !important;
   font-family: 'DM Sans', sans-serif !important;

@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { DragEndEvent, DragStartEvent, DragOverEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import { FoodEntry } from '../types';
@@ -12,6 +12,57 @@ function sortByMealType(entries: FoodEntry[]): FoodEntry[] {
   return [...entries].sort((a, b) =>
     (MEAL_TYPE_ORDER[a.mealType] ?? 5) - (MEAL_TYPE_ORDER[b.mealType] ?? 5)
   );
+}
+
+function moveEntryToMealStart(
+  entries: FoodEntry[],
+  activeEntryId: string,
+  targetMealType: FoodEntry['mealType']
+): FoodEntry[] {
+  const activeIndex = entries.findIndex((entry) => entry.id === activeEntryId);
+
+  if (activeIndex === -1) {
+    return entries;
+  }
+
+  const activeEntry = entries[activeIndex];
+  const remainingEntries = entries.filter((entry) => entry.id !== activeEntryId);
+  const targetIndex = remainingEntries.findIndex((entry) => entry.mealType === targetMealType);
+
+  let insertionIndex = targetIndex;
+
+  if (insertionIndex === -1) {
+    const targetMealOrder = MEAL_TYPE_ORDER[targetMealType] ?? 5;
+    insertionIndex = remainingEntries.findIndex(
+      (entry) => (MEAL_TYPE_ORDER[entry.mealType] ?? 5) > targetMealOrder
+    );
+  }
+
+  if (insertionIndex === -1) {
+    insertionIndex = remainingEntries.length;
+  }
+
+  const nextEntry = {
+    ...activeEntry,
+    mealType: targetMealType,
+  };
+
+  const nextEntries = [...remainingEntries];
+  nextEntries.splice(insertionIndex, 0, nextEntry);
+
+  const isUnchanged = entries.length === nextEntries.length && entries.every((entry, index) => {
+    const nextListEntry = nextEntries[index];
+    return entry.id === nextListEntry.id && entry.mealType === nextListEntry.mealType;
+  });
+
+  return isUnchanged ? entries : nextEntries;
+}
+
+function entriesMatch(leftEntries: FoodEntry[], rightEntries: FoodEntry[]): boolean {
+  return leftEntries.length === rightEntries.length && leftEntries.every((entry, index) => {
+    const rightEntry = rightEntries[index];
+    return entry.id === rightEntry.id && entry.mealType === rightEntry.mealType;
+  });
 }
 
 interface UseFoodTableDragDropProps {
@@ -44,7 +95,23 @@ export function useFoodTableDragDrop({
   // Track which meal section is being dragged over
   const [dragOverTarget, setDragOverTarget] = useState<string | null>(null);
 
-  const currentEntries = useMemo(() => sortByMealType(filteredEntries), [filteredEntries]);
+  const sortedEntries = useMemo(() => sortByMealType(filteredEntries), [filteredEntries]);
+  const [previewEntries, setPreviewEntries] = useState<FoodEntry[]>(sortedEntries);
+  const previewEntriesRef = useRef(previewEntries);
+
+  const updatePreviewEntries = useCallback((nextEntries: FoodEntry[]) => {
+    previewEntriesRef.current = nextEntries;
+    setPreviewEntries(nextEntries);
+  }, []);
+
+  useEffect(() => {
+    if (!activeId) {
+      previewEntriesRef.current = sortedEntries;
+      setPreviewEntries(sortedEntries);
+    }
+  }, [activeId, sortedEntries]);
+
+  const currentEntries = activeId ? previewEntries : sortedEntries;
 
   const updateDragOverTarget = useCallback((nextDragOverTarget: string | null) => {
     setDragOverTarget((previousDragOverTarget) => {
@@ -85,10 +152,11 @@ export function useFoodTableDragDrop({
   const handleDragStart = useCallback((event: DragStartEvent) => {
     const draggedId = event.active.id as string;
     setActiveId(draggedId);
+    updatePreviewEntries(sortedEntries);
     ensureItemSelected(draggedId);
-  }, [ensureItemSelected]);
+  }, [ensureItemSelected, sortedEntries, updatePreviewEntries]);
 
-  // Handle drag over by updating only lightweight preview state.
+  // Handle drag over by snapping list order within the current meal or into the top of a new meal.
   const handleDragOver = useCallback((event: DragOverEvent) => {
     const { active, over } = event;
     
@@ -106,15 +174,49 @@ export function useFoodTableDragDrop({
       return;
     }
     
-    // Track the drag target for visual feedback (e.g., auto-expand collapsed meals)
-    if (overData?.type === 'meal-drop-zone') {
-      updateDragOverTarget(overId);
+    const targetMealType = (overData?.type === 'meal-drop-zone'
+      ? overData.mealType as FoodEntry['mealType']
+      : null)
+      ?? entryByIdMap.get(overId)?.mealType
+      ?? null;
+
+    if (overData?.type === 'meal-drop-zone' && targetMealType) {
+      setPreviewEntries((previousEntries) => {
+        const nextEntries = moveEntryToMealStart(previousEntries, String(active.id), targetMealType);
+        previewEntriesRef.current = nextEntries;
+        return nextEntries;
+      });
+
+      updateDragOverTarget(`drop-${targetMealType}`);
       return;
     }
 
-    // Track which entry we're hovering over
+    if (targetMealType && targetMealType !== activeEntry.mealType) {
+      setPreviewEntries((previousEntries) => {
+        const nextEntries = moveEntryToMealStart(previousEntries, String(active.id), targetMealType);
+        previewEntriesRef.current = nextEntries;
+        return nextEntries;
+      });
+
+      updateDragOverTarget(`drop-${targetMealType}`);
+      return;
+    }
+
     const overEntry = entryByIdMap.get(overId);
-    if (overEntry) {
+    if (overEntry && overEntry.mealType === activeEntry.mealType) {
+      setPreviewEntries((previousEntries) => {
+        const activeIndex = previousEntries.findIndex((entry) => entry.id === active.id);
+        const overIndex = previousEntries.findIndex((entry) => entry.id === overId);
+
+        if (activeIndex === -1 || overIndex === -1 || activeIndex === overIndex) {
+          return previousEntries;
+        }
+
+        const nextEntries = arrayMove(previousEntries, activeIndex, overIndex);
+        previewEntriesRef.current = nextEntries;
+        return nextEntries;
+      });
+
       updateDragOverTarget(`drop-${overEntry.mealType}`);
       return;
     }
@@ -124,59 +226,42 @@ export function useFoodTableDragDrop({
 
   const handleDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
+
+    const finalEntries = previewEntriesRef.current;
     
     setActiveId(null);
     updateDragOverTarget(null);
     
-    if (!over || active.id === over.id) {
+    const sourceEntry = filteredEntryByIdMap.get(active.id as string);
+    const finalActiveEntry = finalEntries.find((entry) => entry.id === active.id);
+    const hasMeaningfulChange = !entriesMatch(finalEntries, sortedEntries);
+
+    if (!sourceEntry || !finalActiveEntry) {
+      updatePreviewEntries(sortedEntries);
       return;
     }
 
-    const activeEntry = entryByIdMap.get(active.id as string);
-    const sourceEntry = filteredEntryByIdMap.get(active.id as string);
-    if (!activeEntry) return;
-
-    let finalEntries = [...currentEntries];
-    
-    // Determine new meal type based on drop target
-    const overData = over?.data?.current;
-    let newMealType: FoodEntry['mealType'] | null = null;
-    
-    if (overData?.type === 'meal-drop-zone' && overData.mealType !== activeEntry.mealType) {
-      newMealType = overData.mealType;
-    } else {
-      const overEntry = entryByIdMap.get(String(over.id));
-      if (overEntry && overEntry.mealType !== activeEntry.mealType) {
-        newMealType = overEntry.mealType;
-      }
-    }
-    
-    if (newMealType) {
-      // Cross-meal move: update meal type, then re-sort so entry lands in correct group
-      finalEntries = finalEntries.map(entry => 
-        entry.id === active.id 
-          ? { ...entry, mealType: newMealType }
-          : entry
-      );
-      finalEntries = sortByMealType(finalEntries);
-    } else {
-      // Within-meal reorder
-      const activeIndex = finalEntries.findIndex(e => e.id === active.id);
-      const overIndex = finalEntries.findIndex(e => e.id === over.id);
-      
-      if (activeIndex !== -1 && overIndex !== -1 && activeIndex !== overIndex) {
-        finalEntries = arrayMove(finalEntries, activeIndex, overIndex);
-      }
+    if (!over && !hasMeaningfulChange) {
+      updatePreviewEntries(sortedEntries);
+      return;
     }
 
-    const finalActiveEntry = finalEntries.find((entry) => entry.id === active.id);
+    if (over && active.id === over.id && !hasMeaningfulChange) {
+      updatePreviewEntries(sortedEntries);
+      return;
+    }
 
-    if (sourceEntry && finalActiveEntry && sourceEntry.mealType !== finalActiveEntry.mealType) {
+    if (finalActiveEntry.mealType !== sourceEntry.mealType) {
       updateFoodEntry?.(active.id as string, { mealType: finalActiveEntry.mealType });
     }
     
-    onReorderEntries(finalEntries);
-  }, [currentEntries, filteredEntryByIdMap, updateFoodEntry, onReorderEntries, entryByIdMap, updateDragOverTarget]);
+    if (hasMeaningfulChange) {
+      onReorderEntries(finalEntries);
+      return;
+    }
+
+    updatePreviewEntries(sortedEntries);
+  }, [filteredEntryByIdMap, onReorderEntries, sortedEntries, updateDragOverTarget, updateFoodEntry, updatePreviewEntries]);
 
   return {
     currentEntries,

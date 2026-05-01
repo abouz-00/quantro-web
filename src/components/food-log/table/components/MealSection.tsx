@@ -80,7 +80,7 @@ export const MealSection = memo(({
   };
 
   return (
-    <div>
+    <div ref={setDropRef}>
       {/* Meal Type Heading */}
       <div 
         data-meal-header={mealType}
@@ -107,7 +107,6 @@ export const MealSection = memo(({
       {/* Meal body is the drop target, not the header */}
       {!isCollapsed && entries.length > 0 && (
         <div
-          ref={setDropRef}
           className={`bg-white border-l border-r border-b border-gray-300 ${isLastSection ? 'rounded-b-lg' : ''}`}
         >
           {entries.map((item, index) => (
@@ -135,7 +134,6 @@ export const MealSection = memo(({
 
       {!isCollapsed && entries.length === 0 && (
         <div
-          ref={setDropRef}
           className={`min-h-12 border-l border-r border-b border-gray-300 bg-white ${isLastSection ? 'rounded-b-lg' : ''}`}
         />
       )}
