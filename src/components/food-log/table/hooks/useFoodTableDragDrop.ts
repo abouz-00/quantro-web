@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import { useState, useCallback, useMemo, useRef } from 'react';
 import { DragEndEvent, DragStartEvent, DragOverEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 import { FoodEntry } from '../types';
@@ -103,13 +103,6 @@ export function useFoodTableDragDrop({
     previewEntriesRef.current = nextEntries;
     setPreviewEntries(nextEntries);
   }, []);
-
-  useEffect(() => {
-    if (!activeId) {
-      previewEntriesRef.current = sortedEntries;
-      setPreviewEntries(sortedEntries);
-    }
-  }, [activeId, sortedEntries]);
 
   const currentEntries = activeId ? previewEntries : sortedEntries;
 
