@@ -50,9 +50,7 @@ export default function DebugPanel() {
   }), [
     status,
     session?.expires,
-    session?.user?.email,
-    session?.user?.name,
-    session?.user?.image
+    session?.user
   ]);
   const [debugInfo, setDebugInfo] = useState<DebugInfo>({
     session: null,
