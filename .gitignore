@@ -122,3 +122,11 @@ temp/
 test.db
 build.db
 .env*.local
+
+# SQLite dev databases (contain real local user data — never commit)
+*.db
+*.db-journal
+*.db.backup
+prisma/dev.db
+prisma/dev.db.backup
+prisma/prisma/

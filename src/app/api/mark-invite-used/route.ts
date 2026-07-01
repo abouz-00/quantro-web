@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { rateLimitOrError } from '@/lib/rateLimit'
 
 export async function POST(request: NextRequest) {
   try {
+    const limited = await rateLimitOrError('mark-invite-used', request, { max: 10, windowSeconds: 60 })
+    if (limited) return limited
+
     const session = await auth()
-    if (!session?.user?.id) {
+    if (!session?.user?.id || !session.user.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -13,6 +17,13 @@ export async function POST(request: NextRequest) {
 
     if (!code || !email) {
       return NextResponse.json({ error: 'Missing code or email' }, { status: 400 })
+    }
+
+    // An invite can only be burned by the signed-in owner of that email —
+    // otherwise any authenticated user could invalidate someone else's
+    // pending invite just by knowing their email + code.
+    if (session.user.email.toLowerCase() !== String(email).toLowerCase()) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     // Find the specific invite by code and email

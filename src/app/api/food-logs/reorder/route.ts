@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { reorderFoodLogSchema } from '@/lib/schemas/foodLog';
+import { parseOrError } from '@/lib/validation';
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,12 +12,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const rawBody = await request.json();
+    const { data: body, error: validationError } = parseOrError(reorderFoodLogSchema, rawBody);
+    if (validationError) return validationError;
     const { entryIds } = body;
-    
-    if (!Array.isArray(entryIds) || entryIds.length === 0) {
-      return NextResponse.json({ error: 'Invalid entry IDs' }, { status: 400 });
-    }
 
     // Verify all entries belong to the user
     const existingEntries = await prisma.foodLog.findMany({

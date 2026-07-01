@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '../../../../lib/auth';
+import { rateLimitOrError } from '@/lib/rateLimit';
 
 interface ErrorLog {
   message: string;
@@ -21,6 +22,9 @@ interface ErrorLog {
 }
 
 export async function POST(request: NextRequest) {
+  const limited = await rateLimitOrError('errors-log', request, { max: 30, windowSeconds: 60 });
+  if (limited) return limited;
+
   try {
     const session = await auth();
     const errorLog: ErrorLog = await request.json();

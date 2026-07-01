@@ -165,7 +165,7 @@ describe('Food Logs Reorder API', () => {
       const data = await response.json();
 
       expect(response.status).toBe(400);
-      expect(data.error).toBe('Invalid entry IDs');
+      expect(data.error).toBe('Invalid request');
       expect(mockFindMany).not.toHaveBeenCalled();
       expect(mockUpdate).not.toHaveBeenCalled();
     });
@@ -182,7 +182,7 @@ describe('Food Logs Reorder API', () => {
       const data = await response.json();
 
       expect(response.status).toBe(400);
-      expect(data.error).toBe('Invalid entry IDs');
+      expect(data.error).toBe('Invalid request');
       expect(mockFindMany).not.toHaveBeenCalled();
       expect(mockUpdate).not.toHaveBeenCalled();
     });
@@ -199,7 +199,7 @@ describe('Food Logs Reorder API', () => {
       const data = await response.json();
 
       expect(response.status).toBe(400);
-      expect(data.error).toBe('Invalid entry IDs');
+      expect(data.error).toBe('Invalid request');
       expect(mockFindMany).not.toHaveBeenCalled();
       expect(mockUpdate).not.toHaveBeenCalled();
     });

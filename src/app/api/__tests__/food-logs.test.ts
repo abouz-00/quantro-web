@@ -246,7 +246,7 @@ describe('Food Logs API', () => {
       const data = await response.json();
 
       expect(response.status).toBe(400);
-      expect(data.error).toBe('Food log ID is required');
+      expect(data.error).toBe('Invalid request');
     });
 
     it('should return 404 when food log not found', async () => {

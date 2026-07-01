@@ -103,6 +103,28 @@ describe('Mark Invite Used API', () => {
       });
     });
 
+    it('should return 403 when the request email does not match the signed-in user', async () => {
+      // Regression test: an authenticated user must not be able to burn
+      // another user's invite just by knowing their email + code.
+      mockAuth.mockResolvedValue(mockSession); // session email is test@example.com
+
+      const request = new NextRequest('http://localhost:3000/api/mark-invite-used', {
+        method: 'POST',
+        body: JSON.stringify({
+          code: 'someone-elses-code',
+          email: 'victim@example.com',
+        }),
+      });
+
+      const response = await POST(request);
+      const data = await response.json();
+
+      expect(response.status).toBe(403);
+      expect(data.error).toBe('Forbidden');
+      expect(mockFindFirst).not.toHaveBeenCalled();
+      expect(mockUpdate).not.toHaveBeenCalled();
+    });
+
     it('should handle case-insensitive email matching', async () => {
       mockFindFirst.mockResolvedValue(mockInvite);
       mockUpdate.mockResolvedValue({ ...mockInvite, used: true, usedAt: new Date() });

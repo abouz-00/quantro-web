@@ -3,6 +3,8 @@ import { createBetaInvite } from '@/lib/betaAccess';
 import { sendBetaInviteEmail } from '@/lib/email';
 import { prisma } from '@/lib/prisma';
 import { auth } from '@/lib/auth';
+import { createBetaInviteSchema, updateBetaInviteSchema } from '@/lib/schemas/betaInvite';
+import { parseOrError } from '@/lib/validation';
 
 // Helper function to check if user is admin
 async function checkAdminAccess(): Promise<{ isAdmin: boolean; error?: NextResponse }> {
@@ -36,11 +38,11 @@ export async function POST(req: NextRequest) {
   if (!isAdmin) return error!;
   
   try {
-    const { email, expiresInDays, sendEmail = true } = await req.json();
-    
-    if (!email) {
-      return NextResponse.json({ error: 'Email is required' }, { status: 400 });
-    }
+    const rawBody = await req.json();
+    const { data: body, error: validationError } = parseOrError(createBetaInviteSchema, rawBody);
+    if (validationError) return validationError;
+
+    const { email, expiresInDays, sendEmail = true } = body;
 
     const code = await createBetaInvite(email, expiresInDays);
     
@@ -103,11 +105,11 @@ export async function PATCH(req: NextRequest) {
   if (!isAdmin) return error!;
   
   try {
-    const { id, action } = await req.json();
-    
-    if (!id || !action) {
-      return NextResponse.json({ error: 'ID and action are required' }, { status: 400 });
-    }
+    const rawBody = await req.json();
+    const { data: body, error: validationError } = parseOrError(updateBetaInviteSchema, rawBody);
+    if (validationError) return validationError;
+
+    const { id, action } = body;
 
     if (action === 'revoke') {
       const { revokeBetaInvite } = await import('@/lib/betaAccess');
