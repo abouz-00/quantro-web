@@ -16,7 +16,15 @@ declare module "next-auth" {
       name?: string | null
       email?: string | null
       image?: string | null
+      isAdmin?: boolean
     }
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    uid?: string
+    isAdmin?: boolean
   }
 }
 
@@ -172,6 +180,29 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     ...authConfig.callbacks,
+    // Overrides the edge-compatible jwt callback: also stamps the token with
+    // the user's current isAdmin flag at sign-in time (requires Prisma, so
+    // this only runs in the Node.js runtime — never in middleware). Because
+    // the flag is cached in the JWT, promoting/demoting an admin only takes
+    // effect the next time that user signs in; the admin API routes still
+    // re-check isAdmin against the database on every request as the
+    // authoritative source of truth.
+    async jwt({ user, token }) {
+      if (user && user.id) {
+        token.uid = user.id;
+        try {
+          const dbUser = await prisma.user.findUnique({
+            where: { id: user.id },
+            select: { isAdmin: true },
+          });
+          token.isAdmin = dbUser?.isAdmin ?? false;
+        } catch (error) {
+          console.error('[Auth] Failed to load isAdmin flag for token:', error);
+          token.isAdmin = false;
+        }
+      }
+      return token;
+    },
     async signIn({ user, account }) {
       if (!user.email) return false;
 

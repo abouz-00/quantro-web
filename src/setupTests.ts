@@ -363,6 +363,14 @@ afterEach(() => {
   localStorageMock.setItem.mockClear();
   localStorageMock.removeItem.mockClear();
   localStorageMock.clear.mockClear();
+  // Prevent the in-memory rate limiter's shared state from leaking between
+  // test cases within the same file (many tests hit the same route from the
+  // same "unknown" test IP and would otherwise trip real rate limits).
+  // Required lazily (rather than statically imported above) because it
+  // transitively imports next/server, which needs the Request/Response
+  // globals defined further down in this file to already be installed.
+  const { __resetRateLimitForTests } = require('@/lib/rateLimit');
+  __resetRateLimitForTests();
 });
 
 // Mock NextAuth

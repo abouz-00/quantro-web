@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { updateUserProfileSchema } from '@/lib/schemas/userProfile';
+import { parseOrError } from '@/lib/validation';
 
 export async function GET() {
   try {
@@ -53,7 +55,10 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const rawBody = await request.json();
+    const { data: body, error: validationError } = parseOrError(updateUserProfileSchema, rawBody);
+    if (validationError) return validationError;
+
     const {
       dailyCalorieGoal,
       dailyProteinGoal,

@@ -220,7 +220,7 @@ describe('Admin Beta Invites API', () => {
       const data = await response.json();
 
       expect(response.status).toBe(400);
-      expect(data.error).toBe('Email is required');
+      expect(data.error).toBe('Invalid request');
       expect(mockCreateBetaInvite).not.toHaveBeenCalled();
     });
 
@@ -307,7 +307,7 @@ describe('Admin Beta Invites API', () => {
       const data = await response.json();
 
       expect(response.status).toBe(400);
-      expect(data.error).toBe('ID and action are required');
+      expect(data.error).toBe('Invalid request');
       expect(mockRevokeBetaInvite).not.toHaveBeenCalled();
     });
 
@@ -325,7 +325,7 @@ describe('Admin Beta Invites API', () => {
       const data = await response.json();
 
       expect(response.status).toBe(400);
-      expect(data.error).toBe('ID and action are required');
+      expect(data.error).toBe('Invalid request');
       expect(mockRevokeBetaInvite).not.toHaveBeenCalled();
     });
 
@@ -344,7 +344,7 @@ describe('Admin Beta Invites API', () => {
       const data = await response.json();
 
       expect(response.status).toBe(400);
-      expect(data.error).toBe('Invalid action');
+      expect(data.error).toBe('Invalid request');
       expect(mockRevokeBetaInvite).not.toHaveBeenCalled();
     });
 

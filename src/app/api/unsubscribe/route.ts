@@ -1,20 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { rateLimitOrError } from '@/lib/rateLimit'
 
 export async function POST(request: NextRequest) {
   try {
+    const limited = await rateLimitOrError('unsubscribe', request, { max: 10, windowSeconds: 60 })
+    if (limited) return limited
+
     const { email } = await request.json()
 
-    if (!email) {
-      return NextResponse.json(
-        { error: 'Email is required' },
-        { status: 400 }
-      )
+    if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return NextResponse.json({ error: 'Invalid email' }, { status: 400 })
     }
 
     // Find and update the user
     const user = await prisma.user.findUnique({
-      where: { email }
+      where: { email: email.toLowerCase() }
     })
 
     if (!user) {

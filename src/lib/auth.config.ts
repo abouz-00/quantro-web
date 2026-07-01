@@ -28,9 +28,16 @@ export const authConfig = {
     error: "/auth/error",
   },
   callbacks: {
+    // Edge-compatible: only copies fields already present on the token onto
+    // the session. The `isAdmin` flag itself is populated by the Node-only
+    // jwt callback in auth.ts (which can query Prisma), so it is set at
+    // sign-in time and cached in the encrypted JWT for up to `maxAge`.
     async session({ session, token }) {
       if (session?.user && token?.uid && typeof token.uid === 'string') {
         session.user.id = token.uid;
+      }
+      if (session?.user) {
+        session.user.isAdmin = token?.isAdmin === true;
       }
       return session;
     },

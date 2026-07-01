@@ -1,7 +1,11 @@
 import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
+import { rateLimitOrError } from '@/lib/rateLimit'
 
 export async function GET(request: NextRequest) {
+  const limited = await rateLimitOrError('beta-invite-get', request, { max: 20, windowSeconds: 60 })
+  if (limited) return limited
+
   const { searchParams } = new URL(request.url)
   const code = searchParams.get('code')
 
@@ -45,6 +49,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const limited = await rateLimitOrError('beta-invite-post', request, { max: 20, windowSeconds: 60 })
+  if (limited) return limited
+
   try {
     const { code, action } = await request.json()
 

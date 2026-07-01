@@ -1,3 +1,4 @@
+import { randomBytes } from 'crypto';
 import { prisma } from '@/lib/prisma';
 
 // List of approved beta tester emails
@@ -10,11 +11,8 @@ const BETA_EMAILS = [
 ];
 
 export async function checkBetaAccess(email: string): Promise<boolean> {
-  console.log('Checking beta access for:', email);
-  
   // Check if email is in the approved list
   if (BETA_EMAILS.includes(email.toLowerCase())) {
-    console.log('Email found in BETA_EMAILS list');
     return true;
   }
 
@@ -38,7 +36,6 @@ export async function checkBetaAccess(email: string): Promise<boolean> {
       }
     });
 
-    console.log('Database query result:', invite);
     return !!invite;
   } catch (error) {
     console.error('Error checking beta access:', error);
@@ -61,7 +58,9 @@ export async function markInviteAsUsed(email: string): Promise<void> {
 }
 
 export async function createBetaInvite(email: string, expiresInDays?: number): Promise<string> {
-  const code = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  // Cryptographically secure code — Math.random() is not safe for anything
+  // that gates access, since its output is predictable.
+  const code = randomBytes(24).toString('base64url');
   
   const expiresAt = expiresInDays 
     ? new Date(Date.now() + expiresInDays * 24 * 60 * 60 * 1000)

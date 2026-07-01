@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { rateLimitOrError } from '@/lib/rateLimit';
 
 export async function POST(request: NextRequest) {
+  const limited = await rateLimitOrError('analytics', request, { max: 60, windowSeconds: 60 });
+  if (limited) return limited;
+
   try {
     const data = await request.json();
 

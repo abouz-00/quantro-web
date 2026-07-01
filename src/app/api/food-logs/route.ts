@@ -1,26 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { createFoodLogSchema, updateFoodLogSchema } from '@/lib/schemas/foodLog';
+import { parseOrError } from '@/lib/validation';
 
 export async function GET(request: NextRequest) {
-  console.log('🔍 [DEBUG] GET /api/food-logs called');
   const startTime = Date.now();
   try {
-    const authStart = Date.now();
     const session = await auth();
-    const authTime = Date.now() - authStart;
-    console.log(`🔍 [DEBUG] Auth took ${authTime}ms`);
-    console.log('🔍 [DEBUG] Session:', session?.user?.id ? `User ID: ${session.user.id}` : 'No session');
-    
+
     if (!session?.user?.id) {
-      console.log('🔍 [DEBUG] Unauthorized - no session');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const { searchParams } = new URL(request.url);
     const date = searchParams.get('date');
-    console.log('🔍 [DEBUG] Requested date:', date);
-    
+
     const whereClause: { userId: string; date?: { gte: Date; lte: Date } } = {
       userId: session.user.id,
     };
@@ -32,15 +27,12 @@ export async function GET(request: NextRequest) {
       const [year, month, day] = date.split('-').map(Number);
       const startOfDay = new Date(year, month - 1, day, 0, 0, 0, 0);
       const endOfDay = new Date(year, month - 1, day, 23, 59, 59, 999);
-      
-      console.log('🔍 [DEBUG] Date range:', { startOfDay: startOfDay.toISOString(), endOfDay: endOfDay.toISOString() });
-      
+
       whereClause.date = {
         gte: startOfDay,
         lte: endOfDay,
       };
-    }    
-    const dbStart = Date.now();
+    }
     const foodLogs = await prisma.foodLog.findMany({
       where: whereClause,
       orderBy: [
@@ -48,10 +40,8 @@ export async function GET(request: NextRequest) {
         { createdAt: 'asc' }
       ],
     });
-    const dbTime = Date.now() - dbStart;
 
     const totalTime = Date.now() - startTime;
-    console.log(`🔍 [DEBUG] Found ${foodLogs.length} entries. DB query: ${dbTime}ms, Total time: ${totalTime}ms`);
     return NextResponse.json(foodLogs, {
       headers: {
         // Food logs are user-specific and reordered client-side, so stale cache breaks drag persistence.
@@ -71,18 +61,17 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  console.log('🔍 [DEBUG] POST /api/food-logs called');
   try {
     const session = await auth();
-    console.log('🔍 [DEBUG] Session:', session?.user?.id ? `User ID: ${session.user.id}` : 'No session');
-    
+
     if (!session?.user?.id) {
-      console.log('🔍 [DEBUG] Unauthorized - no session');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
-    console.log('🔍 [DEBUG] Request body:', JSON.stringify(body, null, 2));
+    const rawBody = await request.json();
+    const { data: body, error: validationError } = parseOrError(createFoodLogSchema, rawBody);
+    if (validationError) return validationError;
+
     const {
       foodName,
       brand,
@@ -192,8 +181,6 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    console.log('🔍 [DEBUG] Successfully created food log:', foodLog.id);
-
     // Set firstLoggedAt if this is the user's first food log
     try {
       await prisma.user.updateMany({
@@ -267,16 +254,15 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const rawBody = await request.json();
+    const { data: body, error: validationError } = parseOrError(updateFoodLogSchema, rawBody);
+    if (validationError) return validationError;
+
     const { id, quantity, calories, protein, carbs, fat, mealType, orderIndex,
       vitaminB1, vitaminB2, vitaminB3, vitaminB5, vitaminB6, vitaminB12,
       biotin, folate, vitaminA, vitaminC, vitaminD, vitaminK,
       calcium, copper, iron, magnesium, manganese, phosphorus,
       potassium, selenium, zinc, omega3 } = body;
-    
-    if (!id) {
-      return NextResponse.json({ error: 'Food log ID is required' }, { status: 400 });
-    }
 
     // Verify the food log belongs to the user before updating
     const existingFoodLog = await prisma.foodLog.findFirst({
