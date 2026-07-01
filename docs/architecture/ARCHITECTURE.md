@@ -168,13 +168,16 @@ Login Button → NextAuth.js → OAuth Provider → Session → Protected Routes
 ### **Input Validation**
 
 - **Client-Side**: TypeScript types + form validation
-- **Server-Side**: Schema validation with Prisma
-- **XSS Prevention**: Input sanitization utilities
+- **Server-Side**: Zod schemas (`src/lib/schemas/`), applied via `src/lib/api/handler.ts`
 
 ### **Rate Limiting**
 
-- **Implementation**: `src/lib/security.ts`
-- **Strategy**: IP-based rate limiting for API endpoints
+- **Implementation**: `src/lib/rateLimit.ts` (Upstash Redis, in-memory fallback)
+- **Strategy**: IP-based rate limiting for API endpoints, applied via `src/lib/api/handler.ts`
+
+### **Environment Configuration**
+
+- **Implementation**: `src/lib/env.ts` — single Zod-validated source of truth for all environment variables (server vs. client-safe `NEXT_PUBLIC_*`)
 
 ## 📊 Performance Architecture
 

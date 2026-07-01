@@ -1,6 +1,7 @@
 import type { NextAuthConfig } from "next-auth"
 import Google from "next-auth/providers/google"
 import Apple from "next-auth/providers/apple"
+import { serverEnv } from "@/lib/env"
 
 /**
  * Edge-compatible auth config (no Prisma/Node.js dependencies).
@@ -9,10 +10,10 @@ import Apple from "next-auth/providers/apple"
  */
 export const authConfig = {
   providers: [
-    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET && process.env.GOOGLE_CLIENT_ID !== 'your-google-client-id' ? [
+    ...(serverEnv.GOOGLE_CLIENT_ID && serverEnv.GOOGLE_CLIENT_SECRET && serverEnv.GOOGLE_CLIENT_ID !== 'your-google-client-id' ? [
       Google({
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        clientId: serverEnv.GOOGLE_CLIENT_ID,
+        clientSecret: serverEnv.GOOGLE_CLIENT_SECRET,
       })
     ] : []),
     // Apple provider requires jwt signing which is not edge-compatible,

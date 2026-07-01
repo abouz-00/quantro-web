@@ -1,34 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { checkBetaAccess } from '@/lib/betaAccess';
-import { rateLimitOrError } from '@/lib/rateLimit';
+import { createHandler } from '@/lib/api/handler';
+import { emailOnlySchema } from '@/lib/schemas/betaInvite';
 
-export async function POST(request: NextRequest) {
-  // 5 attempts per 15 minutes per IP, backed by Upstash Redis when
-  // configured so the limit holds across serverless instances.
-  const limited = await rateLimitOrError('check-email', request, { max: 5, windowSeconds: 15 * 60 });
-  if (limited) return limited;
+export const POST = createHandler(
+  {
+    // 5 attempts per 15 minutes per IP, backed by Upstash Redis when
+    // configured so the limit holds across serverless instances.
+    rateLimit: { name: 'check-email', max: 5, windowSeconds: 15 * 60 },
+    schema: emailOnlySchema,
+    routeLabel: 'POST /api/auth/check-email',
+  },
+  async (_request, { body }) => {
+    const hasAccess = await checkBetaAccess(body.email);
 
-  let email: string;
-  try {
-    const body = await request.json();
-    email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
-  } catch {
-    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+    // Intentionally vague — never reveal whether an email exists in the system.
+    if (!hasAccess) {
+      return NextResponse.json({ allowed: false }, { status: 200 });
+    }
+
+    return NextResponse.json({ allowed: true });
   }
-
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
-  }
-
-  const hasAccess = await checkBetaAccess(email);
-
-  // Intentionally vague — never reveal whether an email exists in the system
-  if (!hasAccess) {
-    return NextResponse.json(
-      { allowed: false },
-      { status: 200 },
-    );
-  }
-
-  return NextResponse.json({ allowed: true });
-}
+);

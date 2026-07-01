@@ -1,108 +1,30 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
+import { createHandler } from '@/lib/api/handler';
 import { updateUserProfileSchema } from '@/lib/schemas/userProfile';
-import { parseOrError } from '@/lib/validation';
+import { getUserProfile, updateUserProfile } from '@/server/userProfile';
 
-export async function GET() {
-  try {
-    const session = await auth();
-    
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        image: true,
-        createdAt: true,
-        dailyCalorieGoal: true,
-        dailyProteinGoal: true,
-        dailyCarbGoal: true,
-        dailyFatGoal: true,
-        weightUnit: true,
-        heightUnit: true,
-        goalsUpdatedAt: true,
-        firstLoggedAt: true,
-      },
-    });
-
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
-
+export const GET = createHandler(
+  { auth: 'session', rateLimit: { name: 'user-profile-get', max: 60, windowSeconds: 60 }, routeLabel: 'GET /api/user/profile' },
+  async (_request, { session }) => {
+    const user = await getUserProfile(session!.user.id);
     return NextResponse.json(user, {
       headers: {
         // Cache user profile for 5 minutes
         'Cache-Control': 'private, max-age=300, stale-while-revalidate=600',
       },
     });
-  } catch (error) {
-    console.error('Error fetching user profile:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-}
+);
 
-export async function PUT(request: NextRequest) {
-  try {
-    const session = await auth();
-    
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const rawBody = await request.json();
-    const { data: body, error: validationError } = parseOrError(updateUserProfileSchema, rawBody);
-    if (validationError) return validationError;
-
-    const {
-      dailyCalorieGoal,
-      dailyProteinGoal,
-      dailyCarbGoal,
-      dailyFatGoal,
-      weightUnit,
-      heightUnit,
-    } = body;
-
-    // If any goal fields are being updated, set goalsUpdatedAt
-    const isGoalUpdate = dailyCalorieGoal !== undefined || dailyProteinGoal !== undefined ||
-      dailyCarbGoal !== undefined || dailyFatGoal !== undefined;
-
-    const updatedUser = await prisma.user.update({
-      where: { id: session.user.id },
-      data: {
-        dailyCalorieGoal,
-        dailyProteinGoal,
-        dailyCarbGoal,
-        dailyFatGoal,
-        weightUnit,
-        heightUnit,
-        ...(isGoalUpdate && { goalsUpdatedAt: new Date() }),
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        image: true,
-        createdAt: true,
-        dailyCalorieGoal: true,
-        dailyProteinGoal: true,
-        dailyCarbGoal: true,
-        dailyFatGoal: true,
-        weightUnit: true,
-        heightUnit: true,
-        goalsUpdatedAt: true,
-        firstLoggedAt: true,
-      },
-    });
-
+export const PUT = createHandler(
+  {
+    auth: 'session',
+    rateLimit: { name: 'user-profile-put', max: 30, windowSeconds: 60 },
+    schema: updateUserProfileSchema,
+    routeLabel: 'PUT /api/user/profile',
+  },
+  async (_request, { session, body }) => {
+    const updatedUser = await updateUserProfile(session!.user.id, body);
     return NextResponse.json(updatedUser);
-  } catch (error) {
-    console.error('Error updating user profile:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-}
+);

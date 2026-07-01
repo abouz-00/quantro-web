@@ -1,3 +1,5 @@
+import { serverEnv } from '@/lib/env';
+
 const TOKEN_URL = 'https://oauth.fatsecret.com/connect/token';
 const API_URL = 'https://platform.fatsecret.com/rest/server.api';
 
@@ -73,8 +75,8 @@ async function getAccessToken(): Promise<string> {
     return cachedToken.token;
   }
 
-  const clientId = process.env.FATSECRET_CLIENT_ID;
-  const clientSecret = process.env.FATSECRET_CLIENT_SECRET;
+  const clientId = serverEnv.FATSECRET_CLIENT_ID;
+  const clientSecret = serverEnv.FATSECRET_CLIENT_SECRET;
   if (!clientId || !clientSecret) {
     throw new Error('FatSecret credentials not configured');
   }

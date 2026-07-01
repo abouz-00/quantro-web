@@ -1,9 +1,10 @@
 import { Resend } from 'resend'
 import { prisma } from './prisma'
+import { serverEnv } from '@/lib/env'
 
 // Initialize Resend lazily to avoid build-time errors
 function getResendInstance() {
-  const apiKey = process.env.RESEND_API_KEY
+  const apiKey = serverEnv.RESEND_API_KEY
   if (!apiKey || apiKey === 'your_resend_api_key_here') {
     throw new Error('RESEND_API_KEY is not configured')
   }
@@ -35,11 +36,11 @@ export async function sendBetaInviteEmail({ email, code, expiresAt }: BetaInvite
     }
 
     // Check if Resend API key is configured
-    if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === 'your_resend_api_key_here') {
+    if (!serverEnv.RESEND_API_KEY || serverEnv.RESEND_API_KEY === 'your_resend_api_key_here') {
       console.log('📧 Email sending skipped - RESEND_API_KEY not configured')
       console.log(`Would send beta invite to: ${email}`)
       console.log(`Invite code: ${code}`)
-      console.log(`Invite URL: ${process.env.NEXTAUTH_URL}/beta-invite?code=${code}`)
+      console.log(`Invite URL: ${serverEnv.NEXTAUTH_URL}/beta-invite?code=${code}`)
       return { 
         success: true, 
         data: null,
@@ -48,7 +49,7 @@ export async function sendBetaInviteEmail({ email, code, expiresAt }: BetaInvite
       }
     }
 
-    const inviteUrl = `${process.env.NEXTAUTH_URL}/beta-invite?code=${code}`
+    const inviteUrl = `${serverEnv.NEXTAUTH_URL}/beta-invite?code=${code}`
     const expirationText = expiresAt 
       ? `This invite expires on ${expiresAt.toLocaleDateString()}.`
       : 'This invite does not expire.'

@@ -1,25 +1,26 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
+import { NextResponse } from 'next/server';
+import { createHandler } from '@/lib/api/handler';
+import { ApiError } from '@/lib/api/errors';
 import { unifiedFoodSearch } from '@/lib/services/unified-food-search';
 
-export async function GET(request: NextRequest) {
-  try {
-    const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
+export const GET = createHandler(
+  {
+    auth: 'session',
+    rateLimit: { name: 'food-search-unified', max: 30, windowSeconds: 60 },
+    routeLabel: 'GET /api/food-search-unified',
+  },
+  async (request) => {
     const { searchParams } = request.nextUrl;
     const query = searchParams.get('query');
     const pageSize = Math.min(Math.max(parseInt(searchParams.get('pageSize') || '10', 10) || 10, 1), 50);
     const source = (searchParams.get('source') || 'all') as 'all' | 'usda' | 'fatsecret';
 
     if (!query || query.length < 2) {
-      return NextResponse.json({ error: 'Query must be at least 2 characters' }, { status: 400 });
+      throw new ApiError(400, 'Query must be at least 2 characters');
     }
 
     if (!['all', 'usda', 'fatsecret'].includes(source)) {
-      return NextResponse.json({ error: 'Invalid source. Must be all, usda, or fatsecret' }, { status: 400 });
+      throw new ApiError(400, 'Invalid source. Must be all, usda, or fatsecret');
     }
 
     const results = await unifiedFoodSearch(query, pageSize, source);
@@ -28,8 +29,5 @@ export async function GET(request: NextRequest) {
         'Cache-Control': 'private, max-age=300, stale-while-revalidate=600',
       },
     });
-  } catch (error) {
-    console.error('Food search error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-}
+);

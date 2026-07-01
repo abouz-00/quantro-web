@@ -124,11 +124,13 @@ class ErrorService {
       this.flushTimer = null;
     }
 
-    // Send batched errors
+    // Send batched errors. Sentry itself is not called here — the
+    // @sentry/nextjs SDK (see sentry.*.config.ts) already auto-captures
+    // exceptions client- and server-side, so a manual bridge would just be
+    // a second, redundant reporting path.
     setTimeout(async () => {
       try {
         await Promise.allSettled([
-          this.sendBatchToSentry(errors),
           this.sendBatchToServerLogs(errors),
           this.sendBatchToAnalytics(errors),
         ]);
@@ -211,23 +213,6 @@ class ErrorService {
   }
 
   /**
-   * Send batch of errors to Sentry
-   */
-  private async sendBatchToSentry(errors: ErrorReport[]): Promise<void> {
-    if (!this.isProduction) return;
-
-    try {
-      await fetch('/api/errors/sentry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ errors }),
-      });
-    } catch (err) {
-      console.warn('Failed to send batch to Sentry:', err);
-    }
-  }
-
-  /**
    * Send batch of errors to server logs
    */
   private async sendBatchToServerLogs(errors: ErrorReport[]): Promise<void> {
@@ -262,25 +247,6 @@ class ErrorService {
       });
     } catch (err) {
       console.warn('Failed to send batch to analytics:', err);
-    }
-  }
-
-  /**
-   * Send error to Sentry (or similar service)
-   */
-  private async sendToSentry(errorReport: ErrorReport): Promise<void> {
-    if (!this.isProduction) return;
-
-    try {
-      // In production, you'd initialize Sentry and use it here
-      // For now, we'll use a mock implementation
-      await fetch('/api/errors/sentry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(errorReport),
-      });
-    } catch (err) {
-      console.warn('Failed to send error to Sentry:', err);
     }
   }
 

@@ -127,8 +127,7 @@ describe('Error Log API', () => {
       expect(response.status).toBe(500);
       expect(data.error).toBe('Failed to process error log');
       expect(mockConsoleError).toHaveBeenCalledWith(
-        'Failed to process error log:',
-        expect.any(SyntaxError)
+        expect.stringContaining('POST /api/errors/log')
       );
     });
 
@@ -150,8 +149,7 @@ describe('Error Log API', () => {
       expect(response.status).toBe(500);
       expect(data.error).toBe('Failed to process error log');
       expect(mockConsoleError).toHaveBeenCalledWith(
-        'Failed to process error log:',
-        expect.any(Error)
+        expect.stringContaining('POST /api/errors/log')
       );
     });
 

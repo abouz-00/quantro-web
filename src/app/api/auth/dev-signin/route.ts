@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { checkBetaAccess } from '@/lib/betaAccess';
+import { isDevelopment, serverEnv } from '@/lib/env';
 
 // Add CORS headers for Safari compatibility
 const corsHeaders = {
@@ -18,7 +19,7 @@ export async function POST(request: Request) {
     console.log('Dev sign-in API called');
 
     // Only allow in development
-    if (process.env.NODE_ENV !== 'development') {
+    if (!isDevelopment) {
       console.log('Not in development mode');
       return NextResponse.json(
         { error: 'Not available in production' }, 
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
     }
 
     // Check development password
-    const DEV_PASSWORD = process.env.DEV_SIGNIN_PASSWORD || 'quantro-dev-2024';
+    const DEV_PASSWORD = serverEnv.DEV_SIGNIN_PASSWORD || 'quantro-dev-2024';
     if (password !== DEV_PASSWORD) {
       console.log('Invalid development password');
       return NextResponse.json(

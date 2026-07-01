@@ -1,6 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '../../../../lib/auth';
-import { rateLimitOrError } from '@/lib/rateLimit';
+import { NextResponse } from 'next/server';
+import { createHandler } from '@/lib/api/handler';
 
 interface ErrorLog {
   message: string;
@@ -21,84 +20,49 @@ interface ErrorLog {
   fingerprint?: string;
 }
 
-export async function POST(request: NextRequest) {
-  const limited = await rateLimitOrError('errors-log', request, { max: 30, windowSeconds: 60 });
-  if (limited) return limited;
+function isBatchPayload(payload: unknown): payload is { errors: ErrorLog[] } {
+  return Boolean(payload) && Array.isArray((payload as { errors?: unknown }).errors);
+}
 
-  try {
-    const session = await auth();
-    const errorLog: ErrorLog = await request.json();
+export const POST = createHandler(
+  {
+    auth: 'optional',
+    rateLimit: { name: 'errors-log', max: 30, windowSeconds: 60 },
+    defaultErrorMessage: 'Failed to process error log',
+    routeLabel: 'POST /api/errors/log',
+  },
+  async (request, { session }) => {
+    const payload = await request.json();
+    // `errorService` on the client sends batches as `{ errors: [...] }`; a
+    // single log object (as sent by older/simpler callers) is normalized to
+    // a one-item batch so both shapes are handled identically below.
+    const logs: ErrorLog[] = isBatchPayload(payload) ? payload.errors : [payload as ErrorLog];
 
-    // Add session context
-    const enrichedLog: ErrorLog = {
-      ...errorLog,
-      context: {
-        ...errorLog.context,
-        userId: session?.user?.id,
-        sessionId: session?.user?.email || undefined,
-        serverTimestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV,
-      },
-    };
+    for (const errorLog of logs) {
+      const enrichedLog: ErrorLog = {
+        ...errorLog,
+        context: {
+          ...errorLog.context,
+          userId: session?.user?.id,
+          sessionId: session?.user?.email || undefined,
+          serverTimestamp: new Date().toISOString(),
+          environment: process.env.NODE_ENV,
+        },
+      };
 
-    // Log to console (in production, this would go to structured logging)
-    console.error('🚨 Client Error Report:', JSON.stringify(enrichedLog, null, 2));
+      // Log to console (in production, structured logs are also captured by Sentry).
+      console.error('🚨 Client Error Report:', JSON.stringify(enrichedLog, null, 2));
 
-    // In production, you would:
-    // 1. Send to structured logging service (e.g., Winston, Pino)
-    // 2. Store in database for analysis
-    // 3. Send alerts for critical errors
-    // 4. Forward to external services (DataDog, New Relic, etc.)
-
-    // Example structured logging (uncomment in production):
-    /*
-    const winston = require('winston');
-    const logger = winston.createLogger({
-      level: 'error',
-      format: winston.format.json(),
-      transports: [
-        new winston.transports.File({ filename: 'error.log' }),
-        new winston.transports.Console(),
-      ],
-    });
-    
-    logger.error('Client error', enrichedLog);
-    */
-
-    // Example database storage (uncomment when database schema is ready):
-    /*
-    await prisma.errorLog.create({
-      data: {
-        message: enrichedLog.message,
-        stack: enrichedLog.stack,
-        fingerprint: enrichedLog.fingerprint,
-        severity: enrichedLog.context?.severity || 'medium',
-        category: enrichedLog.context?.category || 'unknown',
-        userId: enrichedLog.context?.userId,
-        url: enrichedLog.context?.url,
-        userAgent: enrichedLog.context?.userAgent,
-        metadata: enrichedLog.context?.metadata ? JSON.stringify(enrichedLog.context.metadata) : null,
-        timestamp: new Date(enrichedLog.context?.timestamp || Date.now()),
-      },
-    });
-    */
-
-    // Send to external monitoring services
-    await sendToWebhooks(enrichedLog);
+      await sendToWebhooks(enrichedLog);
+    }
 
     return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('Failed to process error log:', error);
-    return NextResponse.json(
-      { error: 'Failed to process error log' },
-      { status: 500 }
-    );
   }
-}
+);
 
 async function sendToWebhooks(errorLog: ErrorLog) {
   const webhooks = process.env.ERROR_WEBHOOKS?.split(',') || [];
-  
+
   const promises = webhooks.map(async (webhook) => {
     try {
       await fetch(webhook.trim(), {

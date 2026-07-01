@@ -1,3 +1,5 @@
+import { serverEnv } from '@/lib/env';
+
 const USDA_API_URL = 'https://api.nal.usda.gov/fdc/v1';
 
 // USDA nutrient IDs to standard names
@@ -127,7 +129,7 @@ function transformFood(food: USDAFoodItem): TransformedFoodItem {
 }
 
 export async function searchUSDA(query: string, pageSize: number = 10): Promise<TransformedFoodItem[]> {
-  const apiKey = process.env.USDA_API_KEY;
+  const apiKey = serverEnv.USDA_API_KEY;
   if (!apiKey) {
     throw new Error('USDA_API_KEY not configured');
   }
