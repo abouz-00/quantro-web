@@ -65,7 +65,6 @@ const customJestConfig = {
     '!src/lib/auth.ts',
     '!src/lib/betaAccess.ts',
     '!src/lib/email.ts',
-    '!src/lib/security.ts',
     '!src/services/errorService.ts',
     '!src/types/**',
   ],

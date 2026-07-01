@@ -166,7 +166,7 @@ describe('Beta Invite API', () => {
 
       expect(response.status).toBe(500);
       expect(data.error).toBe('Failed to validate invite');
-      expect(mockConsoleError).toHaveBeenCalledWith('Error validating invite:', expect.any(Error));
+      expect(mockConsoleError).toHaveBeenCalledWith(expect.stringContaining('GET /api/beta-invite'));
     });
   });
 
@@ -338,7 +338,7 @@ describe('Beta Invite API', () => {
 
       expect(response.status).toBe(500);
       expect(data.error).toBe('Failed to accept invite');
-      expect(mockConsoleError).toHaveBeenCalledWith('Error accepting invite:', expect.any(Error));
+      expect(mockConsoleError).toHaveBeenCalledWith(expect.stringContaining('POST /api/beta-invite'));
     });
 
     it('should handle database errors', async () => {
@@ -359,7 +359,7 @@ describe('Beta Invite API', () => {
 
       expect(response.status).toBe(500);
       expect(data.error).toBe('Failed to accept invite');
-      expect(mockConsoleError).toHaveBeenCalledWith('Error accepting invite:', expect.any(Error));
+      expect(mockConsoleError).toHaveBeenCalledWith(expect.stringContaining('POST /api/beta-invite'));
     });
   });
 });

@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { isProduction, serverEnv } from '@/lib/env'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
@@ -20,20 +21,19 @@ const createPostgresClient = (databaseUrl: string) => {
 
 const createPrismaClient = () => {
   // Priority: DATABASE_URL > POSTGRES_PRISMA_URL > local SQLite
-  const databaseUrl = process.env.DATABASE_URL || process.env.POSTGRES_PRISMA_URL
+  const databaseUrl = serverEnv.DATABASE_URL || serverEnv.POSTGRES_PRISMA_URL
   const isPostgresUrl =
     databaseUrl?.startsWith('postgres://') || databaseUrl?.startsWith('postgresql://')
-  const isDev = process.env.NODE_ENV !== 'production'
-  const allowPostgresInDev = process.env.ALLOW_POSTGRES_IN_DEV === 'true'
-  
+  const allowPostgresInDev = serverEnv.ALLOW_POSTGRES_IN_DEV === 'true'
+
   // Debug logging for build troubleshooting
-  if (process.env.NODE_ENV === 'production') {
+  if (isProduction) {
     console.log('[Prisma] Initializing with URL prefix:', databaseUrl?.substring(0, 15) || 'NO URL')
   }
-  
+
   // In development we default to SQLite to match prisma/schema.prisma.
   // Set ALLOW_POSTGRES_IN_DEV=true if you intentionally run Postgres locally.
-  if (isPostgresUrl && isDev && !allowPostgresInDev) {
+  if (isPostgresUrl && !isProduction && !allowPostgresInDev) {
     console.warn(
       '[Prisma] Postgres URL detected in development with SQLite schema; using local SQLite instead. Set ALLOW_POSTGRES_IN_DEV=true to override.'
     )
@@ -52,7 +52,7 @@ const createPrismaClient = () => {
   }
   
   // No URL provided - use SQLite for local development only
-  if (!databaseUrl && process.env.NODE_ENV !== 'production') {
+  if (!databaseUrl && !isProduction) {
     return createSqliteClient('./prisma/dev.db')
   }
   
@@ -67,4 +67,4 @@ const createPrismaClient = () => {
 
 export const prisma = globalForPrisma.prisma ?? createPrismaClient()
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+if (!isProduction) globalForPrisma.prisma = prisma

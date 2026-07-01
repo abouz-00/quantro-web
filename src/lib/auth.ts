@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma"
 import { checkBetaAccess } from "@/lib/betaAccess"
 import { authConfig } from "@/lib/auth.config"
 import { sendMagicLinkEmail } from "@/lib/emails/magic-link"
+import { isDevelopment, serverEnv } from "@/lib/env"
 import jwt from 'jsonwebtoken'
 
 declare module "next-auth" {
@@ -31,11 +32,11 @@ declare module "next-auth/jwt" {
 // Generate Apple JWT client secret on demand (expires in 6 months per Apple spec).
 // Called per-request to avoid stale secrets in long-lived serverless containers.
 function generateAppleJWT(): string | null {
-  if (!process.env.APPLE_PRIVATE_KEY || !process.env.APPLE_TEAM_ID || !process.env.APPLE_PRIVATE_KEY_ID || !process.env.APPLE_ID) {
+  if (!serverEnv.APPLE_PRIVATE_KEY || !serverEnv.APPLE_TEAM_ID || !serverEnv.APPLE_PRIVATE_KEY_ID || !serverEnv.APPLE_ID) {
     return null;
   }
 
-  let privateKey = process.env.APPLE_PRIVATE_KEY;
+  let privateKey = serverEnv.APPLE_PRIVATE_KEY;
 
   // Handle escaped newlines from env vars (Vercel stores keys with literal \n)
   if (privateKey.includes('\\n')) {
@@ -51,17 +52,17 @@ function generateAppleJWT(): string | null {
 
   const now = Math.floor(Date.now() / 1000);
   const payload = {
-    iss: process.env.APPLE_TEAM_ID,
+    iss: serverEnv.APPLE_TEAM_ID,
     iat: now,
     exp: now + 180 * 24 * 60 * 60, // 6 months (Apple max)
     aud: 'https://appleid.apple.com',
-    sub: process.env.APPLE_ID,
+    sub: serverEnv.APPLE_ID,
   };
 
   try {
     return jwt.sign(payload, privateKey, {
       algorithm: 'ES256',
-      keyid: process.env.APPLE_PRIVATE_KEY_ID,
+      keyid: serverEnv.APPLE_PRIVATE_KEY_ID,
     });
   } catch (error) {
     console.error('Error signing Apple JWT:', error);
@@ -72,13 +73,13 @@ function generateAppleJWT(): string | null {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   adapter: PrismaAdapter(prisma),
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: serverEnv.NEXTAUTH_SECRET,
   providers: [
     ...authConfig.providers,
     // Magic link email auth via Resend
-    ...(process.env.RESEND_API_KEY ? [
+    ...(serverEnv.RESEND_API_KEY ? [
       Resend({
-        apiKey: process.env.RESEND_API_KEY,
+        apiKey: serverEnv.RESEND_API_KEY,
         from: "Quantro <hello@quantro.fit>",
         maxAge: 10 * 60, // 10 minutes
         async sendVerificationRequest({ identifier: to, url }) {
@@ -88,11 +89,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     ] : []),
     ...(() => {
       // Only include Apple provider if env vars are present
-      const hasAppleConfig = process.env.APPLE_ID && 
-              process.env.APPLE_PRIVATE_KEY && 
-              process.env.APPLE_TEAM_ID && 
-              process.env.APPLE_PRIVATE_KEY_ID && 
-              process.env.APPLE_ID !== 'your-apple-service-id';
+      const hasAppleConfig = serverEnv.APPLE_ID &&
+              serverEnv.APPLE_PRIVATE_KEY &&
+              serverEnv.APPLE_TEAM_ID &&
+              serverEnv.APPLE_PRIVATE_KEY_ID &&
+              serverEnv.APPLE_ID !== 'your-apple-service-id';
       if (!hasAppleConfig) return [];
 
       // Generate JWT (6-month expiry; regenerated on every cold start)
@@ -104,13 +105,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       return [
         Apple({
-          clientId: process.env.APPLE_ID!,
+          clientId: serverEnv.APPLE_ID!,
           clientSecret: appleJWT,
         })
       ];
     })(),
     // Development credentials provider with enhanced security
-    ...(process.env.NODE_ENV === 'development' ? [
+    ...(isDevelopment ? [
       Credentials({
         id: 'credentials',
         name: "Development",
@@ -130,7 +131,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           }
           
           // Require development password
-          const DEV_PASSWORD = process.env.DEV_SIGNIN_PASSWORD || 'quantro-dev-2024';
+          const DEV_PASSWORD = serverEnv.DEV_SIGNIN_PASSWORD || 'quantro-dev-2024';
           if (!password || password !== DEV_PASSWORD) {
             console.log('Invalid or missing development password');
             return null;
@@ -224,7 +225,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
 
             // For development, ensure user is approved in database
-      if (process.env.NODE_ENV === 'development') {
+      if (isDevelopment) {
         try {
           await prisma.user.upsert({
             where: { email: user.email },

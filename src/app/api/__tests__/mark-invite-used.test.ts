@@ -313,8 +313,7 @@ describe('Mark Invite Used API', () => {
       expect(response.status).toBe(500);
       expect(data.error).toBe('Failed to mark invite as used');
       expect(mockConsoleError).toHaveBeenCalledWith(
-        'Error marking invite as used:',
-        expect.any(Error)
+        expect.stringContaining('POST /api/mark-invite-used')
       );
       expect(mockUpdate).not.toHaveBeenCalled();
     });
@@ -337,8 +336,7 @@ describe('Mark Invite Used API', () => {
       expect(response.status).toBe(500);
       expect(data.error).toBe('Failed to mark invite as used');
       expect(mockConsoleError).toHaveBeenCalledWith(
-        'Error marking invite as used:',
-        expect.any(Error)
+        expect.stringContaining('POST /api/mark-invite-used')
       );
     });
 
@@ -354,8 +352,7 @@ describe('Mark Invite Used API', () => {
       expect(response.status).toBe(500);
       expect(data.error).toBe('Failed to mark invite as used');
       expect(mockConsoleError).toHaveBeenCalledWith(
-        'Error marking invite as used:',
-        expect.any(SyntaxError)
+        expect.stringContaining('POST /api/mark-invite-used')
       );
       expect(mockFindFirst).not.toHaveBeenCalled();
       expect(mockUpdate).not.toHaveBeenCalled();

@@ -277,8 +277,7 @@ describe('Food Logs Reorder API', () => {
       expect(response.status).toBe(500);
       expect(data.error).toBe('Internal server error');
       expect(mockConsoleError).toHaveBeenCalledWith(
-        'Error updating food log order:',
-        expect.any(Error)
+        expect.stringContaining('POST /api/food-logs/reorder')
       );
       expect(mockUpdate).not.toHaveBeenCalled();
     });
@@ -299,8 +298,7 @@ describe('Food Logs Reorder API', () => {
       expect(response.status).toBe(500);
       expect(data.error).toBe('Internal server error');
       expect(mockConsoleError).toHaveBeenCalledWith(
-        'Error updating food log order:',
-        expect.any(Error)
+        expect.stringContaining('POST /api/food-logs/reorder')
       );
     });
 
@@ -318,8 +316,7 @@ describe('Food Logs Reorder API', () => {
       expect(response.status).toBe(500);
       expect(data.error).toBe('Internal server error');
       expect(mockConsoleError).toHaveBeenCalledWith(
-        'Error updating food log order:',
-        expect.any(SyntaxError)
+        expect.stringContaining('POST /api/food-logs/reorder')
       );
     });
 
@@ -337,8 +334,7 @@ describe('Food Logs Reorder API', () => {
       expect(response.status).toBe(500);
       expect(data.error).toBe('Internal server error');
       expect(mockConsoleError).toHaveBeenCalledWith(
-        'Error updating food log order:',
-        expect.any(Error)
+        expect.stringContaining('POST /api/food-logs/reorder')
       );
     });
   });

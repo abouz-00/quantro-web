@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { Redis } from '@upstash/redis'
 import type { Ratelimit } from '@upstash/ratelimit'
+import { isProduction, serverEnv } from '@/lib/env'
 
 /**
  * Shared rate limiting for API routes and middleware.
@@ -21,10 +22,10 @@ import type { Ratelimit } from '@upstash/ratelimit'
  */
 
 const UPSTASH_CONFIGURED = Boolean(
-  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+  serverEnv.UPSTASH_REDIS_REST_URL && serverEnv.UPSTASH_REDIS_REST_TOKEN
 )
 
-if (!UPSTASH_CONFIGURED && process.env.NODE_ENV === 'production') {
+if (!UPSTASH_CONFIGURED && isProduction) {
   console.warn(
     '[rateLimit] UPSTASH_REDIS_REST_URL/TOKEN not set — falling back to ' +
       'in-memory rate limiting, which is ineffective across multiple ' +
@@ -38,8 +39,8 @@ function getRedis(): Promise<Redis> {
     redisPromise = import('@upstash/redis').then(
       ({ Redis }) =>
         new Redis({
-          url: process.env.UPSTASH_REDIS_REST_URL!,
-          token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+          url: serverEnv.UPSTASH_REDIS_REST_URL!,
+          token: serverEnv.UPSTASH_REDIS_REST_TOKEN!,
         })
     )
   }
@@ -80,10 +81,10 @@ function memoryLimit(key: string, max: number, windowMs: number): { success: boo
   return { success: entry.count <= max }
 }
 
-export function getClientIp(request: Request): string {
+export function getClientIp(request: Request | undefined | null): string {
   return (
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip') ||
+    request?.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    request?.headers.get('x-real-ip') ||
     'unknown'
   )
 }
@@ -128,7 +129,7 @@ export function __resetRateLimitForTests(): void {
  */
 export async function rateLimitOrError(
   name: string,
-  request: Request,
+  request: Request | undefined | null,
   options: RateLimitOptions
 ): Promise<NextResponse | null> {
   const ip = getClientIp(request)

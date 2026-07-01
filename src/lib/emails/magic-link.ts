@@ -1,10 +1,11 @@
 import { Resend } from 'resend'
+import { serverEnv } from '@/lib/env'
 
 let resendInstance: Resend | null = null
 
 function getResend(): Resend | null {
   if (resendInstance) return resendInstance
-  const apiKey = process.env.RESEND_API_KEY
+  const apiKey = serverEnv.RESEND_API_KEY
   if (!apiKey || apiKey === 'your_resend_api_key_here') return null
   resendInstance = new Resend(apiKey)
   return resendInstance
