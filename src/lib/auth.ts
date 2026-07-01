@@ -9,6 +9,7 @@ import { authConfig } from "@/lib/auth.config"
 import { sendMagicLinkEmail } from "@/lib/emails/magic-link"
 import { isDevelopment, serverEnv } from "@/lib/env"
 import jwt from 'jsonwebtoken'
+import type {} from "next-auth/jwt"
 
 declare module "next-auth" {
   interface Session {
