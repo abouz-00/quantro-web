@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useFoodSearch } from "./hooks/useFoodSearch";
 import { useFavorites } from "./hooks/useFavorites";
@@ -80,14 +80,14 @@ function FoodSearchModal({ onClose, onAddFood, selectedDate }: FoodSearchModalPr
   useFoodSearchStyles();
   const { createFoodEntry } = useNutrientCalculator();
 
-  // Track previous values to detect changes
-  const [prevQuery, setPrevQuery] = useState(localQuery);
-  const [prevTab, setPrevTab] = useState(activeTab);
-
-  // Reset selectedFood when query is cleared or tab changes (with guard)
-  if (prevQuery !== localQuery || prevTab !== activeTab) {
-    setPrevQuery(localQuery);
-    setPrevTab(activeTab);
+  // Clear the selected food whenever the search query or active tab changes.
+  // React supports calling setState during render to derive state from other
+  // state; this avoids an extra effect render cycle.
+  const [prevLocalQuery, setPrevLocalQuery] = useState(localQuery);
+  const [prevActiveTab, setPrevActiveTab] = useState(activeTab);
+  if (prevLocalQuery !== localQuery || prevActiveTab !== activeTab) {
+    setPrevLocalQuery(localQuery);
+    setPrevActiveTab(activeTab);
     setSelectedFood(null);
   }
 
