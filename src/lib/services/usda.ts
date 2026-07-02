@@ -129,7 +129,7 @@ function transformFood(food: USDAFoodItem): TransformedFoodItem {
 }
 
 export async function searchUSDA(query: string, pageSize: number = 10): Promise<TransformedFoodItem[]> {
-  const apiKey = serverEnv.USDA_API_KEY;
+  const apiKey = serverEnv.USDA_API_KEY || (serverEnv.NODE_ENV === 'development' ? 'DEMO_KEY' : undefined);
   if (!apiKey) {
     throw new Error('USDA_API_KEY not configured');
   }
