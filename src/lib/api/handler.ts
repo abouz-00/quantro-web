@@ -5,6 +5,7 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { rateLimitOrError, type RateLimitOptions } from '@/lib/rateLimit'
 import { logger } from '@/lib/logger'
+import { isDevelopment } from '@/lib/env'
 import { ApiError } from './errors'
 
 type AuthMode = 'none' | 'optional' | 'session' | 'admin'
@@ -109,8 +110,12 @@ export function createHandler<TBody = undefined>(
         )
       }
       logger.error(options.routeLabel, error)
+      const errorMessage =
+        isDevelopment && error instanceof Error
+          ? `${options.defaultErrorMessage ?? 'Internal server error'}: ${error.message}`
+          : options.defaultErrorMessage ?? 'Internal server error'
       return NextResponse.json(
-        { error: options.defaultErrorMessage ?? 'Internal server error' },
+        { error: errorMessage },
         { status: 500 }
       )
     }
