@@ -11,6 +11,8 @@ import { isDevelopment, serverEnv } from "@/lib/env"
 import jwt from 'jsonwebtoken'
 import type {} from "next-auth/jwt"
 
+const authSecret = serverEnv.NEXTAUTH_SECRET || (isDevelopment ? 'quantro-local-development-secret' : undefined)
+
 declare module "next-auth" {
   interface Session {
     user: {
@@ -74,7 +76,7 @@ function generateAppleJWT(): string | null {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   adapter: PrismaAdapter(prisma),
-  secret: serverEnv.NEXTAUTH_SECRET,
+  secret: authSecret,
   providers: [
     ...authConfig.providers,
     // Magic link email auth via Resend
