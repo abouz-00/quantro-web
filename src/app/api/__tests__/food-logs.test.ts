@@ -105,6 +105,18 @@ describe('Food Logs API', () => {
       });
     });
 
+    it('should return 400 when date parameter is invalid', async () => {
+      mockAuth.mockResolvedValue(mockSession);
+
+      const request = new NextRequest('http://localhost:3000/api/food-logs?date=2023-02-31');
+      const response = await GET(request);
+      const data = await response.json();
+
+      expect(response.status).toBe(400);
+      expect(data.error).toBe('Invalid date parameter');
+      expect(mockPrisma.foodLog.findMany).not.toHaveBeenCalled();
+    });
+
     it('should handle database errors', async () => {
       mockAuth.mockResolvedValue(mockSession);
       mockFindMany.mockRejectedValue(new Error('Database error'));

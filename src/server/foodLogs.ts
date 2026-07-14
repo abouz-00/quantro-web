@@ -20,14 +20,32 @@ function dayRange(date: Date): { gte: Date; lte: Date } {
   return { gte: start, lte: end }
 }
 
+function parseDateParam(dateParam: string): Date {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateParam)
+  if (!match) {
+    throw new ApiError(400, 'Invalid date parameter')
+  }
+
+  const [, yearValue, monthValue, dayValue] = match
+  const year = Number(yearValue)
+  const month = Number(monthValue)
+  const day = Number(dayValue)
+  const date = new Date(year, month - 1, day)
+
+  if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
+    throw new ApiError(400, 'Invalid date parameter')
+  }
+
+  return date
+}
+
 export async function getFoodLogsForUser(userId: string, dateParam: string | null) {
   const whereClause: { userId: string; date?: { gte: Date; lte: Date } } = { userId }
 
   if (dateParam) {
     // Parse YYYY-MM-DD as local date components to avoid a UTC-shift giving
     // the wrong local day for timezones west of UTC.
-    const [year, month, day] = dateParam.split('-').map(Number)
-    whereClause.date = dayRange(new Date(year, month - 1, day))
+    whereClause.date = dayRange(parseDateParam(dateParam))
   }
 
   return prisma.foodLog.findMany({
