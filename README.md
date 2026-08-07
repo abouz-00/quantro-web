@@ -102,4 +102,4 @@ npm run dev
 
 ## License
 
-Private project. All rights reserved.
+All rights reserved. This source code is publicly available for viewing and reference only. No permission is granted to copy, modify, distribute, or use the code without prior written permission.
