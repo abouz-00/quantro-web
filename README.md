@@ -49,21 +49,15 @@ This repo captures the full product cycle: from food search and logging UX to au
 
 ## Architecture
 
-Quantro is a single repo full-stack app deployed as serverless on Vercel.
+Quantro uses a monolithic Next.js architecture deployed serverlessly on Vercel. The application combines frontend UI, API routes, authentication, database access, and third-party integrations in a single repository.
 
-- `src/app/` contains App Router pages and layouts
-- `src/app/api/*` contains backend API route handlers
-- `src/lib/` contains shared client/server services, auth, and env handling
-- `src/server/` contains Prisma-backed business logic
-- `src/components/` contains domain UI and reusable primitives
-- `prisma/` contains database schemas for dev, production, and tests
+Key architectural decisions included:
 
-Key patterns:
-- Centralized Zod-validated environment config
-- Thin API routes with reusable auth/validation/error handling
-- Unified food search service that normalizes across providers
-- Edge middleware for route guards with Node-only auth provider setup
-- Beta invite and admin gating built into sign-in flow
+- Unified food-search abstraction across multiple providers
+- Centralized validation and environment configuration
+- Separate server-side business logic and API layers
+- Authentication and route protection across Edge and Node.js runtimes
+- Serverless-compatible rate limiting
 
 ---
 
