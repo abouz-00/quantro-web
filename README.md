@@ -1,10 +1,12 @@
 # Quantro - Calorie Counter
 
+<img src="./public/favicon.svg" alt="Quantro logo" width="120">
+
 ## Status: No longer actively developed
 ---
 ## Overview 
 
-I began this project shortly after graduating college to learn modern full-stack development using AI coding tools. While building it, I gained experience with frontend development, backend APIs, databases, cloud deployment, business formation, branding, and product design. Through the process I also discovered that my interests lie more in product strategy and business than day-to-day software engineering.
+I began this project in my final quarter of college to learn modern full-stack development using AI coding tools. While building it, I gained experience with frontend development, backend APIs, databases, cloud deployment, business formation, branding, and product design. Through the process I also discovered that my interests lie more in product strategy and business than day-to-day software engineering.
 
 ---
 
@@ -71,6 +73,16 @@ Key architectural decisions included:
 
 ---
 
+## Project Timeline
+
+- **Spring 2025** — Project conceived months before college graduation
+- **2025** — Product development and technical experimentation
+- **Summer 2025** — LLC formed and brand/trademark developed
+- **2025–2026** — Invite-only beta development and testing
+- **2026** — Development concluded and repository prepared for public release
+
+---
+
 ## What I Learned
 
 - Monolith-first is powerful for an MVP when shared logic matters
@@ -81,16 +93,9 @@ Key architectural decisions included:
 
 ---
 
-## Local Development
+## Disclaimer
 
-```bash
-npm install
-cp .env.example .env.local
-# fill in NEXTAUTH_SECRET and any optional keys locally
-npm run dev
-```
-
-> Never commit `.env.local` or secrets. Use `.env.example` only as a placeholder.
+Quantro was developed as a software project and is not intended to provide medical or nutritional advice. Nutrition information is sourced from third-party databases and may contain inaccuracies.
 
 ---
 
