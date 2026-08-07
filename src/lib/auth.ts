@@ -11,7 +11,7 @@ import { isDevelopment, serverEnv } from "@/lib/env"
 import jwt from 'jsonwebtoken'
 import type {} from "next-auth/jwt"
 
-const authSecret = serverEnv.NEXTAUTH_SECRET || (isDevelopment ? 'quantro-local-development-secret' : undefined)
+const authSecret = serverEnv.NEXTAUTH_SECRET
 
 declare module "next-auth" {
   interface Session {
@@ -134,8 +134,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           }
           
           // Require development password
-          const DEV_PASSWORD = serverEnv.DEV_SIGNIN_PASSWORD || 'quantro-dev-2024';
-          if (!password || password !== DEV_PASSWORD) {
+          if (!serverEnv.DEV_SIGNIN_PASSWORD) {
+            console.log('DEV_SIGNIN_PASSWORD is not configured');
+            return null;
+          }
+          if (!password || password !== serverEnv.DEV_SIGNIN_PASSWORD) {
             console.log('Invalid or missing development password');
             return null;
           }

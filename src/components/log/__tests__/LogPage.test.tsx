@@ -1,5 +1,5 @@
 // Mock fetch globally before any imports
-// global.fetch is already mocked in jest.setup.ts
+// global.fetch is already mocked in src/setupTests.ts
 
 // Mock next/dynamic to prevent lazy loading issues
 jest.mock('next/dynamic', () => ({

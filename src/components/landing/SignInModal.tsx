@@ -14,7 +14,7 @@ export const SignInModal: React.FC<SignInModalProps> = ({
   onSubmit,
   isSigningIn
 }) => {
-  const [email, setEmail] = useState('hello@quantro.fit');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {

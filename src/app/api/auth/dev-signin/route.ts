@@ -39,9 +39,14 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check development password
-    const DEV_PASSWORD = serverEnv.DEV_SIGNIN_PASSWORD || 'quantro-dev-2024';
-    if (password !== DEV_PASSWORD) {
+    if (!serverEnv.DEV_SIGNIN_PASSWORD) {
+      return NextResponse.json(
+        { error: 'DEV_SIGNIN_PASSWORD is not configured' },
+        { status: 503, headers: corsHeaders }
+      );
+    }
+
+    if (password !== serverEnv.DEV_SIGNIN_PASSWORD) {
       console.log('Invalid development password');
       return NextResponse.json(
         { error: 'Invalid password' }, 
