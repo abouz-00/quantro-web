@@ -67,13 +67,13 @@ Key patterns:
 
 ---
 
-## Challenges Solved
+## Engineering Highlights
 
-- Invite-only beta access with allowlist and admin-managed invites
-- Unified, resilient food search across two external APIs
-- Secure auth split between edge middleware and Node.js runtime
-- Rate limiting that works in serverless and local fallback mode
-- A logging interface with inline editing, drag-and-drop, and optimistic updates
+- Invite-only beta access with allowlist and admin-managed invitations
+- Unified food search across two external APIs
+- Authentication across Edge and Node.js runtimes
+- Serverless-compatible rate limiting with local fallback
+- Inline editing, drag-and-drop, and optimistic UI updates
 
 ---
 
