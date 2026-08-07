@@ -57,8 +57,6 @@ const customJestConfig = {
     '!src/app/admin/**',
     '!src/app/beta-invite/**',
     '!src/app/auth/not-invited/**',
-    '!src/app/landing/**',
-    '!src/app/debug/**',
     '!src/components/ErrorMonitoringDashboard.tsx',
     '!src/components/SessionWrapper.tsx',
     '!src/components/ui/**',

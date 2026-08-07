@@ -36,6 +36,7 @@ const serverSchema = z.object({
   APPLE_PRIVATE_KEY: z.string().optional(),
   APPLE_PRIVATE_KEY_ID: z.string().optional(),
   DEV_SIGNIN_PASSWORD: z.string().optional(),
+  BETA_ALLOWLIST_EMAILS: z.string().optional(),
 
   // Email
   RESEND_API_KEY: z.string().optional(),

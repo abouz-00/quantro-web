@@ -1,28 +1,25 @@
 import { randomBytes } from 'crypto';
 import { prisma } from '@/lib/prisma';
+import { serverEnv } from '@/lib/env';
 
-// List of approved beta tester emails
-const BETA_EMAILS = [
-  'hello@quantro.fit',        // Your main email
-  'abouzelfane@icloud.com',   // Your Apple Sign-In email
-  'aymanbouzelfane1@gmail.com', // Your Google Sign-In email
-  'dev@quantro.local',        // Development email for testing
-  // Add more beta tester emails here
-];
+function getBetaAllowlist(): string[] {
+  const raw = serverEnv.BETA_ALLOWLIST_EMAILS ?? 'dev@quantro.local';
+  return raw
+    .split(',')
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean);
+}
 
 export async function checkBetaAccess(email: string): Promise<boolean> {
-  // Check if email is in the approved list
-  if (BETA_EMAILS.includes(email.toLowerCase())) {
+  if (getBetaAllowlist().includes(email.toLowerCase())) {
     return true;
   }
 
-  // Check if prisma is properly initialized
   if (!prisma) {
     console.error('Prisma client is not initialized');
     return false;
   }
 
-  // Check if user has a valid beta invite
   try {
     const invite = await prisma.betaInvite.findFirst({
       where: {
@@ -58,8 +55,6 @@ export async function markInviteAsUsed(email: string): Promise<void> {
 }
 
 export async function createBetaInvite(email: string, expiresInDays?: number): Promise<string> {
-  // Cryptographically secure code — Math.random() is not safe for anything
-  // that gates access, since its output is predictable.
   const code = randomBytes(24).toString('base64url');
   
   const expiresAt = expiresInDays 
@@ -67,13 +62,11 @@ export async function createBetaInvite(email: string, expiresInDays?: number): P
     : null;
 
   try {
-    // Check if an invite already exists for this email
     const existingInvite = await prisma.betaInvite.findUnique({
       where: { email: email.toLowerCase() }
     });
 
     if (existingInvite) {
-      // If the existing invite is revoked or used, reactivate it with new code and expiration
       if (existingInvite.revoked || existingInvite.used) {
         await prisma.betaInvite.update({
           where: { email: email.toLowerCase() },
@@ -84,17 +77,15 @@ export async function createBetaInvite(email: string, expiresInDays?: number): P
             usedAt: null,
             revoked: false,
             revokedAt: null,
-            createdAt: new Date() // Update created date to reflect new invite
+            createdAt: new Date()
           }
         });
         
         return code;
       } else {
-        // If there's already an active invite, throw an error
         throw new Error('An active invite already exists for this email');
       }
     } else {
-      // Create new invite if none exists
       await prisma.betaInvite.create({
         data: {
           email: email.toLowerCase(),
