@@ -87,12 +87,6 @@ Key patterns:
 
 ---
 
-## Current Status
-
-**Archived.** This repository is a public learning archive after shutting down the startup. The project is preserved for reference, but it is not actively developed.
-
----
-
 ## Local Development
 
 ```bash
