@@ -2,7 +2,7 @@
 
 > Nutrition tracking built as a personal learning archive.
 
-**Status: Archived** — Quantro is no longer an active startup. This repo is preserved as a public reference and learning project after closing the LLC.
+**Overview** — I began this project shortly after graduating college to learn modern full-stack development using AI coding tools. While building it, I gained experience with frontend development, backend APIs, databases, cloud deployment, business formation, branding, and product design. Through the process I also discovered that my interests lie more in product strategy and business than day-to-day software engineering.
 
 ---
 
