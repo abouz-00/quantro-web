@@ -6,6 +6,17 @@
 
 ---
 
+## Screenshots
+
+### Dashboard
+![Quantro dashboard](./docs/screenshots/dashboard.png)
+
+### Calendar
+![Quantro calendar](./docs/screenshots/calendar.png)
+
+### Nutrition Tracking
+![Quantro macro and micronutrient breakdown](./docs/screenshots/nutrition-donuts.png)
+
 ## What It Does
 
 Quantro is a full-stack nutrition tracking web app focused on nutrient quality, not just calories.
