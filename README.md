@@ -1,8 +1,12 @@
-# Quantro
+# Quantro - Calorie Counter
 
-> Nutrition tracking built as a personal learning archive.
+<img src="./public/favicon.svg" alt="Quantro logo" width="120">
 
-**Status: Archived** — Quantro is no longer an active startup. This repo is preserved as a public reference and learning project after closing the LLC.
+## Status: No longer actively developed
+---
+## Overview 
+
+I began this project in my final quarter of college to learn modern full-stack development using AI coding tools. While building it, I gained experience with frontend development, backend APIs, databases, cloud deployment, business formation, branding, and product design. Through the process I also discovered that my interests lie more in product strategy and business than day-to-day software engineering.
 
 ---
 
@@ -58,31 +62,35 @@ This repo captures the full product cycle: from food search and logging UX to au
 
 ## Architecture
 
-Quantro is a single repo full-stack app deployed as serverless on Vercel.
+Quantro uses a monolithic Next.js architecture deployed serverlessly on Vercel. The application combines frontend UI, API routes, authentication, database access, and third-party integrations in a single repository.
 
-- `src/app/` contains App Router pages and layouts
-- `src/app/api/*` contains backend API route handlers
-- `src/lib/` contains shared client/server services, auth, and env handling
-- `src/server/` contains Prisma-backed business logic
-- `src/components/` contains domain UI and reusable primitives
-- `prisma/` contains database schemas for dev, production, and tests
+Key architectural decisions included:
 
-Key patterns:
-- Centralized Zod-validated environment config
-- Thin API routes with reusable auth/validation/error handling
-- Unified food search service that normalizes across providers
-- Edge middleware for route guards with Node-only auth provider setup
-- Beta invite and admin gating built into sign-in flow
+- Unified food-search abstraction across multiple providers
+- Centralized validation and environment configuration
+- Separate server-side business logic and API layers
+- Authentication and route protection across Edge and Node.js runtimes
+- Serverless-compatible rate limiting
 
 ---
 
-## Challenges Solved
+## Engineering Highlights
 
-- Invite-only beta access with allowlist and admin-managed invites
-- Unified, resilient food search across two external APIs
-- Secure auth split between edge middleware and Node.js runtime
-- Rate limiting that works in serverless and local fallback mode
-- A logging interface with inline editing, drag-and-drop, and optimistic updates
+- Invite-only beta access with allowlist and admin-managed invitations
+- Unified food search across two external APIs
+- Authentication across Edge and Node.js runtimes
+- Serverless-compatible rate limiting with local fallback
+- Inline editing, drag-and-drop, and optimistic UI updates
+
+---
+
+## Project Timeline
+
+- **Spring 2025** — Project conceived months before college graduation
+- **2025** — Product development and technical experimentation
+- **Summer 2025** — LLC formed and brand/trademark developed
+- **2025–2026** — Invite-only beta development and testing
+- **2026** — Development concluded and repository prepared for public release
 
 ---
 
@@ -96,25 +104,12 @@ Key patterns:
 
 ---
 
-## Current Status
+## Disclaimer
 
-**Archived.** This repository is a public learning archive after shutting down the startup. The project is preserved for reference, but it is not actively developed.
-
----
-
-## Local Development
-
-```bash
-npm install
-cp .env.example .env.local
-# fill in NEXTAUTH_SECRET and any optional keys locally
-npm run dev
-```
-
-> Never commit `.env.local` or secrets. Use `.env.example` only as a placeholder.
+Quantro was developed as a software project and is not intended to provide medical or nutritional advice. Nutrition information is sourced from third-party databases and may contain inaccuracies.
 
 ---
 
 ## License
 
-Private project. All rights reserved.
+All rights reserved. This source code is publicly available for viewing and reference only. No permission is granted to copy, modify, distribute, or use the code without prior written permission.
