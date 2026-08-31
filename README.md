@@ -29,17 +29,12 @@ The project gave me hands-on experience across frontend development, backend API
 
 Quantro was designed to make detailed nutrition tracking more accessible while keeping the experience fast and easy to use.
 
-Log meals by type: breakfast, lunch, dinner, and snack
-
-Search foods through USDA FoodData Central and FatSecret
-
-Track macronutrients and 17 micronutrients against daily goals
-
-Review nutrition progress through dashboards, charts, and summaries
-
-Support invite-only beta access and admin-managed invitations
-
-Authenticate users through email and OAuth
+- Log meals by type: breakfast, lunch, dinner, and snack
+- Search foods through USDA FoodData Central and FatSecret
+- Track macronutrients and 17 micronutrients against daily goals
+- Review nutrition progress through dashboards, charts, and summaries
+- Support invite-only beta access and admin-managed invitations
+- Authenticate users through email and OAuth
 
 The application was developed and tested as a closed beta with gated access and administrative tooling.
 
