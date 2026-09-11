@@ -6,7 +6,11 @@
 ---
 ## Overview 
 
-I began this project in my final quarter of college to learn modern full-stack development using AI coding tools. While building it, I gained experience with frontend development, backend APIs, databases, cloud deployment, business formation, branding, and product design. Through the process I also discovered that my interests lie more in product strategy and business than day-to-day software engineering.
+Quantro is a full-stack nutrition tracking web application focused on nutrient quality, not just calories and macronutrients.
+
+I began the project during my final quarter of college as an independent product-development project. I took the application from initial concept through design, development, cloud deployment, and closed-beta testing.
+
+The project gave me hands-on experience across frontend development, backend APIs, databases, authentication, third-party integrations, cloud infrastructure, product design, and AI-assisted software development.
 
 ---
 
@@ -23,23 +27,24 @@ I began this project in my final quarter of college to learn modern full-stack d
 
 ## What It Does
 
-Quantro is a full-stack nutrition tracking web app focused on nutrient quality, not just calories.
+Quantro was designed to make detailed nutrition tracking more accessible while keeping the experience fast and easy to use.
 
-- Log meals by type: breakfast, lunch, dinner, snack
+- Log meals by type: breakfast, lunch, dinner, and snack
 - Search foods through USDA FoodData Central and FatSecret
-- Track macros and 17 micronutrients against daily goals
-- Review progress on a dashboard with charts and summaries
-- Support invite-only beta access, development sign-in, and optional OAuth
+- Track macronutrients and 17 micronutrients against daily goals
+- Review nutrition progress through dashboards, charts, and summaries
+- Support invite-only beta access and admin-managed invitations
+- Authenticate users through email and OAuth
 
-The app was built as a closed beta experience with invite management, admin access, and gated sign-in.
+The application was developed and tested as a closed beta with gated access and administrative tooling.
 
 ---
 
 ## Why I Built It
 
-I built Quantro because mainstream nutrition apps often stop at calories and macros. I wanted a product that treated micronutrients as first-class data while still feeling fast and usable.
+Many nutrition apps emphasize calories and macronutrients while giving less attention to micronutrients. I wanted to explore what a nutrition product would look like if nutrient quality were treated as a first-class part of the experience.
 
-This repo captures the full product cycle: from food search and logging UX to auth, access controls, and production-ready deployment patterns.
+Building Quantro also gave me an opportunity to explore the full product lifecycle—from food search and meal logging UX to authentication, access controls, data normalization, and cloud deployment.
 
 ---
 
@@ -52,9 +57,9 @@ This repo captures the full product cycle: from food search and logging UX to au
 - Zustand
 - Prisma 7
 - NextAuth.js v5
-- USDA FoodData Central + FatSecret API
-- Resend email
-- Upstash Redis rate limiting
+- USDA FoodData Central + FatSecret APIs
+- Resend 
+- Upstash Redis
 - Sentry + Vercel Analytics
 - Jest + React Testing Library + Playwright
 
@@ -64,11 +69,10 @@ This repo captures the full product cycle: from food search and logging UX to au
 
 Quantro uses a monolithic Next.js architecture deployed serverlessly on Vercel. The application combines frontend UI, API routes, authentication, database access, and third-party integrations in a single repository.
 
-Key architectural decisions included:
-
+- Key architectural decisions included:
 - Unified food-search abstraction across multiple providers
 - Centralized validation and environment configuration
-- Separate server-side business logic and API layers
+- Separation of server-side business logic from API layers
 - Authentication and route protection across Edge and Node.js runtimes
 - Serverless-compatible rate limiting
 
@@ -76,31 +80,34 @@ Key architectural decisions included:
 
 ## Engineering Highlights
 
-- Invite-only beta access with allowlist and admin-managed invitations
-- Unified food search across two external APIs
-- Authentication across Edge and Node.js runtimes
-- Serverless-compatible rate limiting with local fallback
-- Inline editing, drag-and-drop, and optimistic UI updates
+- Built invite-only beta access with allowlists and admin-managed invitations
+- Unified food search across two external nutrition APIs
+- Implemented authentication across Edge and Node.js runtimes
+- Added serverless-compatible rate limiting with a local fallback
+- Built inline editing, drag-and-drop interactions, and optimistic UI updates
+- Integrated and normalized nutrition data from multiple third-party sources
+- Added automated testing across unit, component, and end-to-end layers
 
 ---
 
 ## Project Timeline
 
-- **Spring 2025** — Project conceived months before college graduation
-- **2025** — Product development and technical experimentation
-- **Summer 2025** — LLC formed and brand/trademark developed
-- **2025–2026** — Invite-only beta development and testing
+- **Spring 2025** — Project conceived months during my final quarter of college
+- **2025** — Product design, development, and technical experimentation
+- **Summer 2025** — Business formation and brand development
+- **2025–2026** — Closed-beta development and testing
 - **2026** — Development concluded and repository prepared for public release
 
 ---
 
 ## What I Learned
 
-- Monolith-first is powerful for an MVP when shared logic matters
-- Centralizing env definitions makes optional integrations safer
-- Edge and Node auth boundaries must be explicit for Vercel deployments
-- Real nutrition data requires careful normalization and validation
-- Beta launches need tooling around invites and onboarding, not just feature flags
+- A monolith-first architecture can be effective for an MVP when application features share significant logic and data.
+- Centralizing environment configuration makes optional integrations safer and easier to manage.
+- Edge and Node.js runtime boundaries need to be explicit when deploying authentication-dependent applications on Vercel.
+- Integrating real-world nutrition data requires careful normalization, validation, and handling of inconsistent third-party data.
+- A beta product needs operational tooling for invitations, onboarding, and access management in addition to its core features.
+- Building a product end-to-end requires balancing technical implementation with usability and product decisions.
 
 ---
 
