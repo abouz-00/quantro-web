@@ -6,11 +6,9 @@
 ---
 ## Overview 
 
-Quantro is a full-stack nutrition tracking web application focused on nutrient quality, not just calories and macronutrients.
+Quantro is a full-stack nutrition tracking web application focused on nutrient quality, calories and macronutrients.
 
-I began the project during my final quarter of college as an independent product-development project. I took the application from initial concept through design, development, cloud deployment, and closed-beta testing.
-
-The project gave me hands-on experience across frontend development, backend APIs, databases, authentication, third-party integrations, cloud infrastructure, product design, and AI-assisted software development.
+I began this project during my final quarter of college to experiment with software development and product ownership. The project gave me hands-on experience across frontend development, backend APIs, databases, authentication, third-party integrations, cloud infrastructure, product design, and AI-assisted software development.
 
 ---
 
@@ -27,7 +25,7 @@ The project gave me hands-on experience across frontend development, backend API
 
 ## What It Does
 
-Quantro was designed to make detailed nutrition tracking more accessible while keeping the experience fast and easy to use.
+Quantro was designed to make detailed nutrition tracking more intuitive and interactive.
 
 - Log meals by type: breakfast, lunch, dinner, and snack
 - Search foods through USDA FoodData Central and FatSecret
@@ -36,17 +34,10 @@ Quantro was designed to make detailed nutrition tracking more accessible while k
 - Support invite-only beta access and admin-managed invitations
 - Authenticate users through email and OAuth
 
-The application was developed and tested as a closed beta with gated access and administrative tooling.
+The application was developed and tested as a closed beta.
 
 ---
 
-## Why I Built It
-
-Many nutrition apps emphasize calories and macronutrients while giving less attention to micronutrients. I wanted to explore what a nutrition product would look like if nutrient quality were treated as a first-class part of the experience.
-
-Building Quantro also gave me an opportunity to explore the full product lifecycle—from food search and meal logging UX to authentication, access controls, data normalization, and cloud deployment.
-
----
 
 ## Tech Stack
 
@@ -97,17 +88,6 @@ Quantro uses a monolithic Next.js architecture deployed serverlessly on Vercel. 
 - **Summer 2025** — Business formation and brand development
 - **2025–2026** — Closed-beta development and testing
 - **2026** — Development concluded and repository prepared for public release
-
----
-
-## What I Learned
-
-- A monolith-first architecture can be effective for an MVP when application features share significant logic and data.
-- Centralizing environment configuration makes optional integrations safer and easier to manage.
-- Edge and Node.js runtime boundaries need to be explicit when deploying authentication-dependent applications on Vercel.
-- Integrating real-world nutrition data requires careful normalization, validation, and handling of inconsistent third-party data.
-- A beta product needs operational tooling for invitations, onboarding, and access management in addition to its core features.
-- Building a product end-to-end requires balancing technical implementation with usability and product decisions.
 
 ---
 
