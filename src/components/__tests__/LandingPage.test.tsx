@@ -69,19 +69,18 @@ describe('LandingPage Component', () => {
     expect(screen.getByText('© 2026 Quantro LLC. All rights reserved.')).toBeInTheDocument();
   });
 
-  it('displays social media links', () => {
+  it('displays social media icons without links', () => {
     mockUseSession.mockReturnValue({ 
       data: null, 
       status: 'unauthenticated',
       update: jest.fn()
     });
 
-    render(<LandingPage />);
-    
-    // Check for social media links
-    expect(screen.getByLabelText('Follow Quantro on X (Twitter)')).toBeInTheDocument();
-    expect(screen.getByLabelText('Follow Quantro on Instagram')).toBeInTheDocument();
-    expect(screen.getByLabelText('Follow Quantro on TikTok')).toBeInTheDocument();
+    const { container } = render(<LandingPage />);
+    const footer = container.querySelector('footer');
+
+    expect(footer?.querySelectorAll('svg')).toHaveLength(3);
+    expect(footer?.querySelectorAll('a')).toHaveLength(0);
   });
 
   it('has proper styling', () => {

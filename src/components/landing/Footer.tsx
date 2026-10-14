@@ -11,36 +11,9 @@ export const Footer = () => {
       {/* Social media icons moved up */}
       <div className="flex justify-center items-center mb-6 relative z-20">
         <div className="flex items-center justify-center gap-6">
-          <a
-            href="https://x.com/quantro_app"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Follow Quantro on X (Twitter)"
-            className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-center hover:scale-110 transition-transform duration-200 cursor-pointer"
-            style={{ pointerEvents: 'auto' }}
-          >
-            <XIcon />
-          </a>
-          <a
-            href="https://instagram.com/quantro_app"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Follow Quantro on Instagram"
-            className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-center hover:scale-110 transition-transform duration-200 cursor-pointer"
-            style={{ pointerEvents: 'auto' }}
-          >
-            <InstagramIcon />
-          </a>
-          <a
-            href="https://tiktok.com/@quantro_app"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Follow Quantro on TikTok"
-            className="focus:outline-none focus:ring-2 focus:ring-white/50 flex items-center hover:scale-110 transition-transform duration-200 cursor-pointer"
-            style={{ pointerEvents: 'auto' }}
-          >
-            <TikTokIcon />
-          </a>
+          <XIcon />
+          <InstagramIcon />
+          <TikTokIcon />
         </div>
       </div>
 
