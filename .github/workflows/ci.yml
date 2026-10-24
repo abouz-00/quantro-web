@@ -70,6 +70,8 @@ jobs:
     if: github.ref == 'refs/heads/develop'
     environment: staging
     timeout-minutes: 10
+    permissions:
+      contents: read
     
     steps:
     - name: Checkout code
@@ -123,10 +125,10 @@ jobs:
         NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
         
     - name: Deploy to Staging (Vercel)
-      uses: amondnet/vercel-action@v42
+      uses: amondnet/vercel-action@de09aeac2ace6599ec9b11ef87558759a496bac4
       with:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        github-comment: false
         vercel-args: '--prebuilt --env staging'
         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
