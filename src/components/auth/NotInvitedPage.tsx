@@ -120,7 +120,7 @@ export default function NotInvitedPage({
       <footer className="fixed bottom-0 left-0 right-0 px-8 py-4">
         <div className="max-w-7xl mx-auto text-center">
           <p className={`text-white/70 text-sm ${poppins.className}`}>
-            © 2025 Quantro LLC. All rights reserved.
+            © 2025. All rights reserved.
           </p>
         </div>
       </footer>

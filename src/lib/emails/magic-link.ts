@@ -72,7 +72,7 @@ export async function sendMagicLinkEmail({ to, url }: SendMagicLinkParams) {
             <!-- Footer -->
             <tr>
               <td style="background-color: #f8f9fa; padding: 20px 30px; text-align: center; border-top: 1px solid #e9ecef;">
-                <p style="margin: 0; color: #999999; font-size: 12px;">&copy; ${new Date().getFullYear()} Quantro LLC. All rights reserved.</p>
+                <p style="margin: 0; color: #999999; font-size: 12px;">&copy; ${new Date().getFullYear()}. All rights reserved.</p>
               </td>
             </tr>
           </table>
