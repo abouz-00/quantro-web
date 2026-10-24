@@ -34,8 +34,6 @@ Quantro was designed to make detailed nutrition tracking more intuitive and inte
 - Support invite-only beta access and admin-managed invitations
 - Authenticate users through email and OAuth
 
-The application was developed and tested as a closed beta.
-
 ---
 
 
@@ -60,7 +58,8 @@ The application was developed and tested as a closed beta.
 
 Quantro uses a monolithic Next.js architecture deployed serverlessly on Vercel. The application combines frontend UI, API routes, authentication, database access, and third-party integrations in a single repository.
 
-- Key architectural decisions included:
+Key architectural decisions included:
+
 - Unified food-search abstraction across multiple providers
 - Centralized validation and environment configuration
 - Separation of server-side business logic from API layers
@@ -83,7 +82,7 @@ Quantro uses a monolithic Next.js architecture deployed serverlessly on Vercel. 
 
 ## Project Timeline
 
-- **Spring 2025** — Project conceived months during my final quarter of college
+- **Spring 2025** — Project conceived during my final quarter of college
 - **2025** — Product design, development, and technical experimentation
 - **Summer 2025** — Business formation and brand development
 - **2025–2026** — Closed-beta development and testing
