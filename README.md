@@ -98,4 +98,4 @@ Quantro was developed as a software project and is not intended to provide medic
 
 ## License
 
-All rights reserved. This source code is publicly available for viewing and reference only. No permission is granted to copy, modify, distribute, or use the code without prior written permission.
+License: All rights reserved. This code is public for viewing only. See the LICENSE file for details.
