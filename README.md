@@ -29,7 +29,7 @@ Quantro was designed to make detailed nutrition tracking more intuitive and inte
 
 - Log meals by type: breakfast, lunch, dinner, and snack
 - Search foods through USDA FoodData Central and FatSecret
-- Track macronutrients and 17 micronutrients against daily goals
+- Track macronutrients and 24 micronutrients against daily goals
 - Review nutrition progress through dashboards, charts, and summaries
 - Support invite-only beta access and admin-managed invitations
 - Authenticate users through email and OAuth
